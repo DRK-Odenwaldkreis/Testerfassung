@@ -33,17 +33,16 @@ Hilfsfunktionen wie:
 4. Konfiguration auslesen
 5. Datenbank Connector
 
-# Getting Started:
+# Ablaufplan
+
+## Testperson Kommt
+
+## Testauswerteperson trägt Ergebnis ein
 
 
-## Ablauf
+# Getting Started
 
-### Testperson Kommt
-
-### Testauswerteperson trägt Ergebnis ein
-
-
-# MySQL Datenbank
+## MySQL Datenbank
 
 Für die Persistierung wird eine MySQL Datenbank verwendet. Diese kann sowohl von einem Dienstleister in einem Rechenzentrum betrieben werden, als auch lokal auf dem Rechner des Terminals laufen. Je nachdem aus welchen Netzwerken Zugang zur Webapplikation benötigt würde, ist dies dementsprechend zu planen.
 
