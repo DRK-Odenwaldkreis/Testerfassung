@@ -54,10 +54,9 @@ ALTER TABLE `Vorgang`
 COMMIT;
 ```
 
-
 Teststation:
-
-```CREATE TABLE `Teststation` (
+```mysql
+CREATE TABLE `Teststation` (
   `id` int(11) NOT NULL,
   `Ort` varchar(100) NOT NULL,
   `Updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -72,4 +71,7 @@ COMMIT;
 ```
 
 ## Webpage
+
+
+
 
