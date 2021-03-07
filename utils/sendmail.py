@@ -64,7 +64,7 @@ def send_mail_report(filename, day):
         return False
 
 
-def send_positive_result(recipient):
+def send_positive_result(vorname,nachname,mail):
     try:
         logging.debug("Receviced the following filename %s to be sent." % (filename))
         message = MIMEMultipart()
@@ -102,7 +102,8 @@ def send_positive_result(recipient):
             "The following error occured in send mail download: %s" % (err))
         return False
 
-def send_negative_result(recipient):
+
+def send_negative_result(vorname, nachname, mail):
     try:
         logging.debug("Receviced the following filename %s to be sent." % (filename))
         message = MIMEMultipart()
@@ -129,6 +130,46 @@ def send_negative_result(recipient):
                 'Content-Disposition', "attachment; filename= " + item.replace('../../Reports/', ''))
             message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        smtp.send_message(message)
+        logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error(
+            "The following error occured in send mail download: %s" % (err))
+        return False
+
+
+def send_indistinct_result(vorname, nachname, mail):
+    try:
+        logging.debug(
+            "Receviced the following filename %s to be sent." % (filename))
+        message = MIMEMultipart()
+        with open('../utils/MailLayout/NewReport.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[DAY]]', str(day))
+        message.attach(MIMEText(messageContent, 'html'))
+        recipients = ['x@y.de', 'y@z.de']
+        message['Subject'] = "Neue Tagesreport für: %s" % (str(day))
+        message['From'] = 'xxx'
+        message['reply-to'] = 'xxx'
+        message['Cc'] = 'xxx'
+        message['To'] = ", ".join(recipients)
+        filenameRaw = filename
+        filename = '../../Reports/' + str(filenameRaw)
+        files = []
+        files.append(filename)
+        for item in files:
+            attachment = open(item, 'rb')
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload((attachment).read())
+            encoders.encode_base64(part)
+            part.add_header(
+                'Content-Disposition', "attachment; filename= " + item.replace('../../Reports/', ''))
+            message.attach(part)
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
