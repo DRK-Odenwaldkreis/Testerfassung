@@ -7,8 +7,33 @@ Eine Lösung zur Erfassung und Verarbeitung der Testergebnisse in den Testzentre
 
 Das Projekt besteht aus mehreren Teilanwendungen. Vor Ort gibt es ein zwei Endgeräte die im Browser angemeldet sind. Ein Mitarbeiter registriert die Personen die getestet werden möchten.
 
+## NightlyAutoClose
 
-## Getting Started:
+## RenditionJob
+Pro Testzentrum gibt es einen Job welcher periodisch über die Datenbank läuft und nach den Testergebnissen bei noch nicht versendeten Einträgen schaut.
+Je nach Testergebnis wird an den Empfänger eine Mail aus den Vorlagen gesendet. Hierbei gibt es die Zustände:
+
+1. Testergebnis war positiv
+2. Testergebnis war negativ
+3. Testergebnis ist nicht eindeutig
+
+
+## TagesreportPDF
+Zur Tagesauswertung für die Gesamtanzal getesteter Personen sowie dem Verhältnis von Positiven und negativen Testergebnissen wird ein Tagesreport erzeugt. Dieser wird automatisiert per Mail jede Nacht versendet und lässt sich im WebUI auch für jeden beliebigen Tag erzeugen.
+
+## CSVExport
+Dem Gesundheitsamt wird auf Basis eines täglichen Jobs eine Liste der postive gemeldeten Personen als CSV zur Verfügung gestellt. Die CSV Datei ist gezippt und mit Password versehen. Des Weiteren hat das Gesundheitsamt die Möglichkeit via Login eine Liste aller Infizierten zu erzeugen.
+
+## utils
+Hilfsfunktionen wie:
+
+1. Mail senden
+2. Schirftarten
+3. Mailvorlagen
+4. Konfiguration auslesen
+5. Datenbank Connector
+
+# Getting Started:
 
 
 ## Ablauf
@@ -18,7 +43,7 @@ Das Projekt besteht aus mehreren Teilanwendungen. Vor Ort gibt es ein zwei Endge
 ### Testauswerteperson trägt Ergebnis ein
 
 
-## MySQL Datenbank
+# MySQL Datenbank
 
 Für die Persistierung wird eine MySQL Datenbank verwendet. Diese kann sowohl von einem Dienstleister in einem Rechenzentrum betrieben werden, als auch lokal auf dem Rechner des Terminals laufen. Je nachdem aus welchen Netzwerken Zugang zur Webapplikation benötigt würde, ist dies dementsprechend zu planen.
 
