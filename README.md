@@ -5,7 +5,7 @@ Eine Lösung zur Erfassung und Verarbeitung der Testergebnisse in den Testzentre
 
 # Komponenten
 
-Das Projekt besteht aus mehreren Teilanwendungen. Vor Ort gibt es ein zwei Endgeräte die im Browser angemeldet sind. Ein Mitarbeiter registriert die Personen die getestet werden möchten. 
+Das Projekt besteht aus mehreren Teilanwendungen. Vor Ort gibt es ein zwei Endgeräte die im Browser angemeldet sind. Ein Mitarbeiter registriert die Personen die getestet werden möchten.
 
 
 ## Getting Started:
@@ -22,8 +22,8 @@ Das Projekt besteht aus mehreren Teilanwendungen. Vor Ort gibt es ein zwei Endge
 
 Für die Persistierung wird eine MySQL Datenbank verwendet. Diese kann sowohl von einem Dienstleister in einem Rechenzentrum betrieben werden, als auch lokal auf dem Rechner des Terminals laufen. Je nachdem aus welchen Netzwerken Zugang zur Webapplikation benötigt würde, ist dies dementsprechend zu planen.
 
-Für die Verwendung werden aktuelle zwei Tabellen benötigt. 
-Einmal "Teststation", welche die Metainformationen zu der Teststation enthält. 
+Für die Verwendung werden aktuelle zwei Tabellen benötigt.
+Einmal "Teststation", welche die Metainformationen zu der Teststation enthält.
 Darüberhinaus einmal "Vorgang", in welche die Testvorgänge gespeichert werden.
 
 Erzeugt werden können die Tabellen mit folgenden SQL statements:
@@ -41,6 +41,7 @@ CREATE TABLE `Vorgang` (
   `Adresse` varchar(150) NOT NULL,
   `Telefon` varchar(15) NOT NULL,
   `Mailadresse` varchar(50) NOT NULL,
+  `Geburtsdatum`varchar(20) NOT NULL,
   `Ergebnis` int(11) NOT NULL,
   `Mailsend` tinyint(4) NOT NULL,
   `Updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -48,7 +49,7 @@ CREATE TABLE `Vorgang` (
 
 ALTER TABLE `Vorgang`
   ADD UNIQUE KEY `id` (`id`);
-  
+
 ALTER TABLE `Vorgang`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
@@ -64,14 +65,10 @@ CREATE TABLE `Teststation` (
 
 ALTER TABLE `Teststation`
   ADD KEY `id` (`id`);
-  
+
 ALTER TABLE `Teststation`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 ```
 
 ## Webpage
-
-
-
-
