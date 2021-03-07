@@ -21,8 +21,13 @@ logger.debug('Starting')
 
 if __name__ == "__main__":
     try:
+        if len(sys.argv) != 2:
+            logger.debug('Input parameters are not correct, station id is needed')
+            raise Exception
+        stationID = sys.argv[1]
         DatabaseConnect = Database()
-        sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id from Vorgang where Mailsend = 0;"
+        sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id from Vorgang where Mailsend = 0 and Station = %s;" % (
+            stationID)
         logger.debug('Checking for new results, using the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
         for i in content:
@@ -43,7 +48,7 @@ if __name__ == "__main__":
                     vorname, nachname, mail, date)
             logger.debug('Checking if entry for mailsend can be set to true')
             if transmission:
-                sql = "Update id for id"
+                sql = "Update Vorgang SET Mailsend = 1 WHERE id = %s;" % (entry)
                 DatabaseConnect.update(sql)
         logger.debug('Done')
     except Exception as e:
