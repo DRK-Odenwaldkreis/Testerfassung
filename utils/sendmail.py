@@ -5,6 +5,7 @@
 from zipfile import ZipFile
 
 import smtplib
+import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
@@ -70,7 +71,6 @@ def send_mail_gesundheitsamt(filename, date):
         return False
 
 
-
 def send_mail_report(filename, day):
     try:
         logging.debug("Receviced the following filename %s to be sent." % (filename))
@@ -116,9 +116,8 @@ def send_positive_result(vorname, nachname, mail, date):
         message = MIMEMultipart()
         with open('../utils/MailLayout/Positive_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date))
-        messageContent = fileContent.replace('[[VORNAME]]', str(vorname))
-        messageContent = fileContent.replace('[[NACHNAME]]', str(nachname))
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace(
+            '[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebis Ihres Tests liegt vor"
         message['From'] = 'xxx'
@@ -143,9 +142,8 @@ def send_negative_result(vorname, nachname, mail, date):
         message = MIMEMultipart()
         with open('../utils/MailLayout/Negative_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date))
-        messageContent = fileContent.replace('[[VORNAME]]', str(vorname))
-        messageContent = fileContent.replace('[[NACHNAME]]', str(nachname))
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace(
+            '[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebis Ihres Tests liegt vor"
         message['From'] = 'xxx'
@@ -170,9 +168,7 @@ def send_indistinct_result(vorname, nachname, mail, date):
         message = MIMEMultipart()
         with open('../utils/MailLayout/Indistinct_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date))
-        messageContent = fileContent.replace('[[VORNAME]]', str(vorname))
-        messageContent = fileContent.replace('[[NACHNAME]]', str(nachname))
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebis Ihres Tests liegt vor"
         message['From'] = 'xxx'
@@ -184,6 +180,35 @@ def send_indistinct_result(vorname, nachname, mail, date):
         smtp.send_message(message)
         logging.debug("Mail was send")
         smtp.quit()
+        return True
+    except Exception as err:
+        logging.error(
+            "The following error occured in send mail download: %s" % (err))
+        return False
+
+
+def send_test_mail():
+    try:
+        start = datetime.datetime.now()
+        logging.debug("Started sending Mail: %s" % (start))
+        message = MIMEMultipart()
+        with open('../utils/MailLayout/Negative_Result.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[DATE]]',str(datetime.datetime.now())).replace('[[VORNAME]]', 'Murat').replace('[[NACHNAME]]', 'Bayram')
+        message.attach(MIMEText(messageContent, 'html'))
+        message['Subject'] = "Ergebis Ihres Tests liegt vor"
+        message['From'] = 'support@impfzentrum-odw.de'
+        message['reply-to'] = 'support@impfzentrum-odw.de'
+        message['To'] = 'testzentrum@familie-bayram.eu'
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        smtp.send_message(message)
+        logging.debug("Mail was send")
+        smtp.quit()
+        end = datetime.datetime.now()
+        logging.debug("Finished Sending Mail: %s" %(end))
+        logging.debug("Duration was: %s" % (str(end-start)))
         return True
     except Exception as err:
         logging.error(
