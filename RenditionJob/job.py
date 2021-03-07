@@ -14,9 +14,9 @@ from utils.sendmail import send_indistinct_result
 import datetime
 
 logFile = '../../Logs/rotationJob.log'
-logging.basicConfig(filename=logFile, level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger('Rendition Job startet on: %s') %(datetime.datetime.now())
+logger = logging.getLogger('Rendition Job startet on: %s' %(datetime.datetime.now()))
 logger.debug('Starting')
 
 if __name__ == "__main__":
