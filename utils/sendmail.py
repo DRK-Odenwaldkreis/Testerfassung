@@ -77,19 +77,7 @@ def send_positive_result(vorname, nachname, mail, date):
         message['Subject'] = "Ergebis Ihres Tests liegt vor"
         message['From'] = 'xxx'
         message['reply-to'] = 'xxx'
-        message['Cc'] = 'xxx'
-        message['Bcc'] = 'x@y.de'
         message['To'] = mail
-        files = []
-        files.append("../flyer.pdf")
-        for item in files:
-            attachment = open(item, 'rb')
-            part = MIMEBase('application', 'octet-stream')
-            part.set_payload((attachment).read())
-            encoders.encode_base64(part)
-            part.add_header(
-                'Content-Disposition', "attachment; filename= " + item.replace('../flyer/', ''))
-            message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
@@ -116,18 +104,7 @@ def send_negative_result(vorname, nachname, mail, date):
         message['Subject'] = "Ergebis Ihres Tests liegt vor"
         message['From'] = 'xxx'
         message['reply-to'] = 'xxx'
-        message['Cc'] = 'xxx'
         message['To'] = mail
-        files = []
-        files.append("../flyer.pdf")
-        for item in files:
-            attachment = open(item, 'rb')
-            part = MIMEBase('application', 'octet-stream')
-            part.set_payload((attachment).read())
-            encoders.encode_base64(part)
-            part.add_header(
-                'Content-Disposition', "attachment; filename= " + item.replace('../flyer/', ''))
-            message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
@@ -154,18 +131,7 @@ def send_indistinct_result(vorname, nachname, mail, date):
         message['Subject'] = "Ergebis Ihres Tests liegt vor"
         message['From'] = 'xxx'
         message['reply-to'] = 'xxx'
-        message['Cc'] = 'xxx'
         message['To'] = mail
-        files = []
-        files.append("../flyer.pdf")
-        for item in files:
-            attachment = open(item, 'rb')
-            part = MIMEBase('application', 'octet-stream')
-            part.set_payload((attachment).read())
-            encoders.encode_base64(part)
-            part.add_header(
-                'Content-Disposition', "attachment; filename= " + item.replace('../flyer/', ''))
-            message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
