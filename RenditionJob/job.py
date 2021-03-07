@@ -26,7 +26,7 @@ if __name__ == "__main__":
             raise Exception
         stationID = sys.argv[1]
         DatabaseConnect = Database()
-        sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id from Vorgang where Mailsend = 0 and Station = %s;" % (
+        sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id from Vorgang where Mailsend is NULL and Mailadresse is not NULL and Teststation = %s;" % (
             stationID)
         logger.debug('Checking for new results, using the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
@@ -36,7 +36,7 @@ if __name__ == "__main__":
             vorname = i[0]
             mail = i[2]
             date = i[4].strftime("%A, den %d.%m.%Y")
-            entry = i[5]
+            testID = i[5]
             if result == 0:
                 transmission = send_negative_result(
                     vorname, nachname, mail, date)
@@ -48,7 +48,7 @@ if __name__ == "__main__":
                     vorname, nachname, mail, date)
             logger.debug('Checking if entry for mailsend can be set to true')
             if transmission:
-                sql = "Update Vorgang SET Mailsend = 1 WHERE id = %s;" % (entry)
+                sql = "Update Vorgang SET Mailsend = 1 WHERE id = %s;" % (testID)
                 DatabaseConnect.update(sql)
         logger.debug('Done')
     except Exception as e:
