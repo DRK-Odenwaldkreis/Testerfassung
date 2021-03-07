@@ -36,7 +36,7 @@ Hilfsfunktionen wie:
 ![Testkarte](Pics/Testkarte.png)
 
 
-![Testkarte](Pics/UML.svg)
+![Testkarte](Pics/UML.png)
 
 ## Testperson Kommt
 
