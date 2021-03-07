@@ -64,31 +64,31 @@ def send_mail_report(filename, day):
         return False
 
 
-def send_positive_result(vorname,nachname,mail):
+def send_positive_result(vorname, nachname, mail, date):
     try:
-        logging.debug("Receviced the following filename %s to be sent." % (filename))
+        logging.debug("Receviced the following recipient" % (mail))
         message = MIMEMultipart()
-        with open('../utils/MailLayout/NewReport.html', encoding='utf-8') as f:
+        with open('../utils/MailLayout/Positive_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DAY]]', str(day))
+        messageContent = fileContent.replace('[[DATE]]', str(date))
+        messageContent = fileContent.replace('[[VORNAME]]', str(vorname))
+        messageContent = fileContent.replace('[[NACHNAME]]', str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
-        recipients = ['x@y.de', 'y@z.de']
-        message['Subject'] = "Neue Tagesreport für: %s" % (str(day))
+        message['Subject'] = "Ergebis Ihres Tests liegt vor"
         message['From'] = 'xxx'
         message['reply-to'] = 'xxx'
         message['Cc'] = 'xxx'
-        message['To'] = ", ".join(recipients)
-        filenameRaw = filename
-        filename = '../../Reports/' + str(filenameRaw)
+        message['Bcc'] = 'x@y.de'
+        message['To'] = mail
         files = []
-        files.append(filename)
+        files.append("../flyer.pdf")
         for item in files:
             attachment = open(item, 'rb')
             part = MIMEBase('application', 'octet-stream')
             part.set_payload((attachment).read())
             encoders.encode_base64(part)
             part.add_header(
-                'Content-Disposition', "attachment; filename= " + item.replace('../../Reports/', ''))
+                'Content-Disposition', "attachment; filename= " + item.replace('../flyer/', ''))
             message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.starttls()
@@ -103,33 +103,32 @@ def send_positive_result(vorname,nachname,mail):
         return False
 
 
-def send_negative_result(vorname, nachname, mail):
+def send_negative_result(vorname, nachname, mail, date):
     try:
-        logging.debug("Receviced the following filename %s to be sent." % (filename))
+        logging.debug("Receviced the following recipient" % (mail))
         message = MIMEMultipart()
-        with open('../utils/MailLayout/NewReport.html', encoding='utf-8') as f:
+        with open('../utils/MailLayout/Negative_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DAY]]', str(day))
+        messageContent = fileContent.replace('[[DATE]]', str(date))
+        messageContent = fileContent.replace('[[VORNAME]]', str(vorname))
+        messageContent = fileContent.replace('[[NACHNAME]]', str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
-        recipients = ['x@y.de', 'y@z.de']
-        message['Subject'] = "Neue Tagesreport für: %s" % (str(day))
+        message['Subject'] = "Ergebis Ihres Tests liegt vor"
         message['From'] = 'xxx'
         message['reply-to'] = 'xxx'
         message['Cc'] = 'xxx'
-        message['To'] = ", ".join(recipients)
-        filenameRaw = filename
-        filename = '../../Reports/' + str(filenameRaw)
+        message['To'] = mail
         files = []
-        files.append(filename)
+        files.append("../flyer.pdf")
         for item in files:
             attachment = open(item, 'rb')
             part = MIMEBase('application', 'octet-stream')
             part.set_payload((attachment).read())
             encoders.encode_base64(part)
             part.add_header(
-                'Content-Disposition', "attachment; filename= " + item.replace('../../Reports/', ''))
+                'Content-Disposition', "attachment; filename= " + item.replace('../flyer/', ''))
             message.attach(part)
-        smtp = smtplib.SMTP(SMTP_SERVER,port=587)
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
@@ -142,32 +141,30 @@ def send_negative_result(vorname, nachname, mail):
         return False
 
 
-def send_indistinct_result(vorname, nachname, mail):
+def send_indistinct_result(vorname, nachname, mail, date):
     try:
-        logging.debug(
-            "Receviced the following filename %s to be sent." % (filename))
+        logging.debug("Receviced the following recipient" % (mail))
         message = MIMEMultipart()
-        with open('../utils/MailLayout/NewReport.html', encoding='utf-8') as f:
+        with open('../utils/MailLayout/Indistinct_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DAY]]', str(day))
+        messageContent = fileContent.replace('[[DATE]]', str(date))
+        messageContent = fileContent.replace('[[VORNAME]]', str(vorname))
+        messageContent = fileContent.replace('[[NACHNAME]]', str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
-        recipients = ['x@y.de', 'y@z.de']
-        message['Subject'] = "Neue Tagesreport für: %s" % (str(day))
+        message['Subject'] = "Ergebis Ihres Tests liegt vor"
         message['From'] = 'xxx'
         message['reply-to'] = 'xxx'
         message['Cc'] = 'xxx'
-        message['To'] = ", ".join(recipients)
-        filenameRaw = filename
-        filename = '../../Reports/' + str(filenameRaw)
+        message['To'] = mail
         files = []
-        files.append(filename)
+        files.append("../flyer.pdf")
         for item in files:
             attachment = open(item, 'rb')
             part = MIMEBase('application', 'octet-stream')
             part.set_payload((attachment).read())
             encoders.encode_base64(part)
             part.add_header(
-                'Content-Disposition', "attachment; filename= " + item.replace('../../Reports/', ''))
+                'Content-Disposition', "attachment; filename= " + item.replace('../flyer/', ''))
             message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
