@@ -24,7 +24,7 @@ if __name__ == "__main__":
     try:
         DatabaseConnect = Database()
         logger.debug(len(sys.argv))
-        sql = ""
+        sql = "Select * from Vorgang;"
         logger.debug('Getting all Events from Yesterday with the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' % (str(content)))

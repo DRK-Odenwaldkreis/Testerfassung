@@ -48,6 +48,7 @@ class PDFgenerator:
 		self.content=content
 		self.date=date
 		self.totalSeconds=0
+		self.station = self.content[x]
 
 
 	def generate(self):
