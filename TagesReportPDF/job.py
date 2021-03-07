@@ -16,7 +16,7 @@ from utils.getRequesterMail import get_Mail_from_UserID
 
 logFile = '../../Logs/reportJob.log'
 logging.basicConfig(filename=logFile,level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger('Daily Report')
+logger = logging.getLogger('Daily Report startet on: %s') %(datetime.datetime.now())
 logger.debug('Starting')
 dailyReport = False
 
