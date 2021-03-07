@@ -1,8 +1,6 @@
 # Testerfassung
 Eine Lösung zur Erfassung und Verarbeitung der Testergebnisse in den Testzentren des Odenwaldkreises.
 
-
-
 # Komponenten
 
 Das Projekt besteht aus mehreren Teilanwendungen. Vor Ort gibt es ein zwei Endgeräte die im Browser angemeldet sind. Ein Mitarbeiter registriert die Personen die getestet werden möchten.
@@ -34,6 +32,8 @@ Hilfsfunktionen wie:
 5. Datenbank Connector
 
 # Ablaufplan
+
+![Testkarte](Pics/Testkarte.png)
 
 ## Testperson Kommt
 
