@@ -35,6 +35,9 @@ Hilfsfunktionen wie:
 
 ![Testkarte](Pics/Testkarte.png)
 
+
+![Testkarte](Pics/UML.svg)
+
 ## Testperson Kommt
 
 ## Testauswerteperson trägt Ergebnis ein
