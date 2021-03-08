@@ -11,8 +11,6 @@ import os.path
 import datetime
 sys.path.append("..")
 
-from utils.pausen import calculate_net_shift_time
-from utils.month import monthInt_to_string
 Logo = '../utils/logo.png'
 
 FreeSans = '../utils/Schriftart/FreeSans.ttf'
