@@ -60,8 +60,6 @@ class Database(object):
                 'The following error occured in inserting: %s' % (e))
             self.connection.rollback()
             raise UpdateError
-        finally:
-            self.cursor.close()
     
     def insert_feedbacked(self, query):
         try:
@@ -84,8 +82,6 @@ class Database(object):
                 'The following error occured in updating: %s' % (e))
             self.connection.rollback()
             raise UpdateError
-        finally:
-            self.cursor.close()
 
     def read_all(self, query):
         try:
@@ -110,7 +106,3 @@ class Database(object):
             raise QueryError
 
 
-if __name__ == "__main__":
-    test = Database()
-    sql = 'Select * from Personal'
-    print(test.read_single(query=sql))

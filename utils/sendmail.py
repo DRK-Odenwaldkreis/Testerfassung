@@ -67,7 +67,7 @@ def send_mail_gesundheitsamt(filename, date):
         return True
     except Exception as err:
         logging.error(
-            "The following error occured in send mail download: %s" % (err))
+            "The following error occured in send mail gesundheitsamt: %s" % (err))
         return False
 
 
