@@ -15,7 +15,7 @@ import logging
 
 
 logFile = '../../Logs/qrgeneration.log'
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Generating QR Codes')
 logger.debug('Starting')
@@ -23,19 +23,25 @@ logger.debug('Starting')
 def get_codes(amount):
     i=0
     DatabaseConnect = Database()
-    sql = "INSERT INTO Kartennummern (Used) VALUES ('%s')"
-    tupel = (0,)
+    sql = "INSERT INTO Kartennummern (Used) VALUES (1);"
     code_list = []
     while i < int(amount):
-        id = DatabaseConnect.insert_feedbacked(sql,tupel)
+        id = DatabaseConnect.insert_feedbacked(sql)
         code_list.append(id)
+        i+=1
+    DatabaseConnect.cursor.close()
     return code_list
 
 
 if __name__ == "__main__":
     try:
+        if len(sys.argv) != 2:
+            logger.debug(
+                'Input parameters are not correct, amount is needed')
+            raise Exception
+        amount = sys.argv[1]
         PDF = PDFgenerator()  
-        PDF.add_codes(get_codes(5))
-        fileName = PDF.creatPDF()
+        PDF.add_codes(get_codes(amount))
+        PDF.creatPDF()
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

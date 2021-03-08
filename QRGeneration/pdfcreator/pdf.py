@@ -32,7 +32,7 @@ class PDFgenerator(FPDF):
 		self.cell(10, 30, '', ln=1)
 		self.cell(200, 40, 'Testkarte', ln=1, align='C')
 		self.set_font('GNU', '', 20)
-		self.qrcode = pyqrcode.create(self.code, error='L')
+		self.qrcode = pyqrcode.create('K' + str(self.code), error='L')
 		self.qrcode.png('tmp/code.png', scale=12)
 		self.image("tmp/code.png", x=50)
 		self.cell(10, 40, '', ln=1)
@@ -45,9 +45,9 @@ class PDFgenerator(FPDF):
 		self.time = datetime.date.today().strftime("%d.%m.%Y")
 		for i in self.codes:
 			self.create_page(i)
-		self.filename = "../../Reports/Laufkarten.pdf"
+		self.filename = "../../Testkarten/Testkartensatz_" + \
+			str(self.codes[0]) + "-" + str(self.codes[-1]) + ".pdf"
 		self.output(self.filename)
-		return self.filename
 	
 
 	def header(self):

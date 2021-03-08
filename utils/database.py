@@ -63,9 +63,9 @@ class Database(object):
         finally:
             self.cursor.close()
     
-    def insert_feedbacked(self, query, tupel):
+    def insert_feedbacked(self, query):
         try:
-            self.cursor.execute(query,tupel)
+            self.cursor.execute(query)
             self.feedback = self.cursor.lastrowid
             self.connection.commit()
             return self.feedback
@@ -74,8 +74,6 @@ class Database(object):
                 'The following error occured in inserting: %s' % (e))
             self.connection.rollback()
             raise UpdateError
-        finally:
-            self.cursor.close()
 
     def update(self, query):
         try:
