@@ -18,9 +18,7 @@ FreeSansBold = '../utils/Schriftart/FreeSansBold.ttf'
 
 class MyPDF(FPDF):
 
-
 	time='zeit'
-
 
 	def header(self):
 		self.add_font('GNU', '', FreeSans, uni=True)
