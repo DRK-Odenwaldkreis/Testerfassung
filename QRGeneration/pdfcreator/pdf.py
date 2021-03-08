@@ -6,6 +6,7 @@
 
 import sys
 import pyqrcode
+import random
 import png
 from fpdf import FPDF
 import time
@@ -33,10 +34,11 @@ class PDFgenerator(FPDF):
 		self.cell(200, 40, 'Testkarte', ln=1, align='C')
 		self.set_font('GNU', '', 20)
 		self.qrcode = pyqrcode.create('K' + str(self.code), error='L')
-		self.qrcode.png('tmp/code.png', scale=12)
-		self.image("tmp/code.png", x=50)
+		self.qrcode.png('tmp/'+str(code) + '.png', scale=12)
+		self.image('tmp/'+str(code) + '.png', x=50)
 		self.cell(10, 40, '', ln=1)
 		self.cell(200, 10, 'Kartennummer: %s' % (self.code), ln=1, align='C')
+		os.remove('tmp/'+str(code) + '.png')
 
 	def add_codes(self,codes):
 		self.codes = codes
