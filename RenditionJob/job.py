@@ -55,4 +55,4 @@ if __name__ == "__main__":
                 DatabaseConnect.update(sql)
         logger.debug('Done')
     except Exception as e:
-        logging.error("Error")
+        logging.error("The following error occured: %s" % (e))
