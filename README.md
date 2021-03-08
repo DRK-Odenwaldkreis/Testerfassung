@@ -5,7 +5,10 @@ Eine Lösung zur Erfassung und Verarbeitung der Testergebnisse in den Testzentre
 
 Das Projekt besteht aus mehreren Teilanwendungen. Vor Ort gibt es ein zwei Endgeräte die im Browser angemeldet sind. Ein Mitarbeiter registriert die Personen die getestet werden möchten.
 
-## NightlyAutoClose
+## NightlyAutoClean
+
+Alle erzeugten Codes werden vorab in einer Datenbank gespeichert. Sobald der Code bei einer Registrierung verwendet wird, wird dies in der Tabelle Kartennummern vermerkt.
+Diese verwendeten Nummern werden in der Nacht gelöscht.
 
 ## RenditionJob
 Pro Testzentrum gibt es einen Job welcher periodisch über die Datenbank läuft und nach den Testergebnissen bei noch nicht versendeten Einträgen schaut.
@@ -28,6 +31,13 @@ Dem Gesundheitsamt wird auf Basis eines täglichen Jobs eine Liste der postive g
 
 ```python
 python job.py DATUM
+```
+
+## QRGeneration
+Die Laufkarten werden mit einem einmaligen QR Code versehen welcher über dieses Modul erzeugt werden kann. Die erzeugten Codes müssen vorab in der Datenbank angeöegt werden.
+
+```python
+python job.py ANZAHL
 ```
 
 ## utils
