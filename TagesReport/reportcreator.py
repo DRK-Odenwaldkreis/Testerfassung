@@ -10,12 +10,12 @@ from utils.database import Database
 
 
 logFile = '../../Logs/CSVExportJob.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Export')
 logger.debug('Starting')
 
-Teststationen = {1: "Musterstadt", 15: "Breuberg" 18: "Michelstadt", 815: "Würzberg"} #This has to be modified to contain
+Teststationen = {1: "Musterstadt", 15: "Breuberg", 18: "Michelstadt", 815: "Würzberg"} #This has to be modified to contain
 #all existing testing stations"
 
 
@@ -39,25 +39,22 @@ def create_CSV(content, day, month, year):
     return filename
 
 def create_PDFs(content, day, month, year):
-
     for key in Teststationen:
         tests = 0
         positiv = 0
         negativ = 0
         unklar = 0
-
         for i in content:
-            if content[9] == key:
-                ergebnis = content[7]
+            if i[8] == key:
+                ergebnis = i[7]
                 if ergebnis == 0:
                     negativ += 1
                 elif ergebnis ==1:
                     positiv += 1
                 else:
                     unklar += 1
-
         pdfcontent = [(key,Teststationen[key]),tests, positiv, negativ, unklar]   
-        PDF = PDFgenerator(content, f"{day}.{month}.{year}")
+        PDF = PDFgenerator(pdfcontent, f"{day}.{month}.{year}")
         PDF.generate()  
 
         #need to return filenames?
@@ -82,8 +79,8 @@ if __name__ == "__main__":
         logger.debug('Getting all Events for a day: %s' % (sql))
         # print('Getting all Events for a day: %s' % (sql))
         exportEvents = DatabaseConnect.read_all(sql)
-        logger.debug('Received the following entries: %s' %
-                     (str(exportEvents)))
+        #logger.debug('Received the following entries: %s' %
+        #             (str(exportEvents)))
         # print('Received the following entries: %s' %
         #              (str(exportEvents)))
         filename = create_CSV(exportEvents, requestedDay, requestedMonth, requestedYear)

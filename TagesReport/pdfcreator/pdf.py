@@ -51,7 +51,6 @@ class PDFgenerator:
 		self.positiv = self.content[2]
 		self.negativ = self.content[3]
 		self.unklar = self.content[4]
-
 		self.rate = self.positiv/self.tests
 
 
