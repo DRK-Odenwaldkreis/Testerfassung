@@ -51,7 +51,10 @@ class PDFgenerator:
 		self.positiv = self.content[2]
 		self.negativ = self.content[3]
 		self.unklar = self.content[4]
-		self.rate = self.positiv/self.tests
+		if self.tests > 0:
+			self.rate = self.positiv/self.tests
+		else:
+			self.rate = 0
 
 
 	def generate(self):
@@ -87,7 +90,7 @@ class PDFgenerator:
 		pdf.line(current_x, current_y, current_x+190, current_y)
 
 		pdf.set_font('GNU', '', 14)
-		self.filename = "../../Reports/Tagesreport_Testzentrum-%s" + str(self.station) + "_"+str(self.date) + ".pdf"
+		self.filename = "../../Reports/Tagesreport_Testzentrum_" + str(self.station) + "_"+str(self.date) + ".pdf"
 		pdf.output(self.filename)
 		return self.filename.replace('../../Reports/','')
 
