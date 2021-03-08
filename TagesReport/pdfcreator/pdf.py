@@ -48,7 +48,13 @@ class PDFgenerator:
 		self.content=content
 		self.date=date
 		self.totalSeconds=0
-		self.station = self.content[x]
+		self.station = self.content[0]
+		self.tests = self.content[1]
+		self.positiv = self.content[2]
+		self.negativ = self.content[3]
+		self.unklar = self.content[4]
+
+		self.rate = self.positiv/self.tests
 
 
 	def generate(self):
@@ -63,7 +69,7 @@ class PDFgenerator:
 		pdf.add_font('GNU', 'B', FreeSansBold, uni=True)
 
 		pdf.set_font('GNU', 'B', 14)
-		pdf.cell(20, 10, 'Tagesprotokoll für das Testzentrum %s vom %s' % (self.station,self.date), ln=1)
+		pdf.cell(20, 10, 'Tagesprotokoll für das Testzentrum %s vom %s' % (self.station[1],self.date), ln=1)
 
 		pdf.set_font('GNU', '', 14)
 
