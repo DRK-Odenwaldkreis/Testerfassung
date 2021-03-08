@@ -47,8 +47,7 @@ if __name__ == "__main__":
         DatabaseConnect = Database()
         sql = "SELECT id,Ort FROM Station"
         teststationen = DatabaseConnect.read_all(sql)
-        sql = "Select id,Nachname,Vorname,Geburtsdatum,Adresse,Telefon,Mailadresse,Ergebnis,Ergebniszeitpunkt,Teststation from Vorgang where DATE(Ergebniszeitpunkt)='%s';" % (
-            requestedDate)
+        sql = "Select id,Nachname,Vorname,Geburtsdatum,Adresse,Telefon,Mailadresse,Ergebnis,Ergebniszeitpunkt,Teststation from Vorgang where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (requestedDate,requestedDate)
         logger.debug('Getting all Events for a date with the following query: %s' % (sql))
         exportEvents = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' %(str(exportEvents)))

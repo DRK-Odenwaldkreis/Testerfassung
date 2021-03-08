@@ -30,8 +30,10 @@ if __name__ == "__main__":
             'Was started for the following day: %s' % (sys.argv[1]))
         requestedDate = sys.argv[1]
         DatabaseConnect = Database()
-        sql = "Select id,Nachname,Vorname,Geburtsdatum,Adresse,Telefon,Mailadresse,Ergebnis,Ergebniszeitpunkt,Teststation from Vorgang where DATE(Ergebniszeitpunkt)='%s';" % (requestedDate)
-        logger.debug('Getting all Events for employee of the month and year with the following query: %s' % (sql))
+        sql = "Select id,Nachname,Vorname,Geburtsdatum,Adresse,Telefon,Mailadresse,Ergebnis,Ergebniszeitpunkt,Teststation from Vorgang where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (
+            requestedDate, requestedDate)
+        logger.debug(
+            'Getting all Events for employee of the month and year with the following query: %s' % (sql))
         exportEvents = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' %
                      (str(exportEvents)))
