@@ -19,8 +19,16 @@ Je nach Testergebnis wird an den Empfänger eine Mail aus den Vorlagen gesendet.
 ## TagesreportPDF
 Zur Tagesauswertung für die Gesamtanzal getesteter Personen sowie dem Verhältnis von Positiven und negativen Testergebnissen wird ein Tagesreport erzeugt. Dieser wird automatisiert per Mail jede Nacht versendet und lässt sich im WebUI auch für jeden beliebigen Tag erzeugen.
 
+```python
+python job.py DATUM
+```
+
 ## CSVExport
 Dem Gesundheitsamt wird auf Basis eines täglichen Jobs eine Liste der postive gemeldeten Personen als CSV zur Verfügung gestellt. Die CSV Datei ist gezippt und mit Password versehen. Des Weiteren hat das Gesundheitsamt die Möglichkeit via Login eine Liste aller Infizierten zu erzeugen.
+
+```python
+python job.py DATUM
+```
 
 ## utils
 Hilfsfunktionen wie:
