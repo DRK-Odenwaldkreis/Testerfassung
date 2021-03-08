@@ -5,6 +5,7 @@
 
 
 import sys
+import time
 sys.path.append("..")
 from utils.readconfig import read_config
 import os
@@ -54,6 +55,20 @@ class Database(object):
         try:
             self.cursor.execute(query, tupel)
             self.connection.commit()
+        except Exception as e:
+            logger.error(
+                'The following error occured in inserting: %s' % (e))
+            self.connection.rollback()
+            raise UpdateError
+        finally:
+            self.cursor.close()
+    
+    def insert_feedbacked(self, query, tupel):
+        try:
+            self.cursor.execute(query,tupel)
+            self.feedback = self.cursor.lastrowid
+            self.connection.commit()
+            return self.feedback
         except Exception as e:
             logger.error(
                 'The following error occured in inserting: %s' % (e))
