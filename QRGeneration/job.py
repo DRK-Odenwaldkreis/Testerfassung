@@ -23,7 +23,7 @@ logger.debug('Starting')
 def get_codes(amount):
     i=0
     DatabaseConnect = Database()
-    sql = "INSERT INTO Kartennummern (Used) VALUES (1);"
+    sql = "INSERT INTO Kartennummern (Used) VALUES (0);"
     code_list = []
     while i < int(amount):
         id = DatabaseConnect.insert_feedbacked(sql)
