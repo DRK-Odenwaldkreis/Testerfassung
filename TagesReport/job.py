@@ -7,10 +7,11 @@ import csv
 from pdfcreator.pdf import PDFgenerator
 sys.path.append("..")
 from utils.database import Database
+from utils.sendmail import send_mail_report
 
 
 logFile = '../../Logs/TagesreportJob.log'
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Export')
 logger.debug('Starting')
@@ -32,18 +33,19 @@ def create_PDFs(content, date,station):
                 unklar += 1
     pdfcontent = [station[1],tests, positiv, negativ, unklar]
     PDF = PDFgenerator(pdfcontent, f"{date}")
-    PDF.generate()
+    return PDF.generate()
 
         #need to return filenames?
 
 
 if __name__ == "__main__":
     try:
-        print("Test")
-        if len(sys.argv) != 2:
-            logger.debug('Input parameters are not correct, date needed')
+        if len(sys.argv) !=2:
+            logger.debug('Input parameters are not correct, date and/or requester needed')
             raise Exception
         requestedDate = sys.argv[1]
+        #if sys.argv[2]:
+        #    requester = sys.argv[2]
         DatabaseConnect = Database()
         sql = "SELECT id,Ort FROM Station"
         teststationen = DatabaseConnect.read_all(sql)
@@ -51,8 +53,10 @@ if __name__ == "__main__":
         logger.debug('Getting all Events for a date with the following query: %s' % (sql))
         exportEvents = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' %(str(exportEvents)))
+        filenames = []
         for station in teststationen:
-            create_PDFs(exportEvents, requestedDate,station)
+            filenames.append(create_PDFs(exportEvents, requestedDate, station))
+        #send_mail_report(filenames,requestedDate)
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

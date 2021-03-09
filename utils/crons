@@ -2,7 +2,9 @@
 
 ############ WEEKLY JOBS
 
+
 ############# DAILY JOBS
-59 23 * * * /home/webservice/Testerfassung/WeeklyJobs/reporting.sh > /home/webservice/Logs/reporting.log
+59 23 * * * /home/webservice/Testerfassung/DailyJobs/reporting.sh
+59 23 * * * /home/webservice/Testerfassung/DailyJobs/clean.sh
 0 0 * * * /usr/bin/certbot renew > /home/philipp/certbot.log
 0 0 * * * /etc/mysql/ssl/copy_keys.sh > /home/philipp/copy_key.log
