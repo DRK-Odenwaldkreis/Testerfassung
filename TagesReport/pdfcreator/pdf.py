@@ -3,6 +3,7 @@
 
 # This file is part of DRK Testzentrum.
 
+import matplotlib.pyplot as plt
 import sys
 from fpdf import FPDF
 import time
@@ -15,6 +16,8 @@ Logo = '../utils/logo.png'
 
 FreeSans = '../utils/Schriftart/FreeSans.ttf'
 FreeSansBold = '../utils/Schriftart/FreeSansBold.ttf'
+
+
 
 class MyPDF(FPDF):
 
@@ -53,7 +56,18 @@ class PDFgenerator:
 			self.rate = self.positiv/self.tests
 		else:
 			self.rate = 0
-
+		# Pie chart, where the slices will be ordered and plotted counter-clockwise:
+		self.labels = 'Positiv', 'Negativ', 'Unklar'
+		self.sizes = [12, 24, 2]
+		#self.sizes = [self.positiv, self.negativ, self.unklar]
+		self.explode = (0, 0.1, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
+		self.fig1, self.ax1 = plt.subplots()
+		self.ax1.pie(self.sizes, explode=self.explode, labels=self.labels, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),
+                    shadow=True, startangle=90)
+		# Equal aspect ratio ensures that pie is drawn as a circle.
+		self.ax1.axis('equal')
+		self.ax1.set_title("Gesamtanzahl der Test: %s" % (self.tests), pad=32)
+		plt.savefig('tmp/' + str(self.date) + '.png', dpi=(170))
 
 	def generate(self):
 
@@ -67,26 +81,24 @@ class PDFgenerator:
 		pdf.add_font('GNU', 'B', FreeSansBold, uni=True)
 
 		pdf.set_font('GNU', 'B', 14)
-		pdf.cell(20, 10, 'Tagesprotokoll für das Testzentrum %s vom %s' % (self.station[1],self.date), ln=1)
+
+		pdf.cell(20, 10, 'Tagesprotokoll für %s' % (self.date), ln=1)
 
 		pdf.set_font('GNU', '', 14)
 
 		pdf.cell(20, 10, 'Erstellt: {}'.format(datetime.datetime.now().strftime("%Y-%m-%d um %H:%M:%S"), ln=1))
-		pdf.set_text_color(255,0,0)
-		pdf.cell(0,10, 'Rote Einträge prüfen', align='R', ln=1)
-		pdf.set_text_color(0,0,0)
 		pdf.set_font('GNU', 'B' , 20)
 		pdf.ln(15)
 		pdf.set_font('GNU', 'B', 14)
-		pdf.cell(35, 10, 'Testzentrum-Nr.', 0, 0)
-		pdf.cell(35, 10, 'Ort', 0, 1)
-
+		pdf.cell(35, 10, 'Testzentrum: %s' %(self.station), 0, 1)
 
 		current_x =pdf.get_x()
 		current_y =pdf.get_y()
 
 		pdf.line(current_x, current_y, current_x+190, current_y)
-
+		pdf.ln(20)
+		pdf.image('tmp/' + str(self.date) + '.png', w=210, h=160)
+		os.remove('tmp/'+str(self.date) + '.png')
 		pdf.set_font('GNU', '', 14)
 		self.filename = "../../Reports/Tagesreport_Testzentrum_" + str(self.station) + "_"+str(self.date) + ".pdf"
 		pdf.output(self.filename)

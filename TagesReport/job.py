@@ -9,7 +9,7 @@ sys.path.append("..")
 from utils.database import Database
 
 
-logFile = '../../Logs/CSVExportJob.log'
+logFile = '../../Logs/TagesreportJob.log'
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Export')
