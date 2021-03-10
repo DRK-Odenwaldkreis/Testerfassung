@@ -29,7 +29,7 @@ if __name__ == "__main__":
             raise Exception
         stationID = sys.argv[1]
         DatabaseConnect = Database()
-        sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id from Vorgang where Mailsend is NULL and Mailadresse is not NULL and Teststation = %s;" % (
+        sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id, Adresse, Telefon, Geburtsdatum  from Vorgang where Mailsend is NULL and Mailadresse is not NULL and Teststation = %s;" % (
             stationID)
         logger.debug('Checking for new results, using the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
@@ -38,17 +38,17 @@ if __name__ == "__main__":
             nachname = i[1]
             vorname = i[0]
             mail = i[2]
-            date = i[4].strftime("%A, den %d.%m.%Y")
+            date = i[4].strftime("%A, den %d.%m.%Y um %H%M")
             testID = i[5]
+            adresse = i[6]
+            telefon = i[7]
+            geburtsdatum = i[8]
             if result == 0:
-                transmission = send_negative_result(
-                    vorname, nachname, mail, date)
+                transmission = send_negative_result(vorname, nachname, mail, date)
             elif result == 1:
-                transmission = send_positive_result(
-                    vorname, nachname, mail, date)
+                transmission = send_positive_result(vorname, nachname, mail, date, adresse, telefon, geburtsdatum)
             else:
-                transmission = send_indistinct_result(
-                    vorname, nachname, mail, date)
+                transmission = send_indistinct_result(vorname, nachname, mail, date)
             logger.debug('Checking if entry for mailsend can be set to true')
             if transmission:
                 sql = "Update Vorgang SET Mailsend = 1 WHERE id = %s;" % (testID)

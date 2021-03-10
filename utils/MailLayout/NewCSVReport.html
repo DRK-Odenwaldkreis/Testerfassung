@@ -10,7 +10,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Ergebnis Ihres Tests liegt vor</title>
+    <title>Neuer CSV Tagesreport verfügbar</title>
     <style>
         /* -------------------------------------
           GLOBAL RESETS
@@ -179,8 +179,8 @@
         }
 
         .btn a {
-            background-color: #ff0000;
-            border: solid 1px #ff0000;
+            background-color: #ffffff;
+            border: solid 1px #3498db;
             border-radius: 5px;
             box-sizing: border-box;
             color: #3498db;
@@ -195,12 +195,12 @@
         }
 
         .btn-primary table td {
-            background-color: #ff0000;
+            background-color: #3498db;
         }
 
         .btn-primary a {
-            background-color: #ff0000;
-            border-color: #ff0000;
+            background-color: #3498db;
+            border-color: #3498db;
             color: #ffffff;
         }
 
@@ -351,18 +351,18 @@
             }
 
             .btn-primary table td:hover {
-                background-color: #ff0000 !important;
+                background-color: #34495e !important;
             }
 
             .btn-primary a:hover {
-                background-color: #ff0000 !important;
-                border-color: #ff0000 !important;
+                background-color: #34495e !important;
+                border-color: #34495e !important;
             }
         }
     </style>
 </head>
 <body class="">
-    <span class="preheader">Ergebis Ihres Tests liegt vor</span>
+    <span class="preheader">Neuer CSV Tagesreport verfügbar</span>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
         <tr>
             <td>&nbsp;</td>
@@ -376,25 +376,10 @@
                                 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                     <tr>
                                         <td>
-                                            <img src="https://testzentrum-odw.de/img/logo.jpg" alt="Ergebis Ihres Tests liegt vor" style="display: block;" />
-                                            <p>Hallo [[VORNAME]] [[NACHNAME]],</p>
-                                            <p>Sie waren am [[DATE]] im Testzentrum und haben sich testen lassen. Das Testergebnis liegt vor.</p>
-                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
-                                                <tbody>
-                                                    <tr>
-                                                        <td align="center">
-                                                            <table role="presentation" border="0" cellpadding="20" cellspacing="20">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td> Ihr Testergebnis ist positiv </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                            <p>Bitte beachten Sie die angehängten Dateien.</p>
-                                            <p>Das Gesundheitsamt des Odenwaldkreis wurde über dieses Testergebnis informiert.</p>
-                                            <p>[[VORNAME]], [[NACHNAME]]</p>
-                                            <p>[[ADRESSE]]</p>
-                                            <p>[[TELEFON]]</p>
+                                            <img src="https://testzentrum-odw.de/img/logo.jpg" alt="Neuer CSV Export verfügbar" style="display: block;" />
+                                            <p>Hallo,</p>
+                                            <p>Ein neuer CSV Tagesreport für [[DAY]] wurde erzeugt und ist verfügbar.</p>
+                                            <p>Dieser kann hier heruntergeladen werden: [[LINK]]</p>
                                         </td>
                                     </tr>
                                 </table>
