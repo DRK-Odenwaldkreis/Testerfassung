@@ -42,9 +42,9 @@ if __name__ == "__main__":
             requestedDate = sys.argv[1]
         elif len(sys.argv) == 3:
             requestedDate = sys.argv[1]
-            requester = sys.argv[2]
+            requested = sys.argv[2]
         else:
-            logger.debug('Input parameters are not correct, date and/or requester needed')
+            logger.debug('Input parameters are not correct, date and/or requested needed')
             raise Exception
         DatabaseConnect = Database()
         sql = "SELECT id,Ort FROM Station"
@@ -56,9 +56,9 @@ if __name__ == "__main__":
         filenames = []
         for station in teststationen:
             filenames.append(create_PDFs(exportEvents, requestedDate, station))
-        if requester:
+        if requested:
             logger.debug('Sending Mail')
-            send_mail_report(filenames,requestedDate, requester)
+            send_mail_report(filenames,requestedDate)
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

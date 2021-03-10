@@ -12,6 +12,7 @@ import sys
 sys.path.append("..")
 from utils.database import Database
 from createCSV import create_CSV
+from utils.sendmail import send_csv_report
 
 logFile = '../../Logs/CSVExportJob.log'
 logging.basicConfig(filename=logFile,level=logging.DEBUG,
@@ -22,13 +23,15 @@ logger.debug('Starting')
 
 if __name__ == "__main__":
     try:
-        if len(sys.argv) != 2:
+        if len(sys.argv) == 2:
+            requestedDate = sys.argv[1]
+        elif len(sys.argv) == 3:
+            requestedDate = sys.argv[1]
+            requested = sys.argv[2]
+        else:
             logger.debug(
-                'Input parameters are not correct, date is needed')
+                'Input parameters are not correct, date and/or requested needed')
             raise Exception
-        logger.debug(
-            'Was started for the following day: %s' % (sys.argv[1]))
-        requestedDate = sys.argv[1]
         DatabaseConnect = Database()
         sql = "Select id,Nachname,Vorname,Geburtsdatum,Adresse,Telefon,Mailadresse,Ergebnis,Ergebniszeitpunkt,Teststation from Vorgang where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (
             requestedDate, requestedDate)
@@ -39,6 +42,8 @@ if __name__ == "__main__":
                      (str(exportEvents)))
         filename = create_CSV(exportEvents, requestedDate)
         logger.debug('Done')
+        if requested:
+            send_csv_report(filename,requestedDate)
         print(filename.replace('../../Reports/', ''))
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

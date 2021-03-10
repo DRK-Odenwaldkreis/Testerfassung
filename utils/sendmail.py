@@ -26,52 +26,7 @@ SMTP_SERVER = read_config("Mail", "SMTP_SERVER")
 SMTP_USERNAME = read_config("Mail", "SMTP_USERNAME")
 SMTP_PASSWORD = read_config("Mail", "SMTP_PASSWORD")
 
-def send_mail_gesundheitsamt(filename, date):
-    try:
-        zip_password = read_config("Gesundheitsamt", "ZIP_PASSWORD")
-        logging.debug("Receviced the following filename %s to be sent." % (filename))
-        message = MIMEMultipart()
-        with open('../utils/MailLayout/NewCSV.html', encoding='utf-8') as f:
-            fileContent = f.read()
-        messageContent = fileContent.replace('[[DAY]]', str(date))
-        message.attach(MIMEText(messageContent, 'html'))
-        recipients = [read_config("Gesundheitsamt", "TO_EMAIL")]
-        message['Subject'] = "Neue Meldeliste aus dem Testzentrum für: %s" % (str(day))
-        message['From'] = 'xxx'
-        message['reply-to'] = 'xxx'
-        message['Cc'] = 'xxx'
-        message['To'] = ", ".join(recipients)
-        filenameRaw = filename
-        filename = '../../Reports/' + str(filenameRaw) + '_' + 'date'
-        zipFilename = '../../Reports/' + str(filename) + '_' + 'date'
-        zipObj = ZipFile(zipFilename, 'w')
-        zipObj.setpassword(zip_password)
-        zipObj.write(filename, filename.replace('../../Reports/', 'CSVNachweis_'))
-        zipObj.close()
-        files = []
-        files.append(filename)
-        for item in files:
-            attachment = open(item, 'rb')
-            part = MIMEBase('application', 'octet-stream')
-            part.set_payload((attachment).read())
-            encoders.encode_base64(part)
-            part.add_header(
-                'Content-Disposition', "attachment; filename= " + item.replace('../../Reports/', ''))
-            message.attach(part)
-        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.starttls()
-        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-        smtp.send_message(message)
-        logging.debug("Mail was send")
-        smtp.quit()
-        return True
-    except Exception as err:
-        logging.error(
-            "The following error occured in send mail gesundheitsamt: %s" % (err))
-        return False
-
-
-def send_mail_report(filenames, day, requester):
+def send_mail_report(filenames, day):
     try:
         logging.debug(
             "Receviced the following filename %s to be sent." % (filenames))
@@ -80,7 +35,7 @@ def send_mail_report(filenames, day, requester):
             fileContent = f.read()
         messageContent = fileContent.replace('[[DAY]]', str(day))
         message.attach(MIMEText(messageContent, 'html'))
-        recipients = ['requester']
+        recipients = ['', '', '']
         message['Subject'] = "Neuer Tagesreport für: %s" % (str(day))
         message['From'] = 'report@impfzentrum-odw.de'
         message['reply-to'] = 'report@impfzentrum-odw.de'
@@ -122,11 +77,10 @@ def send_csv_report(filename, day):
         messageContent = fileContent.replace(
             '[[DAY]]', str(day)).replace('[[LINK]]', str(url))
         message.attach(MIMEText(messageContent, 'html'))
-        recipients = ['requester']
-        message['Subject'] = "Neuer Tagesreport für: %s" % (str(day))
+        recipients = ['','','']
+        message['Subject'] = "Neuer CSV Export für: %s" % (str(day))
         message['From'] = 'report@impfzentrum-odw.de'
         message['reply-to'] = 'report@impfzentrum-odw.de'
-        message['Cc'] = 'report@impfzentrum-odw.de'
         message['To'] = ", ".join(recipients)
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.starttls()
