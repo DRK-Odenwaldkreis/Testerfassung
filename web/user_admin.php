@@ -185,11 +185,11 @@ if( A_checkpermission(array(0,0,0,4)) ) {
         </div><div class="input-group">
         <span class="input-group-addon">
         <input type="checkbox" aria-label="r1" name="e_r1" '.$u_role_1_selected.'>
-        <label for="e_r1">Rolle 1</label><span style="padding-left:10px;"></span>
+        <label for="e_r1">Rolle Teststation</label><span style="padding-left:10px;"></span>
         <input type="checkbox" aria-label="r2" name="e_r2" '.$u_role_2_selected.'>
-        <label for="e_r2">Rolle 2</label><span style="padding-left:10px;"></span>
+        <label for="e_r2">Rolle Backoffice</label><span style="padding-left:10px;"></span>
         <input type="checkbox" aria-label="r3" name="e_r3" '.$u_role_3_selected.'>
-        <label for="e_r3">Rolle 3</label><span style="padding-left:10px;"></span>
+        <label for="e_r3">Rolle Gesundheitsamt</label><span style="padding-left:10px;"></span>
         <input type="checkbox" aria-label="r4" name="e_r4" '.$u_role_4_selected.'>
         <label for="e_r4">Rolle Admin</label><span style="padding-left:10px;"></span>
         </span>

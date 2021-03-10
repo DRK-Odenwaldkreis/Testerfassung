@@ -32,10 +32,10 @@ echo $GLOBALS['G_html_main_right_a'];
 
 // Menu
 $_module_array=array(
-    0=>array("text"=>'<h4 class="list-group-item-heading">Kunden-Registrierung / Test-Auswertung</h4><p class="list-group-item-text">TESTKARTE QR Code scannen</p>',"link"=>"scan.php","role"=>array(0,0,0,4),"role-disabled"=>array(0,0,0,0)),
-    10=>array("text"=>'<h4 class="list-group-item-heading">Liste an Tests</h4><p class="list-group-item-text">Aktive Tests</p>',"link"=>"testlist.php","role"=>array(0,0,0,4),"role-disabled"=>array(0,0,0,0)),
-    30=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"link"=>"user_admin.php","role"=>array(0,0,0,4),"role-disabled"=>array(0,2,3,0))/* ,
-    31=>array("text"=>'<h4 class="list-group-item-heading">Admin: Files</h4><p class="list-group-item-text">Dateien von Reports</p>',"link"=>"downloadlist.php","role"=>array(0,0,0,4),"role-disabled"=>array(0,0,0,0)),
+    0=>array("text"=>'<h4 class="list-group-item-heading">Kunden-Registrierung / Test-Auswertung</h4><p class="list-group-item-text">TESTKARTE QR Code scannen</p>',"link"=>"scan.php","role"=>array(1,0,0,4),"role-disabled"=>array(0,0,0,0)),
+    10=>array("text"=>'<h4 class="list-group-item-heading">Liste an Tests</h4><p class="list-group-item-text">Aktive Tests</p>',"link"=>"testlist.php","role"=>array(1,2,3,4),"role-disabled"=>array(0,0,0,0)),
+    20=>array("text"=>'<h4 class="list-group-item-heading">Testkarten</h4><p class="list-group-item-text">Erstellung von neuen Testkarten</p>',"link"=>"testkarten.php","role"=>array(0,2,0,4),"role-disabled"=>array(0,0,0,0)),
+    30=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"link"=>"user_admin.php","role"=>array(0,0,0,4),"role-disabled"=>array(0,2,0,0))/*,
     32=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Server-Logs</p>',"link"=>"log.php","role"=>array(0,0,0,4),"role-disabled"=>array(0,0,0,0)) */
 );
 

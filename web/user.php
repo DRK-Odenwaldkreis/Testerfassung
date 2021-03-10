@@ -121,8 +121,8 @@ if ($mode=='chgpwd') {
 	$html_box_login.= '<p></p>';
 	$html_box_login.='<ul class="FAIR-editmenu-ul">';
 	$html_box_login.='<li class="FAIR-editmenu-sep"></li>';
-	$html_box_login.= '<li class="FAIR-editmenu-ul"><a class="FAIR-editmenu-td" href="'.$current_site.'.php">
-	<div class="FAIR-editmenu-left"><span class="icon-arrow-left10"></span><span style="margin-left:10px;"></span>Benutzerverwaltung</div><div class="FAIR-editmenu-right"></div>
+	$html_box_login.= '<li class="FAIR-editmenu-ul"><a class="FAIR-editmenu-td" href="index.php">
+	<div class="FAIR-editmenu-left"><span class="icon-arrow-left10"></span><span style="margin-left:10px;"></span>Startseite</div><div class="FAIR-editmenu-right"></div>
 	</a></li>';
 	$html_box_login.='<li class="FAIR-editmenu-sep"></li>';
 	$html_box_login.= '</ul>';
