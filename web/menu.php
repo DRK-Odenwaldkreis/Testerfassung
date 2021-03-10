@@ -41,13 +41,16 @@ $G_html_menu2='<nav class="navbar navbar-inverse navbar-fixed-top FAIR-navbar">
           <a class="navbar-brand" href="index.php"><span style="color:#eee;">DRK</span><span class="shorten"> Covid-19 Testzentrum Odenwaldkreis</span></a>';
 if($_SESSION['uid']>0) {
 	$G_html_menu2.='<ul class="nav navbar-nav navbar-left">';
-	
-	//$G_html_menu2.='<li><a href="index.php">Startseite</a></li>';
+	if($_SESSION['station_id']>0) {
+    $display_station=$_SESSION['station_id'].'/'.$_SESSION['station_name'];
+  } else {
+    $display_station=$_SESSION['username'];
+  }
+	$G_html_menu2.='<li title="Station"><a style="color:#fff; font-size:85%;">'.$display_station.'</a></li>';
 
 	$G_html_menu2.='</div>
         <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-			<li><a href="impressum.php">Impressum</a></li>';
+          <ul class="nav navbar-nav navbar-right">';
 
 	// Logged in / expiration of cookie
 	$cookievalue=json_decode($_COOKIE['drk-cookie']);

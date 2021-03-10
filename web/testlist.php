@@ -22,7 +22,13 @@ include_once 'auth.php';
 include_once 'menu.php';
 
 // role check
-if( A_checkpermission(array(0,0,0,4)) ) {
+if( A_checkpermission(array(1,2,3,4)) ) {
+
+
+
+
+
+  
 
 
   // Print html header
@@ -53,6 +59,28 @@ if( A_checkpermission(array(0,0,0,4)) ) {
     }
   }
 
+  // Create CSV export file
+  $val_report_display=0;
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+      if(isset($_POST['get_report_csv'])) {
+          $date=($_POST['date']);
+          $dir="/home/webservice/Testerfassung/CSVExport/";
+          chdir($dir);
+          $job="python3 job.py $date";
+          //exec($job,$script_output);
+          $file=$script_output[0];
+          if( file_exists("/home/webservice/Reports/$file") ) {
+              header('Content-Type: application/octet-stream');
+              header('Content-Disposition: attachment; filename="'.basename($file).'"');
+              header('Pragma: no-cache');
+              header('Expires: 0');
+              readfile("/home/webservice/Reports/$file");
+              exit;
+          }
+          
+      }
+    }
 
   // Open database connection
   $Db=S_open_db();
@@ -61,7 +89,7 @@ if( A_checkpermission(array(0,0,0,4)) ) {
   $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'";');
 
 
-  echo '<h1>Ansicht Registrierte Test</h1>';
+  echo '<h1>Ansicht der registrierten Tests</h1>';
 
   echo '<div class="row">';
 
@@ -109,6 +137,10 @@ if( A_checkpermission(array(0,0,0,4)) ) {
     
     <tr>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">#'.$i[0].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">
+    <a class="list-group-item list-group-item-action list-group-item-redtext" href="edit_person.php?id='.$i[0].'">Ändern</a>
+    </td>
+
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">S '.$i[1].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">K '.$i[2].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"d>Reg '.$i[3].'</td>
@@ -121,6 +153,24 @@ if( A_checkpermission(array(0,0,0,4)) ) {
     </tr>';
   }
   echo '</table></div></div>';
+
+  // Get CSV file
+  echo '<div class="card">
+      <div class="col-sm-4">
+      <h3>Export</h3>
+      <p></p>';
+      echo '<form action="'.$current_site.'.php" method="post">
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-addonA2">Tag auswählen</span>
+        <input type="date" class="form-control" placeholder="Tag wählen" aria-describedby="basic-addonA2" value="'.$today.'" name="date">
+        </div>
+          <input type="submit" class="btn btn-danger" value="Export CSV" name="create_export_csv" />
+          </span>
+          </div>
+          </form>';
+      echo $errorhtml0;
+    
+      echo '</div></div>';
 
   echo '</div>';
 

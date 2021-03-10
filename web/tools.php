@@ -134,6 +134,12 @@ function A_login($Db,$uid,$mode) {
 	
 	$_SESSION['signedin'] = true;
 	$_SESSION['username'] = S_get_entry($Db,'SELECT username FROM li_user WHERE id='.$uid.';');
+	$_SESSION['station_id'] = S_get_entry($Db,'SELECT Station FROM li_user WHERE id='.$uid.';');
+	if($_SESSION['station_id']>0) {
+		$_SESSION['station_name'] = S_get_entry($Db,'SELECT Ort FROM Station WHERE id='.$_SESSION['station_id'].';');
+	} else {
+		$_SESSION['station_name']="";
+	}
 
 	/* Rollen
 		1 - Mitarbeiter
