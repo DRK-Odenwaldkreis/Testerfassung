@@ -11,7 +11,7 @@ from utils.sendmail import send_mail_report
 
 
 logFile = '../../Logs/TagesreportJob.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Export')
 logger.debug('Starting')
@@ -35,17 +35,17 @@ def create_PDFs(content, date,station):
     PDF = PDFgenerator(pdfcontent, f"{date}")
     return PDF.generate()
 
-        #need to return filenames?
-
 
 if __name__ == "__main__":
     try:
-        if len(sys.argv) !=2:
+        if len(sys.argv)  == 2:
+            requestedDate = sys.argv[1]
+        elif len(sys.argv) == 3:
+            requestedDate = sys.argv[1]
+            requester = sys.argv[2]
+        else:
             logger.debug('Input parameters are not correct, date and/or requester needed')
             raise Exception
-        requestedDate = sys.argv[1]
-        #if sys.argv[2]:
-        #    requester = sys.argv[2]
         DatabaseConnect = Database()
         sql = "SELECT id,Ort FROM Station"
         teststationen = DatabaseConnect.read_all(sql)
@@ -56,7 +56,9 @@ if __name__ == "__main__":
         filenames = []
         for station in teststationen:
             filenames.append(create_PDFs(exportEvents, requestedDate, station))
-        #send_mail_report(filenames,requestedDate)
+        if requester:
+            logger.debug('Sending Mail')
+            send_mail_report(filenames,requestedDate, requester)
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

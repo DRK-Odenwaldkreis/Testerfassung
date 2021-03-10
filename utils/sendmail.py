@@ -71,7 +71,7 @@ def send_mail_gesundheitsamt(filename, date):
         return False
 
 
-def send_mail_report(filenames, day):
+def send_mail_report(filenames, day, requester):
     try:
         logging.debug("Receviced the following filename %s to be sent." % (filenames))
         message = MIMEMultipart()
@@ -79,11 +79,11 @@ def send_mail_report(filenames, day):
             fileContent = f.read()
         messageContent = fileContent.replace('[[DAY]]', str(day))
         message.attach(MIMEText(messageContent, 'html'))
-        recipients = ['x@y.de', 'y@z.de']
-        message['Subject'] = "Neue Tagesreport für: %s" % (str(day))
-        message['From'] = 'xxx'
-        message['reply-to'] = 'xxx'
-        message['Cc'] = 'xxx'
+        recipients = ['requester']
+        message['Subject'] = "Neuer Tagesreport für: %s" % (str(day))
+        message['From'] = 'report@impfzentrum-odw.de'
+        message['reply-to'] = 'report@impfzentrum-odw.de'
+        message['Cc'] = 'report@impfzentrum-odw.de'
         message['To'] = ", ".join(recipients)
         files = []
         for i in filenames:
