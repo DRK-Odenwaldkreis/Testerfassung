@@ -38,7 +38,7 @@ $G_html_menu_login='<body style="background-color:#ccc;">';
 $G_html_menu2='<nav class="navbar navbar-inverse navbar-fixed-top FAIR-navbar">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="index.php"><span style="color:#eee;">DRK</span><span class="shorten"> Covid-19 Testzentrum Odenwaldkreis</span></a>';
+          <a class="navbar-brand" href="index.php"><span class="shorten">DRK Covid-19 Testzentrum Odenwaldkreis </span><span style="color:#eee;">Menü</span></a>';
 if($_SESSION['uid']>0) {
 	$G_html_menu2.='<ul class="nav navbar-nav navbar-left">';
 	if($_SESSION['station_id']>0) {
