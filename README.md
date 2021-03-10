@@ -26,6 +26,8 @@ Zur Tagesauswertung für die Gesamtanzal getesteter Personen sowie dem Verhältn
 python job.py DATUM
 ```
 
+Die Tagesreports werden in ../../Reports Directory abgelegt. Dieses muss angelegt sein.
+
 ## CSVExport
 Dem Gesundheitsamt wird auf Basis eines täglichen Jobs eine Liste der postive gemeldeten Personen als CSV zur Verfügung gestellt. Die CSV Datei ist gezippt und mit Password versehen. Des Weiteren hat das Gesundheitsamt die Möglichkeit via Login eine Liste aller Infizierten zu erzeugen.
 
@@ -33,12 +35,17 @@ Dem Gesundheitsamt wird auf Basis eines täglichen Jobs eine Liste der postive g
 python job.py DATUM
 ```
 
+Die Exports werden in ../../Reports Directory abgelegt. Dieses muss angelegt sein.
+
+
 ## QRGeneration
 Die Laufkarten werden mit einem einmaligen QR Code versehen welcher über dieses Modul erzeugt werden kann. Die erzeugten Codes müssen vorab in der Datenbank angeöegt werden.
 
 ```python
 python job.py ANZAHL
 ```
+
+Die Laufkarten werden in ../../Testkarten Directory abgelegt. Dieses muss angelegt sein.
 
 ## utils
 Hilfsfunktionen wie:
