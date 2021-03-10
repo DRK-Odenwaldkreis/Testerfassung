@@ -367,33 +367,34 @@ if($pwd_lock) {
 
 	// //////////////
 	// QR LOGIN
-	echo '
+	/* echo '
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
     <script type="text/javascript" src="lib/instascan-master/instascan.min.js"></script>
+    '; */
+    echo '
+    <script type="text/javascript" src="lib/qrscan-lib/html5-qrcode.min.js"></script>
     ';
+	
 
 
     echo '<div class="row">';
     echo '<div class="col-sm-12">
     <h3>Bitte QR-Code für Login scannen</h3>';
 
+	echo '<div style="width: 500px" id="reader"></div>';
 
-    echo '
-    <div class="preview-container">
-        <video id="preview"></video>
-    </div>
-    <script type="text/javascript" src="lib/instascan-master/app.js"></script>
 
-    <div class="btn-group btn-group-toggle mb-5" data-toggle="buttons">
-  <label class="btn btn-primary active">
-    <input type="radio" name="options" value="1" autocomplete="off" checked> Front Camera
-  </label>
-  <label class="btn btn-secondary">
-    <input type="radio" name="options" value="2" autocomplete="off"> Back Camera
-  </label>
-  </div>
-    ';
+	echo '<script>
+const html5QrCode = new Html5Qrcode("reader");
+const qrCodeSuccessCallback = message => { window.location.href=`?scan=${message}`; }
+const config = { fps: 10, qrbox: 350 };
+
+html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+
+	</script>
+	';
+
     echo '</div></div>';
 
 	

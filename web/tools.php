@@ -150,9 +150,9 @@ function A_login($Db,$uid,$mode) {
 	$_SESSION['roles']=$t[0];
 
 	if($mode!='check' && $mode!='chguserid') {
-		// Cookie will expire after 2 days after log-in
+		// Cookie will expire after 12 hrs after log-in
 		// PHP session will expire earlier if no site request
-		$expiry = time() + 2*24*60*60;
+		$expiry = time() + 12*60*60;
 		$data = (object) array( "un" => $_SESSION['username'], "pw" => S_get_entry($Db,'SELECT password_hash FROM li_user WHERE id='.$uid.'') );
 		$cookieData = (object) array( "data" => $data, "expiry" => $expiry );
 		setcookie('drk-cookie', json_encode( $cookieData ), $expiry);

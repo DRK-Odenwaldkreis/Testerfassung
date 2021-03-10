@@ -204,30 +204,47 @@ if( A_checkpermission(array(0,0,0,4)) ) {
     echo '</div></div>';
 
 
-
-
-    // Checks for website administration
-    /* echo '<div class="card"><div class="row">
-    <div class="col-sm-4">
-    <h3>Set values</h3>';
-    $FLAG_EMAIL_NEWEMPLOYEE=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_EMAIL_NEWEMPLOYEE";');
-    if($FLAG_EMAIL_NEWEMPLOYEE==1) {
-        $s_selected['FLAG_EMAIL_NEWEMPLOYEE']='checked';
-    } else {
-        $s_selected['FLAG_EMAIL_NEWEMPLOYEE']='';
-    }
+    // Show qr code for login
+    echo '<div class="card"><div class="row">';
+    echo '<div class="col-sm-8">
+    <h3>QR Code für Login anzeigen und Passwort setzen</h3>';
 
     echo'<form action="'.$current_site.'.php" method="post">
-
-    <input type="checkbox" id="s_1" name="s_1" value="s1" '.$s_selected['FLAG_EMAIL_NEWEMPLOYEE'].'/>
-    <label for="s_1">Welcome email</label><br>
-    
+    <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1">Username</span>
+    <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" name="qr_username" value="'.$u_name.'" autocomplete="off">
+    <span class="input-group-addon" id="basic-addon1">Passwort</span>
+    <input type="text" class="form-control" placeholder="Passwort" aria-describedby="basic-addon1" name="qr_password" autocomplete="off">
+    </div>
     <div class="FAIR-si-button">
-    <input type="submit" class="btn btn-danger" value="Speichern" name="save_settings" />
+    <input type="submit" class="btn btn-danger" value="QR anzeigen" name="show_qr" />
     </div></form>';
-    echo '</div>'; */
 
+    echo '</div>';
 
+    // Show QR code and change password
+    if(isset($_POST['show_qr'])) {
+        $token='/user/'.$_POST['qr_username'].'/password/'.$_POST['qr_password'];
+        echo '<div class="col-sm-2">
+        <h3>QR Code</h3>';
+        echo '<img src="qrcode.php?id='.$token.'" />';
+        echo '<p><code>'.$token.'</code></p>';
+        echo '</div>';
+        echo '</div></div>';
+
+		$username=$_POST['qr_username'];
+		$newpassword1 = $_POST['qr_password'];
+		$newpasswordhash = password_hash($_POST['qr_password'], PASSWORD_BCRYPT);
+		/* Is entered new password okay */
+		if (!preg_match("#.*^(?=.{10,64})(?=.*[a-zA-Z])(?=.*[0-9]).*$#", $newpassword1)) {
+			$errorhtml1=H_build_boxinfo( 400, '<span class="icon-warning"></span> Passwortstärke nicht ausreichend.<br>Passwort muss aus 10 bis 64 Zeichen bestehen und Ziffern wie auch Buchstaben enthalten.', 'red' );
+		} else {
+			S_set_data($Db,'UPDATE li_user SET password_hash=\''.$newpasswordhash.'\' WHERE username=\''.$username.'\';');
+			$errorhtml1=H_build_boxinfo( 400, 'Neues Passwort wurde übernommen.', 'green' );
+		}
+        echo $errorhtml1;
+
+    }
 
 
 } else {

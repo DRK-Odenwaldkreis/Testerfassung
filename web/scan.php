@@ -18,7 +18,13 @@ $current_site="scan";
 
 // Include functions
 include_once 'tools.php';
-include_once 'auth.php';
+
+//include_once 'auth.php';
+// TODO WARNING AND remove TRUE from A_checkpermission
+include_once('val/admin01.php');
+include_once('server_settings.php');
+// TODO WARNING REMOVE
+
 include_once 'menu.php';
 
 
@@ -33,7 +39,7 @@ echo $GLOBALS['G_html_menu2'];
 echo $GLOBALS['G_html_main_right_a'];
 
 // role check
-if( A_checkpermission(array(1,0,0,4)) ) {
+if( A_checkpermission(array(1,0,0,4)) || true) {
 
 
   // Open database connection
@@ -167,13 +173,13 @@ if( A_checkpermission(array(1,0,0,4)) ) {
       switch ($_GET['e']) {
         case "2":
           // Test NEGATIV
-          S_set_data($Db,'UPDATE Vorgang SET Token=\'\', Ergebniszeitpunkt=\''.$now.'\', Ergebnis=2 WHERE id='.$testkarte.';'); break;
+          S_set_data($Db,'UPDATE Vorgang SET Ergebniszeitpunkt=\''.$now.'\', Ergebnis=2 WHERE id='.$testkarte.';'); break;
         case "1":
           // Test POSITIV
-          S_set_data($Db,'UPDATE Vorgang SET Token=\'\', Ergebniszeitpunkt=\''.$now.'\', Ergebnis=1 WHERE id='.$testkarte.';'); break;
+          S_set_data($Db,'UPDATE Vorgang SET Ergebniszeitpunkt=\''.$now.'\', Ergebnis=1 WHERE id='.$testkarte.';'); break;
         case "9":
           // Test FEHLERHAFT
-          S_set_data($Db,'UPDATE Vorgang SET Token=\'\', Ergebniszeitpunkt=\''.$now.'\', Ergebnis=9 WHERE id='.$testkarte.';'); break;
+          S_set_data($Db,'UPDATE Vorgang SET Ergebniszeitpunkt=\''.$now.'\', Ergebnis=9 WHERE id='.$testkarte.';'); break;
       }
       
       S_set_data($Db,'UPDATE Kartennummern SET Used=1 WHERE id='.$token.';');
@@ -225,14 +231,45 @@ if( A_checkpermission(array(1,0,0,4)) ) {
     echo '</div></div>';
 
 
-  } else {
+  } elseif( isset($_GET['submit_person']) ){
+    // ///////////////
+    // Registrierung speichern
+    // ///////////////
+      $k_token=$_GET['token'];
+      $k_token=substr($k_token, strrpos($k_token, 'K' )+1);
+      $k_nname=$_GET['nname'];
+      $k_vname=$_GET['vname'];
+      $k_geb=$_GET['geburtsdatum'];
+      $k_adresse=$_GET['adresse'];
+      $k_tel=$_GET['telefon'];
+      $k_email=$_GET['email'];
+      $now=date("Y-m-d H:i:s",time());
+  
+      S_set_data($Db,'INSERT INTO Vorgang (Token,Vorname,Nachname,Geburtsdatum,Adresse,Telefon,Mailadresse) VALUES (
+        \''.$k_token.'\',
+        \''.$k_vname.'\',
+        \''.$k_nname.'\',
+        \''.$k_geb.'\',
+        \''.$k_adresse.'\',
+        \''.$k_tel.'\',
+        \''.$k_email.'\'
+        );');
+  
+      echo '<div class="row">';
+      echo '<div class="col-sm-12">
+      <h3>Kunde registriert</h3>';
+      echo "<p>$k_token / $k_nname / $k_vname / $now</p>";
+      echo '<div class="list-group">';
+      echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="scan.php">Neuen Scan durchführen</a>';
+      echo '</div></div>';
+  
+  
+    } else {
   // ///////////////
   // Scan Aufforderung
   // ///////////////
     echo '
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
-    <script type="text/javascript" src="lib/instascan-master/instascan.min.js"></script>
+    <script type="text/javascript" src="lib/qrscan-lib/html5-qrcode.min.js"></script>
     ';
 
 
@@ -241,21 +278,19 @@ if( A_checkpermission(array(1,0,0,4)) ) {
     <h3>Bitte Testkarte scannen</h3>';
 
 
-    echo '
-    <div class="preview-container">
-        <video id="preview"></video>
-    </div>
-    <script type="text/javascript" src="lib/instascan-master/app.js"></script>
+    echo '<div style="width: 500px" id="reader"></div>';
 
-    <div class="btn-group btn-group-toggle mb-5" data-toggle="buttons">
-  <label class="btn btn-primary active">
-    <input type="radio" name="options" value="1" autocomplete="off" checked> Front Camera
-  </label>
-  <label class="btn btn-secondary">
-    <input type="radio" name="options" value="2" autocomplete="off"> Back Camera
-  </label>
-  </div>
-    ';
+
+	echo '<script>
+const html5QrCode = new Html5Qrcode("reader");
+const qrCodeSuccessCallback = message => { window.location.href=`?scan=${message}`; }
+const config = { fps: 10, qrbox: 350 };
+
+html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+
+	</script>
+	';
+  
     echo '</div></div>';
   }
 } else {
