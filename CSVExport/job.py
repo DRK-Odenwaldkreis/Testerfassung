@@ -25,9 +25,10 @@ if __name__ == "__main__":
     try:
         if len(sys.argv) == 2:
             requestedDate = sys.argv[1]
+            send=False
         elif len(sys.argv) == 3:
             requestedDate = sys.argv[1]
-            requested = sys.argv[2]
+            send=True
         else:
             logger.debug(
                 'Input parameters are not correct, date and/or requested needed')
@@ -42,7 +43,7 @@ if __name__ == "__main__":
                      (str(exportEvents)))
         filename = create_CSV(exportEvents, requestedDate)
         logger.debug('Done')
-        if requested:
+        if send:
             send_csv_report(filename,requestedDate)
         print(filename.replace('../../Reports/', ''))
     except Exception as e:

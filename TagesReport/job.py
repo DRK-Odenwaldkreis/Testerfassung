@@ -40,9 +40,10 @@ if __name__ == "__main__":
     try:
         if len(sys.argv)  == 2:
             requestedDate = sys.argv[1]
+            send=False
         elif len(sys.argv) == 3:
             requestedDate = sys.argv[1]
-            requested = sys.argv[2]
+            send=True
         else:
             logger.debug('Input parameters are not correct, date and/or requested needed')
             raise Exception
@@ -56,7 +57,7 @@ if __name__ == "__main__":
         filenames = []
         for station in teststationen:
             filenames.append(create_PDFs(exportEvents, requestedDate, station))
-        if requested:
+        if send:
             logger.debug('Sending Mail')
             send_mail_report(filenames,requestedDate)
         logger.debug('Done')
