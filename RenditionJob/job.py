@@ -43,7 +43,7 @@ if __name__ == "__main__":
             adresse = i[6]
             telefon = i[7]
             geburtsdatum = i[8]
-            if result == 0:
+            if result == 2:
                 transmission = send_negative_result(vorname, nachname, mail, date)
             elif result == 1:
                 transmission = send_positive_result(vorname, nachname, mail, date, adresse, telefon, geburtsdatum)

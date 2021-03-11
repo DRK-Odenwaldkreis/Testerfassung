@@ -35,7 +35,7 @@ if __name__ == "__main__":
             raise Exception
         DatabaseConnect = Database()
         sql = "Select id,Nachname,Vorname,Geburtsdatum,Adresse,Telefon,Mailadresse,Ergebnis,Ergebniszeitpunkt,Teststation from Vorgang where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (
-            requestedDate, requestedDate)
+            requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
         logger.debug(
             'Getting all Events for employee of the month and year with the following query: %s' % (sql))
         exportEvents = DatabaseConnect.read_all(sql)

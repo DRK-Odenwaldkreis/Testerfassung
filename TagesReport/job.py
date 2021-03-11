@@ -11,7 +11,7 @@ from utils.sendmail import send_mail_report
 
 
 logFile = '../../Logs/TagesreportJob.log'
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Export')
 logger.debug('Starting')
@@ -25,7 +25,7 @@ def create_PDFs(content, date,station):
     for i in content:
         if i[8] == station[0]:
             ergebnis = i[7]
-            if ergebnis == 0:
+            if ergebnis == 2:
                 negativ += 1
             elif ergebnis == 1:
                 positiv += 1
@@ -50,7 +50,8 @@ if __name__ == "__main__":
         DatabaseConnect = Database()
         sql = "SELECT id,Ort FROM Station"
         teststationen = DatabaseConnect.read_all(sql)
-        sql = "Select id,Nachname,Vorname,Geburtsdatum,Adresse,Telefon,Mailadresse,Ergebnis,Ergebniszeitpunkt,Teststation from Vorgang where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (requestedDate,requestedDate)
+        sql = "Select id,Nachname,Vorname,Geburtsdatum,Adresse,Telefon,Mailadresse,Ergebnis,Ergebniszeitpunkt,Teststation from Vorgang where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (
+            requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
         logger.debug('Getting all Events for a date with the following query: %s' % (sql))
         exportEvents = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' %(str(exportEvents)))
