@@ -121,12 +121,13 @@ if( A_checkpermission(array(1,0,0,4)) || true) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1"></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1"></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1"></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1"></div>
         <span class="input-group-btn">
           <input type="submit" class="btn btn-danger" value="Registrieren" name="submit_person" />
           </span>
-        </form>';
+        </form>
+        <p>* optional</p>';
         
         echo '</div></div>';
 
@@ -141,7 +142,7 @@ if( A_checkpermission(array(1,0,0,4)) || true) {
     $ergebnis=$_GET['e'];
     echo '<div class="row">';
     echo '<div class="col-sm-12">
-    <h3></h3>';
+    <h3>Bitte '.$testkarte.' bestätigen</h3>';
     switch ($_GET['e']) {
       case "2":
         // Test NEGATIV
@@ -159,7 +160,7 @@ if( A_checkpermission(array(1,0,0,4)) || true) {
     <a class="list-group-item list-group-item-warning list-group-item-FAIR" href="'.$current_site.'.php?t='.$testkarte.'&e=9&c=confirmed">FEHLERHAFT bestätigen</a>
     '; break;
     }
-    
+    echo '<a class="list-group-item list-group-item-default list-group-item-FAIR" href="'.$current_site.'.php">Abbruch - neu scannen</a>';
     echo '</div></div>';
 
   } elseif( isset($_GET['t']) && isset($_GET['e']) && isset($_GET['c']) && $_GET['c']=="confirmed" ) {
@@ -212,7 +213,8 @@ if( A_checkpermission(array(1,0,0,4)) || true) {
     $k_email=$_POST['email'];
     $now=date("Y-m-d H:i:s",time());
 
-    S_set_data($Db,'INSERT INTO Vorgang (Token,Vorname,Nachname,Geburtsdatum,Adresse,Telefon,Mailadresse) VALUES (
+    S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,Vorname,Nachname,Geburtsdatum,Adresse,Telefon,Mailadresse) VALUES (
+      '.$_SESSION['station_id'].',
       \''.$k_token.'\',
       \''.$k_vname.'\',
       \''.$k_nname.'\',
@@ -221,50 +223,19 @@ if( A_checkpermission(array(1,0,0,4)) || true) {
       \''.$k_tel.'\',
       \''.$k_email.'\'
       );');
+    $k_id=S_get_entry($Db,'SELECT id FROM Vorgang WHERE Token=\''.$k_token.'\'');
 
     echo '<div class="row">';
     echo '<div class="col-sm-12">
     <h3>Kunde registriert</h3>';
-    echo "<p>$k_token / $k_nname / $k_vname / $now</p>";
+    echo "<p>Daten: K$k_token / $k_nname / $k_vname / $k_geb / $k_adresse / $k_tel / $k_email</p>";
     echo '<div class="list-group">';
+    echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="edit_person.php?id='.$k_id.'">Daten ändern</a>';
     echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="scan.php">Neuen Scan durchführen</a>';
     echo '</div></div>';
 
 
-  } elseif( isset($_GET['submit_person']) ){
-    // ///////////////
-    // Registrierung speichern
-    // ///////////////
-      $k_token=$_GET['token'];
-      $k_token=substr($k_token, strrpos($k_token, 'K' )+1);
-      $k_nname=$_GET['nname'];
-      $k_vname=$_GET['vname'];
-      $k_geb=$_GET['geburtsdatum'];
-      $k_adresse=$_GET['adresse'];
-      $k_tel=$_GET['telefon'];
-      $k_email=$_GET['email'];
-      $now=date("Y-m-d H:i:s",time());
-  
-      S_set_data($Db,'INSERT INTO Vorgang (Token,Vorname,Nachname,Geburtsdatum,Adresse,Telefon,Mailadresse) VALUES (
-        \''.$k_token.'\',
-        \''.$k_vname.'\',
-        \''.$k_nname.'\',
-        \''.$k_geb.'\',
-        \''.$k_adresse.'\',
-        \''.$k_tel.'\',
-        \''.$k_email.'\'
-        );');
-  
-      echo '<div class="row">';
-      echo '<div class="col-sm-12">
-      <h3>Kunde registriert</h3>';
-      echo "<p>$k_token / $k_nname / $k_vname / $now</p>";
-      echo '<div class="list-group">';
-      echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="scan.php">Neuen Scan durchführen</a>';
-      echo '</div></div>';
-  
-  
-    } else {
+  } else {
   // ///////////////
   // Scan Aufforderung
   // ///////////////
@@ -290,6 +261,16 @@ html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
 
 	</script>
 	';
+  // Manuelle Eingabe
+  echo '
+  <h3>Manuelle Eingabe</h3>
+  <form action="'.$current_site.'.php" method="get">
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nummer</span><input type="text" name="scan" value="K" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off">
+        <span class="input-group-btn">
+          <input type="submit" class="btn btn-danger" value="Senden" name="scan_send" />
+          </span>
+        </form>';
+
   
     echo '</div></div>';
   }

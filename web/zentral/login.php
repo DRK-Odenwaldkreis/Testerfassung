@@ -511,7 +511,7 @@ echo '<div style="padding-top:25px;"></div>';
 echo $html_box_login;
 echo '</div>';
 
-echo '<img src="img/logo.jpg"></img>';
+echo '<div><img style="display: block; margin-left: auto; margin-right: auto; width: 40%;" src="../img/logo.png"></img></div>';
 
 echo '</div>';
 echo '</div>';

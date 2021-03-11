@@ -38,13 +38,37 @@ $G_html_menu_login='<body style="background-color:#ccc;">';
 $G_html_menu2='<nav class="navbar navbar-inverse navbar-fixed-top FAIR-navbar">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="index.php"><span style="color:#eee;">DRK</span><span class="shorten"> Covid-19 Testzentrum Odenwaldkreis</span></a>';
+          <a class="navbar-brand" href="index.php"><span class="shorten">DRK Covid-19 Testzentrum Odenwaldkreis </span><span style="color:#eee;">Menü</span></a>';
+if($_SESSION['uid']>0) {
+	$G_html_menu2.='<ul class="nav navbar-nav navbar-left">';
+	if($_SESSION['station_id']>0) {
+    $display_station='S'.$_SESSION['station_id'].'/'.$_SESSION['station_name'];
+  } else {
+    $display_station=$_SESSION['username'];
+  }
+	$G_html_menu2.='<li title="Station"><a style="color:#fff; font-size:85%;">'.$display_station.'</a></li>';
 
-$G_html_menu2.='</div>
+	$G_html_menu2.='</div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">';
+
+	// Logged in / expiration of cookie
+	$cookievalue=json_decode($_COOKIE['drk-cookie']);
+	$expiry=$cookievalue->expiry;
+	$expiry_diff=($expiry-time())/60; // in minutes
+	if($expiry_diff<20) {$expiry_diff=20;}
+	if( floor($expiry_diff / 60) < 2 ) { $expiry_text=ceil($expiry_diff).' Min.'; } // ceil = round up
+	else { $expiry_text=ceil($expiry_diff / 60).' Std.'; } // ceil = round up
+	$G_html_menu2.='<li title="Eingeloggt für '.$expiry_text.'" data-toggle="tooltip" data-placement="bottom" class="shorten"><a style="color:#fff; font-size:85%;">Eingeloggt für '.$expiry_text.'</a></li>';
+	
+	$G_html_menu2.='<li><a href="logout.php" style="color: #fff; background-color: #9f0000;">Logout</a></li>';
+} else {
+	$G_html_menu2.='</div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-			<li><a href="impressum.php">Impressum / Kontakt</a></li>';
-
+			<li><a href="impressum.php">Impressum</a></li>
+			<li><a href="login.php" style="color: #fff; background-color: #419f00;">Login</a></li>';
+}
 $G_html_menu2.='</ul>
         
           </ul>

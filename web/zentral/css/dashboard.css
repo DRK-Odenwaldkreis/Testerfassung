@@ -670,10 +670,6 @@ background: repeating-linear-gradient(
 );
 }
 
-a.list-group-item-FAIR {
-	font-size: 20px;
-}
-
 a.list-group-item-FAIR:hover, a.list-group-item-FAIR:active, a.list-group-item-FAIR:focus, a.list-group-item-FAIR.active, a.list-group-item-FAIR.active:hover {
 	color: #fff;
 	background-color: #2c95c9;
