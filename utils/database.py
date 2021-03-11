@@ -40,10 +40,10 @@ class Database(object):
             logger.debug('Constructor was called')
             self.__host = read_config("MariaDB", "host")
             self.__user = read_config("MariaDB", "user")
-            self.__passwd = read_config("MariaDB", "pw")
+            self.__socket = '/var/run/mysqld/mysqld.sock'
             self.__dbName = read_config("MariaDB", "db")
             self.connection = mysql.connector.connect(
-                host=self.__host, user=self.__user, passwd=self.__passwd, db=self.__dbName)
+                host=self.__host, user=self.__user, unix_socket=self.__socket, db=self.__dbName)
             self.cursor = self.connection.cursor()
         except Exception as e:
             logger.error(
