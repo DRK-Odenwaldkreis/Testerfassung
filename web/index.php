@@ -8,14 +8,8 @@ March 2021
 
 ** ************** */
 
-include_once 'preload.php';
-if( isset($GLOBALS['G_sessionname']) ) { session_name ($GLOBALS['G_sessionname']); }
-session_start();
-$sec_level=1;
 
 // Include functions
-include_once 'tools.php';
-include_once 'auth.php';
 include_once 'menu.php';
 
 
@@ -29,41 +23,78 @@ echo $GLOBALS['G_html_menu2'];
 // Print html content part A
 echo $GLOBALS['G_html_main_right_a'];
 
+?>
 
-// Menu
-$_module_array=array(
-    0=>array("text"=>'<h4 class="list-group-item-heading">Kunden-Registrierung / Test-Auswertung</h4><p class="list-group-item-text">TESTKARTE QR Code scannen</p>',"link"=>"scan.php","role"=>array(1,0,0,4),"role-disabled"=>array(0,0,0,0)),
-    10=>array("text"=>'<h4 class="list-group-item-heading">Liste an Tests</h4><p class="list-group-item-text">Aktive Tests</p>',"link"=>"testlist.php","role"=>array(1,2,3,4),"role-disabled"=>array(0,0,0,0)),
-    20=>array("text"=>'<h4 class="list-group-item-heading">Testkarten</h4><p class="list-group-item-text">Erstellung von neuen Testkarten</p>',"link"=>"testkarten.php","role"=>array(0,2,0,4),"role-disabled"=>array(0,0,0,0)),
-    30=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"link"=>"user_admin.php","role"=>array(0,0,0,4),"role-disabled"=>array(0,2,0,0))/*,
-    32=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Server-Logs</p>',"link"=>"log.php","role"=>array(0,0,0,4),"role-disabled"=>array(0,0,0,0)) */
-);
 
-echo '<div class="row">';
-echo '<div class="col-sm-8">
-<h3>Modul wählen</h3>
-<div class="list-group">';
-foreach($_module_array as $key=>$a) {
-    $show_entry=false;
-    $show_entry_disabled=false;
-    foreach($a["role"] as $b) {
-        if($b>0 && $_SESSION['roles'][$b]==1) { 
-            $show_entry=true;
-        }
-    }
-    foreach($a["role-disabled"] as $b) {
-        if($b>0 && $_SESSION['roles'][$b]==1) { 
-            $show_entry_disabled=true;
-        }
-    }
-    if($show_entry) { 
-        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" id="module-'.$key.'" href="'.$a["link"].'">'.$a["text"].'</a>';
-    } elseif($show_entry_disabled) {
-        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR disabled" id="module-'.$key.'" >'.$a["text"].'</a>';
-    }
-}
-echo '</div></div>';
 
+<div class="row">
+
+    <div class="col-sm-6">
+        <img src="img/logo.png" style="display: block; margin-left: auto; margin-right: auto; width: 65%;"></img>
+    </div>
+
+    <div class="col-sm-6">
+        <div style="text-align: center;">
+            <h2>Covid-19 Testzentrum Odenwaldkreis</h2>
+            <h3>Deutsches Rotes Kreuz - Kreisverband Odenwaldkreis e. V.</h3>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-info" role="alert">
+    <h3>Covid-19 Testung</h3>
+    Für einen Covid-19 Test ist derzeit eine Anmeldung vorab nicht notwendig. Bei Fragen können Sie sich an das Personal vor Ort wenden.
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsep"></div>
+</div>
+
+
+
+<div class="row">
+    
+    <div class="col-sm-12">
+    <h2 style="text-align: center;">Liegt das Testergebnis schon vor...</h2>
+    </div>
+    <div class="col-sm-4">
+    <div class="thumbnail">
+      <img style="height:231px; object-fit: contain;" src="img/covid-19-5057462_640.jpg" alt="">
+      <div class="caption">
+        <h3>Negativ getestet?</h3>
+        <p><a href="#" class="btn btn-primary" role="button">Download Informationen</a></p>
+      </div>
+    </div>
+    </div>
+    <div class="col-sm-4">
+    <div class="thumbnail">
+      <img style="height:231px; object-fit: contain;" src="img/test-tube-5065426_1280.jpg" alt="">
+      <div class="caption">
+        <h3>Positiv getestet?</h3>
+        <p><a href="#" class="btn btn-primary" role="button">Download Informationen</a></p>
+      </div>
+    </div>
+    </div>
+    <div class="col-sm-4">
+    <div class="thumbnail">
+      <img style="height:231px; object-fit: contain;" src="img/laboratory-3827743_1280.jpg" alt="">
+      <div class="caption">
+        <h3>Mein Test war fehlerhaft?</h3>
+        <p><a href="#" class="btn btn-primary" role="button">Download Informationen</a></p>
+      </div>
+    </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-4">
+        <div class="list-group">
+            <h3>Für den DRK</h3>
+            <a class="list-group-item list-group-item-action list-group-item-FAIR" id="module-r1" href="zentral/index.php">Test-System (intern)</a>
+        </div>
+    </div>
+</div>
+
+<?php
 // Print html content part C
 echo $GLOBALS['G_html_main_right_c'];
 // Print html footer
