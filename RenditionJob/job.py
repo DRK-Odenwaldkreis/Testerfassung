@@ -13,6 +13,7 @@ from utils.database import Database
 from utils.sendmail import send_negative_result
 from utils.sendmail import send_positive_result
 from utils.sendmail import send_indistinct_result
+from utils.sendmail import send_new_entry
 
 locale.setlocale(locale.LC_ALL, 'de_DE')
 
@@ -47,6 +48,7 @@ if __name__ == "__main__":
                 transmission = send_negative_result(vorname, nachname, mail, date)
             elif result == 1:
                 transmission = send_positive_result(vorname, nachname, mail, date, adresse, telefon, geburtsdatum)
+                transmission_gesundheitsamt = send_new_entry(date)
             else:
                 transmission = send_indistinct_result(vorname, nachname, mail, date)
             logger.debug('Checking if entry for mailsend can be set to true')

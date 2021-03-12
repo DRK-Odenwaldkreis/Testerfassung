@@ -103,14 +103,11 @@ def send_positive_result(vorname, nachname, mail, date, adresse, telefon, geburt
             fileContent = f.read()
         messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[ADRESSE]]', str(adresse)).replace('[[TELEFON]]', str(telefon)).replace('[[GEBURTSDATUM]]', str(geburtsdatum))
         message.attach(MIMEText(messageContent, 'html'))
-        gesundheitsamt = ['','','']
         message['Subject'] = "Ergebis Ihres Tests liegt vor"
         message['From'] = 'xxx'
         message['reply-to'] = 'xxx'
-        message['Bcc'] = ", ".join(gesundheitsamt)
         message['To'] = mail
-        files = [
-            'https://testzentrum-odw.de/download/2021-03-11Anhang_Gesundheitsamt.pdf', 'https://testzentrum-odw.de/download/HMSI-Informationen.pdf']
+        files = ['https://testzentrum-odw.de/download/2021-03-11Anhang_Gesundheitsamt.pdf', 'https://testzentrum-odw.de/download/HMSI-Informationen.pdf']
         for item in files:
             attachment = open(item, 'rb')
             part = MIMEBase('application', 'octet-stream')
@@ -120,6 +117,30 @@ def send_positive_result(vorname, nachname, mail, date, adresse, telefon, geburt
                 'Content-Disposition', "attachment; filename= " + item.replace('https://testzentrum-odw.de/download/', ''))
             message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        smtp.send_message(message)
+        logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error(
+            "The following error occured in send mail download: %s" % (err))
+        return False
+
+
+def send_new_entry(date):
+    try:
+        message = MIMEMultipart()
+        with open('../utils/MailLayout/NewEntry.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[DATE]]', str(date))
+        message.attach(MIMEText(messageContent, 'html'))
+        message['Subject'] = "Es liegt eine neue Positivmeldung vor."
+        message['From'] = 'xxx'
+        message['reply-to'] = 'xxx'
+        message['To'] = ''
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
