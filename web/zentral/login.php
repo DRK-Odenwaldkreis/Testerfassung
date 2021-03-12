@@ -131,8 +131,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$pwd_lock) {
 					$link=$_SESSION['linkURL'];
 					unset($_SESSION['linkURL']);
 					header('Location: '.$link);
-				} elseif( isset($_SESSION['refURL']) ) {
-					header('Location: '.$_SESSION['refURL']);
 				} else {
 					header('Location: '.$FLAG_http.'://'.$hostname.($path == '/' ? '' : $path).'/index.php');
 				}
@@ -247,8 +245,6 @@ if($qr_login_val) {
 				$link=$_SESSION['linkURL'];
 				unset($_SESSION['linkURL']);
 				header('Location: '.$link);
-			} elseif( isset($_SESSION['refURL']) ) {
-				header('Location: '.$_SESSION['refURL']);
 			} else {
 				header('Location: '.$FLAG_http.'://'.$hostname.($path == '/' ? '' : $path).'/index.php');
 			}
