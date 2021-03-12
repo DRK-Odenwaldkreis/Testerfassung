@@ -34,10 +34,10 @@ if( A_checkpermission(array(0,2,0,4)) ) {
         if(isset($_POST['create_testkarten'])) {
             $amount=($_POST['amount']);
             
-            /* $dir="/home/webservice/Testerfassung/QRGeneration/";
+            $dir="/home/webservice/Testerfassung/QRGeneration/";
             chdir($dir);
             $job="python3 job.py $amount > /dev/null &";
-            exec($job,$script_output); */
+            exec($job,$script_output);
             $errorhtml0 = H_build_boxinfo( 0, "Testkarten werden erstellt und Datei wird in der Downloadliste in wenigen Minuten angezeigt. Dies kann einen Augenblick dauern in Abhängigkeit der angeforderten Karten.", 'green' );
             $display_creating_testkarten=true;
             
@@ -102,6 +102,27 @@ if( A_checkpermission(array(0,2,0,4)) ) {
       }
       echo '</p>';
       echo '</div></div>';
+
+        // Number of available Testkarten
+        // Open database connection
+        $Db=S_open_db();
+        $stat_val_unused=S_get_entry($Db,'SELECT count(id) From Kartennummern WHERE Used!=1;');
+        $stat_val_highest=S_get_entry($Db,'SELECT id From Kartennummern ORDER BY id DESC;');
+        // Close connection to database
+        S_close_db($Db);
+        echo '<div class="row">';
+        echo '<div class="col-sm-4">
+        <div class="alert alert-info" role="alert">
+        <p>Unbenutzte Testkarten im Umlauf</p>
+        <h3>'.$stat_val_unused.' <span class="FAIR-text-sm">Karten</span></h3>
+        </div>';
+        echo '</div>';
+        echo '<div class="col-sm-4">
+        <div class="alert alert-info" role="alert">
+        <p>Höchste Testkartennummer</p>
+        <h3>K'.$stat_val_highest.' <span class="FAIR-text-sm"></span></h3>
+        </div>';
+        echo '</div></div>';
 
     }
 

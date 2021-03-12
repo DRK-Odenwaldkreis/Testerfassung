@@ -28,19 +28,6 @@ if( A_checkpermission(array(1,2,3,4)) ) {
 
 
 
-  
-
-
-  // Print html header
-  echo $GLOBALS['G_html_header'];
-
-  // Print html menu
-  echo $GLOBALS['G_html_menu'];
-  echo $GLOBALS['G_html_menu2'];
-
-  // Print html content part A
-  echo $GLOBALS['G_html_main_right_a'];
-
   $today=date("Y-m-d",time());
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -62,13 +49,12 @@ if( A_checkpermission(array(1,2,3,4)) ) {
   // Create CSV export file
   $val_report_display=0;
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-      if(isset($_POST['get_report_csv'])) {
+      if(isset($_POST['create_export_csv'])) {
           $date=($_POST['date']);
           $dir="/home/webservice/Testerfassung/CSVExport/";
           chdir($dir);
           $job="python3 job.py $date";
-          //exec($job,$script_output);
+          exec($job,$script_output);
           $file=$script_output[0];
           if( file_exists("/home/webservice/Reports/$file") ) {
               header('Content-Type: application/octet-stream');
@@ -81,6 +67,18 @@ if( A_checkpermission(array(1,2,3,4)) ) {
           
       }
     }
+
+
+
+    // Print html header
+    echo $GLOBALS['G_html_header'];
+
+    // Print html menu
+    echo $GLOBALS['G_html_menu'];
+    echo $GLOBALS['G_html_menu2'];
+  
+    // Print html content part A
+    echo $GLOBALS['G_html_main_right_a'];
 
   // Open database connection
   $Db=S_open_db();
@@ -141,11 +139,11 @@ if( A_checkpermission(array(1,2,3,4)) ) {
     <a class="list-group-item list-group-item-action list-group-item-redtext" href="edit_person.php?id='.$i[0].'">Ändern</a>
     </td>
 
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">S '.$i[1].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">K '.$i[2].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">S'.$i[1].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">K'.$i[2].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"d>Reg '.$i[3].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Person '.$i[5].'/'.$i[6].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[10].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Geb '.$i[10].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[7].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[8].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[9].'</td>

@@ -53,33 +53,26 @@ echo $GLOBALS['G_html_main_right_a'];
 <div class="row">
     
     <div class="col-sm-12">
-    <h2 style="text-align: center;">Liegt das Testergebnis schon vor...</h2>
+    <h2 style="text-align: center;">Informationen zu Ihrem Testergebnis</h2>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-6">
     <div class="thumbnail">
       <img style="height:231px; object-fit: contain;" src="img/covid-19-5057462_640.jpg" alt="">
       <div class="caption">
-        <h3>Negativ getestet?</h3>
-        <p><a href="#" class="btn btn-primary" role="button">Download Informationen</a></p>
+        <h3>Allgemeine Info vom Gesundheitsamt</h3>
+        <p><a href="download/2021-03-11Anhang_Gesundheitsamt.pdf" class="btn btn-primary" role="button">Download PDF</a></p>
       </div>
     </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-6">
     <div class="thumbnail">
       <img style="height:231px; object-fit: contain;" src="img/test-tube-5065426_1280.jpg" alt="">
       <div class="caption">
         <h3>Positiv getestet?</h3>
-        <p><a href="#" class="btn btn-primary" role="button">Download Informationen</a></p>
+        <p>Sie wurden positiv getestet, dann haben wir hier einige Informationen für Sie vom Hessischen Ministerium für Soziales und Integration:</p>
+        <p><a href="download/HMSI-Informationen.pdf" class="btn btn-primary" role="button">Download PDF</a></p>
       </div>
     </div>
-    </div>
-    <div class="col-sm-4">
-    <div class="thumbnail">
-      <img style="height:231px; object-fit: contain;" src="img/laboratory-3827743_1280.jpg" alt="">
-      <div class="caption">
-        <h3>Mein Test war fehlerhaft?</h3>
-        <p><a href="#" class="btn btn-primary" role="button">Download Informationen</a></p>
-      </div>
     </div>
 
     </div>

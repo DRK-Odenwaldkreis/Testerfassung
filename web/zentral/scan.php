@@ -18,13 +18,7 @@ $current_site="scan";
 
 // Include functions
 include_once 'tools.php';
-
-//include_once 'auth.php';
-// TODO WARNING AND remove TRUE from A_checkpermission
-include_once('val/admin01.php');
-include_once('server_settings.php');
-// TODO WARNING REMOVE
-
+include_once 'auth.php';
 include_once 'menu.php';
 
 

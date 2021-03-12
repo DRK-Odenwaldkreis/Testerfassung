@@ -25,8 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         case "t":
             $dir="Testkarten";
             break;
+        case "r":
+            $dir="Reports";
+            break;
         default:
-            $dir="Reports";   
+            $dir="Reports";
+            break; 
     }
     
     if( file_exists("/home/webservice/$dir/$file") ) {
