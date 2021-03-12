@@ -13,7 +13,7 @@ from utils.sendmail import send_mail_report
 logFile = '../../Logs/TagesreportJob.log'
 logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger('CSV Export')
+logger = logging.getLogger('Tagesreport')
 logger.debug('Starting')
 
 

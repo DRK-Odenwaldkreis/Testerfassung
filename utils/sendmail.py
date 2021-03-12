@@ -109,6 +109,16 @@ def send_positive_result(vorname, nachname, mail, date, adresse, telefon, geburt
         message['reply-to'] = 'xxx'
         message['Bcc'] = ", ".join(gesundheitsamt)
         message['To'] = mail
+        files = [
+            'https://testzentrum-odw.de/download/2021-03-11Anhang_Gesundheitsamt.pdf', 'https://testzentrum-odw.de/download/HMSI-Informationen.pdf']
+        for item in files:
+            attachment = open(item, 'rb')
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload((attachment).read())
+            encoders.encode_base64(part)
+            part.add_header(
+                'Content-Disposition', "attachment; filename= " + item.replace('https://testzentrum-odw.de/download/', ''))
+            message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
