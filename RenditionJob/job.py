@@ -47,12 +47,12 @@ if __name__ == "__main__":
             if result == 2:
                 transmission = send_negative_result(vorname, nachname, mail, date)
             elif result == 1:
-                transmission = send_positive_result(vorname, nachname, mail, date, adresse, telefon, geburtsdatum)
+                transmission = send_positive_result(vorname, nachname, mail, date)
                 transmission_gesundheitsamt = send_new_entry(date)
             else:
                 transmission = send_indistinct_result(vorname, nachname, mail, date)
             logger.debug('Checking if entry for mailsend can be set to true')
-            if transmission:
+            if transmission and transmission_gesundheitsamt:
                 sql = "Update Vorgang SET Mailsend = 1 WHERE id = %s;" % (testID)
                 DatabaseConnect.update(sql)
         logger.debug('Done')

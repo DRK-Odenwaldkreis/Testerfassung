@@ -95,13 +95,13 @@ def send_csv_report(filename, day):
         return False
 
 
-def send_positive_result(vorname, nachname, mail, date, adresse, telefon, geburtsdatum):
+def send_positive_result(vorname, nachname, mail, date):
     try:
         logging.debug("Receviced the following recipient" % (mail))
         message = MIMEMultipart()
         with open('../utils/MailLayout/Positive_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[ADRESSE]]', str(adresse)).replace('[[TELEFON]]', str(telefon)).replace('[[GEBURTSDATUM]]', str(geburtsdatum))
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]')
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebis Ihres Tests liegt vor"
         message['From'] = 'xxx'
