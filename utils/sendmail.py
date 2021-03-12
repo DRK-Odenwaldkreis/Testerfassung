@@ -95,21 +95,52 @@ def send_csv_report(filename, day):
         return False
 
 
-def send_positive_result(vorname, nachname, mail, date, adresse, telefon, geburtsdatum):
+def send_positive_result(vorname, nachname, mail, date):
     try:
         logging.debug("Receviced the following recipient" % (mail))
         message = MIMEMultipart()
         with open('../utils/MailLayout/Positive_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[ADRESSE]]', str(adresse)).replace('[[TELEFON]]', str(telefon)).replace('[[GEBURTSDATUM]]', str(geburtsdatum))
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]')
         message.attach(MIMEText(messageContent, 'html'))
-        gesundheitsamt = ['','','']
         message['Subject'] = "Ergebis Ihres Tests liegt vor"
         message['From'] = 'xxx'
         message['reply-to'] = 'xxx'
-        message['Bcc'] = ", ".join(gesundheitsamt)
         message['To'] = mail
+        files = ['https://testzentrum-odw.de/download/2021-03-11Anhang_Gesundheitsamt.pdf', 'https://testzentrum-odw.de/download/HMSI-Informationen.pdf']
+        for item in files:
+            attachment = open(item, 'rb')
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload((attachment).read())
+            encoders.encode_base64(part)
+            part.add_header(
+                'Content-Disposition', "attachment; filename= " + item.replace('https://testzentrum-odw.de/download/', ''))
+            message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        smtp.send_message(message)
+        logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error(
+            "The following error occured in send mail download: %s" % (err))
+        return False
+
+
+def send_new_entry(date):
+    try:
+        message = MIMEMultipart()
+        with open('../utils/MailLayout/NewEntry.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[DATE]]', str(date))
+        message.attach(MIMEText(messageContent, 'html'))
+        message['Subject'] = "Es liegt eine neue Positivmeldung vor."
+        message['From'] = 'xxx'
+        message['reply-to'] = 'xxx'
+        message['To'] = ''
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
@@ -166,35 +197,6 @@ def send_indistinct_result(vorname, nachname, mail, date):
         smtp.send_message(message)
         logging.debug("Mail was send")
         smtp.quit()
-        return True
-    except Exception as err:
-        logging.error(
-            "The following error occured in send mail download: %s" % (err))
-        return False
-
-
-def send_test_mail():
-    try:
-        start = datetime.datetime.now()
-        logging.debug("Started sending Mail: %s" % (start))
-        message = MIMEMultipart()
-        with open('../utils/MailLayout/Negative_Result.html', encoding='utf-8') as f:
-            fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]',str(datetime.datetime.now())).replace('[[VORNAME]]', 'Murat').replace('[[NACHNAME]]', 'Bayram')
-        message.attach(MIMEText(messageContent, 'html'))
-        message['Subject'] = "Ergebis Ihres Tests liegt vor"
-        message['From'] = 'support@impfzentrum-odw.de'
-        message['reply-to'] = 'support@impfzentrum-odw.de'
-        message['To'] = 'testzentrum@familie-bayram.eu'
-        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.starttls()
-        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-        smtp.send_message(message)
-        logging.debug("Mail was send")
-        smtp.quit()
-        end = datetime.datetime.now()
-        logging.debug("Finished Sending Mail: %s" %(end))
-        logging.debug("Duration was: %s" % (str(end-start)))
         return True
     except Exception as err:
         logging.error(
