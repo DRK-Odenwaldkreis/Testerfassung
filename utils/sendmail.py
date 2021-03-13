@@ -83,8 +83,7 @@ def send_csv_report(filename, day):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = ", ".join(recipients)
-        smtp = smtplib.SMTP(SMTP_SERVER,port=465)
-        smtp.starttls()
+        smtp = smtplib.SMTP_SSL(SMTP_SERVER,port=465)
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
         logging.debug("Mail was send")
@@ -98,7 +97,7 @@ def send_csv_report(filename, day):
 
 def send_positive_result(vorname, nachname, mail, date):
     try:
-        logging.debug("Receviced the following recipient" % (mail))
+        logging.debug("Receviced the following recipient %s" % (mail))
         message = MIMEMultipart()
         with open('../utils/MailLayout/Positive_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
@@ -117,8 +116,7 @@ def send_positive_result(vorname, nachname, mail, date):
             part.add_header(
                 'Content-Disposition', "attachment; filename= " + item.replace('https://testzentrum-odw.de/download/', ''))
             message.attach(part)
-        smtp = smtplib.SMTP(SMTP_SERVER,port=465)
-        smtp.starttls()
+        smtp = smtplib.SMTP_SSL(SMTP_SERVER,port=465)
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
         logging.debug("Mail was send")
@@ -141,8 +139,7 @@ def send_new_entry(date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = GESUNDHEITSAMT
-        smtp = smtplib.SMTP(SMTP_SERVER, port=465)
-        smtp.starttls()
+        smtp = smtplib.SMTP_SSL(SMTP_SERVER, port=465)
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
         logging.debug("Mail was send")
@@ -167,8 +164,7 @@ def send_negative_result(vorname, nachname, mail, date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
-        smtp = smtplib.SMTP(SMTP_SERVER, port=465)
-        smtp.starttls()
+        smtp = smtplib.SMTP_SSL(SMTP_SERVER, port=465)
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
         logging.debug("Mail was send")
@@ -192,8 +188,7 @@ def send_indistinct_result(vorname, nachname, mail, date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
-        smtp = smtplib.SMTP(SMTP_SERVER, port=465)
-        smtp.starttls()
+        smtp = smtplib.SMTP_SSL(SMTP_SERVER, port=465)
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
         logging.debug("Mail was send")
