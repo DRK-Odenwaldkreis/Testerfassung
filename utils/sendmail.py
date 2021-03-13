@@ -84,7 +84,7 @@ def send_csv_report(filename, day):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = ", ".join(recipients)
-        smtp = smtplib.SMTP_SSL(SMTP_SERVER,port=587)
+        smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
@@ -145,7 +145,7 @@ def send_new_entry(date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = GESUNDHEITSAMT
-        smtp = smtplib.SMTP_SSL(SMTP_SERVER, port=587)
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
@@ -161,18 +161,17 @@ def send_new_entry(date):
 
 def send_negative_result(vorname, nachname, mail, date):
     try:
-        logging.debug("Receviced the following recipient" % (mail))
+        logging.debug("Receviced the following recipient %s" % (mail))
         message = MIMEMultipart()
         with open('../utils/MailLayout/Negative_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date)).replace(
-            '[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebis Ihres Tests liegt vor"
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
-        smtp = smtplib.SMTP_SSL(SMTP_SERVER, port=587)
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
@@ -188,7 +187,7 @@ def send_negative_result(vorname, nachname, mail, date):
 
 def send_indistinct_result(vorname, nachname, mail, date):
     try:
-        logging.debug("Receviced the following recipient" % (mail))
+        logging.debug("Receviced the following recipient %s" % (mail))
         message = MIMEMultipart()
         with open('../utils/MailLayout/Indistinct_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
@@ -198,7 +197,7 @@ def send_indistinct_result(vorname, nachname, mail, date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
-        smtp = smtplib.SMTP_SSL(SMTP_SERVER, port=587)
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
