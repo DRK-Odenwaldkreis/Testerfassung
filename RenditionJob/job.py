@@ -15,7 +15,7 @@ from utils.sendmail import send_positive_result
 from utils.sendmail import send_indistinct_result
 from utils.sendmail import send_new_entry
 
-locale.setlocale(locale.LC_ALL, 'de_DE')
+#locale.setlocale(locale.LC_ALL, 'de_DE')
 
 logFile = '../../Logs/rotationJob.log'
 logging.basicConfig(filename=logFile,level=logging.DEBUG,
@@ -30,7 +30,7 @@ if __name__ == "__main__":
             raise Exception
         stationID = sys.argv[1]
         DatabaseConnect = Database()
-        sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id, Adresse, Telefon, Geburtsdatum  from Vorgang where Mailsend is NULL and Mailadresse is not NULL and Teststation = %s;" % (
+        sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id, Adresse, Telefon, Geburtsdatum  from Vorgang where Mailsend is NULL and Teststation = %s;" % (
             stationID)
         logger.debug('Checking for new results, using the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
@@ -40,21 +40,28 @@ if __name__ == "__main__":
                 nachname = i[1]
                 vorname = i[0]
                 mail = i[2]
-                date = i[4].strftime("%A, den %d.%m.%Y um %H%M")
+                date = i[4].strftime("%d.%m.%Y um %H%M")
                 testID = i[5]
                 adresse = i[6]
                 telefon = i[7]
                 geburtsdatum = i[8]
-                if result == 2:
-                    transmission = send_negative_result(vorname, nachname, mail, date)
-                elif result == 1:
-                    transmission = send_positive_result(vorname, nachname, mail, date)
-                    transmission_gesundheitsamt = send_new_entry(date)
+                if len(mail) > 0:
+                    if result == 2:
+                        transmission = send_negative_result(vorname, nachname, mail, date)
+                    elif result == 1:
+                        transmission = send_positive_result(vorname, nachname, mail, date)
+                        transmission_gesundheitsamt = send_new_entry(date)
+                    else:
+                        transmission = send_indistinct_result(vorname, nachname, mail, date)
+                    logger.debug('Checking if entry for mailsend can be set to true')
                 else:
-                    transmission = send_indistinct_result(vorname, nachname, mail, date)
-                logger.debug('Checking if entry for mailsend can be set to true')
+                    tansmisssion = True
+                    if result == 1:
+                        transmission_gesundheitsamt = send_new_entry(date)
+                logger.debug('Checking whether mail was send properly and closing db entry')
                 if transmission and transmission_gesundheitsamt:
-                    sql = "Update Vorgang SET Mailsend = 1 WHERE id = %s;" % (testID)
+                    sql = "Update Vorgang SET Mailsend = 1 WHERE id = %s;" % (
+                        testID)
                     DatabaseConnect.update(sql)
         else:
             logger.debug('Nothing to do')
