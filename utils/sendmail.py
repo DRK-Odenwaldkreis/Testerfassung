@@ -25,6 +25,7 @@ TO_EMAIL = read_config("Mail", "TO_EMAIL")
 SMTP_SERVER = read_config("Mail", "SMTP_SERVER")
 SMTP_USERNAME = read_config("Mail", "SMTP_USERNAME")
 SMTP_PASSWORD = read_config("Mail", "SMTP_PASSWORD")
+GESUNDHEITSAMT = read_config("Mail", "GESUNDHEITSAMT")
 
 def send_mail_report(filenames, day):
     try:
@@ -37,9 +38,9 @@ def send_mail_report(filenames, day):
         message.attach(MIMEText(messageContent, 'html'))
         recipients = ['', '', '']
         message['Subject'] = "Neuer Tagesreport für: %s" % (str(day))
-        message['From'] = 'report@impfzentrum-odw.de'
-        message['reply-to'] = 'report@impfzentrum-odw.de'
-        message['Cc'] = 'report@impfzentrum-odw.de'
+        message['From'] = FROM_EMAIL
+        message['reply-to'] = FROM_EMAIL
+        message['Cc'] = 'info@testzentrum-odw.de'
         message['To'] = ", ".join(recipients)
         files = []
         for i in filenames:
@@ -79,8 +80,8 @@ def send_csv_report(filename, day):
         message.attach(MIMEText(messageContent, 'html'))
         recipients = ['','','']
         message['Subject'] = "Neuer CSV Export für: %s" % (str(day))
-        message['From'] = 'report@impfzentrum-odw.de'
-        message['reply-to'] = 'report@impfzentrum-odw.de'
+        message['From'] = FROM_EMAIL
+        message['reply-to'] = FROM_EMAIL
         message['To'] = ", ".join(recipients)
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.starttls()
@@ -104,8 +105,8 @@ def send_positive_result(vorname, nachname, mail, date):
         messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]')
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebis Ihres Tests liegt vor"
-        message['From'] = 'xxx'
-        message['reply-to'] = 'xxx'
+        message['From'] = FROM_EMAIL
+        message['reply-to'] = FROM_EMAIL
         message['To'] = mail
         files = ['https://testzentrum-odw.de/download/2021-03-11Anhang_Gesundheitsamt.pdf', 'https://testzentrum-odw.de/download/HMSI-Informationen.pdf']
         for item in files:
@@ -137,9 +138,9 @@ def send_new_entry(date):
         messageContent = fileContent.replace('[[DATE]]', str(date))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Es liegt eine neue Positivmeldung vor."
-        message['From'] = 'xxx'
-        message['reply-to'] = 'xxx'
-        message['To'] = ''
+        message['From'] = FROM_EMAIL
+        message['reply-to'] = FROM_EMAIL
+        message['To'] = GESUNDHEITSAMT
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
@@ -163,8 +164,8 @@ def send_negative_result(vorname, nachname, mail, date):
             '[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebis Ihres Tests liegt vor"
-        message['From'] = 'xxx'
-        message['reply-to'] = 'xxx'
+        message['From'] = FROM_EMAIL
+        message['reply-to'] = FROM_EMAIL
         message['To'] = mail
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
@@ -188,8 +189,8 @@ def send_indistinct_result(vorname, nachname, mail, date):
         messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebis Ihres Tests liegt vor"
-        message['From'] = 'xxx'
-        message['reply-to'] = 'xxx'
+        message['From'] = FROM_EMAIL
+        message['reply-to'] = FROM_EMAIL
         message['To'] = mail
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
