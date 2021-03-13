@@ -55,7 +55,8 @@ def send_mail_report(filenames, day):
             part.add_header(
                 'Content-Disposition', "attachment; filename= " + item.replace('../../Reports/', ''))
             message.attach(part)
-        smtp = smtplib.SMTP(SMTP_SERVER, port=465)
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
@@ -83,7 +84,9 @@ def send_csv_report(filename, day):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = ", ".join(recipients)
-        smtp = smtplib.SMTP_SSL(SMTP_SERVER,port=465)
+        smtp = smtplib.SMTP_SSL(SMTP_SERVER,port=587)
+        smtp.set_debuglevel(True)
+        smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
         logging.debug("Mail was send")
@@ -117,7 +120,9 @@ def send_positive_result(vorname, nachname, mail, date):
             part.add_header(
                 'Content-Disposition', "attachment; filename= " + item.replace('../utils/Share/', ''))
             message.attach(part)
-        smtp = smtplib.SMTP_SSL(SMTP_SERVER,port=465)
+        smtp = smtplib.SMTP(SMTP_SERVER,port=587)
+        smtp.set_debuglevel(True)
+        smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
         logging.debug("Mail was send")
@@ -140,7 +145,9 @@ def send_new_entry(date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = GESUNDHEITSAMT
-        smtp = smtplib.SMTP_SSL(SMTP_SERVER, port=465)
+        smtp = smtplib.SMTP_SSL(SMTP_SERVER, port=587)
+        smtp.set_debuglevel(True)
+        smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
         logging.debug("Mail was send")
@@ -165,7 +172,9 @@ def send_negative_result(vorname, nachname, mail, date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
-        smtp = smtplib.SMTP_SSL(SMTP_SERVER, port=465)
+        smtp = smtplib.SMTP_SSL(SMTP_SERVER, port=587)
+        smtp.set_debuglevel(True)
+        smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
         logging.debug("Mail was send")
@@ -189,7 +198,9 @@ def send_indistinct_result(vorname, nachname, mail, date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
-        smtp = smtplib.SMTP_SSL(SMTP_SERVER, port=465)
+        smtp = smtplib.SMTP_SSL(SMTP_SERVER, port=587)
+        smtp.set_debuglevel(True)
+        smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
         logging.debug("Mail was send")
