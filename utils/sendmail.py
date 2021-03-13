@@ -55,7 +55,7 @@ def send_mail_report(filenames, day):
             part.add_header(
                 'Content-Disposition', "attachment; filename= " + item.replace('../../Reports/', ''))
             message.attach(part)
-        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp = smtplib.SMTP(SMTP_SERVER, port=465)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
@@ -64,7 +64,7 @@ def send_mail_report(filenames, day):
         return True
     except Exception as err:
         logging.error(
-            "The following error occured in send mail download: %s" % (err))
+            "The following error occured in send mail report: %s" % (err))
         return False
 
 
@@ -83,7 +83,7 @@ def send_csv_report(filename, day):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = ", ".join(recipients)
-        smtp = smtplib.SMTP(SMTP_SERVER,port=587)
+        smtp = smtplib.SMTP(SMTP_SERVER,port=465)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
@@ -92,7 +92,7 @@ def send_csv_report(filename, day):
         return True
     except Exception as err:
         logging.error(
-            "The following error occured in send mail download: %s" % (err))
+            "The following error occured in send csv report mail: %s" % (err))
         return False
 
 
@@ -117,7 +117,7 @@ def send_positive_result(vorname, nachname, mail, date):
             part.add_header(
                 'Content-Disposition', "attachment; filename= " + item.replace('https://testzentrum-odw.de/download/', ''))
             message.attach(part)
-        smtp = smtplib.SMTP(SMTP_SERVER,port=587)
+        smtp = smtplib.SMTP(SMTP_SERVER,port=465)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
@@ -126,7 +126,7 @@ def send_positive_result(vorname, nachname, mail, date):
         return True
     except Exception as err:
         logging.error(
-            "The following error occured in send mail download: %s" % (err))
+            "The following error occured in send positive mail: %s" % (err))
         return False
 
 
@@ -141,7 +141,7 @@ def send_new_entry(date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = GESUNDHEITSAMT
-        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp = smtplib.SMTP(SMTP_SERVER, port=465)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
@@ -150,7 +150,7 @@ def send_new_entry(date):
         return True
     except Exception as err:
         logging.error(
-            "The following error occured in send mail download: %s" % (err))
+            "The following error occured in send new entry: %s" % (err))
         return False
 
 
@@ -167,7 +167,7 @@ def send_negative_result(vorname, nachname, mail, date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
-        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp = smtplib.SMTP(SMTP_SERVER, port=465)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
@@ -176,7 +176,7 @@ def send_negative_result(vorname, nachname, mail, date):
         return True
     except Exception as err:
         logging.error(
-            "The following error occured in send mail download: %s" % (err))
+            "The following error occured in send negative mail: %s" % (err))
         return False
 
 
@@ -192,7 +192,7 @@ def send_indistinct_result(vorname, nachname, mail, date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
-        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp = smtplib.SMTP(SMTP_SERVER, port=465)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         smtp.send_message(message)
@@ -201,5 +201,5 @@ def send_indistinct_result(vorname, nachname, mail, date):
         return True
     except Exception as err:
         logging.error(
-            "The following error occured in send mail download: %s" % (err))
+            "The following error occured in send indistinct mail: %s" % (err))
         return False
