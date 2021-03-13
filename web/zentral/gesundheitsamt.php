@@ -53,7 +53,7 @@ if( A_checkpermission(array(0,0,3,4)) ) {
           $date=($_POST['date']);
           $dir="/home/webservice/Testerfassung/CSVExport/";
           chdir($dir);
-          $job="python3 job.py $date";
+          $job="python3 job.py $date 1";
           exec($job,$script_output);
           $file=$script_output[0];
           if( file_exists("/home/webservice/Reports/$file") ) {

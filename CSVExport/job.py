@@ -25,26 +25,29 @@ if __name__ == "__main__":
     try:
         if len(sys.argv) == 2:
             requestedDate = sys.argv[1]
-            send=False
+            gesundheitsamt=False
+            sql = "Select id,Nachname,Vorname,Geburtsdatum,Adresse,Telefon,Mailadresse,Ergebnis,Ergebniszeitpunkt,Teststation from Vorgang where and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (
+            requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
         elif len(sys.argv) == 3:
             requestedDate = sys.argv[1]
-            send=True
+            gesundheitsamt=True
+            sql = "Select id,Nachname,Vorname,Geburtsdatum,Adresse,Telefon,Mailadresse,Ergebnis,Ergebniszeitpunkt,Teststation from Vorgang where Ergebnis = 1 and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (
+                requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
         else:
             logger.debug(
-                'Input parameters are not correct, date and/or requested needed')
+                'Input parameters are not correct, date and/or gesundheitsamt needed')
             raise Exception
         DatabaseConnect = Database()
-        sql = "Select id,Nachname,Vorname,Geburtsdatum,Adresse,Telefon,Mailadresse,Ergebnis,Ergebniszeitpunkt,Teststation from Vorgang where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (
-            requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
         logger.debug(
             'Getting all Events for employee of the month and year with the following query: %s' % (sql))
         exportEvents = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' %
                      (str(exportEvents)))
-        filename = create_CSV(exportEvents, requestedDate)
+        if gesundheitsamt:
+            filename = create_CSV(exportEvents, requestedDate) + '_gesundheitsamt_'
+        else:
+            filename = create_CSV(exportEvents, requestedDate)
         logger.debug('Done')
-        if send:
-            send_csv_report(filename,requestedDate)
         print(filename.replace('../../Reports/', ''))
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
