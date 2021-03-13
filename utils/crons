@@ -9,7 +9,7 @@
 0 0 * * * /etc/mysql/ssl/copy_keys.sh > /home/philipp/copy_key.log
 
 ############# Regular Jobs
-*/5+1 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 1
-*/5+2 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 2
-*/5+3 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 3
-*/5+4 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 4
+*/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 1
+*/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 2
+*/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 3
+*/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 4
