@@ -26,7 +26,7 @@ if __name__ == "__main__":
         if len(sys.argv) == 2:
             requestedDate = sys.argv[1]
             gesundheitsamt=False
-            sql = "Select id,Nachname,Vorname,Geburtsdatum,Adresse,Telefon,Mailadresse,Ergebnis,Ergebniszeitpunkt,Teststation from Vorgang where and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (
+            sql = "Select id,Nachname,Vorname,Geburtsdatum,Adresse,Telefon,Mailadresse,Ergebnis,Ergebniszeitpunkt,Teststation from Vorgang where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (
             requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
         elif len(sys.argv) == 3:
             requestedDate = sys.argv[1]
@@ -43,11 +43,11 @@ if __name__ == "__main__":
         exportEvents = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' %
                      (str(exportEvents)))
+        filename = create_CSV(exportEvents, requestedDate) 
         if gesundheitsamt:
-            filename = create_CSV(exportEvents, requestedDate) + '_gesundheitsamt_'
+            print(filename.replace('../../Reports/', ''))
         else:
-            filename = create_CSV(exportEvents, requestedDate)
+            print(filename.replace('../../Reports/', ''))
         logger.debug('Done')
-        print(filename.replace('../../Reports/', ''))
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
