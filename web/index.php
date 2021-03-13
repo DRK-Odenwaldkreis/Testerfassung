@@ -59,7 +59,8 @@ echo $GLOBALS['G_html_main_right_a'];
     <div class="thumbnail">
       <img style="height:231px; object-fit: contain;" src="img/covid-19-5057462_640.jpg" alt="">
       <div class="caption">
-        <h3>Allgemeine Info vom Gesundheitsamt</h3>
+        <h3>Allgemeine Info des Gesundheitsamtes Odenwaldkreis</h3>
+          <br>
         <p><a href="download/2021-03-11Anhang_Gesundheitsamt.pdf" class="btn btn-primary" role="button">Download PDF</a></p>
       </div>
     </div>
@@ -81,8 +82,8 @@ echo $GLOBALS['G_html_main_right_a'];
 <div class="row">
     <div class="col-sm-4">
         <div class="list-group">
-            <h3>Für den DRK</h3>
-            <a class="list-group-item list-group-item-action list-group-item-FAIR" id="module-r1" href="zentral/index.php">Test-System (intern)</a>
+            <h3>Für die Teams des DRK-Kreisverband Odenwaldkreis</h3>
+            <a class="list-group-item list-group-item-action list-group-item-FAIR" id="module-r1" href="zentral/index.php">Testerfassung (Intern)</a>
         </div>
     </div>
 </div>
