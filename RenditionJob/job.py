@@ -34,27 +34,30 @@ if __name__ == "__main__":
             stationID)
         logger.debug('Checking for new results, using the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
-        for i in content:
-            result = i[3]
-            nachname = i[1]
-            vorname = i[0]
-            mail = i[2]
-            date = i[4].strftime("%A, den %d.%m.%Y um %H%M")
-            testID = i[5]
-            adresse = i[6]
-            telefon = i[7]
-            geburtsdatum = i[8]
-            if result == 2:
-                transmission = send_negative_result(vorname, nachname, mail, date)
-            elif result == 1:
-                transmission = send_positive_result(vorname, nachname, mail, date)
-                transmission_gesundheitsamt = send_new_entry(date)
-            else:
-                transmission = send_indistinct_result(vorname, nachname, mail, date)
-            logger.debug('Checking if entry for mailsend can be set to true')
-            if transmission and transmission_gesundheitsamt:
-                sql = "Update Vorgang SET Mailsend = 1 WHERE id = %s;" % (testID)
-                DatabaseConnect.update(sql)
+        if len(content) > 0:
+            for i in content:
+                result = i[3]
+                nachname = i[1]
+                vorname = i[0]
+                mail = i[2]
+                date = i[4].strftime("%A, den %d.%m.%Y um %H%M")
+                testID = i[5]
+                adresse = i[6]
+                telefon = i[7]
+                geburtsdatum = i[8]
+                if result == 2:
+                    transmission = send_negative_result(vorname, nachname, mail, date)
+                elif result == 1:
+                    transmission = send_positive_result(vorname, nachname, mail, date)
+                    transmission_gesundheitsamt = send_new_entry(date)
+                else:
+                    transmission = send_indistinct_result(vorname, nachname, mail, date)
+                logger.debug('Checking if entry for mailsend can be set to true')
+                if transmission and transmission_gesundheitsamt:
+                    sql = "Update Vorgang SET Mailsend = 1 WHERE id = %s;" % (testID)
+                    DatabaseConnect.update(sql)
+        else:
+            logger.debug('Nothing to do')
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

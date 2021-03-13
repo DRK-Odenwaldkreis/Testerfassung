@@ -14,7 +14,7 @@ include_once 'preload.php';
 if( isset($GLOBALS['G_sessionname']) ) { session_name ($GLOBALS['G_sessionname']); }
 session_start();
 $sec_level=1;
-$current_site="testlist";
+$current_site="gesundheitsamt";
 
 // Include functions
 include_once 'tools.php';
@@ -22,7 +22,7 @@ include_once 'auth.php';
 include_once 'menu.php';
 
 // role check
-if( A_checkpermission(array(1,2,0,4)) ) {
+if( A_checkpermission(array(0,0,3,4)) ) {
 
 
 
@@ -84,10 +84,10 @@ if( A_checkpermission(array(1,2,0,4)) ) {
   $Db=S_open_db();
 
   // Get all test for today
-  $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'";');
+  $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Ergebnis = 1 AND Date(Registrierungszeitpunkt)="'.$today.'";');
 
 
-  echo '<h1>Ansicht der registrierten Tests</h1>';
+  echo '<h1>Ansicht der Positivmeldungen</h1>';
 
   echo '<div class="row">';
 
@@ -112,6 +112,22 @@ if( A_checkpermission(array(1,2,0,4)) ) {
   echo '
   <div class="col-sm-12">
   <table class="FAIR-data">';
+  
+  echo '
+    <tr>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Laufende Nummer</td>
+
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Stations-ID</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Test Nummer</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"d>Registierung</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Name</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Geburtsdatum</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Adresse</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Telefonnummer</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Mail</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Testergebnis</td>
+    </tr>';
+
 
   //Get list of times
   foreach($array_tests as $i) {
@@ -135,15 +151,12 @@ if( A_checkpermission(array(1,2,0,4)) ) {
     
     <tr>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">#'.$i[0].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">
-    <a class="list-group-item list-group-item-action list-group-item-redtext" href="edit_person.php?id='.$i[0].'">Ändern</a>
-    </td>
 
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">S'.$i[1].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">K'.$i[2].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"d>Reg '.$i[3].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Person '.$i[5].'/'.$i[6].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Geb '.$i[10].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[1].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[2].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"d>'.$i[3].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[5].'/'.$i[6].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[10].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[7].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[8].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[9].'</td>
