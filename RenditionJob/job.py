@@ -40,11 +40,12 @@ if __name__ == "__main__":
                 nachname = i[1]
                 vorname = i[0]
                 mail = i[2]
-                date = i[4].strftime("%d.%m.%Y um %H%M")
+                date = i[4].strftime("%d.%m.%Y um %H:%M Uhr")
                 testID = i[5]
                 adresse = i[6]
                 telefon = i[7]
                 geburtsdatum = i[8]
+                transmission_gesundheitsamt = True
                 if len(mail) > 0:
                     if result == 2:
                         transmission = send_negative_result(vorname, nachname, mail, date)
