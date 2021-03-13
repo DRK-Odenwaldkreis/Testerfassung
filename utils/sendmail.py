@@ -101,20 +101,21 @@ def send_positive_result(vorname, nachname, mail, date):
         message = MIMEMultipart()
         with open('../utils/MailLayout/Positive_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]')
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebis Ihres Tests liegt vor"
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
-        files = ['https://testzentrum-odw.de/download/2021-03-11Anhang_Gesundheitsamt.pdf', 'https://testzentrum-odw.de/download/HMSI-Informationen.pdf']
+        files = ['../utils/Share/2021-03-11Anhang_Gesundheitsamt.pdf',
+                 '../utils/Share/HMSI-Informationen.pdf']
         for item in files:
             attachment = open(item, 'rb')
             part = MIMEBase('application', 'octet-stream')
             part.set_payload((attachment).read())
             encoders.encode_base64(part)
             part.add_header(
-                'Content-Disposition', "attachment; filename= " + item.replace('https://testzentrum-odw.de/download/', ''))
+                'Content-Disposition', "attachment; filename= " + item.replace('../utils/Share/', ''))
             message.attach(part)
         smtp = smtplib.SMTP_SSL(SMTP_SERVER,port=465)
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
