@@ -4,12 +4,12 @@
 59 23 * * * /home/webservice/Testerfassung/WeeklyJobs/clean.sh
 
 ############# DAILY JOBS
-59 23 * * * /home/webservice/Testerfassung/DailyJobs/reporting.sh
+58 23 * * * /home/webservice/Testerfassung/DailyJobs/reporting.sh
 0 0 * * * /usr/bin/certbot renew > /home/philipp/certbot.log
 0 0 * * * /etc/mysql/ssl/copy_keys.sh > /home/philipp/copy_key.log
 
 ############# Regular Jobs
-*/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 1
-*/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 2
-*/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 3
-*/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 4
+1-59/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 1
+2-59/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 2
+3-59/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 3
+4-59/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 4

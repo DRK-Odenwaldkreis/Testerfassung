@@ -8,7 +8,7 @@ Das Projekt besteht aus mehreren Teilanwendungen. Vor Ort gibt es ein zwei Endge
 ## NightlyAutoClean
 
 Alle erzeugten Codes werden vorab in einer Datenbank gespeichert. Sobald der Code bei einer Registrierung verwendet wird, wird dies in der Tabelle Kartennummern vermerkt.
-Diese verwendeten Nummern werden in der Nacht gelöscht.
+Diese verwendeten Nummern werden in der Nacht zum Sonntag gelöscht.
 
 ## RenditionJob
 Pro Testzentrum gibt es einen Job welcher periodisch über die Datenbank läuft und nach den Testergebnissen bei noch nicht versendeten Einträgen schaut.
@@ -18,6 +18,18 @@ Je nach Testergebnis wird an den Empfänger eine Mail aus den Vorlagen gesendet.
 2. Testergebnis war negativ
 3. Testergebnis ist nicht eindeutig
 
+Der Renidition Job wird pro Station gestartet um die Last zu verteilen. Hierbei wird die Station als Parameter eingefügt:
+
+```python
+python job.py STATION-ID
+```
+
+Im cron sieht der Befehl folgendermaßen aus um für viele Stationen im Intervall von 5 Minuten aber unterschiedlichen Startzeitpunkten den job zu triggern:
+
+```shell
+1-59/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 1
+2-59/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 1
+```
 
 ## TagesreportPDF
 Zur Tagesauswertung für die Gesamtanzal getesteter Personen sowie dem Verhältnis von Positiven und negativen Testergebnissen wird ein Tagesreport erzeugt. Dieser wird automatisiert per Mail jede Nacht versendet und lässt sich im WebUI auch für jeden beliebigen Tag erzeugen.
@@ -27,6 +39,15 @@ python job.py DATUM
 ```
 
 Die Tagesreports werden in ../../Reports Directory abgelegt. Dieses muss angelegt sein.
+Der Tagesreport erzeugt ein Kuchendiagramm aus der Tagesstatistik.
+
+![Testkarte](Pics/Tagesprotokoll.png)
+
+Mittels dem Parameter SEND kann das Tagesprotokoll auch verschickt werden. Die Adressen sind hierbei in der sendmail methode eingetragen.
+
+```python
+python job.py DATUM True
+```
 
 ## CSVExport
 Dem Gesundheitsamt wird auf Basis eines täglichen Jobs eine Liste der postive gemeldeten Personen als CSV zur Verfügung gestellt. Die CSV Datei ist gezippt und mit Password versehen. Des Weiteren hat das Gesundheitsamt die Möglichkeit via Login eine Liste aller Infizierten zu erzeugen.
@@ -37,6 +58,11 @@ python job.py DATUM
 
 Die Exports werden in ../../Reports Directory abgelegt. Dieses muss angelegt sein.
 
+Mittels dem Parameter SEND kann das Tagesprotokoll auch verschickt werden. Die Adressen sind hierbei in der sendmail methode eingetragen.
+
+```python
+python job.py DATUM True
+```
 
 ## QRGeneration
 Die Laufkarten werden mit einem einmaligen QR Code versehen welcher über dieses Modul erzeugt werden kann. Die erzeugten Codes müssen vorab in der Datenbank angeöegt werden.
@@ -58,7 +84,7 @@ Hilfsfunktionen wie:
 
 # Ablaufplan
 
-![Testkarte](Pics/Testkarte.png)
+
 
 
 ![Testkarte](Pics/UML.png)
