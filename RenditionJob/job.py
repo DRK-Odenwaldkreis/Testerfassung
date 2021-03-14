@@ -34,9 +34,12 @@ if __name__ == "__main__":
             stationID)
         logger.debug('Checking for new results, using the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
+        logger.debug(
+            'Received the following content: %s' % (content))
         if len(content) > 0:
+            logger.debug(
+                'Content contains infos')
             for i in content:
-                logger.debug('Parsing the following content: %s' %(i)) 
                 result = i[3]
                 nachname = i[1]
                 vorname = i[0]
