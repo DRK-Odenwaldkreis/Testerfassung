@@ -49,7 +49,7 @@ if __name__ == "__main__":
                 adresse = i[6]
                 telefon = i[7]
                 geburtsdatum = i[8]
-                transmisssion = True
+                transmission = True
                 transmission_gesundheitsamt = True
                 if len(mail) > 0:
                     logger.debug(
@@ -71,13 +71,14 @@ if __name__ == "__main__":
                 else:
                     logger.debug(
                         'Mailadress seems to be not enterd')
-                    tansmisssion = True
+                    tansmission = True
                     if result == 1:
                         logger.debug(
                             'Sending positive mail to gesundheitsamt only')
                         transmission_gesundheitsamt = send_new_entry(date)
                 logger.debug('Checking whether mail was send properly and closing db entry')
                 if transmission and transmission_gesundheitsamt:
+                    logger.debug('Mail was succesfully send, closing entry in db')
                     sql = "Update Vorgang SET Mailsend = 1 WHERE id = %s;" % (
                         testID)
                     DatabaseConnect.update(sql)

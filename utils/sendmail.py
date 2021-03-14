@@ -106,7 +106,7 @@ def send_positive_result(vorname, nachname, mail, date):
             fileContent = f.read()
         messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
-        message['Subject'] = "Ergebis Ihres Tests liegt vor"
+        message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
@@ -167,7 +167,7 @@ def send_negative_result(vorname, nachname, mail, date):
             fileContent = f.read()
         messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
-        message['Subject'] = "Ergebis Ihres Tests liegt vor"
+        message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
@@ -193,7 +193,7 @@ def send_indistinct_result(vorname, nachname, mail, date):
             fileContent = f.read()
         messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
-        message['Subject'] = "Ergebis Ihres Tests liegt vor"
+        message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
