@@ -30,12 +30,13 @@ if __name__ == "__main__":
             raise Exception
         stationID = sys.argv[1]
         DatabaseConnect = Database()
-        sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id, Adresse, Telefon, Geburtsdatum  from Vorgang where Mailsend is NULL and Teststation = %s;" % (
+        sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id, Adresse, Telefon, Geburtsdatum  from Vorgang where Mailsend is NULL and Ergebnis is not NULL and Teststation = %s;" % (
             stationID)
         logger.debug('Checking for new results, using the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
         if len(content) > 0:
             for i in content:
+                logger.debug('Parsing the following content: %s' %(i)) 
                 result = i[3]
                 nachname = i[1]
                 vorname = i[0]
@@ -45,19 +46,32 @@ if __name__ == "__main__":
                 adresse = i[6]
                 telefon = i[7]
                 geburtsdatum = i[8]
+                transmisssion = True
                 transmission_gesundheitsamt = True
                 if len(mail) > 0:
+                    logger.debug(
+                        'Mailadress seems to be enterd')
                     if result == 2:
+                        logger.debug(
+                            'Sending negative result Mail')
                         transmission = send_negative_result(vorname, nachname, mail, date)
                     elif result == 1:
+                        logger.debug(
+                            'Sending positive result Mail')
                         transmission = send_positive_result(vorname, nachname, mail, date)
                         transmission_gesundheitsamt = send_new_entry(date)
                     else:
+                        logger.debug(
+                            'Sending indistinct result Mail')
                         transmission = send_indistinct_result(vorname, nachname, mail, date)
                     logger.debug('Checking if entry for mailsend can be set to true')
                 else:
+                    logger.debug(
+                        'Mailadress seems to be not enterd')
                     tansmisssion = True
                     if result == 1:
+                        logger.debug(
+                            'Sending positive mail to gesundheitsamt only')
                         transmission_gesundheitsamt = send_new_entry(date)
                 logger.debug('Checking whether mail was send properly and closing db entry')
                 if transmission and transmission_gesundheitsamt:

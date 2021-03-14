@@ -84,9 +84,6 @@ Hilfsfunktionen wie:
 
 # Ablaufplan
 
-
-
-
 ![Testkarte](Pics/UML.png)
 
 ## Testperson Kommt
