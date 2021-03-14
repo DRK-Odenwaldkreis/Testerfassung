@@ -23,7 +23,7 @@ def create_PDFs(content, date,station):
     negativ = 0
     unklar = 0
     for i in content:
-        if i[8] == station[0]:
+        if i[9] == station[0]:
             ergebnis = i[7]
             if ergebnis == 2:
                 negativ += 1
