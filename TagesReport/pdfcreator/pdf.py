@@ -56,7 +56,7 @@ class PDFgenerator:
 		# Pie chart, where the slices will be ordered and plotted counter-clockwise:
 		self.labels = 'Positiv', 'Negativ', 'Unklar'
 		self.sizes = [self.positiv, self.negativ, self.unklar]
-		self.explode = (0, 0.1, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
+		self.explode = (1, 0.1, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
 		self.fig1, self.ax1 = plt.subplots()
 		self.ax1.pie(self.sizes, explode=self.explode, labels=self.labels, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),
                     shadow=True, startangle=90)
