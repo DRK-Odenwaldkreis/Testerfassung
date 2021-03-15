@@ -40,7 +40,7 @@ def send_mail_report(filenames, day):
         message['Subject'] = "Neuer Tagesreport für: %s" % (str(day))
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
-        message['Cc'] = 'info@testzentrum-odw.de'
+        message['Cc'] = 'info@testzentrum-odenwald.de'
         message['To'] = ", ".join(recipients)
         files = []
         for i in filenames:
