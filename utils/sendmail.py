@@ -26,6 +26,10 @@ SMTP_SERVER = read_config("Mail", "SMTP_SERVER")
 SMTP_USERNAME = read_config("Mail", "SMTP_USERNAME")
 SMTP_PASSWORD = read_config("Mail", "SMTP_PASSWORD")
 GESUNDHEITSAMT = read_config("Mail", "GESUNDHEITSAMT")
+try:
+    simulationMode = read_config("Setup", "simulate")
+except:
+    simulationMode = 0
 
 def send_mail_report(filenames, day):
     try:
@@ -55,12 +59,15 @@ def send_mail_report(filenames, day):
             part.add_header(
                 'Content-Disposition', "attachment; filename= " + item.replace('../../Reports/', ''))
             message.attach(part)
+        logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-        smtp.send_message(message)
-        logging.debug("Mail was send")
+        if simulationMode == 0:
+            logging.debug("Going to send message")
+            smtp.send_message(message)
+            logging.debug("Mail was send")
         smtp.quit()
         return True
     except Exception as err:
@@ -84,12 +91,15 @@ def send_csv_report(filename, day):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = ", ".join(recipients)
+        logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-        smtp.send_message(message)
-        logging.debug("Mail was send")
+        if simulationMode == 0:
+            logging.debug("Going to send message")
+            smtp.send_message(message)
+            logging.debug("Mail was send")
         smtp.quit()
         return True
     except Exception as err:
@@ -120,12 +130,15 @@ def send_positive_result(vorname, nachname, mail, date):
             part.add_header(
                 'Content-Disposition', "attachment; filename= " + item.replace('../utils/Share/', ''))
             message.attach(part)
+        logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
         smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-        smtp.send_message(message)
-        logging.debug("Mail was send")
+        if simulationMode == 0:
+            logging.debug("Going to send message")
+            smtp.send_message(message)
+            logging.debug("Mail was send")
         smtp.quit()
         return True
     except Exception as err:
@@ -145,17 +158,20 @@ def send_notification(vorname, nachname, date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = FROM_EMAIL
+        logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-        smtp.send_message(message)
-        logging.debug("Mail was send")
+        if simulationMode == 0:
+            logging.debug("Going to send message")
+            smtp.send_message(message)
+            logging.debug("Mail was send")
         smtp.quit()
         return True
     except Exception as err:
         logging.error(
-            "The following error occured in send new entry: %s" % (err))
+            "The following error occured in notification: %s" % (err))
         return False
 
 
@@ -170,12 +186,15 @@ def send_new_entry(date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = GESUNDHEITSAMT
+        logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-        smtp.send_message(message)
-        logging.debug("Mail was send")
+        if simulationMode == 0:
+            logging.debug("Going to send message")
+            smtp.send_message(message)
+            logging.debug("Mail was send")
         smtp.quit()
         return True
     except Exception as err:
@@ -196,12 +215,15 @@ def send_negative_result(vorname, nachname, mail, date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
+        logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-        smtp.send_message(message)
-        logging.debug("Mail was send")
+        if simulationMode == 0:
+            logging.debug("Going to send message")
+            smtp.send_message(message)
+            logging.debug("Mail was send")
         smtp.quit()
         return True
     except Exception as err:
@@ -222,12 +244,15 @@ def send_indistinct_result(vorname, nachname, mail, date):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
+        logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-        smtp.send_message(message)
-        logging.debug("Mail was send")
+        if simulationMode == 0:
+            logging.debug("Going to send message")
+            smtp.send_message(message)
+            logging.debug("Mail was send")
         smtp.quit()
         return True
     except Exception as err:
