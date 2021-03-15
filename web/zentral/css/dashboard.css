@@ -205,6 +205,9 @@ a.badge-white-text:hover {
 .FAIR-text-red {
 	color: red;
 }
+.FAIR-text-blue {
+	color: blue;
+}
 .FAIR-text-sm {
 	font-size: 70%;
 }
