@@ -289,7 +289,7 @@ if( isset($_POST['button-reset']) ) {
 		S_set_data($Db,'INSERT INTO li_token (id_user,timestamp,token) VALUES ('.$uid.',\''.$timestamp.'\',\''.$tokenhash.'\');');
 		$token_id=S_get_entry($Db,'SELECT id FROM li_token WHERE id_user='.$uid.' AND timestamp=\''.$timestamp.'\' AND token=\''.$tokenhash.'\';');
 		
-		$header = "From: info@testzentrum-odw.de\r\n";
+		$header = "From: info@testzentrum-odenwald.de\r\n";
 		$header .= "Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit";
 		$content="Lieber Nutzer, liebe Nutzerin,\n
 es wurde eine Anfrage zum Zurücksetzen Ihres Passwortes für das Websystem des DRK Covid-19 Testzentrum gestellt. Falls diese Anfrage von Ihnen nicht initiiert wurde, können Sie diese Nachricht ignorieren.\n
@@ -299,7 +299,7 @@ Bitte mit diesem Link das Passwort neu setzen:\n";
 Mit freundlichen Grüßen\n
 Das Team vom DRK";
 		$title='DRK Covid-19 Testzentrum Odenwaldkreis - Passwort zurücksetzen';
-		$res=mail($email, $title, $content, $header, "-r info@itestzentrum-odw.de");
+		$res=mail($email, $title, $content, $header, "-r info@itestzentrum-odenwald.de");
 		
 		
 	}
