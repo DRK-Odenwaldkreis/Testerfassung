@@ -134,6 +134,31 @@ def send_positive_result(vorname, nachname, mail, date):
         return False
 
 
+def send_notification(vorname, nachname, date):
+    try:
+        message = MIMEMultipart()
+        with open('../utils/MailLayout/Notification.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
+        message.attach(MIMEText(messageContent, 'html'))
+        message['Subject'] = "Es liegt eine Meldung vor die nicht zugeordnet werden kann."
+        message['From'] = FROM_EMAIL
+        message['reply-to'] = FROM_EMAIL
+        message['To'] = FROM_EMAIL
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp.set_debuglevel(True)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        smtp.send_message(message)
+        logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error(
+            "The following error occured in send new entry: %s" % (err))
+        return False
+
+
 def send_new_entry(date):
     try:
         message = MIMEMultipart()

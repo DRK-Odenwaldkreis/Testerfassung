@@ -14,6 +14,7 @@ from utils.sendmail import send_negative_result
 from utils.sendmail import send_positive_result
 from utils.sendmail import send_indistinct_result
 from utils.sendmail import send_new_entry
+from utils.sendmail import send_notification
 
 #locale.setlocale(locale.LC_ALL, 'de_DE')
 
@@ -63,10 +64,13 @@ if __name__ == "__main__":
                             'Sending positive result Mail')
                         transmission = send_positive_result(vorname, nachname, mail, date)
                         transmission_gesundheitsamt = send_new_entry(date)
-                    else:
+                    elif result == 9:
                         logger.debug(
                             'Sending indistinct result Mail')
                         transmission = send_indistinct_result(vorname, nachname, mail, date)
+                    else:
+                        logger.debug('Sending support mail because can not interpret result')
+                        send_notification(vorname,nachname,date)
                     logger.debug('Checking if entry for mailsend can be set to true')
                 else:
                     logger.debug(

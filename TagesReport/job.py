@@ -29,8 +29,10 @@ def create_PDFs(content, date,station):
                 negativ += 1
             elif ergebnis == 1:
                 positiv += 1
-            else:
+            elif ergebnis == 9:
                 unklar += 1
+            else:
+                pass
     tests = unklar + negativ + positiv
     pdfcontent = [station[1],tests, positiv, negativ, unklar]
     PDF = PDFgenerator(pdfcontent, f"{date}")
