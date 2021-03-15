@@ -33,7 +33,11 @@ def create_PDFs(content, date,station):
                 unklar += 1
             else:
                 pass
+    logger.debug('Positive tests: %s' % (str(positiv)))
+    logger.debug('Negative tests: %s' % (str(negativ)))
+    logger.debug('Unclear tests: %s' % (str(unklar)))
     tests = unklar + negativ + positiv
+    logger.debug('Calculated this total number of tests: %s' % (str(tests)))
     pdfcontent = [station[1],tests, positiv, negativ, unklar]
     PDF = PDFgenerator(pdfcontent, f"{date}")
     return PDF.generate()
