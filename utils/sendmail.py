@@ -26,10 +26,7 @@ SMTP_SERVER = read_config("Mail", "SMTP_SERVER")
 SMTP_USERNAME = read_config("Mail", "SMTP_USERNAME")
 SMTP_PASSWORD = read_config("Mail", "SMTP_PASSWORD")
 GESUNDHEITSAMT = read_config("Mail", "GESUNDHEITSAMT")
-try:
-    simulationMode = read_config("Setup", "simulate")
-except:
-    simulationMode = 0
+simulationMode = 0
 
 def send_mail_report(filenames, day):
     try:
