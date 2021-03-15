@@ -94,8 +94,15 @@ if( A_checkpermission(array(1,0,0,4)) || true) {
       </div>';
 
       echo '<div class="list-group">
+      <br> <br>
       <a class="list-group-item list-group-item-danger list-group-item-FAIR" id="module-positiv" href="'.$current_site.'.php?t=K'.$array_vorgang[0][1].'&e=1">POSITIV</a>
+      <br>
+      <br>
+      <br>
       <a class="list-group-item list-group-item-success list-group-item-FAIR" id="module-positiv" href="'.$current_site.'.php?t=K'.$array_vorgang[0][1].'&e=2">NEGATIV</a>
+      <br>
+      <br>
+      <br>
       <a class="list-group-item list-group-item-warning list-group-item-FAIR" id="module-positiv" href="'.$current_site.'.php?t=K'.$array_vorgang[0][1].'&e=9">FEHLERHAFT</a>
       ';
       echo '</div></div>';
