@@ -133,7 +133,7 @@ if( A_checkpermission(array(1,2,0,4)) ) {
   foreach($array_tests as $i) {
     if($i[11]==1) {
       // Test POSITIV
-      $class_ergebnis='FAIR-text-red';
+      $class_ergebnis='FAIR-change-red';
       $text_ergebnis='POS';
     } elseif($i[11]==2) {
       // Test NEGATIV
@@ -141,7 +141,7 @@ if( A_checkpermission(array(1,2,0,4)) ) {
       $text_ergebnis='NEG';
     } elseif($i[11]==9) {
       // Test FEHLERHAFT
-      $class_ergebnis='FAIR-change-red';
+      $class_ergebnis='FAIR-text-blue';
       $text_ergebnis='ERR';
     } else {
       $class_ergebnis='';

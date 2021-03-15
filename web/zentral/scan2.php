@@ -14,7 +14,7 @@ include_once 'preload.php';
 if( isset($GLOBALS['G_sessionname']) ) { session_name ($GLOBALS['G_sessionname']); }
 session_start();
 $sec_level=1;
-$current_site="scan";
+$current_site="scan2";
 
 // Include functions
 include_once 'tools.php';
