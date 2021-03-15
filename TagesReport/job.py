@@ -31,6 +31,7 @@ def create_PDFs(content, date,station):
                 positiv += 1
             else:
                 unklar += 1
+    tests = unklar + negativ + positiv
     pdfcontent = [station[1],tests, positiv, negativ, unklar]
     PDF = PDFgenerator(pdfcontent, f"{date}")
     return PDF.generate()
