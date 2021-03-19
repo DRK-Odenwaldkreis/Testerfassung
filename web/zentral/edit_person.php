@@ -68,6 +68,23 @@ if( A_checkpermission(array(1,2,0,4)) ) {
       echo '</div></div>';
   
   
+    } elseif( isset($_GET['id']) && isset($_GET['reset']) && $_GET['reset']=='mail' ) {
+  // ///////////////
+  // Reset Mailsend=NULL
+  // ///////////////
+      
+      S_set_data($Db,'UPDATE Vorgang SET
+      Mailsend=NULL
+      WHERE id=CAST('.$_GET['id'].' AS int);');
+
+      echo '<div class="row">';
+      echo '<div class="col-sm-12">
+      <h3>Kunden-Daten geändert</h3>
+      <p>Benachrichtigungs-E-Mail wird nochmal verschickt</p>';      
+      echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="testlist.php">Zurück zur Testliste</a>';
+      
+      echo '</div></div>';
+
     } elseif( isset($_GET['id']) ) {
 
   // ///////////////
