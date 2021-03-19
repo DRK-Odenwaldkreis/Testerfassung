@@ -256,3 +256,32 @@ def send_indistinct_result(vorname, nachname, mail, date):
         logging.error(
             "The following error occured in send indistinct mail: %s" % (err))
         return False
+
+
+def send_mail_reminder(recipient, date, vorname, nachname, appointment):
+    try:
+        logging.debug("Receviced the following recipient: %s to be sent to." % (
+            recipient))
+        message = MIMEMultipart()
+        with open('../utils/MailLayout/Reminder.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(slot))
+        message.attach(MIMEText(messageContent, 'html'))
+        message['Subject'] = "Erinnerung an Ihren Termin %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
+        message['From'] = FROM_EMAIL
+        message['reply-to'] = FROM_EMAIL
+        message['To'] = recipient
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp.set_debuglevel(True)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        if simulationMode == 0:
+            logging.debug("Going to send message")
+            smtp.send_message(message)
+            logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error(
+            "The following error occured in send mail download: %s" % (err))
+        return False
