@@ -28,7 +28,9 @@ if __name__ == "__main__":
         sql = "Select Vorname, Nachname, Mailadresse, Slot, Stunde from Voranmeldung where Tag =%s;" % (requestedDate)
         logger.debug('Getting all appointments for %s, using the following query: %s' % (requestedDate,sql))
         recipients = DatabaseConnect.read_all(sql)
+        logger.debug('Received the following recipients: %s' %(str(recipients)))
         for i in recipients:
+            logger.debug('Received the following entry: %s' %(str(i)))
             slot = i[3]
             vorname = i[0]
             nachname = i[1]
@@ -47,7 +49,8 @@ if __name__ == "__main__":
                 start = '45'
                 ende = '00'
             appointment = "%s:%s - %s:%s" % (str(stunde),str(start),str(stunde),str(ende))
+            logger.debug('Handing over to sendmail of reminder')
             send_mail_reminder(mail, requestedDate,vorname, nachname, appointment)
-        logger.debug('Done')
+        logger.debug('Done for all')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
