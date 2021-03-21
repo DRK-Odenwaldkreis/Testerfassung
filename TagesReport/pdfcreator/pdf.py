@@ -52,6 +52,7 @@ class PDFgenerator:
 		self.positiv = self.content[2]
 		self.negativ = self.content[3]
 		self.unklar = self.content[4]
+		self.cycleTime = self.content[5]
 
 		# Pie chart, where the slices will be ordered and plotted counter-clockwise:
 		self.labels = 'Positiv', 'Negativ', 'Unklar'
@@ -64,6 +65,7 @@ class PDFgenerator:
 		self.ax1.axis('equal')
 		self.ax1.set_title("Gesamtanzahl der Test: %s" % (self.tests), pad=32)
 		plt.savefig('tmp/' + str(self.date) + '.png', dpi=(170))
+		
 
 	def generate(self):
 
