@@ -84,7 +84,7 @@ if( A_checkpermission(array(1,2,0,4)) ) {
   $Db=S_open_db();
 
   // Get all test for today
-  $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'";');
+  $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'" ORDER BY Registrierungszeitpunkt DESC;');
 
 
   echo '<h1>Ansicht der registrierten Tests</h1>';
