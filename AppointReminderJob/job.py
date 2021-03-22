@@ -12,9 +12,9 @@ from utils.sendmail import send_mail_reminder
 import datetime
 
 logFile = '../../Logs/reminderJob.log'
-logging.basicConfig(filename=logFile, level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger('Reminder job for appointment started on: %s'%(datetime.datetime.now())
+logger = logging.getLogger('Reminder job for appointment started on: %s'%(datetime.datetime.now()))
 logger.debug('Starting')
 
 if __name__ == "__main__":
@@ -25,7 +25,7 @@ if __name__ == "__main__":
             logger.debug('Input parameters are not correct, date needed')
             raise Exception
         DatabaseConnect = Database()
-        sql = "Select Vorname, Nachname, Mailadresse, Slot, Stunde from Voranmeldung where Tag =%s;" % (requestedDate)
+        sql = "Select Vorname, Nachname, Mailadresse, Slot, Stunde,id from Voranmeldung where Tag Between '%s 00:00:00' and '%s 23:59:59';" % (requestedDate,requestedDate)
         logger.debug('Getting all appointments for %s, using the following query: %s' % (requestedDate,sql))
         recipients = DatabaseConnect.read_all(sql)
         logger.debug('Received the following recipients: %s' %(str(recipients)))
@@ -36,6 +36,7 @@ if __name__ == "__main__":
             nachname = i[1]
             stunde = i[4]
             mail = i[2]
+            entry = i[5]
             if slot == 1:
                 start = '00'
                 ende = '15'
@@ -50,7 +51,10 @@ if __name__ == "__main__":
                 ende = '00'
             appointment = "%s:%s - %s:%s" % (str(stunde),str(start),str(stunde),str(ende))
             logger.debug('Handing over to sendmail of reminder')
-            send_mail_reminder(mail, requestedDate,vorname, nachname, appointment)
+            if send_mail_reminder(mail, requestedDate,vorname, nachname, appointment):
+                logger.debug('Mail was succesfully send, closing entry in db')
+                sql = "Update Voranmeldung SET Reminded = 1 WHERE id = %s;" % (entry)
+                DatabaseConnect.update(sql)
         logger.debug('Done for all')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

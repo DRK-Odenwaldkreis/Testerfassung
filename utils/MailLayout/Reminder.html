@@ -6,6 +6,7 @@
 
 <!doctype html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -16,6 +17,8 @@
       ------------------------------------- */
 
         /*All the styling goes here*/
+
+
 
         img {
             border: none;
@@ -206,6 +209,33 @@
         /* -------------------------------------
           OTHER STYLES THAT MIGHT BE USEFUL
       ------------------------------------- */
+        .google-maps {
+            background-color: #EEE;
+            width: 100%;
+            height: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0px 13px 14px 0px rgba(50, 50, 50, 0.81);
+        }
+
+        .google-maps {
+            position: relative;
+            padding-bottom: 56.25%;
+            padding-top: 30px;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .google-maps iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+
+
         .last {
             margin-bottom: 0;
         }
@@ -378,36 +408,52 @@
                                 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                     <tr>
                                         <td>
-                                            <img src="https://testzentrum-odw.de/img/logo.png" alt="Erinnerung an Termin" style="display: block;" />
+                                            <img src="https://testzentrum-odw.de/img/logo.png"
+                                                alt="Erinnerung an Termin" style="display: block;" />
                                             <p>Hallo [[VORNAME]] [[NACHNAME]],</p>
-                                            <p>du hast heute [[DATE]] im Slot [[SLOT]] einen Termin im Testzentrum des Odenwaldkreises. Bitte finde dich pünktlich mit deinem persönlichen Registrierungscode in der Einrichtung ein
+                                            <p>du hast heute [[DATE]] im Slot [[SLOT]] einen Termin im Testzentrum des
+                                                Odenwaldkreises. Bitte finde dich pünktlich mit deinem persönlichen
+                                                Registrierungscode in der Einrichtung ein
                                             </p>
-                                            <p>Bitte beachten vor Ort unbedingt die Abstands- und Hygieneregeln einschließlich Mundschutz.</p>
+                                            <p>Bitte beachten vor Ort unbedingt die Abstands- und Hygieneregeln
+                                                einschließlich Mundschutz.</p>
+
+                                            <p> </p>
+                                            <div class="google-maps">
+                                                <iframe
+                                                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1831.076613331227!2d8.994295536106854!3d49.66041221743133!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4797e27c97a35daf%3A0x736bce13e19469b8!2sMartin-Luther-Stra%C3%9Fe%2020%2C%2064711%20Erbach!5e1!3m2!1sde!2sde!4v1616409072639!5m2!1sde!2sde"
+                                                    width="600" height="450" style="border:0;"
+                                                    allowfullscreen="allowfullscreen" loading="lazy"></iframe></iframe>
+                                            </div>
+                                            <p> </p>
+                                            <br>
+                                            <br>
                                             <p></p>
                                             <p>Bei Fragen wende dich an direkt an das Testzentrum.</p>
-                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0"
+                                                class="btn btn-primary">
                                                 <tbody>
                                                     <tr>
                                                         <td align="center">
-                                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                                            <table role="presentation" border="0" cellpadding="0"
+                                                                cellspacing="0">
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td> <a href="mailto:testzentrum@drk-odenwaldkreis.de" target="_blank">Mail</a>
+                                                                        <td> <a href="mailto:testzentrum@drk-odenwaldkreis.de"
+                                                                                target="_blank">Mail</a>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
-                                                            <p></p>
-                                                            <a href="tel:+49123456">Telefon: 123456</a>
                                                         </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            </td>
-                                            </tr>
-                                            </table>
-                                            </td>
-                                            </tr>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
                         <!-- END MAIN CONTENT AREA -->
                     </table>
                     <!-- END CENTERED WHITE CONTAINER -->
@@ -417,7 +463,7 @@
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td class="content-block">
-                                <a href="http://testzentrum-odw.de">Testzentrum-Odenwaldkreis</a>.
+                                    <a href="http://testzentrum-odw.de">Testzentrum-Odenwaldkreis</a>.
                                 </td>
                             </tr>
                         </table>

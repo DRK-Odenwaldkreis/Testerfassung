@@ -261,9 +261,9 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment):
         message = MIMEMultipart()
         with open('../utils/MailLayout/Reminder.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(slot))
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment))
         message.attach(MIMEText(messageContent, 'html'))
-        message['Subject'] = "Erinnerung an Ihren Termin %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
+        message['Subject'] = "Erinnerung an Termin %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = recipient
@@ -279,5 +279,5 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment):
         return True
     except Exception as err:
         logging.error(
-            "The following error occured in send mail download: %s" % (err))
+            "The following error occured in send mail reminder: %s" % (err))
         return False
