@@ -12,7 +12,7 @@ import datetime
 
 logFile = '../../Logs/accountJob.log'
 logging.basicConfig(filename=logFile, level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger('Accounting job stated: %s')%(datetime.datetime.now())
+logger = logging.getLogger('Accounting job stated: %s'%(datetime.datetime.now())
 logger.debug('Starting')
 
 if __name__ == "__main__":
@@ -26,9 +26,9 @@ if __name__ == "__main__":
         DatabaseConnect = Database()
         sql = "Select Count(id), Teststation from Vorgang where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59' GROUP BY Teststation;" % (requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
         logger.debug('Getting all Events for a date with the following query: %s' % (sql))
-        exportEvents = DatabaseConnect.read_all(sql)
-        for station in exportEvents:
-            sql = "INSERT INTO Abrechnung (Teststation,Date,Amount) VALUES(%s,%s,%s);"%(station[1],requestedDate,station[0])
+        statistics = DatabaseConnect.read_all(sql)
+        for station in statistics:
+            sql = "INSERT INTO Abrechnung (Teststation,Date,Amount) VALUES(%s,%s,%s);" % (station[1],requestedDate,station[0])
             DatabaseConnect.insert(sql)
         logger.debug('Done')
     except Exception as e:
