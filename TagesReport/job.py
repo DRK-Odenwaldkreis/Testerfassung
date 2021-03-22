@@ -13,7 +13,7 @@ from utils.getRequesterMail import get_Mail_from_StationID
 
 
 logFile = '../../Logs/TagesreportJob.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Tagesreport')
 logger.debug('Starting')
@@ -27,25 +27,24 @@ def create_PDFs(content, date,station):
     times = []
     for i in content:
         times.append(i[4].total_seconds()/60)
-        if i[3] == station[0]:
-            ergebnis = i[1]
-            if ergebnis == 2:
-                negativ += 1
-            elif ergebnis == 1:
-                positiv += 1
-            elif ergebnis == 9:
-                unklar += 1
-            else:
-                pass
+        ergebnis = i[1]
+        if ergebnis == 2:
+            negativ += 1
+        elif ergebnis == 1:
+            positiv += 1
+        elif ergebnis == 9:
+            unklar += 1
+        else:
+            pass
     logger.debug('Positive tests: %s' % (str(positiv)))
     logger.debug('Negative tests: %s' % (str(negativ)))
     logger.debug('Unclear tests: %s' % (str(unklar)))
     tests = unklar + negativ + positiv
     logger.debug('Calculated this total number of tests: %s' % (str(tests)))
-    pdfcontent = [station[1],tests, positiv, negativ, unklar,times]
+    pdfcontent = [station,tests, positiv, negativ, unklar,times]
+    print(pdfcontent)
     PDF = PDFgenerator(pdfcontent, f"{date}")
     return PDF.generate()
-
 
 if __name__ == "__main__":
     try:
@@ -59,7 +58,7 @@ if __name__ == "__main__":
             logger.debug('Input parameters are not correct, date and/or requested needed')
             raise Exception
         DatabaseConnect = Database()
-        sql = "Select Teststation from Vorgang where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59' GROUP BY Teststation" % (requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
+        sql = "Select Teststation,Ort from Vorgang JOIN Station ON Vorgang.Teststation = Station.id where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59' GROUP BY Teststation" % (requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
         teststationen = DatabaseConnect.read_all(sql)
         sql = "Select id,Ergebnis,Ergebniszeitpunkt,Teststation,TIMEDIFF(Ergebniszeitpunkt,Registrierungszeitpunkt) from Vorgang where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (
             requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
@@ -67,10 +66,10 @@ if __name__ == "__main__":
         exportEvents = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' %(str(exportEvents)))
         for station in teststationen:
-            filename = create_PDFs(exportEvents, requestedDate, station)
+            filename = create_PDFs(exportEvents, requestedDate, station[1])
             if send:
                 logger.debug('Sending Mail')
-                send_mail_report(filename,requestedDate,get_Mail_from_StationID(station))
+                send_mail_report(filename,requestedDate,get_Mail_from_StationID(station[0]))
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
