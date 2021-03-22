@@ -9,6 +9,7 @@ import sys
 sys.path.append("..")
 from utils.database import Database
 from utils.sendmail import send_mail_reminder
+from utils.slot import get_slot_time
 import datetime
 
 logFile = '../../Logs/reminderJob.log'
@@ -37,19 +38,7 @@ if __name__ == "__main__":
             stunde = i[4]
             mail = i[2]
             entry = i[5]
-            if slot == 1:
-                start = '00'
-                ende = '15'
-            elif slot == 2:
-                start = '15'
-                ende = '30'
-            elif slot == 3:
-                start = '30'
-                ende = '45'
-            elif slot == 4:
-                start = '45'
-                ende = '00'
-            appointment = "%s:%s - %s:%s" % (str(stunde),str(start),str(stunde),str(ende))
+            appointment = get_slot_time(slot, stunde)
             logger.debug('Handing over to sendmail of reminder')
             if send_mail_reminder(mail, requestedDate,vorname, nachname, appointment):
                 logger.debug('Mail was succesfully send, closing entry in db')

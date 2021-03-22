@@ -281,3 +281,41 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment):
         logging.error(
             "The following error occured in send mail reminder: %s" % (err))
         return False
+
+def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, filename):
+    try:
+        logging.debug("Receviced the following recipient: %s to be sent to." % (
+            recipient))
+        message = MIMEMultipart()
+        with open('../utils/MailLayout/QRTicket.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment))
+        message.attach(MIMEText(messageContent, 'html'))
+        message['Subject'] = "Persönliches Testticket für den Termin um %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
+        message['From'] = FROM_EMAIL
+        message['reply-to'] = FROM_EMAIL
+        message['To'] = recipient
+        files = [filename]
+        for item in files:
+            attachment = open(item, 'rb')
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload((attachment).read())
+            encoders.encode_base64(part)
+            part.add_header(
+                'Content-Disposition', "attachment; filename= " + item.replace('../../Tickets/', ''))
+            message.attach(part)
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp.set_debuglevel(True)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        if simulationMode == 0:
+            logging.debug("Going to send message")
+            smtp.send_message(message)
+            logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error(
+            "The following error occured in send mail reminder: %s" % (err))
+        return False
+
