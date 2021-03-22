@@ -9,6 +9,7 @@ from pdfcreator.pdf import PDFgenerator
 sys.path.append("..")
 from utils.database import Database
 from utils.sendmail import send_mail_report
+from utils.getRequesterMail import get_Mail_from_StationID
 
 
 logFile = '../../Logs/TagesreportJob.log'
@@ -58,19 +59,18 @@ if __name__ == "__main__":
             logger.debug('Input parameters are not correct, date and/or requested needed')
             raise Exception
         DatabaseConnect = Database()
-        sql = "SELECT id,Ort FROM Station"
+        sql = "Select Teststation from Vorgang where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59' GROUP BY Teststation" % (requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
         teststationen = DatabaseConnect.read_all(sql)
         sql = "Select id,Ergebnis,Ergebniszeitpunkt,Teststation,TIMEDIFF(Ergebniszeitpunkt,Registrierungszeitpunkt) from Vorgang where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (
             requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
         logger.debug('Getting all Events for a date with the following query: %s' % (sql))
         exportEvents = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' %(str(exportEvents)))
-        filenames = []
         for station in teststationen:
-            filenames.append(create_PDFs(exportEvents, requestedDate, station))
-        if send:
-            logger.debug('Sending Mail')
-            send_mail_report(filenames,requestedDate)
+            filename = create_PDFs(exportEvents, requestedDate, station)
+            if send:
+                logger.debug('Sending Mail')
+                send_mail_report(filename,requestedDate,get_Mail_from_StationID(station))
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

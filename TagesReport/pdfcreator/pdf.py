@@ -5,6 +5,7 @@
 
 import matplotlib.pyplot as plt
 import sys
+import numpy as np
 from fpdf import FPDF
 import time
 import os
@@ -58,14 +59,20 @@ class PDFgenerator:
 		self.labels = 'Positiv', 'Negativ', 'Unklar'
 		self.sizes = [self.positiv, self.negativ, self.unklar]
 		self.explode = (1, 0.1, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
-		self.fig1, self.ax1 = plt.subplots()
+		self.fig1, (self.ax1,self.ax2) = plt.subplots(1,2)
 		self.ax1.pie(self.sizes, explode=self.explode, labels=self.labels, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),
                     shadow=True, startangle=90)
 		# Equal aspect ratio ensures that pie is drawn as a circle.
 		self.ax1.axis('equal')
 		self.ax1.set_title("Gesamtanzahl der Test: %s" % (self.tests), pad=32)
+		# Histogram of Durchlaufzeiten
+		self.bins = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28,
+                    30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60]
+		self.cycleTimeArray = np.array(self.cycleTime)
+		self.ax2 = plt.hist(self.cycleTimeArray, self.bins)
+		self.ax2.set_title("Durchlaufzeit in min")
 		plt.savefig('tmp/' + str(self.date) + '.png', dpi=(170))
-		
+
 
 	def generate(self):
 

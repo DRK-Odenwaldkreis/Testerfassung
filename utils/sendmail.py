@@ -28,7 +28,8 @@ SMTP_PASSWORD = read_config("Mail", "SMTP_PASSWORD")
 GESUNDHEITSAMT = read_config("Mail", "GESUNDHEITSAMT")
 simulationMode = 0
 
-def send_mail_report(filenames, day):
+
+def send_mail_report(filenames, day, recipients):
     try:
         logging.debug(
             "Receviced the following filename %s to be sent." % (filenames))
@@ -37,17 +38,12 @@ def send_mail_report(filenames, day):
             fileContent = f.read()
         messageContent = fileContent.replace('[[DAY]]', str(day))
         message.attach(MIMEText(messageContent, 'html'))
-        recipients = ['', '', '']
         message['Subject'] = "Neuer Tagesreport für: %s" % (str(day))
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['Cc'] = 'info@testzentrum-odenwald.de'
         message['To'] = ", ".join(recipients)
-        files = []
-        for i in filenames:
-            filenameRaw = i
-            i = '../../Reports/' + str(filenameRaw)
-            files.append(i)
+        files = [filenames]
         for item in files:
             attachment = open(item, 'rb')
             part = MIMEBase('application', 'octet-stream')

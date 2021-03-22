@@ -12,11 +12,11 @@ from utils.database import Database
 def get_Mail_from_UserID(id):
     try:
         DatabaseConnect = Database()
-        sql = 'Select username from li_user where id = %s' % (id)
+        sql = 'Select email from li_user where id = %s' % (id)
         userMail = DatabaseConnect.read_single(sql)
         return userMail[0]
     except:
-        return "service@impfzentrum-odw.de"
+        return "info@testzentrum-odw.de"
 
 
 def get_Mail_List(idList):
@@ -30,3 +30,15 @@ def get_Mail_List(idList):
         return mailingList
     except Exception as e:
         print("The following error occured in reminder job: %s" % (e))
+
+
+def get_Mail_from_StationID(id):
+    try:
+        DatabaseConnect = Database()
+        sql = 'Select email from li_user where Station = %s and email is not NULL' % (id)
+        userMail = DatabaseConnect.read_all(sql)
+        if len(userMail) == 0:
+            userMail = ["info@testzentrum-odw.de"]
+        return userMail
+    except:
+        return ["info@testzentrum-odw.de"]
