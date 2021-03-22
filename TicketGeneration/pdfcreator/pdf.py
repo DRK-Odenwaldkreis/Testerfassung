@@ -56,6 +56,7 @@ class PDFgenerator(FPDF):
 		self.create_page()
 		self.filename = "../../Tickets/" + str(self.vorname) + "-" + str(self.nachname) + "_" + str(self.date) + ".pdf"
 		self.output(self.filename)
+		return self.filename
 	
 
 	def header(self):
