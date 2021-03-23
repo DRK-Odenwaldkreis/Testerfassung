@@ -20,7 +20,7 @@ include_once 'auth.php';
 include_once 'menu.php';
 
 // role check
-if( A_checkpermission(array(0,0,0,4)) ) {
+if( A_checkpermission(array(0,0,0,4,0)) ) {
 
 
     // Print html header

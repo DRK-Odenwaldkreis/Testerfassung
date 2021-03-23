@@ -22,7 +22,7 @@ include_once 'auth.php';
 include_once 'menu.php';
 
 // role check
-if( A_checkpermission(array(0,2,0,4)) ) {
+if( A_checkpermission(array(0,2,0,4,0)) ) {
 
     $errorhtml0 ='';
     $display_creating_testkarten=false;

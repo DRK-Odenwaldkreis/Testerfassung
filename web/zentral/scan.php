@@ -33,7 +33,7 @@ echo $GLOBALS['G_html_menu2'];
 echo $GLOBALS['G_html_main_right_a'];
 
 // role check
-if( A_checkpermission(array(1,0,0,4)) || true) {
+if( A_checkpermission(array(1,0,0,4,0)) ) {
 
 
   // Open database connection
@@ -45,69 +45,103 @@ if( A_checkpermission(array(1,0,0,4)) || true) {
   // Scanergebnis verarbeiten
   // ///////////////
 
+    // Is scanned code K=Testkarte or P=Pre-Registration
+    $scan_type=substr($_GET['scan'],0,1);
 
+    if($scan_type=='K' || $scan_type=='k') {
+      // //////////////////
+      // TESTKARTE
+      // //////////////////
+      
+      // check Testkarte frei?
+      $testkarte=S_get_entry_vorgang($Db,$_GET['scan']);
 
-    // check Testkarte frei?
-    $testkarte=S_get_entry_vorgang($Db,$_GET['scan']);
+      if($testkarte=="Not registered") {
+        // ///////////////
+        // Karte ungültig
+        // ///////////////
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Karte ungültig</h3>
+        <div class="list-group">';
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
+        echo '</div></div>';
 
-    if($testkarte=="Not registered") {
-      // ///////////////
-      // Karte ungültig
-      // ///////////////
-      echo '<div class="row">';
-      echo '<div class="col-sm-12">
-      <h3>Karte ungültig</h3>
-      <div class="list-group">';
-      echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
-      echo '</div></div>';
+      } elseif($testkarte=="Used") {
+        // ///////////////
+        // Karte bereits benutzt
+        // ///////////////
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Testergebnis bereits eingetragen</h3>
+        <div class="list-group">';
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
+        echo '</div></div>';
 
-    } elseif($testkarte=="Used") {
-      // ///////////////
-      // Karte bereits benutzt
-      // ///////////////
-      echo '<div class="row">';
-      echo '<div class="col-sm-12">
-      <h3>Testergebnis bereits eingetragen</h3>
-      <div class="list-group">';
-      echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
-      echo '</div></div>';
+      } elseif($testkarte>0) {
+        // ///////////////
+        // Auswertung Testergebnis
+        // ///////////////
 
-    } elseif($testkarte>0) {
-      // ///////////////
-      // Auswertung Testergebnis
-      // ///////////////
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Testergebnis eintragen</h3>';
 
-      echo '<div class="row">';
-      echo '<div class="col-sm-12">
-      <h3>Testergebnis eintragen</h3>';
+        $array_vorgang=S_get_multientry($Db,'SELECT Teststation, Token, Registrierungszeitpunkt, Nachname, Vorname FROM Vorgang WHERE id=CAST('.$testkarte.' AS int);');
 
-      $array_vorgang=S_get_multientry($Db,'SELECT Teststation, Token, Registrierungszeitpunkt, Nachname, Vorname FROM Vorgang WHERE id=CAST('.$testkarte.' AS int);');
+        echo '<div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">S</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][0].'" disabled></div>
+        <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">K</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][1].'" disabled></div>
+        <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Zeit</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][2].'" disabled></div>
+        <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Person</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][3].'/'.$array_vorgang[0][4].'" disabled>
+        </div>';
 
-      echo '<div class="input-group">
-      <span class="input-group-addon" id="basic-addon1">S</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][0].'" disabled></div>
-      <div class="input-group">
-      <span class="input-group-addon" id="basic-addon1">K</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][1].'" disabled></div>
-      <div class="input-group">
-      <span class="input-group-addon" id="basic-addon1">Zeit</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][2].'" disabled></div>
-      <div class="input-group">
-      <span class="input-group-addon" id="basic-addon1">Person</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][3].'/'.$array_vorgang[0][4].'" disabled>
-      </div>';
+        echo '<div class="list-group">
+        <br> <br>
+        <a class="list-group-item list-group-item-danger list-group-item-FAIR" id="module-positiv" href="'.$current_site.'.php?t=K'.$array_vorgang[0][1].'&e=1">POSITIV</a>
+        <br>
+        <br>
+        <br>
+        <a class="list-group-item list-group-item-success list-group-item-FAIR" id="module-positiv" href="'.$current_site.'.php?t=K'.$array_vorgang[0][1].'&e=2">NEGATIV</a>
+        <br>
+        <br>
+        <br>
+        <a class="list-group-item list-group-item-warning list-group-item-FAIR" id="module-positiv" href="'.$current_site.'.php?t=K'.$array_vorgang[0][1].'&e=9">FEHLERHAFT</a>
+        ';
+        echo '</div></div>';
 
-      echo '<div class="list-group">
-      <br> <br>
-      <a class="list-group-item list-group-item-danger list-group-item-FAIR" id="module-positiv" href="'.$current_site.'.php?t=K'.$array_vorgang[0][1].'&e=1">POSITIV</a>
-      <br>
-      <br>
-      <br>
-      <a class="list-group-item list-group-item-success list-group-item-FAIR" id="module-positiv" href="'.$current_site.'.php?t=K'.$array_vorgang[0][1].'&e=2">NEGATIV</a>
-      <br>
-      <br>
-      <br>
-      <a class="list-group-item list-group-item-warning list-group-item-FAIR" id="module-positiv" href="'.$current_site.'.php?t=K'.$array_vorgang[0][1].'&e=9">FEHLERHAFT</a>
-      ';
-      echo '</div></div>';
+      } elseif( isset($_GET['prereg']) ) {
+        // ///////////////
+        // Registrierung mit Voranmeldung
+        // ///////////////
+        // Get data
+        $array_voranmeldung=S_get_multientry($Db,'SELECT id, Vorname, Nachname, Geburtsdatum, Adresse, Telefon, Mailadresse FROM Voranmeldung WHERE id=CAST('.$_GET['prereg'].' AS int);');
 
-    } else {
+        // Show data
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Kunden-Registrierung aus Voranmeldung</h3>';
+        echo '<form action="'.$current_site.'.php" method="post">
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Testkarte</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$_GET['scan'].'" disabled>
+        <input type="text" name="token" value="'.$_GET['scan'].'" style="display:none;"></div>
+        <div class="input-group"><input type="text" name="prereg" value="'.$array_voranmeldung[0][0].'" style="display:none;"></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][1].'" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][2].'" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][3].'" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][4].'" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][5].'"></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][6].'"></div>
+        <span class="input-group-btn">
+          <input type="submit" class="btn btn-danger" value="Registrieren" name="submit_person" />
+          </span>
+        </form>
+        <p>* optional</p>';
+        
+        echo '</div></div>';
+      } else {
         // ///////////////
         // Registrierung
         // ///////////////
@@ -118,12 +152,12 @@ if( A_checkpermission(array(1,0,0,4)) || true) {
         echo '<form action="'.$current_site.'.php" method="post">
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Testkarte</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$_GET['scan'].'" disabled>
         <input type="text" name="token" value="'.$_GET['scan'].'" style="display:none;"></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1"></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1"></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off"></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off"></div>
         <span class="input-group-btn">
           <input type="submit" class="btn btn-danger" value="Registrieren" name="submit_person" />
           </span>
@@ -132,8 +166,96 @@ if( A_checkpermission(array(1,0,0,4)) || true) {
         
         echo '</div></div>';
 
+      }
+    } elseif($scan_type=='P' || $scan_type=='p') {
+      // /////////////////
+      // PRE-REGISTRATION
+      // /////////////////
+      $preregistration=S_get_entry_voranmeldung($Db,$_GET['scan']);
+      if($preregistration=="Not registered") {
+        // ///////////////
+        // Code ungültig
+        // ///////////////
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Voranmeldung ungültig - keine Daten gefunden</h3>
+        <div class="list-group">';
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
+        echo '</div></div>';
+
+      } elseif($preregistration=="Used") {
+        // ///////////////
+        // Code bereits benutzt
+        // ///////////////
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Voranmeldung bereits in Registrierung umgewandelt</h3>
+        <div class="list-group">';
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
+        echo '</div></div>';
+
+      } elseif($preregistration>0) {
+        // ///////////////
+        // Voranmeldung in Vorgang übertragen
+        // ///////////////
+
+        // Get person data
+        $array_voranmeldung=S_get_multientry($Db,'SELECT Nachname, Vorname, Geburtsdatum, Slot FROM Voranmeldung WHERE id=CAST('.$preregistration.' AS int);');
+        // Slot data
+        // TODO
+        
+        // Show person data
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Termin gültig für</h3>';
+        echo '<div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Slot</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_voranmeldung[0][3].'" disabled></div>
+        <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Name</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_voranmeldung[0][0].'" disabled></div>
+        <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_voranmeldung[0][1].'" disabled></div>
+        <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Geboren am</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_voranmeldung[0][2].'" disabled></div>
+        ';
+        echo '</div></div>';
+
+        // show scan window for Testkarte
+        echo '
+        <script type="text/javascript" src="lib/qrscan-lib/html5-qrcode.min.js"></script>
+        ';
+
+
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Bitte Testkarte scannen</h3>';
+
+
+        echo '<div style="width: 500px" id="reader"></div>';
+
+
+      echo '<script>
+    const html5QrCode = new Html5Qrcode("reader");
+    const qrCodeSuccessCallback = message => { window.location.href=`?scan=${message}&prereg='.$preregistration.'`; }
+    const config = { fps: 10, qrbox: 350 };
+
+    html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+
+      </script>
+      ';
+      // Manuelle Eingabe
+      echo '
+      <h3>Manuelle Eingabe</h3>
+      <form action="'.$current_site.'.php" method="get">
+            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nummer</span><input type="text" name="scan" value="K" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off">
+            <input type="text" name="prereg" value="'.$preregistration.'" class="form-control" aria-describedby="basic-addon1" style="display:none;">
+            <span class="input-group-btn">
+              <input type="submit" class="btn btn-danger" value="Senden" name="scan_send" />
+              </span>
+            </form>';
+
+
+      }
     }
-      
 
   } elseif( isset($_GET['t']) && isset($_GET['e']) && !isset($_GET['c']) ) {
   // ///////////////
@@ -213,6 +335,11 @@ if( A_checkpermission(array(1,0,0,4)) || true) {
     $k_adresse=$_POST['adresse'];
     $k_tel=$_POST['telefon'];
     $k_email=$_POST['email'];
+    if( isset($_POST['prereg']) ) {
+      $k_prereg=$_POST['prereg'];
+    } else {
+      $k_prereg=false;
+    }
     $now=date("Y-m-d H:i:s",time());
 
     S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,Vorname,Nachname,Geburtsdatum,Adresse,Telefon,Mailadresse) VALUES ('.$_SESSION['station_id'].',
@@ -231,6 +358,10 @@ if( A_checkpermission(array(1,0,0,4)) || true) {
       echo '<div class="col-sm-12">
       <h3>Kunde registriert</h3>';
       echo "<h4>Daten: S".$array_written[0][1]." / K".$array_written[0][2]." / ".$array_written[0][4]." / ".$array_written[0][3]." / ".$array_written[0][5]." / ".$array_written[0][6]." / ".$array_written[0][7]." / ".$array_written[0][8]."</h4>";
+      // Pre-registration -> set value to used
+      if($k_prereg) {
+        S_set_data($Db,'UPDATE Voranmeldung SET Used=1 WHERE id=CAST('.$k_prereg.' AS int);');
+      }
     } else {
       echo '<div class="col-sm-12">
       <h3>Speicherfehler</h3>';

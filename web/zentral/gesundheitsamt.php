@@ -22,7 +22,7 @@ include_once 'auth.php';
 include_once 'menu.php';
 
 // role check
-if( A_checkpermission(array(0,0,3,4)) ) {
+if( A_checkpermission(array(0,0,3,4,0)) ) {
 
 
 
@@ -84,7 +84,7 @@ if( A_checkpermission(array(0,0,3,4)) ) {
   $Db=S_open_db();
 
   // Get all test for today
-  $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Ergebnis = 1 AND Date(Registrierungszeitpunkt)="'.$today.'";');
+  $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Ergebnis = 1 AND Date(Registrierungszeitpunkt)="'.$today.'"  ORDER BY Registrierungszeitpunkt DESC;');
 
 
   echo '<h1>Ansicht der Positivmeldungen</h1>';

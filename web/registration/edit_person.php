@@ -33,7 +33,7 @@ echo $GLOBALS['G_html_menu2'];
 echo $GLOBALS['G_html_main_right_a'];
 
 // role check
-if( A_checkpermission(array(1,2,0,4,5)) ) {
+if( A_checkpermission(array(1,2,0,4)) ) {
 
 
   // Open database connection

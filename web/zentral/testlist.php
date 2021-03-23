@@ -22,7 +22,7 @@ include_once 'auth.php';
 include_once 'menu.php';
 
 // role check
-if( A_checkpermission(array(1,2,0,4)) ) {
+if( A_checkpermission(array(1,2,0,4,5)) ) {
 
 
 
@@ -83,8 +83,19 @@ if( A_checkpermission(array(1,2,0,4)) ) {
   // Open database connection
   $Db=S_open_db();
 
-  // Get all test for today
-  $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'";');
+  // Get all tests for today or another day
+  if(A_checkpermission(array(1,0,0,0,0))) {
+    // only for own station and today
+    $today=date("Y-m-d",time());
+    $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'" AND Teststation=CAST('.$_SESSION['station_id'].' AS int) ORDER BY Registrierungszeitpunkt DESC;');
+  } elseif(A_checkpermission(array(0,0,0,0,5))) {
+    // only for own station
+    $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'" AND Teststation=CAST('.$_SESSION['station_id'].' AS int)  ORDER BY Registrierungszeitpunkt DESC;');
+  } else {
+    // for all stations
+    $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'"  ORDER BY Registrierungszeitpunkt DESC;');
+
+  }
 
 
   echo '<h1>Ansicht der registrierten Tests</h1>';
@@ -94,20 +105,26 @@ if( A_checkpermission(array(1,2,0,4)) ) {
   echo '<div class="card">
   <div class="col-sm-4">';
   echo '<p></p>';
-  echo'<form action="'.$current_site.'.php" method="post">
-  <div class="input-group">
-  <span class="input-group-addon" id="basic-addonA2">Tag auswählen</span>
-  <input type="date" class="form-control" placeholder="Tag wählen" aria-describedby="basic-addonA2" value="'.$today.'" name="date">
-  <span class="input-group-btn">
-  <input type="submit" class="btn btn-default" value="- 1 Tag" name="show_times_minus1" />
-  <input type="submit" class="btn btn-default" value="Heute" name="show_times_today" />
-  <input type="submit" class="btn btn-default" value="+ 1 Tag" name="show_times_plus1" />
-  </span>
-  </div>
-  <div class="FAIR-si-button">
-    <input type="submit" class="btn btn-danger" value="Liste anzeigen" name="show_times" />
-    </div></form>
-  </div>';
+  if(A_checkpermission(array(1,0,0,0,0))) {
+    // only today
+    echo '<input type="date" class="form-control" placeholder="Tag wählen" aria-describedby="basic-addonA2" value="'.$today.'" name="date" disabled>';
+  } else {
+    // choose a day
+    echo'<form action="'.$current_site.'.php" method="post">
+    <div class="input-group">
+    <span class="input-group-addon" id="basic-addonA2">Tag auswählen</span>
+    <input type="date" class="form-control" placeholder="Tag wählen" aria-describedby="basic-addonA2" value="'.$today.'" name="date">
+    <span class="input-group-btn">
+    <input type="submit" class="btn btn-default" value="- 1 Tag" name="show_times_minus1" />
+    <input type="submit" class="btn btn-default" value="Heute" name="show_times_today" />
+    <input type="submit" class="btn btn-default" value="+ 1 Tag" name="show_times_plus1" />
+    </span>
+    </div>
+    <div class="FAIR-si-button">
+      <input type="submit" class="btn btn-danger" value="Liste anzeigen" name="show_times" />
+      </div></form>
+    </div>';
+  }
 
   echo '
   <div class="col-sm-12">
@@ -116,7 +133,7 @@ if( A_checkpermission(array(1,2,0,4)) ) {
   
     echo '
     <tr>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Laufende Nummer</h3></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Lfd. ID</h3></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3></h3></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Stations-ID</h3></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Test Nummer</h3></td>
@@ -125,9 +142,9 @@ if( A_checkpermission(array(1,2,0,4)) ) {
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Geburtsdatum</h3></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Adresse</h3></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Telefonnummer</h3></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Mail</h3></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Testergebnis</h3></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Ergeb. versch.</h3></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>E-Mail</h3></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Resultat</h3></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>versendet</h3></td>
     </tr>';
 
   //Get list of times
@@ -148,7 +165,7 @@ if( A_checkpermission(array(1,2,0,4)) ) {
       $class_ergebnis='';
       $text_ergebnis='---';
     }
-    if($i[12]==1) {
+    if($i[12]==1 && $i[9]!='') {
       $text_mailsend='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="edit_person.php?reset=mail&id='.$i[0].'">E-Mail Reset</a>';
     } else {
       $text_mailsend='keine E-Mail verschickt';
@@ -175,26 +192,27 @@ if( A_checkpermission(array(1,2,0,4)) ) {
   }
   echo '</table></div></div>';
 
-  // Get CSV file
-  echo '<div class="card">
-      <div class="col-sm-4">
-      <h3>Export</h3>
-      <p></p>';
-      echo '<form action="'.$current_site.'.php" method="post">
-      <div class="input-group">
-        <span class="input-group-addon" id="basic-addonA2">Tag auswählen</span>
-        <input type="date" class="form-control" placeholder="Tag wählen" aria-describedby="basic-addonA2" value="'.$today.'" name="date">
-        </div>
-          <input type="submit" class="btn btn-danger" value="Export CSV" name="create_export_csv" />
-          </span>
+  if(A_checkpermission(array(0,2,0,4,0))) {
+    // Get CSV file
+    echo '<div class="card">
+        <div class="col-sm-4">
+        <h3>Export</h3>
+        <p></p>';
+        echo '<form action="'.$current_site.'.php" method="post">
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addonA2">Tag auswählen</span>
+          <input type="date" class="form-control" placeholder="Tag wählen" aria-describedby="basic-addonA2" value="'.$today.'" name="date">
           </div>
-          </form>';
-      echo $errorhtml0;
-    
-      echo '</div></div>';
+            <input type="submit" class="btn btn-danger" value="Export CSV" name="create_export_csv" />
+            </span>
+            </div>
+            </form>';
+        echo $errorhtml0;
+      
+        echo '</div></div>';
 
-  echo '</div>';
-
+    echo '</div>';
+  }
 
 
   // Close connection to database

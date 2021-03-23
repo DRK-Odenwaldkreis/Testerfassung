@@ -108,25 +108,25 @@ function S_get_entry_vorgang ($Db,$scanevent) {
 	}
 }
 
-function S_get_entry_voranmeldung ($Db,$scanevent) {
-	$stmt=mysqli_prepare($Db,"SELECT id, Used FROM Voranmeldung WHERE Token=?;");
-	mysqli_stmt_bind_param($stmt, "s", $scanevent);
+function S_set_entry_voranmeldung ($Db,$array_data) {
+	$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Geburtsdatum, Adresse, Telefon, Mailadresse, Slot) VALUES (?,?,?,?,?,?,?);");
+	mysqli_stmt_bind_param($stmt, "s", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5], $array_data[6]);
 	mysqli_stmt_execute($stmt);
-	mysqli_stmt_bind_result($stmt, $id_voranmeldung, $used);
+	mysqli_stmt_bind_result($stmt, $result);
 	mysqli_stmt_fetch($stmt);
 	mysqli_stmt_close($stmt);
-	// Check if number exists in table Voranmeldung
-	if($used==1) {
-		// bereits verwendet
-		return "Used";
-	} elseif($id_voranmeldung>0) {
-		// Return result of SQL query
-		return $id_voranmeldung;
-	} else {
-		return "Not registered";
-	}
+	return $result; // TODO need id as a return value
 }
 
+function S_get_entry_voranmeldung ($Db,$array_data) {
+	$stmt=mysqli_prepare($Db,"SELECT id_preregistration FROM Voranmeldung_Verif WHERE id=? AND Token=?;");
+	mysqli_stmt_bind_param($stmt, "s", $array_data[0], $array_data[1]);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $id);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+	return $id;
+}
 
 
 /****************************************/
@@ -143,82 +143,6 @@ function A_generate_token($length = 8) {
     }
     return $randomString;
 }
-
-// Login for user with $uid
-// $mode is for 'password', 'code', ...
-function A_login($Db,$uid,$mode) {
-    
-	$_SESSION['uid'] = $uid;
-	if($_SESSION['uid']=='') { die("Error in database. (Err:102)"); }
-	
-	$_SESSION['signedin'] = true;
-	$_SESSION['username'] = S_get_entry($Db,'SELECT username FROM li_user WHERE id='.$uid.';');
-	$_SESSION['station_id'] = S_get_entry($Db,'SELECT Station FROM li_user WHERE id='.$uid.';');
-	if($_SESSION['station_id']>0) {
-		$_SESSION['station_name'] = S_get_entry($Db,'SELECT Ort FROM Station WHERE id='.$_SESSION['station_id'].';');
-	} else {
-		$_SESSION['station_name']="";
-	}
-
-	/* Rollen
-		1 - Teststation
-		2 - Office
-		3 - Gesundheitsamt
-		4 - Admin
-		5 - Gruppenleitung */
-	$t = S_get_multientry($Db,'SELECT 0, role_1, role_2, role_3, role_4, role_5 FROM li_user WHERE id='.$uid.';');
-	$_SESSION['roles']=$t[0];
-
-	if($mode!='check' && $mode!='chguserid') {
-		// Cookie will expire after 12 hrs after log-in
-		// PHP session will expire earlier if no site request
-		$expiry = time() + 12*60*60;
-		$data = (object) array( "un" => $_SESSION['username'], "pw" => S_get_entry($Db,'SELECT password_hash FROM li_user WHERE id='.$uid.'') );
-		$cookieData = (object) array( "data" => $data, "expiry" => $expiry );
-		setcookie('drk-cookie', json_encode( $cookieData ), $expiry);
-	}
-	
-	//login lock reset > set failed attempts to 0
-	S_set_data($Db,'UPDATE li_user SET login_attempts=0 WHERE id='.$uid.';');
-	
-	// Delete older login tokens
-	S_set_data($Db,'DELETE FROM li_token WHERE id_user='.$uid.';');
-
-    return true;
-}
-
-// Check if user with $uid is already logged in after standard session time is expired
-function A_checkloggedin($Db,$username,$hash) {
-
-	// Benutzername und Hash werden überprüft
-	if($username!='') {
-		$uid=S_get_entry($Db,'SELECT id FROM li_user WHERE lower(username)=\''.$username.'\'');
-		if($uid>0) {
-			$db_hash=S_get_entry($Db,'SELECT password_hash FROM li_user WHERE id='.$uid.'');
-		} else {
-			$db_hash='';
-		}
-		// Check correct password hash
-		if ( $hash === $db_hash ) {
-			A_login($Db,$uid,'check');
-			return true;
-		}
-	}
-
-    return false;
-}
-
-// Check if user role fits to requirements
-function A_checkpermission($requirement) {
-	$bool_permission=false;
-	foreach($requirement as $b) {
-		if($b>0 && $_SESSION['roles'][$b]==1) { 
-			$bool_permission=true;
-		}
-	}
-return $bool_permission;
-}
-
 
 
 /****************************************/

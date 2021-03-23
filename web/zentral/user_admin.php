@@ -20,7 +20,7 @@ include_once 'auth.php';
 include_once 'menu.php';
 
 // role check
-if( A_checkpermission(array(0,0,0,4)) ) {
+if( A_checkpermission(array(0,0,0,4,0)) ) {
 
 
     // Open database connection
@@ -51,6 +51,8 @@ if( A_checkpermission(array(0,0,0,4)) ) {
                 if(isset($_POST['e_r2'])) { $u_role_2=1;} else {$u_role_2=0;}
                 if(isset($_POST['e_r3'])) { $u_role_3=1;} else {$u_role_3=0;}
                 if(isset($_POST['e_r4'])) { $u_role_4=1;} else {$u_role_4=0;}
+                if(isset($_POST['e_r4'])) { $u_role_4=1;} else {$u_role_4=0;}
+                if(isset($_POST['e_r5'])) { $u_role_5=1;} else {$u_role_5=0;}
 
                 // write data
                 if($email!='') {
@@ -62,7 +64,7 @@ if( A_checkpermission(array(0,0,0,4)) ) {
                 }
 
                 //  edit staff data
-                S_set_data($Db,'UPDATE li_user SET username=\''.$username.'\',login_attempts=CAST('.$attempts.' AS int), role_1='.$u_role_1.', role_2='.$u_role_2.', role_3='.$u_role_3.', role_4='.$u_role_4.'  WHERE id='.$user_id.';');
+                S_set_data($Db,'UPDATE li_user SET username=\''.$username.'\',login_attempts=CAST('.$attempts.' AS int), role_1='.$u_role_1.', role_2='.$u_role_2.', role_3='.$u_role_3.', role_4='.$u_role_4.', role_5='.$u_role_5.'  WHERE id='.$user_id.';');
                 $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
                 
             } else {
@@ -87,6 +89,7 @@ if( A_checkpermission(array(0,0,0,4)) ) {
             $u_role_2=S_get_entry($Db,'SELECT role_2 FROM li_user WHERE id=CAST('.$user_id.' AS int);');
             $u_role_3=S_get_entry($Db,'SELECT role_3 FROM li_user WHERE id=CAST('.$user_id.' AS int);');
             $u_role_4=S_get_entry($Db,'SELECT role_4 FROM li_user WHERE id=CAST('.$user_id.' AS int);');
+            $u_role_5=S_get_entry($Db,'SELECT role_5 FROM li_user WHERE id=CAST('.$user_id.' AS int);');
             /* if($u_nname!='') {
                 $u_display=$u_nname.', '.$u_vname;
             } else {
@@ -171,6 +174,7 @@ if( A_checkpermission(array(0,0,0,4)) ) {
         if($u_role_2==1) {$u_role_2_selected="checked";} else {$u_role_2_selected="";}
         if($u_role_3==1) {$u_role_3_selected="checked";} else {$u_role_3_selected="";}
         if($u_role_4==1) {$u_role_4_selected="checked";} else {$u_role_4_selected="";}
+        if($u_role_5==1) {$u_role_5_selected="checked";} else {$u_role_5_selected="";}
 
         echo'<form action="'.$current_site.'.php" method="post">
         <div class="input-group">
@@ -192,6 +196,8 @@ if( A_checkpermission(array(0,0,0,4)) ) {
         <label for="e_r3">Rolle Gesundheitsamt</label><span style="padding-left:10px;"></span>
         <input type="checkbox" aria-label="r4" name="e_r4" '.$u_role_4_selected.'>
         <label for="e_r4">Rolle Admin</label><span style="padding-left:10px;"></span>
+        <input type="checkbox" aria-label="r5" name="e_r5" '.$u_role_5_selected.'>
+        <label for="e_r5">Rolle Gruppenleitung einer Station</label><span style="padding-left:10px;"></span>
         </span>
         </div>
         <div class="FAIR-si-button">
