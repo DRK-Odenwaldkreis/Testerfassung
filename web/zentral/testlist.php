@@ -83,13 +83,12 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   // Open database connection
   $Db=S_open_db();
 
-<<<<<<< HEAD
   // Get all tests for today or another day
-  if(A_checkpermission(array(1,0,0,0,0))) {
+  if( A_checkpermission(array(1,0,0,0,0)) && !A_checkpermission(array(0,2,0,4,5)) ) {
     // only for own station and today
     $today=date("Y-m-d",time());
     $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'" AND Teststation=CAST('.$_SESSION['station_id'].' AS int) ORDER BY Registrierungszeitpunkt DESC;');
-  } elseif(A_checkpermission(array(0,0,0,0,5))) {
+  } elseif( A_checkpermission(array(0,0,0,0,5)) && !A_checkpermission(array(0,2,0,4,0)) ) {
     // only for own station
     $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'" AND Teststation=CAST('.$_SESSION['station_id'].' AS int)  ORDER BY Registrierungszeitpunkt DESC;');
   } else {
@@ -97,10 +96,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'"  ORDER BY Registrierungszeitpunkt DESC;');
 
   }
-=======
-  // Get all test for today
-  $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'" ORDER BY Registrierungszeitpunkt DESC;');
->>>>>>> 122d6b4b2003b81fb50a8b8ffb0c246426f1b1a3
+
 
 
   echo '<h1>Ansicht der registrierten Tests</h1>';
@@ -110,7 +106,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   echo '<div class="card">
   <div class="col-sm-4">';
   echo '<p></p>';
-  if(A_checkpermission(array(1,0,0,0,0))) {
+  if( A_checkpermission(array(1,0,0,0,0)) && !A_checkpermission(array(0,2,0,4,5)) ) {
     // only today
     echo '<input type="date" class="form-control" placeholder="Tag wählen" aria-describedby="basic-addonA2" value="'.$today.'" name="date" disabled>';
   } else {
