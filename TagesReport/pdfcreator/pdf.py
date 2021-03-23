@@ -5,6 +5,7 @@
 
 import matplotlib.pyplot as plt
 import sys
+import numpy as np
 from fpdf import FPDF
 import time
 import os
@@ -28,7 +29,7 @@ class MyPDF(FPDF):
 		self.set_font('GNU', '', 11)
 		self.cell(40, 10, 'Testzentrum Odenwaldkreis:', ln=1)
 		self.image(Logo, x=7, y=10, w=100, h=24, type='PNG')
-		self.ln(10)
+		self.ln(20)
 
 
 	def footer(self):
@@ -52,18 +53,26 @@ class PDFgenerator:
 		self.positiv = self.content[2]
 		self.negativ = self.content[3]
 		self.unklar = self.content[4]
+		self.cycleTime = self.content[5]
 
 		# Pie chart, where the slices will be ordered and plotted counter-clockwise:
 		self.labels = 'Positiv', 'Negativ', 'Unklar'
 		self.sizes = [self.positiv, self.negativ, self.unklar]
 		self.explode = (1, 0.1, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
-		self.fig1, self.ax1 = plt.subplots()
+		self.fig1, (self.ax1, self.ax2) = plt.subplots(1,2)
+		self.fig1.suptitle("Gesamtanzahl der Test: %s" % (self.tests))
 		self.ax1.pie(self.sizes, explode=self.explode, labels=self.labels, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),
-                    shadow=True, startangle=90)
+                    shadow=False, startangle=90)
 		# Equal aspect ratio ensures that pie is drawn as a circle.
 		self.ax1.axis('equal')
-		self.ax1.set_title("Gesamtanzahl der Test: %s" % (self.tests), pad=32)
+		# Histogram of Durchlaufzeiten
+		self.cycleTimeArray = np.array(self.cycleTime)
+		plt.hist(self.cycleTimeArray, range(15,30))
+		self.ax2.set_title("Schnitt: %s min" %(round(self.cycleTimeArray.mean(),1)))
+		self.ax2.set_ylabel("Anzahl")
+		self.ax2.set_xlabel("Durchlaufzeit [min]")
 		plt.savefig('tmp/' + str(self.date) + '.png', dpi=(170))
+
 
 	def generate(self):
 

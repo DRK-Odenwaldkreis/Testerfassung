@@ -28,7 +28,8 @@ SMTP_PASSWORD = read_config("Mail", "SMTP_PASSWORD")
 GESUNDHEITSAMT = read_config("Mail", "GESUNDHEITSAMT")
 simulationMode = 0
 
-def send_mail_report(filenames, day):
+
+def send_mail_report(filenames, day, recipients):
     try:
         logging.debug(
             "Receviced the following filename %s to be sent." % (filenames))
@@ -37,17 +38,12 @@ def send_mail_report(filenames, day):
             fileContent = f.read()
         messageContent = fileContent.replace('[[DAY]]', str(day))
         message.attach(MIMEText(messageContent, 'html'))
-        recipients = ['', '', '']
         message['Subject'] = "Neuer Tagesreport für: %s" % (str(day))
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['Cc'] = 'info@testzentrum-odenwald.de'
         message['To'] = ", ".join(recipients)
-        files = []
-        for i in filenames:
-            filenameRaw = i
-            i = '../../Reports/' + str(filenameRaw)
-            files.append(i)
+        files = [filenames]
         for item in files:
             attachment = open(item, 'rb')
             part = MIMEBase('application', 'octet-stream')
@@ -265,9 +261,9 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment):
         message = MIMEMultipart()
         with open('../utils/MailLayout/Reminder.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(slot))
+        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment))
         message.attach(MIMEText(messageContent, 'html'))
-        message['Subject'] = "Erinnerung an Ihren Termin %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
+        message['Subject'] = "Erinnerung an Termin %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = recipient
@@ -283,5 +279,44 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment):
         return True
     except Exception as err:
         logging.error(
-            "The following error occured in send mail download: %s" % (err))
+            "The following error occured in send mail reminder: %s" % (err))
         return False
+
+def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, filename):
+    try:
+        print(filename)
+        logging.debug("Receviced the following recipient: %s to be sent to." % (
+            recipient))
+        message = MIMEMultipart()
+        with open('../utils/MailLayout/QRTicket.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment))
+        message.attach(MIMEText(messageContent, 'html'))
+        message['Subject'] = "Persönliches Testticket für den Termin um %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
+        message['From'] = FROM_EMAIL
+        message['reply-to'] = FROM_EMAIL
+        message['To'] = recipient
+        files = [filename]
+        for item in files:
+            attachment = open(item, 'rb')
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload((attachment).read())
+            encoders.encode_base64(part)
+            part.add_header(
+                'Content-Disposition', "attachment; filename= " + item.replace('../../Tickets/', ''))
+            message.attach(part)
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp.set_debuglevel(True)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        if simulationMode == 0:
+            logging.debug("Going to send message")
+            smtp.send_message(message)
+            logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error(
+            "The following error occured in send mail qr ticket: %s" % (err))
+        return False
+

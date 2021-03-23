@@ -13,7 +13,7 @@ import datetime
 logFile = '../../Logs/cleanJob.log'
 logging.basicConfig(filename=logFile, level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger('Nightly Auto Clean started on: %s')%(datetime.datetime.now())
+logger = logging.getLogger('Nightly Auto Clean started on: %s'%datetime.datetime.now())
 logger.debug('Starting')
 
 if __name__ == "__main__":

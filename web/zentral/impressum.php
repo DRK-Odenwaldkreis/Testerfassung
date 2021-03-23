@@ -37,21 +37,19 @@ echo $GLOBALS['G_html_menu2'];
 echo $GLOBALS['G_html_main_right_a'];
 
 
-/* if(isset( $_SESSION['uid']) && $_SESSION['uid']>=0 ) {
-    echo '<h3>Personalorganisation</h3>
-    <p>Bei Fragen zu Vertragsthemen oder organisatorischen Anfragen bitte eine E-Mail schreiben an:</p>
-    <p><a href="mailto:dienstplan.impfzentrum@drk-odenwaldkreis.de">dienstplan.impfzentrum@drk-odenwaldkreis.de</a></p>
-    <p><a href="tel:+4960626019994">Telefon: 06062 - 60 19 994</a></p>
+ if(isset( $_SESSION['uid']) && $_SESSION['uid']>=0 ) {
+    echo '<h3>Rückfragen</h3>
+    <p>Bei Fragen zum Testergebnis oder organisatorischen Anfragen bitte eine E-Mail schreiben an:</p>
+    <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
     <p>&nbsp;</p>';
 
-    echo '<h3>Technischer Support</h3>
-    <p><a target="_blank" href="https://github.com/DRK-Odenwaldkreis/Zeiterfassung#ablauf">Für die Dokumentation Terminal-Anwendung hier klicken</a></p>
-    <p><a target="_blank" href="https://github.com/DRK-Odenwaldkreis/Zeiterfassung#webpage">Für die Dokumentation der Web-Anwendung hier klicken</a></p>
+    echo '<h3>Technischer Support für die Teams vor Ort</h3>
+    <p><a target="_blank" href="https://github.com/DRK-Odenwaldkreis/Testerfassung">Für die Dokumentation der Web-Anwendung hier klicken</a></p>
     <p>&nbsp;</p>
     <p>Bei technischen Fragen zum Zeiterfassungssystem bitte eine E-Mail schreiben an den Support:</p>
-    <p><a href="mailto:support@impfzentrum-odw.de">support@impfzentrum-odw.de</a></p>
+    <p><a href="mailto:info@testzentrum-odenwald.">info@testzentrum-odenwald.</a></p>
     <p>&nbsp;</p>';
-} */
+} 
 
 
 echo '<h3>Impressum</h3>

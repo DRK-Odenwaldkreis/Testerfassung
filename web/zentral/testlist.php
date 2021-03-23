@@ -83,6 +83,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   // Open database connection
   $Db=S_open_db();
 
+<<<<<<< HEAD
   // Get all tests for today or another day
   if(A_checkpermission(array(1,0,0,0,0))) {
     // only for own station and today
@@ -96,6 +97,10 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'"  ORDER BY Registrierungszeitpunkt DESC;');
 
   }
+=======
+  // Get all test for today
+  $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'" ORDER BY Registrierungszeitpunkt DESC;');
+>>>>>>> 122d6b4b2003b81fb50a8b8ffb0c246426f1b1a3
 
 
   echo '<h1>Ansicht der registrierten Tests</h1>';
