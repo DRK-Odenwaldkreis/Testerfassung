@@ -26,7 +26,7 @@ if __name__ == "__main__":
             logger.debug('Input parameters are not correct, date needed')
             raise Exception
         DatabaseConnect = Database()
-        sql = "Select Vorname, Nachname, Mailadresse, Slot, Stunde, id, Token, Tag from Voranmeldung where Tag Between '%s 00:00:00' and '%s 23:59:59';" % (requestedDate,requestedDate)
+        sql = "Select Vorname, Nachname, Mailadresse, Slot, Stunde, id, Token, Tag from Voranmeldung where Tag Between '%s 00:00:00' and '%s 23:59:59' and Reminded = 0;" % (requestedDate,requestedDate)
         logger.debug('Getting all appointments for %s, using the following query: %s' % (requestedDate,sql))
         recipients = DatabaseConnect.read_all(sql)
         logger.debug('Received the following recipients: %s' %(str(recipients)))
