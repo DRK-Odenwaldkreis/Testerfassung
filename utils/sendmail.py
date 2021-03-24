@@ -254,14 +254,14 @@ def send_indistinct_result(vorname, nachname, mail, date):
         return False
 
 
-def send_mail_reminder(recipient, date, vorname, nachname, appointment):
+def send_mail_reminder(recipient, date, vorname, nachname, appointmentm, url):
     try:
         logging.debug("Receviced the following recipient: %s to be sent to." % (
             recipient))
         message = MIMEMultipart()
         with open('../utils/MailLayout/Reminder.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment))
+        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment)).replace('[[LINK]]', str(url))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Erinnerung an Termin %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
         message['From'] = FROM_EMAIL
@@ -282,7 +282,7 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment):
             "The following error occured in send mail reminder: %s" % (err))
         return False
 
-def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, filename):
+def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, filename, url):
     try:
         print(filename)
         logging.debug("Receviced the following recipient: %s to be sent to." % (
@@ -290,7 +290,7 @@ def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, filenam
         message = MIMEMultipart()
         with open('../utils/MailLayout/QRTicket.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment))
+        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment)).replace('[[LINK]]', str(url))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Persönliches Testticket für den Termin um %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
         message['From'] = FROM_EMAIL

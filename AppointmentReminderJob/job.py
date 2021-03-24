@@ -26,7 +26,7 @@ if __name__ == "__main__":
             logger.debug('Input parameters are not correct, date needed')
             raise Exception
         DatabaseConnect = Database()
-        sql = "Select Vorname, Nachname, Mailadresse, Slot, Stunde,id from Voranmeldung where Tag Between '%s 00:00:00' and '%s 23:59:59';" % (requestedDate,requestedDate)
+        sql = "Select Vorname, Nachname, Mailadresse, Slot, Stunde,id, Token from Voranmeldung where Tag Between '%s 00:00:00' and '%s 23:59:59';" % (requestedDate,requestedDate)
         logger.debug('Getting all appointments for %s, using the following query: %s' % (requestedDate,sql))
         recipients = DatabaseConnect.read_all(sql)
         logger.debug('Received the following recipients: %s' %(str(recipients)))
@@ -38,9 +38,11 @@ if __name__ == "__main__":
             stunde = i[4]
             mail = i[2]
             entry = i[5]
+            token = i[6]
             appointment = get_slot_time(slot, stunde)
             logger.debug('Handing over to sendmail of reminder')
-            if send_mail_reminder(mail, requestedDate,vorname, nachname, appointment):
+            url = "testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token,entry)
+            if send_mail_reminder(mail, requestedDate,vorname, nachname, appointment, url):
                 logger.debug('Mail was succesfully send, closing entry in db')
                 sql = "Update Voranmeldung SET Reminded = 1 WHERE id = %s;" % (entry)
                 DatabaseConnect.update(sql)

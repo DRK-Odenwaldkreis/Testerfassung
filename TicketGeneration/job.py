@@ -38,9 +38,11 @@ if __name__ == "__main__":
             slot = i[3]
             stunde = i[4]
             tag = i[5]
+            token = i[6]
             entry = i[7]
             appointment = get_slot_time(slot,stunde)
-            if send_qr_ticket_mail(mail,tag,vorname,nachname,appointment,filename): 
+            url = "testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token,entry)
+            if send_qr_ticket_mail(mail,tag,vorname,nachname,appointment,filename,url): 
                 logger.debug('Mail was succesfully send, closing entry in db')
                 sql = "Update Voranmeldung SET Mailsend = 1 WHERE id = %s;" % (entry)
                 DatabaseConnect.update(sql)

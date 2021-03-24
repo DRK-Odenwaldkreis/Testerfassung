@@ -43,7 +43,7 @@ class PDFgenerator(FPDF):
 		self.cell(10, 30, '', ln=1)
 		self.add_font('GNU', 'B', FreeSansBold, uni=True)
 		self.set_font('GNU', 'B', 12)
-		self.multi_cell(195, 5, 'Bitte halten Sie sich an die geltenden Abstandsregeln. Erscheinen Sie bitte nur, wenn Sie sich gesund fühlen.',0, align='C')
+		self.multi_cell(195, 5, 'Bitte halten Sie sich an die geltenden Abstandsregeln. Erscheinen Sie bitte nur, wenn Sie sich gesund fühlen und frei von Symptomen sind.',0, align='C')
 		os.remove('tmp/'+str(self.code) + '.png')
 
 	def creatPDF(self,content):
