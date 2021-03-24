@@ -41,7 +41,7 @@ if __name__ == "__main__":
             token = i[6]
             appointment = get_slot_time(slot, stunde)
             logger.debug('Handing over to sendmail of reminder')
-            url = "testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token,entry)
+            url = "https://testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token,entry)
             if send_mail_reminder(mail, requestedDate,vorname, nachname, appointment, url):
                 logger.debug('Mail was succesfully send, closing entry in db')
                 sql = "Update Voranmeldung SET Reminded = 1 WHERE id = %s;" % (entry)
