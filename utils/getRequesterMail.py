@@ -36,7 +36,19 @@ def get_Mail_from_StationID(id):
     try:
         DatabaseConnect = Database()
         sql = 'Select email from li_user where Station = %s and email is not NULL' % (id)
-        userMail = DatabaseConnect.read_all(sql)
+        userMail = DatabaseConnect.read_single(sql)
+        if len(userMail) == 0:
+            userMail = ["info@testzentrum-odenwald.de"]
+        return userMail
+    except:
+        return ["info@testzentrum-odenwald.de"]
+
+
+def get_Leitung_from_StationID(id):
+    try:
+        DatabaseConnect = Database()
+        sql = 'Select email from li_user where Station = %s and email is not NULL and Role_5 = 1' % (id)
+        userMail = DatabaseConnect.read_single(sql)
         if len(userMail) == 0:
             userMail = ["info@testzentrum-odw.de"]
         return userMail

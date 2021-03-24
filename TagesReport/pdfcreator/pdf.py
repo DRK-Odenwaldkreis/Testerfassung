@@ -107,6 +107,6 @@ class PDFgenerator:
 		pdf.set_font('GNU', '', 14)
 		self.filename = "../../Reports/Tagesreport_Testzentrum_" + str(self.station) + "_"+str(self.date) + ".pdf"
 		pdf.output(self.filename)
-		return self.filename.replace('../../Reports/','')
+		return self.filename
 
 aux=FPDF('P', 'mm', 'A4')

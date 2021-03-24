@@ -31,6 +31,7 @@ simulationMode = 0
 
 def send_mail_report(filenames, day, recipients):
     try:
+        print(recipients)
         logging.debug(
             "Receviced the following filename %s to be sent." % (filenames))
         message = MIMEMultipart()
@@ -284,7 +285,6 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointmentm, url):
 
 def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, filename, url):
     try:
-        print(filename)
         logging.debug("Receviced the following recipient: %s to be sent to." % (
             recipient))
         message = MIMEMultipart()
