@@ -16,7 +16,7 @@ def get_Mail_from_UserID(id):
         userMail = DatabaseConnect.read_single(sql)
         return userMail[0]
     except:
-        return "info@testzentrum-odw.de"
+        return "info@testzentrum-odenwald.de"
 
 
 def get_Mail_List(idList):
@@ -47,10 +47,10 @@ def get_Mail_from_StationID(id):
 def get_Leitung_from_StationID(id):
     try:
         DatabaseConnect = Database()
-        sql = 'Select email from li_user where Station = %s and email is not NULL and Role_5 = 1' % (id)
+        sql = 'Select email from li_user where Station = %s and email is not NULL and role_5 = 1' % (id)
         userMail = DatabaseConnect.read_single(sql)
         if len(userMail) == 0:
-            userMail = ["info@testzentrum-odw.de"]
+            userMail = ["info@testzentrum-odenwald.de"]
         return userMail
     except:
-        return ["info@testzentrum-odw.de"]
+        return ["info@testzentrum-odenwald.de"]

@@ -255,7 +255,7 @@ def send_indistinct_result(vorname, nachname, mail, date):
         return False
 
 
-def send_mail_reminder(recipient, date, vorname, nachname, appointmentm, url):
+def send_mail_reminder(recipient, date, vorname, nachname, appointment, url):
     try:
         logging.debug("Receviced the following recipient: %s to be sent to." % (
             recipient))
