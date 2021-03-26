@@ -48,7 +48,7 @@ echo $GLOBALS['G_html_main_right_a'];
     
     <div class="col-sm-12">
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-8">
       <div class="caption">
         <h3>Termine:</h3>
       </div>
@@ -139,13 +139,14 @@ echo $GLOBALS['G_html_main_right_a'];
 </table>
 <!-- DivTable.com -->
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
       <div class="caption">
         <h3>Covid-19 Testung:</h3>
       </div>
     <p>Für einen Covid-19 Test ist derzeit kein Anmeldung vorab notwendig.</p> 
       <p>Bei Fragen können Sie sich an das Personal vor Ort wenden.</p>
-      <p>Bitte erscheinen Sie nur wenn Sie frei von den typischen Symptomen, wie Fieber, trockenem Husten oder plötzlichem Verlust des Geruchs- oder Geschmackssinnes sind.
+      <p>Bitte erscheinen Sie nur wenn Sie frei von den typischen Symptomen, wie Fieber, trockenem Husten</p> 
+      <p>oder plötzlichem Verlust des Geruchs- oder Geschmackssinnes sind.</p>
     </div>
 
     </div>
