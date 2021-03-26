@@ -42,8 +42,116 @@ echo $GLOBALS['G_html_main_right_a'];
 </div>
 
 <div class="alert alert-info" role="alert">
-    <h3>Covid-19 Testung</h3>
-    Für einen Covid-19 Test ist derzeit eine Anmeldung vorab nicht notwendig. Bei Fragen können Sie sich an das Personal vor Ort wenden.
+<div class="row">
+    
+<div class="row">
+    
+    <div class="col-sm-12">
+    </div>
+    <div class="col-sm-6">
+      <div class="caption">
+        <h3>Termine:</h3>
+      </div>
+
+
+<table style="width: 958px;" border="4">
+<tbody>
+<tr style="height: 33px;">
+<td style="height: 33px; width: 251px;">
+<p class="v1MsoNormal"><strong>Wann</strong></p>
+</td>
+<td style="height: 33px; width: 151px;">
+<p class="v1MsoNormal"><strong>Uhrzeit</strong></p>
+</td>
+<td style="height: 33px; width: 555px;">
+<p class="v1MsoNormal"><strong>Wo</strong></p>
+</td>
+</tr>
+<tr style="height: 33px;">
+<td style="height: 33px; width: 251px;">
+<p class="v1MsoNormal"><strong>Freitag, 26.03.2021</strong>&nbsp;</p>
+</td>
+<td style="height: 33px; width: 151px;">10:00 - 17:00&nbsp;</td>
+<td style="height: 33px; width: 555px;"><strong>Mossautal,</strong>&nbsp;Feuerwehrhaus H&uuml;ttenthal, G&uuml;ttersbacher Stra&szlig;e 1</td>
+</tr>
+<tr style="height: 33px;">
+<td style="height: 33px; width: 251px;"><strong>Samstag, 27.03.2021</strong></td>
+<td style="height: 33px; width: 151px;">10:00 - 17:00</td>
+<td style="height: 33px; width: 555px;"><strong>Reichelsheim,</strong>&nbsp;DRK Heim, Beerfurther Stra&szlig;e&nbsp;</td>
+</tr>
+<tr style="height: 33px;">
+<td style="height: 33px; width: 251px;">
+<p class="v1MsoNormal"><strong>Sonntag, 28.03.2021</strong>&nbsp;</p>
+</td>
+<td style="height: 33px; width: 151px;">10:00 - 15:00&nbsp;</td>
+<td style="height: 33px; width: 555px;"><strong>L&uuml;tzelbach</strong>, vor der Fritz- Walter- Halle</td>
+</tr>
+<tr style="height: 33px;">
+<td style="height: 33px; width: 251px;"><strong>Montag, 29.03.2021</strong></td>
+<td style="height: 33px; width: 151px;">10:00 - 17:00</td>
+<td style="height: 33px; width: 555px;"><strong>Beerfelden</strong>, vor der Sporthalle In der Stried</td>
+</tr>
+<tr style="height: 33px;">
+<td style="height: 33px; width: 251px;"><strong>Dienstag, 30.03.2021</strong></td>
+<td style="height: 33px; width: 151px;">10:00 - 17:00</td>
+<td style="height: 33px; width: 555px;"><strong>Brombachtal</strong>, vor dem Dorfgemeinschaftshaus</td>
+</tr>
+<tr style="height: 33px;">
+<td style="height: 33px; width: 251px;"><strong>Dienstag, 30.03.2021</strong></td>
+<td style="height: 33px; width: 151px;">14:00 - 18:00</td>
+<td style="height: 33px; width: 555px;"><strong>Erbach,</strong>&nbsp;Marktplatz</td>
+</tr>
+<tr style="height: 33px;">
+<td style="height: 33px; width: 251px;"><strong>Mittwoch, 31.03.2021</strong></td>
+<td style="height: 33px; width: 151px;">10:00 - 17:00</td>
+<td style="height: 33px; width: 555px;"><strong>Erbach,</strong>&nbsp;Testzentrum, Martin-Luther-Stra&szlig;e 18-20</td>
+</tr>
+<tr style="height: 33px;">
+<td style="height: 33px; width: 251px;">
+<p class="v1MsoNormal"><strong>Donnerstag, 01.04.2021</strong></p>
+</td>
+<td style="height: 33px; width: 151px;">09:00 - 13:00</td>
+<td style="height: 33px; width: 555px;"><strong>Brensbach,</strong>&nbsp;Gemeindezentrum Ezyer Stra&szlig;e</td>
+</tr>
+<tr style="height: 33px;">
+<td style="height: 33px; width: 251px;"><strong>Donnerstag, 01.04.2021</strong></td>
+<td style="height: 33px; width: 151px;">16:00 - 20:00&nbsp;</td>
+<td style="height: 33px; width: 555px;"><strong>W&uuml;rzberg,</strong>&nbsp;vor dem Dorfgemeinschaftshaus</td>
+</tr>
+<tr style="height: 33px;">
+<td style="height: 33px; width: 251px;"><strong>Donnerstag, 01.04.2021</strong></td>
+<td style="height: 33px; width: 151px;">16:00 - 19:00&nbsp;</td>
+<td style="height: 33px; width: 555px;"><strong>Erbach,</strong>&nbsp;Testzentrum, Martin-Luther-Stra&szlig;e 18-20</td>
+</tr>
+<tr style="height: 33px;">
+<td style="height: 33px; width: 251px;">
+<p class="v1MsoNormal"><strong>Samstag, 03.04.2021</strong></p>
+</td>
+<td style="height: 33px; width: 151px;">09:00 - 15:00</td>
+<td style="height: 33px; width: 555px;"><strong>Erbach,</strong>&nbsp;Testzentrum , Martin-Luther-Stra&szlig;e 18-20</td>
+</tr>
+<tr style="height: 33px;">
+<td style="height: 33px; width: 251px;"><strong>Sonntag, 04.04.2021</strong></td>
+<td style="height: 33px; width: 151px;">10:00 - 15:00</td>
+<td style="height: 33px; width: 555px;"><strong>L&uuml;tzelbach,</strong>&nbsp;vor der Fritz- Walter- Halle</td>
+</tr>
+</tbody>
+</table>
+<!-- DivTable.com -->
+    </div>
+    <div class="col-sm-6">
+      <div class="caption">
+        <h3>Covid-19 Testung:</h3>
+      </div>
+    <p>Für einen Covid-19 Test ist derzeit kein Anmeldung vorab notwendig.</p> 
+      <p>Bei Fragen können Sie sich an das Personal vor Ort wenden.</p>
+      <p>Bitte erscheinen Sie nur wenn Sie frei von den typischen Symptomen, wie Fieber, trockenem Husten oder plötzlichem Verlust des Geruchs- oder Geschmackssinnes sind.
+    </div>
+
+    </div>
+</div>
+
+
     <div class="FAIRsepdown"></div>
     <div class="FAIRsep"></div>
 </div>
