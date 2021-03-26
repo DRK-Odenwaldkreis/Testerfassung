@@ -102,13 +102,13 @@ def send_csv_report(filename, day):
         return False
 
 
-def send_positive_result(vorname, nachname, mail, date):
+def send_positive_result(vorname, nachname, mail, date, geburtsdatum):
     try:
         logging.debug("Receviced the following recipient %s" % (mail))
         message = MIMEMultipart()
         with open('../utils/MailLayout/Positive_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname))
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM',str(geburtsdatum))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = FROM_EMAIL
@@ -197,13 +197,13 @@ def send_new_entry(date):
         return False
 
 
-def send_negative_result(vorname, nachname, mail, date):
+def send_negative_result(vorname, nachname, mail, date, geburtsdatum):
     try:
         logging.debug("Receviced the following recipient %s" % (mail))
         message = MIMEMultipart()
         with open('../utils/MailLayout/Negative_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[GEBDATUM',str(geburtsdatum))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = FROM_EMAIL
@@ -226,13 +226,13 @@ def send_negative_result(vorname, nachname, mail, date):
         return False
 
 
-def send_indistinct_result(vorname, nachname, mail, date):
+def send_indistinct_result(vorname, nachname, mail, date, geburtsdatum):
     try:
         logging.debug("Receviced the following recipient %s" % (mail))
         message = MIMEMultipart()
         with open('../utils/MailLayout/Indistinct_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[GEBDATUM',str(geburtsdatum))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = FROM_EMAIL

@@ -58,16 +58,16 @@ if __name__ == "__main__":
                     if result == 2:
                         logger.debug(
                             'Sending negative result Mail')
-                        transmission = send_negative_result(vorname, nachname, mail, date)
+                        transmission = send_negative_result(vorname, nachname, mail, date, geburtsdatum)
                     elif result == 1:
                         logger.debug(
                             'Sending positive result Mail')
-                        transmission = send_positive_result(vorname, nachname, mail, date)
+                        transmission = send_positive_result(vorname, nachname, mail, date, geburtsdatum)
                         transmission_gesundheitsamt = send_new_entry(date)
                     elif result == 9:
                         logger.debug(
                             'Sending indistinct result Mail')
-                        transmission = send_indistinct_result(vorname, nachname, mail, date)
+                        transmission = send_indistinct_result(vorname, nachname, mail, date, geburtsdatum)
                     else:
                         logger.debug('Sending support mail because can not interpret result')
                         send_notification(vorname,nachname,date)
