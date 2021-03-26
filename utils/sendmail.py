@@ -255,7 +255,7 @@ def send_indistinct_result(vorname, nachname, mail, date):
         return False
 
 
-def send_mail_reminder(recipient, date, vorname, nachname, appointment, url):
+def send_mail_reminder(recipient, date, vorname, nachname, appointment, url, filename):
     try:
         logging.debug("Receviced the following recipient: %s to be sent to." % (
             recipient))
@@ -268,6 +268,15 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment, url):
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = recipient
+        files = [filename]
+        for item in files:
+            attachment = open(item, 'rb')
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload((attachment).read())
+            encoders.encode_base64(part)
+            part.add_header(
+                'Content-Disposition', "attachment; filename= " + item.replace('../../Tickets/', ''))
+            message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.set_debuglevel(True)
         smtp.starttls()
