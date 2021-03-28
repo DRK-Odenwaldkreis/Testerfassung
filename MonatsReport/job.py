@@ -35,9 +35,9 @@ if __name__ == "__main__":
         logger.debug('Received the following entries: %s' %(str(content)))
         PDF = PDFgenerator(content, requestedMonth, requestedYear)
         filename = PDF.generate()
-        """if send:
+        if send:
             logger.debug('Sending Mail')
-            send_month_mail_report(filename,requestedMonth,requestedYear)"""
+            send_month_mail_report(filename,requestedMonth,requestedYear)
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

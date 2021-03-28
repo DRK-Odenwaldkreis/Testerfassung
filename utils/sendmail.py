@@ -16,6 +16,7 @@ import os
 sys.path.append("..")
 
 from utils.readconfig import read_config
+from utils.month import monthInt_to_string
 
 logger = logging.getLogger('Send Mail')
 logger.debug('Starting')
@@ -31,7 +32,6 @@ simulationMode = 0
 
 def send_mail_report(filenames, day, recipients):
     try:
-        print(recipients)
         logging.debug(
             "Receviced the following filename %s to be sent." % (filenames))
         message = MIMEMultipart()
@@ -69,21 +69,19 @@ def send_mail_report(filenames, day, recipients):
             "The following error occured in send mail report: %s" % (err))
         return False
 
-def send_month_mail_report(filenames, month, year, recipients):
+def send_month_mail_report(filenames, month, year):
     try:
-        print(recipients)
         logging.debug(
             "Receviced the following filename %s to be sent." % (filenames))
         message = MIMEMultipart()
         with open('../utils/MailLayout/NewMonthReport.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[MONTH]]', str(day)).replace('[[YEAR]]', str(year))
+        messageContent = fileContent.replace('[[MONTH]]', str(monthInt_to_string(int(month))).replace('[[YEAR]]', str(year))
         message.attach(MIMEText(messageContent, 'html'))
-        message['Subject'] = "Neuer Report für den Monat:: %s.%s" % (str(month),str(year))
+        message['Subject'] = "Neuer Report für den Monat: %s, %s" % (str(monthInt_to_string(int(month))),str(year))
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
-        message['Cc'] = 'testzentrum@drk-odenwaldkreis.de, info@testzentrum-odenwald.de'
-        message['To'] = ", ".join(recipients)
+        message['To'] = 'testzentrum@drk-odenwaldkreis.de, info@testzentrum-odenwald.de'
         files = [filenames]
         for item in files:
             attachment = open(item, 'rb')
