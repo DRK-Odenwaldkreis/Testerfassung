@@ -12,6 +12,7 @@ import os
 import os.path
 import datetime
 sys.path.append("..")
+from utils.month import monthInt_to_string
 
 Logo = '../utils/logo.png'
 
@@ -48,30 +49,21 @@ class PDFgenerator:
 		self.content=content
 		self.month=month
 		self.year=year
-		self.totalSeconds=0
-		self.station = self.content[0]
-		self.tests = self.content[1]
-		self.positiv = self.content[2]
-		self.negativ = self.content[3]
-		self.unklar = self.content[4]
-		self.cycleTime = self.content[5]
 
 		# Pie chart, where the slices will be ordered and plotted counter-clockwise:
-		self.labels = 'Positiv', 'Negativ', 'Unklar'
-		self.sizes = [self.positiv, self.negativ, self.unklar]
-		self.explode = (1, 0.1, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
-		self.fig1, (self.ax1, self.ax2) = plt.subplots(1,2)
-		self.fig1.suptitle("Gesamtanzahl der Tests: %s" % (self.tests))
-		self.ax1.pie(self.sizes, explode=self.explode, labels=self.labels, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),
+		self.sizes = []
+		self.labels = []
+		self.totalTests = 0
+		for i in self.content:
+			self.sizes.append(int(i[0]))
+			self.labels.append(i[2])
+			self.totalTests = self.totalTests + int(i[0])
+		self.fig1, self.ax1 = plt.subplots()
+		self.ax1.pie(self.sizes, labels=self.labels, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),
                     shadow=False, startangle=90)
 		# Equal aspect ratio ensures that pie is drawn as a circle.
 		self.ax1.axis('equal')
-		# Histogram of Durchlaufzeiten
-		self.cycleTimeArray = np.array(self.cycleTime)
-		plt.hist(self.cycleTimeArray, range(15,30))
-		self.ax2.set_title("Schnitt: %s min" %(round(self.cycleTimeArray.mean(),1)))
-		self.ax2.set_ylabel("Anzahl")
-		self.ax2.set_xlabel("Durchlaufzeit [min]")
+		self.ax1.set_title("Gesamtanzahl der Test: %s" % (self.totalTests), pad=32)
 		plt.savefig('tmp/' + str(self.month) + '_' + str(self.year) + '.png', dpi=(170))
 
 
@@ -87,8 +79,7 @@ class PDFgenerator:
 		pdf.add_font('GNU', 'B', FreeSansBold, uni=True)
 
 		pdf.set_font('GNU', 'B', 14)
-
-		pdf.cell(20, 10, 'Monatsprotokoll für %s.%s' % (self.month,self.year), ln=1)
+		pdf.cell(20, 10, 'Monatsprotokoll für %s, %s' % (monthInt_to_string(int(self.month)),self.year), ln=1)
 
 		pdf.set_font('GNU', '', 14)
 
@@ -96,7 +87,6 @@ class PDFgenerator:
 		pdf.set_font('GNU', 'B' , 20)
 		pdf.ln(15)
 		pdf.set_font('GNU', 'B', 14)
-		pdf.cell(35, 10, 'Testzentrum: %s' %(self.station), 0, 1)
 
 		current_x =pdf.get_x()
 		current_y =pdf.get_y()
@@ -106,7 +96,7 @@ class PDFgenerator:
 		pdf.image('tmp/' + str(self.month) + '_' + str(self.year) + '.png', w=210, h=160)
 		os.remove('tmp/'+ str(self.month) + '_' + str(self.year) + '.png')
 		pdf.set_font('GNU', '', 14)
-		self.filename = "../../Reports/Monatsreport_Testzentrum_" + str(self.station) + "_"+str(self.month) + "_" + str(self.year) + ".pdf"
+		self.filename = "../../Reports/Monatsreport_Testzentrum_" + "_"+str(self.month) + "_" + str(self.year) + ".pdf"
 		pdf.output(self.filename)
 		return self.filename
 

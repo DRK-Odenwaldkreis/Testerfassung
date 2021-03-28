@@ -10,8 +10,8 @@ sys.path.append("..")
 from utils.database import Database
 import datetime
 
-logFile = '../../Logs/archieveJob.log'
-logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logFile = '../../Logs/archiveJob.log'
+logging.basicConfig(filename=logFile,level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Archieve job stated: %s'%(datetime.datetime.now()))
 logger.debug('Starting')
 

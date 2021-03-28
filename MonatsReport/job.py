@@ -18,33 +18,6 @@ logging.basicConfig(filename=logFile,level=logging.DEBUG,
 logger = logging.getLogger('Monatsreporting')
 logger.debug('Starting')
 
-
-def create_PDFs(content, month, year ,station):
-    tests = 0
-    positiv = 0
-    negativ = 0
-    unklar = 0
-    times = []
-    for i in content:
-        times.append(i[4].total_seconds()/60)
-        ergebnis = i[1]
-        if ergebnis == 2:
-            negativ += 1
-        elif ergebnis == 1:
-            positiv += 1
-        elif ergebnis == 9:
-            unklar += 1
-        else:
-            pass
-    logger.debug('Positive tests: %s' % (str(positiv)))
-    logger.debug('Negative tests: %s' % (str(negativ)))
-    logger.debug('Unclear tests: %s' % (str(unklar)))
-    tests = unklar + negativ + positiv
-    logger.debug('Calculated this total number of tests: %s' % (str(tests)))
-    pdfcontent = [station,tests, positiv, negativ, unklar,times]
-    PDF = PDFgenerator(pdfcontent, month, year)
-    return PDF.generate()
-
 if __name__ == "__main__":
     try:
         if len(sys.argv)  == 3:
@@ -57,17 +30,14 @@ if __name__ == "__main__":
         requestedMonth = sys.argv[1]
         requestedYear = sys.argv[2]
         DatabaseConnect = Database()
-        sql = "Select Teststation,Ort from Vorgang JOIN Station ON Vorgang.Teststation = Station.id where MONTH(Ergebniszeitpunkt)=%s and YEAR(Ergebniszeitpunkt)=%s GROUP BY Teststation;" % (requestedMonth,requestedYear)
-        teststationen = DatabaseConnect.read_all(sql)
-        for station in teststationen:
-            sql = "Select id,Ergebnis,Ergebniszeitpunkt,Teststation,TIMEDIFF(Ergebniszeitpunkt,Registrierungszeitpunkt) from Vorgang where Teststation = %s and MONTH(Ergebniszeitpunkt)=%s and YEAR(Ergebniszeitpunkt)=%s;" % (station[0],requestedMonth,requestedYear)
-            logger.debug('Getting all Events for a date with the following query: %s' % (sql))
-            exportEvents = DatabaseConnect.read_all(sql)
-            logger.debug('Received the following entries: %s' %(str(exportEvents)))
-            filename = create_PDFs(exportEvents, requestedMonth, requestedYear, station[1])
-            if send:
-                logger.debug('Sending Mail')
-                send_month_mail_report(filename,requestedMonth,requestedYear,get_Leitung_from_StationID(station[0]))
+        sql = "Select SUM(Amount),Teststation,Ort from Abrechnung JOIN Station ON Abrechnung.Teststation = Station.id where MONTH(Abrechnung.Date)=%s and YEAR(Abrechnung.Date)=%s GROUP BY Teststation;" % (requestedMonth,requestedYear)
+        content = DatabaseConnect.read_all(sql)
+        logger.debug('Received the following entries: %s' %(str(content)))
+        PDF = PDFgenerator(content, requestedMonth, requestedYear)
+        filename = PDF.generate()
+        """if send:
+            logger.debug('Sending Mail')
+            send_month_mail_report(filename,requestedMonth,requestedYear)"""
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
