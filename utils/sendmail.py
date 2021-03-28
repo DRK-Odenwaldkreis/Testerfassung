@@ -69,6 +69,46 @@ def send_mail_report(filenames, day, recipients):
             "The following error occured in send mail report: %s" % (err))
         return False
 
+def send_month_mail_report(filenames, month, year, recipients):
+    try:
+        print(recipients)
+        logging.debug(
+            "Receviced the following filename %s to be sent." % (filenames))
+        message = MIMEMultipart()
+        with open('../utils/MailLayout/NewMonthReport.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[MONTH]]', str(day)).replace('[[YEAR]]', str(year))
+        message.attach(MIMEText(messageContent, 'html'))
+        message['Subject'] = "Neuer Report für den Monat:: %s.%s" % (str(month),str(year))
+        message['From'] = FROM_EMAIL
+        message['reply-to'] = FROM_EMAIL
+        message['Cc'] = 'testzentrum@drk-odenwaldkreis.de, info@testzentrum-odenwald.de'
+        message['To'] = ", ".join(recipients)
+        files = [filenames]
+        for item in files:
+            attachment = open(item, 'rb')
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload((attachment).read())
+            encoders.encode_base64(part)
+            part.add_header(
+                'Content-Disposition', "attachment; filename= " + item.replace('../../Reports/', ''))
+            message.attach(part)
+        logging.debug("Starting SMTP Connection")
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp.set_debuglevel(True)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        if simulationMode == 0:
+            logging.debug("Going to send message")
+            smtp.send_message(message)
+            logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error(
+            "The following error occured in send mail report: %s" % (err))
+        return False
+
 
 def send_csv_report(filename, day):
     try:

@@ -8,18 +8,18 @@ import numpy as np
 from pdfcreator.pdf import PDFgenerator
 sys.path.append("..")
 from utils.database import Database
-from utils.sendmail import send_mail_report
+from utils.sendmail import send_month_mail_report
 from utils.getRequesterMail import get_Leitung_from_StationID
 
 
-logFile = '../../Logs/TagesreportJob.log'
+logFile = '../../Logs/MonatsreportJob.log'
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger('Tagesreport')
+logger = logging.getLogger('Monatsreporting')
 logger.debug('Starting')
 
 
-def create_PDFs(content, date,station):
+def create_PDFs(content, month, year ,station):
     tests = 0
     positiv = 0
     negativ = 0
@@ -42,33 +42,32 @@ def create_PDFs(content, date,station):
     tests = unklar + negativ + positiv
     logger.debug('Calculated this total number of tests: %s' % (str(tests)))
     pdfcontent = [station,tests, positiv, negativ, unklar,times]
-    PDF = PDFgenerator(pdfcontent, f"{date}")
+    PDF = PDFgenerator(pdfcontent, month, year)
     return PDF.generate()
 
 if __name__ == "__main__":
     try:
-        if len(sys.argv)  == 2:
-            requestedDate = sys.argv[1]
+        if len(sys.argv)  == 3:
             send=False
-        elif len(sys.argv) == 3:
-            requestedDate = sys.argv[1]
+        elif len(sys.argv) == 4:
             send=True
         else:
             logger.debug('Input parameters are not correct, date and/or requested needed')
             raise Exception
+        requestedMonth = sys.argv[1]
+        requestedYear = sys.argv[2]
         DatabaseConnect = Database()
-        sql = "Select Teststation,Ort from Vorgang JOIN Station ON Vorgang.Teststation = Station.id where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59' GROUP BY Teststation" % (requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
+        sql = "Select Teststation,Ort from Vorgang JOIN Station ON Vorgang.Teststation = Station.id where MONTH(Ergebniszeitpunkt)=%s and YEAR(Ergebniszeitpunkt)=%s GROUP BY Teststation;" % (requestedMonth,requestedYear)
         teststationen = DatabaseConnect.read_all(sql)
         for station in teststationen:
-            sql = "Select id,Ergebnis,Ergebniszeitpunkt,Teststation,TIMEDIFF(Ergebniszeitpunkt,Registrierungszeitpunkt) from Vorgang where Teststation = %s and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (station[0],
-            requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
+            sql = "Select id,Ergebnis,Ergebniszeitpunkt,Teststation,TIMEDIFF(Ergebniszeitpunkt,Registrierungszeitpunkt) from Vorgang where Teststation = %s and MONTH(Ergebniszeitpunkt)=%s and YEAR(Ergebniszeitpunkt)=%s;" % (station[0],requestedMonth,requestedYear)
             logger.debug('Getting all Events for a date with the following query: %s' % (sql))
             exportEvents = DatabaseConnect.read_all(sql)
             logger.debug('Received the following entries: %s' %(str(exportEvents)))
-            filename = create_PDFs(exportEvents, requestedDate, station[1])
+            filename = create_PDFs(exportEvents, requestedMonth, requestedYear, station[1])
             if send:
                 logger.debug('Sending Mail')
-                send_mail_report(filename,requestedDate,get_Leitung_from_StationID(station[0]))
+                send_month_mail_report(filename,requestedMonth,requestedYear,get_Leitung_from_StationID(station[0]))
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

@@ -44,9 +44,10 @@ class MyPDF(FPDF):
 
 class PDFgenerator:
 
-	def __init__(self, content, date):
+	def __init__(self, content, month, year):
 		self.content=content
-		self.date=date
+		self.month=month
+		self.year=year
 		self.totalSeconds=0
 		self.station = self.content[0]
 		self.tests = self.content[1]
@@ -71,7 +72,7 @@ class PDFgenerator:
 		self.ax2.set_title("Schnitt: %s min" %(round(self.cycleTimeArray.mean(),1)))
 		self.ax2.set_ylabel("Anzahl")
 		self.ax2.set_xlabel("Durchlaufzeit [min]")
-		plt.savefig('tmp/' + str(self.date) + '.png', dpi=(170))
+		plt.savefig('tmp/' + str(self.month) + '_' + str(self.year) + '.png', dpi=(170))
 
 
 	def generate(self):
@@ -87,7 +88,7 @@ class PDFgenerator:
 
 		pdf.set_font('GNU', 'B', 14)
 
-		pdf.cell(20, 10, 'Tagesprotokoll für %s' % (self.date), ln=1)
+		pdf.cell(20, 10, 'Monatsprotokoll für %s.%s' % (self.month,self.year), ln=1)
 
 		pdf.set_font('GNU', '', 14)
 
@@ -102,10 +103,10 @@ class PDFgenerator:
 
 		pdf.line(current_x, current_y, current_x+190, current_y)
 		pdf.ln(20)
-		pdf.image('tmp/' + str(self.date) + '.png', w=210, h=160)
-		os.remove('tmp/'+str(self.date) + '.png')
+		pdf.image('tmp/' + str(self.month) + '_' + str(self.year) + '.png', w=210, h=160)
+		os.remove('tmp/'+ str(self.month) + '_' + str(self.year) + '.png')
 		pdf.set_font('GNU', '', 14)
-		self.filename = "../../Reports/Tagesreport_Testzentrum_" + str(self.station) + "_"+str(self.date) + ".pdf"
+		self.filename = "../../Reports/Monatsreport_Testzentrum_" + str(self.station) + "_"+str(self.month) + "_" + str(self.year) + ".pdf"
 		pdf.output(self.filename)
 		return self.filename
 
