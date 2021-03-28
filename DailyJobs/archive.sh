@@ -4,5 +4,5 @@
 
 echo "Starting Archive"
 cd /home/webservice/Testerfassung/ArchiveJob
-python3 job.py $(date '+%Y-%m-%d' -d "1 day ago")
+python3 job.py $(date '+%Y-%m-%d')
 echo "Archive complete"
