@@ -18,24 +18,21 @@ logger.debug('Starting')
 if __name__ == "__main__":
     try:
         if len(sys.argv) == 2:
-            requestedDate = sys.argv[1]
+            requestedDate = datetime.datetime.strptime(sys.argv[1], '%Y-%m-%d').date()
         else:
             logger.debug(
                 'Input parameters are not correct, date needed')
             raise Exception
         DatabaseConnect = Database()
-        sql = "Select id, Teststation, Token, Registrierungszeitpunkt from Vorgang where Ergebnis != 1 and Registrierungszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
+        sql = "Select id, Teststation, Token, Registrierungszeitpunkt from Vorgang where (Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s') or (Ergebnis = 1 and Date(Registrierungszeitpunkt) <= '%s');" % (requestedDate-datetime.timedelta(days=2),requestedDate-datetime.timedelta(days=90))
         logger.debug('Getting all Events for a date with the following query: %s' % (sql))
         deleteCanidate = DatabaseConnect.read_all(sql)
         for i in deleteCanidate:
-            print(i)
-            sql = ""
-            print(sql)
+            sql = "INSERT INTO Archive (TestNr, Station, Token, Registrierungszeitpunkt) VALUES (%s,%s,%s,%s);"
             tupel = (i)
-            print(tupel)
             if DatabaseConnect.insert(sql,tupel):
                 sql = "Delete Vorgang where id=%s"%(i[0])
-                print(sql)
+                DatabaseConnect.delete(sql)
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
