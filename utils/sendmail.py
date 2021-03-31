@@ -76,7 +76,7 @@ def send_month_mail_report(filenames, month, year):
         message = MIMEMultipart()
         with open('../utils/MailLayout/NewMonthReport.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[MONTH]]', str(monthInt_to_string(int(month))).replace('[[YEAR]]', str(year))
+        messageContent = fileContent.replace('[[MONTH]]', str(monthInt_to_string(int(month)))).replace('[[YEAR]]', str(year))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Neuer Report für den Monat: %s, %s" % (str(monthInt_to_string(int(month))),str(year))
         message['From'] = FROM_EMAIL
