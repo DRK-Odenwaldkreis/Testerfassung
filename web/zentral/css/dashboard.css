@@ -3,7 +3,11 @@
  */
  
  
-@import url('https://fonts.googleapis.com/css?family=Overpass');
+ @font-face {
+	font-family: "Overpass";
+	src: url(fonts/Overpass-Regular.ttf);
+  }
+  
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
@@ -472,6 +476,40 @@ td.FAIR-data-alright {
 td.FAIR-data-white {
 	color: #555;
 	background-color: #fff;
+}
+td.FAIR-data-gray {
+	color: #fff;
+	background-color: #333;
+}
+td.FAIR-data-blue1 {
+	color: #fff;
+	background-color: #337ab7;
+	font-size: 18px;
+}
+td.FAIR-data-blue2 {
+	color: #111;
+	background-color: #3379b77a;
+	font-size: 18px;
+}
+td.FAIR-data-blue3 {
+	color: #111;
+	background-color: #3379b728;
+	font-size: 18px;
+}
+td.FAIR-data-yellow1 {
+	color: #111;
+	background-color: #e7bd32;
+	font-size: 18px;
+}
+td.FAIR-data-yellow2 {
+	color: #111;
+	background-color: #e7bd327a;
+	font-size: 18px;
+}
+td.FAIR-data-yellow3 {
+	color: #111;
+	background-color: #e7bd3228;
+	font-size: 18px;
 }
 td.FAIR-data-black1 {
 	color: #181818;
