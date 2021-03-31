@@ -12,6 +12,8 @@ include_once 'preload.php';
 if( isset($GLOBALS['G_sessionname']) ) { session_name ($GLOBALS['G_sessionname']); }
 session_start();
 $sec_level=1;
+$current_site="index";
+
 
 // Include functions
 include_once 'tools.php';
@@ -29,6 +31,18 @@ echo $GLOBALS['G_html_menu2'];
 // Print html content part A
 echo $GLOBALS['G_html_main_right_a'];
 
+// Select station for statistics
+if($_SESSION['station_id']>0) {
+    $station=$_SESSION['station_id'];
+} else {
+    $station=1;
+}
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if(isset($_POST['select_station'])) {
+        $station=$_POST['station_id'];
+    }
+}
+
 
 // Menu
 $_module_array=array(
@@ -36,6 +50,8 @@ $_module_array=array(
     10=>array("text"=>'<h4 class="list-group-item-heading">Liste an Tests</h4><p class="list-group-item-text">Aktive Tests und Export CSV</p>',"link"=>"testlist.php","role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
     15=>array("text"=>'<h4 class="list-group-item-heading">Liste an Positivmeldungen</h4><p class="list-group-item-text">Positivmeldungen und Export CSV</p>',"link"=>"gesundheitsamt.php","role"=>array(0,0,3,4,0),"role-disabled"=>array(0,0,0,0,0)),
     20=>array("text"=>'<h4 class="list-group-item-heading">Testkarten</h4><p class="list-group-item-text">Erstellung von neuen Testkarten</p>',"link"=>"testkarten.php","role"=>array(0,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
+    25=>array("text"=>'<h4 class="list-group-item-heading">Termine</h4><p class="list-group-item-text">Übersicht der angelegten Termine</p>',"link"=>"terminlist.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(1,0,0,0,0)),
+    26=>array("text"=>'<h4 class="list-group-item-heading">Termine erstellen</h4><p class="list-group-item-text">Neue Termine für eine Teststation erstellen</p>',"link"=>"terminerstellung.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(1,0,0,0,0)),
     30=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"link"=>"user_admin.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,2,0,0,0)),
     33=>array("text"=>'<h4 class="list-group-item-heading">Admin: Files</h4><p class="list-group-item-text">Dateien</p>',"link"=>"downloadlist.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
     34=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Übersicht der Logs</p>',"link"=>"log.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
@@ -73,50 +89,102 @@ echo '</div>';
 
 // Open database connection
 $Db=S_open_db();
+$stations_array=S_get_multientry($Db,'SELECT id, Ort FROM Station;');
 $today=date("Y-m-d",time());
 $yesterday=date("Y-m-d",time() - 60 * 60 * 24);
 $beforetwodays=date("Y-m-d",time() - 2 * 60 * 60 * 24);
 $stat_val_total_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\';');
 $stat_val_neg_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\'AND Ergebnis=2;');
 $stat_val_pos_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Ergebnis=1;');
-$stat_val_total_yday=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$yesterday.'\';');
-$stat_val_neg_yday=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$yesterday.'\'AND Ergebnis=2;');
-$stat_val_pos_yday=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$yesterday.'\' AND Ergebnis=1;');
-$stat_val_total_2day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$beforetwodays.'\';');
-$stat_val_neg_2day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$beforetwodays.'\'AND Ergebnis=2;');
-$stat_val_pos_2day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$beforetwodays.'\' AND Ergebnis=1;');
+
+$stat_val_total_yday=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\';');
+$stat_val_neg_yday=S_get_entry($Db,'SELECT sum(Negativ) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\';');
+$stat_val_pos_yday=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\';');
+
+$stat_val_total_2day=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\';');
+$stat_val_neg_2day=S_get_entry($Db,'SELECT sum(Negativ) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\';');
+$stat_val_pos_2day=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\';');
+
+
+$stat_val_total_yday_st=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\' AND Teststation='.$station.';');
+$stat_val_neg_yday_st=S_get_entry($Db,'SELECT sum(Negativ) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\' AND Teststation='.$station.';');
+$stat_val_pos_yday_st=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\' AND Teststation='.$station.';');
+
+$stat_val_total_2day_st=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\' AND Teststation='.$station.';');
+$stat_val_neg_2day_st=S_get_entry($Db,'SELECT sum(Negativ) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\' AND Teststation='.$station.';');
+$stat_val_pos_2day_st=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\' AND Teststation='.$station.';');
+
 // Close connection to database
 S_close_db($Db);
 
 echo '<div class="row">';
-echo '<div class="col-sm-4">
+echo '<div class="col-sm-3">
 <div class="alert alert-info" role="alert">
 <p>Getestete Personen</p>
-<h3>'.$stat_val_total_day.' <span class="FAIR-text-sm">(heute)</span></h3>
-<h3>'.$stat_val_total_yday.' <span class="FAIR-text-sm">(gestern)</span></h3>
-<h3>'.$stat_val_total_2day.' <span class="FAIR-text-sm">(vorgestern)</span></h3>
+<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day.'</h3>
+<h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_total_yday.'</h3>
+<h3><span class="FAIR-text-sm">vorgestern</span> '.$stat_val_total_2day.'</h3>
 </div>';
 
 echo '</div>';
-echo '<div class="col-sm-4">
+echo '<div class="col-sm-3">
 <div class="alert alert-success" role="alert">
 <p>Negative Fälle</p>
-<h3>'.$stat_val_neg_day.' <span class="FAIR-text-sm">(heute)</span></h3>
-<h3>'.$stat_val_neg_yday.' <span class="FAIR-text-sm">(gestern)</span></h3>
-<h3>'.$stat_val_neg_2day.' <span class="FAIR-text-sm">(vorgestern)</span></h3>
+<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_neg_day.'</h3>
+<h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_neg_yday.'</h3>
+<h3><span class="FAIR-text-sm">vorgestern</span> '.$stat_val_neg_2day.'</h3>
 </div>';
 
 echo '</div>';
-echo '<div class="col-sm-4">
+echo '<div class="col-sm-3">
 <div class="alert alert-danger" role="alert">
 <p>Positive Fälle</p>
-<h3>'.$stat_val_pos_day.' ('.(number_format(($stat_val_pos_day/$stat_val_total_day*100),2,',','.')).' %) <span class="FAIR-text-sm">(heute)</span></h3>
-<h3>'.$stat_val_pos_yday.' ('.(number_format(($stat_val_pos_yday/$stat_val_total_yday*100),2,',','.')).' %) <span class="FAIR-text-sm">(gestern)</span></h3>
-<h3>'.$stat_val_pos_2day.' ('.(number_format(($stat_val_pos_2day/$stat_val_total_2day*100),2,',','.')).' %) <span class="FAIR-text-sm">(vorgestern)</span></h3>
+<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_pos_day.' ('.(number_format(($stat_val_pos_day/$stat_val_total_day*100),2,',','.')).' %)</h3>
+<h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_pos_yday.' ('.(number_format(($stat_val_pos_yday/$stat_val_total_yday*100),2,',','.')).' %)</h3>
+<h3><span class="FAIR-text-sm">vorgestern</span> '.$stat_val_pos_2day.' ('.(number_format(($stat_val_pos_2day/$stat_val_total_2day*100),2,',','.')).' %)</h3>
 </div>';
 
 echo '</div>';
 
+echo '<div class="col-sm-3">
+    <div class="alert alert-warning" role="alert">';
+
+if($_SESSION['station_id']>0) {
+    echo '<p>Eigene Station S'.$_SESSION['station_id'].'/'.$_SESSION['station_name'].'</p>';
+} else {
+    echo '<form action="'.$current_site.'.php" method="post">
+    <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1">Station</span>
+    <select id="select-state" placeholder="Wähle eine Station..." class="custom-select" style="margin-top:0px;" name="station_id">
+    <option value="">Wähle Station...</option>
+        ';
+        foreach($stations_array as $i) {
+            $display=$i[1].' / S'.$i[0];
+            if($i[0]==$station) {$selected="selected";} else {$selected="";}
+            echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
+        }
+        echo '
+    </select>
+    <span class="input-group-btn">
+    <input type="submit" class="btn btn-danger" value="Anzeigen" name="select_station" />
+    </span>
+    </div>
+    </form>';
+}
+
+if($stat_val_total_yday_st>0) {
+    echo '<h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_total_yday_st.', <span class="FAIR-text-sm">Neg:</span> '.$stat_val_neg_yday_st.', <span class="FAIR-text-sm">Pos:</span> '.$stat_val_pos_yday_st.' ('.(number_format(($stat_val_pos_yday_st/$stat_val_total_yday_st*100),2,',','.')).' %)</h3>';
+} else {
+    echo '<h3><span class="FAIR-text-sm">(gestern keine Tests durchgeführt)</span></h3>';
+}
+if($stat_val_total_2day_st>0) {
+    echo '<h3><span class="FAIR-text-sm">vorgestern</span> '.$stat_val_total_2day_st.', <span class="FAIR-text-sm">Neg:</span> '.$stat_val_neg_2day_st.', <span class="FAIR-text-sm">Pos:</span> '.$stat_val_pos_2day_st.' ('.(number_format(($stat_val_pos_2day_st/$stat_val_total_2day_st*100),2,',','.')).' %)</h3>';
+} else {
+    echo '<h3><span class="FAIR-text-sm">(vorgestern keine Tests durchgeführt)</span></h3>';
+}
+
+echo '</div>
+</div>';
 
 echo '</div></div>';
 

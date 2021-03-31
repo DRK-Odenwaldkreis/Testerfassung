@@ -43,7 +43,7 @@ $G_html_menu2='<nav class="navbar navbar-inverse navbar-fixed-top FAIR-navbar">
 $G_html_menu2.='</div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-			<li><a href="impressum.php">Impressum / Kontakt</a></li>';
+			<li><a href="impressum.php">Impressum / Datenschutz / Kontakt</a></li>';
 
 $G_html_menu2.='</ul>
         

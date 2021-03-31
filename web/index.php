@@ -10,8 +10,10 @@ March 2021
 
 
 // Include functions
+include_once 'preload.php';
 include_once 'menu.php';
-
+include_once 'registration/auth.php';
+include_once 'registration/tools.php';
 
 // Print html header
 echo $GLOBALS['G_html_header'];
@@ -41,14 +43,40 @@ echo $GLOBALS['G_html_main_right_a'];
     </div>
 </div>
 
-<div class="alert alert-info" role="alert">
+<!--<div class="alert alert-info" role="alert">
     <h3>Covid-19 Testung</h3>
     Für einen Covid-19 Test ist derzeit eine Anmeldung vorab nicht notwendig. Bei Fragen können Sie sich an das Personal vor Ort wenden.
     <div class="FAIRsepdown"></div>
     <div class="FAIRsep"></div>
+</div>-->
+
+
+
+<div class="row">
+    
+    <div class="col-sm-12">
+    <h2 style="text-align: center;">Covid-19 Schnelltest - Termine und Orte im Landkreis Odenwald</h2>
+    </div>
+    <div class="col-sm-12"><div class="card">
+<?php
+
+  // Show table of available dates
+  echo H_build_table_testdates();
+
+?>
+    </div></div>
+
+    </div>
 </div>
 
-
+<div class="alert alert-info" role="alert">
+    <h3>Covid-19 Testung</h3>
+    Bei Fragen können Sie sich an das Personal vor Ort wenden.
+    <br>
+    Bitte erscheinen Sie nur wenn Sie frei von den typischen Symptomen, wie Fieber, trockenem Husten oder plötzlichem Verlust des Geruchs- oder Geschmackssinnes sind.
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsep"></div>
+</div>
 
 <div class="row">
     

@@ -199,4 +199,114 @@ function H_build_boxfoot( ) {
 	return $html_result;
 }
 
+function H_build_table_testdates( ) {
+	$res='';
+	$Db=S_open_db();
+	$flag_prereg=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_Pre_registration";');
+	$stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station WHERE Firmencode is null OR Firmencode="";');
+	// X ist Anzahl an Tagen für Vorschau in Tabelle
+	$X=14;
+	// Ohne Terminbuchung für nächste X Tage
+	$today=date('Y-m-d');
+	$in_x_days=date('Y-m-d', strtotime($today. ' + '.$X.' days'));
+	
+
+	// Table
+	$res.='
+	<table class="FAIR-data">
+	<tr>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"><h4>Ort</h4></td>';
+	for($j=0;$j<$X;$j++) {
+		$string_date=date('d.m.', strtotime($today. ' + '.$j.' days'));
+		$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-gray"><h4>'.$string_date.'</h4></td>';
+	}
+	$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"></td></tr>';
+
+	$res.='<tr>
+    <td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue1" colspan="'.($X+2).'"><b><i>';
+	if($flag_prereg!=0) {
+		$res.='Für folgende Teststationen ist keine Terminbuchung möglich, eine Voranmeldung kann gerne gemacht werden';
+	} else {
+		$res.='Für folgende Teststationen ist keine Voranmeldung notwendig';
+	}
+	$res.='</i></b></td>
+	</tr>';
+	foreach($stations_array as $st) {
+		// check if station has appointed times
+		if( S_get_entry($Db,'SELECT id_station FROM Termine WHERE Slot is null AND Date(Tag)>="'.$today.'" AND Date(Tag)<="'.$in_x_days.'" AND id_station='.$st[0].';')==$st[0]) {
+			$res.='<tr>';
+			$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
+			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2">'.$string_location.'</td>';
+			for($j=0;$j<$X;$j++) {
+				$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
+				$array_termine_open=S_get_multientry($Db,'SELECT Startzeit, Endzeit, opt_station, opt_station_adresse FROM Termine WHERE Slot is null AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Startzeit ASC;');
+				$string_times='';
+				$string_location_opt='';
+				foreach($array_termine_open as $te) {
+					if($te[2]!='') {
+						$string_times.='<span class="text-sm">'.$te[2].',<br>'.$te[3].'</span><br>';
+					}
+					$string_times.=date('H:i',strtotime($te[0])).' - '.date('H:i',strtotime($te[1])).'<br>';
+				}
+				if($string_times!='') {
+					$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue2">'.$string_times.'</td>';
+				} else {
+					$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue3"></td>';
+				}
+			}
+			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue3"></td>';
+			$res.='</tr>';
+		}
+		
+	}
+
+	/* if($flag_prereg!=0) {
+
+		$res.='<tr>
+		<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-yellow1" colspan="'.($X+2).'"><b><i>Bei folgenden Teststationen ist eine Voranmeldung und Terminbuchung erforderlich</i></b></td>
+		</tr>';
+		foreach($stations_array as $st) {
+			// check if station has appointed times
+			if( S_get_entry($Db,'SELECT id_station FROM Termine WHERE Slot is null AND Date(Tag)>="'.$today.'" AND Date(Tag)<="'.$in_x_days.'" AND id_station='.$st[0].';')==$st[0]) {
+				$res.='<tr>';
+				$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
+				$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-yellow2">'.$string_location.'</td>';
+				for($j=0;$j<$X;$j++) {
+					$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
+					$array_termine_open=S_get_multientry($Db,'SELECT Startzeit, Endzeit, opt_station, opt_station_adresse FROM Termine WHERE Slot is null AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Startzeit ASC;');
+					$string_times='';
+					foreach($array_termine_open as $te) {
+						if($te[2]!='') {
+							$string_times.='<span class="text-sm">'.$te[2].',<br>'.$te[3].'</span><br>';
+						}
+						$string_times.=date('H:i',strtotime($te[0])).' - '.date('H:i',strtotime($te[1])).'<br>';
+					}
+					if($string_times!='') {
+						$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow2">'.$string_times.'</td>';
+					} else {
+						$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow3"></td>';
+					}
+				}
+				$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow2">Weitere Termine</td>';
+				$res.='</tr>';
+			}
+			
+		}
+	} */
+	
+	$res.='<tr>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"><h4>Ort</h4></td>';
+	for($j=0;$j<$X;$j++) {
+		$string_date=date('d.m.', strtotime($today. ' + '.$j.' days'));
+		$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-gray"><h4>'.$string_date.'</h4></td>';
+	}
+	$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"></td></tr>';
+    
+	$res.='</table>
+	';
+
+	S_close_db($Db);
+	return $res;
+}
+
 ?>
