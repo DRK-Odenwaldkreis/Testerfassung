@@ -30,7 +30,7 @@ def create_CSV(content, month, year):
     return filename
 
 logFile = '../../Logs/AccountingExport.log'
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Export')
 logger.debug('Starting')
