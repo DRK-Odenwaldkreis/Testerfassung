@@ -292,6 +292,33 @@ def send_indistinct_result(vorname, nachname, mail, date, geburtsdatum):
             "The following error occured in send indistinct mail: %s" % (err))
         return False
 
+def send_cancel_appointment(recipient, date, vorname, nachname):
+    try:
+        logging.debug("Receviced the following recipient: %s to be sent to." % (
+            recipient))
+        message = MIMEMultipart()
+        with open('../utils/MailLayout/Cancelation.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
+        message.attach(MIMEText(messageContent, 'html'))
+        message['Subject'] = "Ihr Termin im Testzentrum des Odenwaldkreis am %s wurde stornier" % (str(date))
+        message['From'] = FROM_EMAIL
+        message['reply-to'] = FROM_EMAIL
+        message['To'] = recipient
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp.set_debuglevel(True)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        if simulationMode == 0:
+            logging.debug("Going to send message")
+            smtp.send_message(message)
+            logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error(
+            "The following error occured in send mail reminder: %s" % (err))
+        return False
 
 def send_mail_reminder(recipient, date, vorname, nachname, appointment, url, filename):
     try:
