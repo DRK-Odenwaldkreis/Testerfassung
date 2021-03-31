@@ -20,7 +20,7 @@ from utils.slot import get_slot_time
 FreeSans = '../utils/Schriftart/FreeSans.ttf'
 FreeSansBold = '../utils/Schriftart/FreeSansBold.ttf'
 Logo = '../utils/logo.png'
-
+Logo2 = '../utils/logo2.png'
 
 class PDFgenerator(FPDF):
 
@@ -37,11 +37,13 @@ class PDFgenerator(FPDF):
 		self.cell(200,15, 'Name: ' + self.nachname + ', ' + self.vorname, ln=1)
 		self.cell(200,15, 'Datum: ' + self.date.strftime("%d.%m.%Y"), ln=1)
 		self.cell(200,15, 'Uhrzeit: ' + str(self.appointment), ln=1)
-		self.cell(20, 30, '', ln=1)
 		self.qrcode = pyqrcode.create(str(self.code), error='L')
 		self.qrcode.png('tmp/'+str(self.code) + '.png', scale=5,quiet_zone=2)
-		self.image('tmp/'+ str(self.code) + '.png', x=85)
-		self.cell(20, 0, '', ln=1)
+		self.image('tmp/'+ str(self.code) + '.png', y=85,x=140)
+		self.cell(10, 30, '', ln=1)
+		self.add_font('GNU', 'B', FreeSansBold, uni=True)
+		self.set_font('GNU', 'B', 12)
+		self.multi_cell(195, 5, 'Bitte halten Sie sich an die geltenden Abstandsregeln. Erscheinen Sie bitte nur, wenn Sie sich gesund fühlen und frei von Symptomen sind.',0, align='C')
 		os.remove('tmp/'+str(self.code) + '.png')
 
 	def creatPDF(self,content):
@@ -64,9 +66,18 @@ class PDFgenerator(FPDF):
 		self.set_font('GNU', '', 11)
 		self.image(Logo, x=7, y=10, w=100, h=24, type='PNG')
 		self.ln(10)
-		self.image(Logo, x=7, y=10, w=100, h=24, type='PNG')
+
 
 
 	def footer(self):
-		pass
+		self.set_y(-80)
+		self.add_font('GNU', 'B', FreeSansBold, uni=True)
+		self.set_font('GNU', 'B', 12)
+		self.cell(210, 10, 'Einwilligungserklärung:', ln=1)
+		self.add_font('GNU', '', FreeSans, uni=True)
+		self.set_font('GNU', '', 12)
+		self.multi_cell(195, 5, 'Ich haben mich soeben zu einer Teilnahme an einem SARS-CoV-2-Schnelltest(Corona-PoC-Test) angemeldet. Ich weiß, dass der Test durch unterwiesenes, ggf. nichtmedizinisches Hilfspersonal gemäß dem Drittem Gesetz zum Schutz der Bevölkerung bei einer epidemischen Lage von nationaler Tragweite vom 18.11.2020 durchgeführt wird. Mit der Verarbeitung meiner persönlichen Daten sowie dem Testergebnis durch das DRK bin ich einverstanden. Sofern der Test positiv ist, werden die Daten aufgrund einer gesetzlichen Meldepflicht an das Gesundheitsamt weitergegeben.',0)
+		self.ln(5)
+		self.image(Logo2,x=60,w=110, h=24)
+
 

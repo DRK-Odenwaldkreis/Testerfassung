@@ -10,10 +10,11 @@ sys.path.append("..")
 from utils.database import Database
 from utils.sendmail import send_mail_reminder
 from utils.slot import get_slot_time
+from TicketGeneration.pdfcreator.pdf import PDFgenerator
 import datetime
 
 logFile = '../../Logs/reminderJob.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Reminder job for appointment started on: %s'%(datetime.datetime.now()))
 logger.debug('Starting')
@@ -26,7 +27,7 @@ if __name__ == "__main__":
             logger.debug('Input parameters are not correct, date needed')
             raise Exception
         DatabaseConnect = Database()
-        sql = "Select Vorname, Nachname, Mailadresse, Slot, Stunde,id from Voranmeldung where Tag Between '%s 00:00:00' and '%s 23:59:59';" % (requestedDate,requestedDate)
+        sql = "Select Vorname, Nachname, Mailadresse, Slot, Stunde, Tag, Token, id from Voranmeldung where Tag Between '%s 00:00:00' and '%s 23:59:59' and Reminded = 0;" % (requestedDate,requestedDate)
         logger.debug('Getting all appointments for %s, using the following query: %s' % (requestedDate,sql))
         recipients = DatabaseConnect.read_all(sql)
         logger.debug('Received the following recipients: %s' %(str(recipients)))
@@ -37,10 +38,15 @@ if __name__ == "__main__":
             nachname = i[1]
             stunde = i[4]
             mail = i[2]
-            entry = i[5]
+            entry = i[7]
+            token = i[6]
+            date = i[5]
             appointment = get_slot_time(slot, stunde)
+            PDF = PDFgenerator()
+            filename = PDF.creatPDF(i)
             logger.debug('Handing over to sendmail of reminder')
-            if send_mail_reminder(mail, requestedDate,vorname, nachname, appointment):
+            url = "https://testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token, entry)
+            if send_mail_reminder(mail, date, vorname, nachname, appointment, url, filename):
                 logger.debug('Mail was succesfully send, closing entry in db')
                 sql = "Update Voranmeldung SET Reminded = 1 WHERE id = %s;" % (entry)
                 DatabaseConnect.update(sql)

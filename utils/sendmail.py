@@ -16,6 +16,7 @@ import os
 sys.path.append("..")
 
 from utils.readconfig import read_config
+from utils.month import monthInt_to_string
 
 logger = logging.getLogger('Send Mail')
 logger.debug('Starting')
@@ -41,8 +42,46 @@ def send_mail_report(filenames, day, recipients):
         message['Subject'] = "Neuer Tagesreport für: %s" % (str(day))
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
-        message['Cc'] = 'info@testzentrum-odenwald.de'
+        message['Cc'] = 'testzentrum@drk-odenwaldkreis.de, info@testzentrum-odenwald.de'
         message['To'] = ", ".join(recipients)
+        files = [filenames]
+        for item in files:
+            attachment = open(item, 'rb')
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload((attachment).read())
+            encoders.encode_base64(part)
+            part.add_header(
+                'Content-Disposition', "attachment; filename= " + item.replace('../../Reports/', ''))
+            message.attach(part)
+        logging.debug("Starting SMTP Connection")
+        smtp = smtplib.SMTP(SMTP_SERVER, port=587)
+        smtp.set_debuglevel(True)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        if simulationMode == 0:
+            logging.debug("Going to send message")
+            smtp.send_message(message)
+            logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error(
+            "The following error occured in send mail report: %s" % (err))
+        return False
+
+def send_month_mail_report(filenames, month, year):
+    try:
+        logging.debug(
+            "Receviced the following filename %s to be sent." % (filenames))
+        message = MIMEMultipart()
+        with open('../utils/MailLayout/NewMonthReport.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[MONTH]]', str(monthInt_to_string(int(month)))).replace('[[YEAR]]', str(year))
+        message.attach(MIMEText(messageContent, 'html'))
+        message['Subject'] = "Neuer Report für den Monat: %s, %s" % (str(monthInt_to_string(int(month))),str(year))
+        message['From'] = FROM_EMAIL
+        message['reply-to'] = FROM_EMAIL
+        message['To'] = 'testzentrum@drk-odenwaldkreis.de, info@testzentrum-odenwald.de'
         files = [filenames]
         for item in files:
             attachment = open(item, 'rb')
@@ -101,13 +140,13 @@ def send_csv_report(filename, day):
         return False
 
 
-def send_positive_result(vorname, nachname, mail, date):
+def send_positive_result(vorname, nachname, mail, date, geburtsdatum):
     try:
         logging.debug("Receviced the following recipient %s" % (mail))
         message = MIMEMultipart()
         with open('../utils/MailLayout/Positive_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname))
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM',str(geburtsdatum))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = FROM_EMAIL
@@ -196,13 +235,13 @@ def send_new_entry(date):
         return False
 
 
-def send_negative_result(vorname, nachname, mail, date):
+def send_negative_result(vorname, nachname, mail, date, geburtsdatum):
     try:
         logging.debug("Receviced the following recipient %s" % (mail))
         message = MIMEMultipart()
         with open('../utils/MailLayout/Negative_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[GEBDATUM',str(geburtsdatum))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = FROM_EMAIL
@@ -225,13 +264,13 @@ def send_negative_result(vorname, nachname, mail, date):
         return False
 
 
-def send_indistinct_result(vorname, nachname, mail, date):
+def send_indistinct_result(vorname, nachname, mail, date, geburtsdatum):
     try:
         logging.debug("Receviced the following recipient %s" % (mail))
         message = MIMEMultipart()
         with open('../utils/MailLayout/Indistinct_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
+        messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[GEBDATUM',str(geburtsdatum))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = FROM_EMAIL
@@ -254,19 +293,28 @@ def send_indistinct_result(vorname, nachname, mail, date):
         return False
 
 
-def send_mail_reminder(recipient, date, vorname, nachname, appointment):
+def send_mail_reminder(recipient, date, vorname, nachname, appointment, url, filename):
     try:
         logging.debug("Receviced the following recipient: %s to be sent to." % (
             recipient))
         message = MIMEMultipart()
         with open('../utils/MailLayout/Reminder.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment))
+        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment)).replace('[[LINK]]', str(url))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Erinnerung an Termin %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = recipient
+        files = [filename]
+        for item in files:
+            attachment = open(item, 'rb')
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload((attachment).read())
+            encoders.encode_base64(part)
+            part.add_header(
+                'Content-Disposition', "attachment; filename= " + item.replace('../../Tickets/', ''))
+            message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.set_debuglevel(True)
         smtp.starttls()
@@ -282,15 +330,14 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment):
             "The following error occured in send mail reminder: %s" % (err))
         return False
 
-def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, filename):
+def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, filename, url):
     try:
-        print(filename)
         logging.debug("Receviced the following recipient: %s to be sent to." % (
             recipient))
         message = MIMEMultipart()
         with open('../utils/MailLayout/QRTicket.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment))
+        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment)).replace('[[LINK]]', str(url))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Persönliches Testticket für den Termin um %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
         message['From'] = FROM_EMAIL

@@ -16,7 +16,7 @@ import logging
 
 
 logFile = '../../Logs/ticketGeneration.log'
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Generating Tickets')
 logger.debug('Starting')
@@ -37,10 +37,12 @@ if __name__ == "__main__":
             mail = i[2]
             slot = i[3]
             stunde = i[4]
-            tag = i[5]
+            date = i[5]
+            token = i[6]
             entry = i[7]
             appointment = get_slot_time(slot,stunde)
-            if send_qr_ticket_mail(mail,tag,vorname,nachname,appointment,filename): 
+            url = "https://testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token,entry)
+            if send_qr_ticket_mail(mail,date,vorname,nachname,appointment,filename,url): 
                 logger.debug('Mail was succesfully send, closing entry in db')
                 sql = "Update Voranmeldung SET Mailsend = 1 WHERE id = %s;" % (entry)
                 DatabaseConnect.update(sql)

@@ -43,14 +43,6 @@ echo $GLOBALS['G_html_main_right_a'];
     </div>
 </div>
 
-<!--<div class="alert alert-info" role="alert">
-    <h3>Covid-19 Testung</h3>
-    Für einen Covid-19 Test ist derzeit eine Anmeldung vorab nicht notwendig. Bei Fragen können Sie sich an das Personal vor Ort wenden.
-    <div class="FAIRsepdown"></div>
-    <div class="FAIRsep"></div>
-</div>-->
-
-
 
 <div class="row">
     

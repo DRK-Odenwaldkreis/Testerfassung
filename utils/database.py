@@ -27,6 +27,8 @@ class InsertError(Exception):
 class UpdateError(Exception):
     pass
 
+class DeleteError(Exception):
+    pass
 
 class QueryError(Exception):
     pass
@@ -55,6 +57,7 @@ class Database(object):
         try:
             self.cursor.execute(query, tupel)
             self.connection.commit()
+            return True
         except Exception as e:
             logger.error(
                 'The following error occured in inserting: %s' % (e))
@@ -77,6 +80,7 @@ class Database(object):
         try:
             self.cursor.execute(query)
             self.connection.commit()
+            return True
         except Exception as e:
             logger.error(
                 'The following error occured in updating: %s' % (e))
@@ -104,5 +108,15 @@ class Database(object):
             logger.error(
                 'The following error occured in read all: %s' % (e))
             raise QueryError
-
+    
+    def delete(self, query):
+        try:
+            self.cursor.execute(query)
+            self.connection.commit()
+            return True
+        except Exception as e:
+            logger.error(
+                'The following error occured in deleting: %s' % (e))
+            self.connection.rollback()
+            raise DeleteError
 
