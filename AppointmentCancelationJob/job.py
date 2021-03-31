@@ -21,7 +21,7 @@ if __name__ == "__main__":
     try:
         DatabaseConnect = Database()
         sql = "Select Voranmeldung.Vorname, Voranmeldung.Nachname, Voranmeldung.Mailadresse, Voranmeldung.Tag, Voranmeldung.id from Voranmeldung LEFT JOIN Termine ON Termine.id=Voranmeldung.Termin_id where Termine.Tag is NULL;"
-        logger.debug('Getting all appointments for %s, using the following query: %s' % (requestedDate,sql))
+        logger.debug('Cancel all appointments, using the following query: %s' % (sql))
         canceledAppointments = DatabaseConnect.read_all(sql)
         logger.debug('Received the following cancel objects: %s' %(str(canceledAppointments)))
         for i in canceledAppointments:
