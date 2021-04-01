@@ -366,12 +366,13 @@ def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, ort, fi
             with open('../utils/MailLayout/QRPreTicket.html', encoding='utf-8') as f:
                 fileContent = f.read()
             messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[ORT]]', str(ort))
+            message['Subject'] = "Persönliches Testticket"
         else:
             with open('../utils/MailLayout/QRTicket.html', encoding='utf-8') as f:
                 fileContent = f.read()
             messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment)).replace('[[LINK]]', str(url)).replace('[[ORT]]', str(ort))
+            message['Subject'] = "Persönliches Testticket für den Termin um %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
         message.attach(MIMEText(messageContent, 'html'))
-        message['Subject'] = "Persönliches Testticket für den Termin um %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = recipient

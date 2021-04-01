@@ -41,6 +41,8 @@ class PDFgenerator(FPDF):
 		self.qrcode = pyqrcode.create(str(self.code), error='L')
 		self.qrcode.png('tmp/'+str(self.code) + '.png', scale=5,quiet_zone=2)
 		self.image('tmp/'+ str(self.code) + '.png', y=85,x=140)
+		self.cell(10, 10, '', ln=1)
+		self.cell(200, 10, '#%s' % (self.code), ln=1, align='C')
 		self.cell(10, 30, '', ln=1)
 		self.add_font('GNU', 'B', FreeSansBold, uni=True)
 		self.set_font('GNU', 'B', 12)
