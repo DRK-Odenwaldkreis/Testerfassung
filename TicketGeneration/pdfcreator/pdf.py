@@ -37,6 +37,7 @@ class PDFgenerator(FPDF):
 		self.cell(200,15, 'Name: ' + self.nachname + ', ' + self.vorname, ln=1)
 		self.cell(200,15, 'Datum: ' + self.date.strftime("%d.%m.%Y"), ln=1)
 		self.cell(200,15, 'Uhrzeit: ' + str(self.appointment), ln=1)
+		self.cell(200,15, 'Ort: ' + str(self.location), ln=1)
 		self.qrcode = pyqrcode.create(str(self.code), error='L')
 		self.qrcode.png('tmp/'+str(self.code) + '.png', scale=5,quiet_zone=2)
 		self.image('tmp/'+ str(self.code) + '.png', y=85,x=140)
@@ -46,14 +47,18 @@ class PDFgenerator(FPDF):
 		self.multi_cell(195, 5, 'Bitte halten Sie sich an die geltenden Abstandsregeln. Erscheinen Sie bitte nur, wenn Sie sich gesund fühlen und frei von Symptomen sind.',0, align='C')
 		os.remove('tmp/'+str(self.code) + '.png')
 
-	def creatPDF(self,content):
+	def creatPDF(self,content, location):
 		self.code = content[6]
 		self.slot = content[3]
 		self.stunde = content[4]
 		self.vorname = content[0]
 		self.nachname = content[1]
 		self.date = content[5]
-		self.appointment = get_slot_time(self.slot, self.stunde)
+		self.location = location
+		if self.slot:
+			self.appointment = get_slot_time(self.slot, self.stunde)
+		else:
+			self.appointment = '-'
 		self.time = datetime.date.today().strftime("%d.%m.%Y")
 		self.create_page()
 		self.filename = "../../Tickets/" + str(self.vorname) + "-" + str(self.nachname) + "_" + str(self.date) + ".pdf"

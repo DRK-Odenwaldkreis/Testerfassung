@@ -357,14 +357,19 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment, url, fil
             "The following error occured in send mail reminder: %s" % (err))
         return False
 
-def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, filename, url):
+def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, ort, filename, url):
     try:
         logging.debug("Receviced the following recipient: %s to be sent to." % (
             recipient))
         message = MIMEMultipart()
-        with open('../utils/MailLayout/QRTicket.html', encoding='utf-8') as f:
-            fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment)).replace('[[LINK]]', str(url))
+        if not appointment:
+            with open('../utils/MailLayout/QRPreTicket.html', encoding='utf-8') as f:
+                fileContent = f.read()
+            messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[ORT]]', str(ort))
+        else:
+            with open('../utils/MailLayout/QRTicket.html', encoding='utf-8') as f:
+                fileContent = f.read()
+            messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment)).replace('[[LINK]]', str(url)).replace('[[ORT]]', str(ort))
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Persönliches Testticket für den Termin um %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
         message['From'] = FROM_EMAIL
