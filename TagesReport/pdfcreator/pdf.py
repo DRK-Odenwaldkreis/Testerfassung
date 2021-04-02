@@ -105,7 +105,7 @@ class PDFgenerator:
 		pdf.image('tmp/' + str(self.date) + '.png', w=210, h=160)
 		os.remove('tmp/'+str(self.date) + '.png')
 		pdf.set_font('GNU', '', 14)
-		self.filename = "../../Reports/Tagesreport_Testzentrum_" + str(self.station) + "_"+str(self.date) + ".pdf"
+		self.filename = "../../Reports/Tagesreport_Testzentrum_" + str(self.station).replace(" ","_") + "_"+str(self.date) + ".pdf"
 		pdf.output(self.filename)
 		return self.filename
 
