@@ -90,6 +90,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       <div class="card">';
     if( A_checkpermission(array(1,0,0,0,5)) && !A_checkpermission(array(0,2,0,4,0)) ) {
         echo '<p>Eigene Station S'.$_SESSION['station_id'].'/'.$_SESSION['station_name'].'</p>';
+        $station=$_SESSION['station_id'];
     } else {
         echo '<p>Station wählen:</p>';
         echo '<form action="'.$current_site.'.php" method="post">

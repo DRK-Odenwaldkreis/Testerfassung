@@ -21,13 +21,13 @@ $G_html_header='<html lang="en">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	
-<link rel="shortcut icon" href="img/favicon.png" type="image/x-ico; charset=binary" />
-<link rel="icon" href="img/favicon.png" type="image/x-ico; charset=binary" />
+<link rel="shortcut icon" href="../img/favicon.png" type="image/x-ico; charset=binary" />
+<link rel="icon" href="../img/favicon.png" type="image/x-ico; charset=binary" />
 
 
-<link href="css/bootstrap.css" rel="stylesheet">
+<link href="../css/bootstrap.css" rel="stylesheet">
 <!-- Custom styles for this template -->
-<link href="css/dashboard.css" rel="stylesheet">
+<link href="../css/dashboard.css" rel="stylesheet">
     
   </head>';
 
@@ -38,12 +38,12 @@ $G_html_menu_login='<body style="background-color:#ccc;">';
 $G_html_menu2='<nav class="navbar navbar-inverse navbar-fixed-top FAIR-navbar">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="index.php"><span class="shorten">DRK Covid-19 Testzentrum Odenwaldkreis </span><span style="color:#eee;">Menü</span></a>';
+          <a class="navbar-brand" href="../index.php"><span style="color:#eee;">DRK</span><span class="shorten"> Covid-19 Testzentrum Odenwaldkreis</span></a>';
 
 $G_html_menu2.='</div>
-      <div id="navbar" class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">
-    <li><a href="impressum.php">Impressum</a></li>';
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+			<li><a href="../impressum.php">Impressum / Datenschutz / Kontakt</a></li>';
 
 $G_html_menu2.='</ul>
         

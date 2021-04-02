@@ -53,7 +53,7 @@ echo $GLOBALS['G_html_main_right_a'];
 <?php
 
   // Show table of available dates
-  echo H_build_table_testdates();
+  echo H_build_table_testdates2();
 
 ?>
     </div></div>
