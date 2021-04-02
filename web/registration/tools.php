@@ -109,18 +109,48 @@ function S_get_entry_vorgang ($Db,$scanevent) {
 }
 
 function S_set_entry_voranmeldung ($Db,$array_data) {
-	$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Geburtsdatum, Adresse, Telefon, Mailadresse, Slot) VALUES (?,?,?,?,?,?,?);");
-	mysqli_stmt_bind_param($stmt, "s", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5], $array_data[6]);
+	// First, check if Termin_id is already used
+	$stmt=mysqli_prepare($Db,"SELECT id, Slot FROM Termine WHERE id=?;");
+	mysqli_stmt_bind_param($stmt, "i", $array_data[6]);
 	mysqli_stmt_execute($stmt);
-	mysqli_stmt_bind_result($stmt, $result);
+	mysqli_stmt_bind_result($stmt, $termin_id, $termin_slot);
 	mysqli_stmt_fetch($stmt);
 	mysqli_stmt_close($stmt);
-	return $result; // TODO need id as a return value
+	if($termin_slot>0) {
+		$check_termin_id=S_get_entry($Db,'SELECT id FROM Voranmeldung WHERE Termin_id=CAST('.$termin_id.' as int);');
+	} else {
+		$check_termin_id=0;
+	}
+
+	if($check_termin_id>0) {
+		return 0;
+	} else {
+		// Write data because Termin_id is not used or Termin_id has no slots
+		if($termin_slot>0) {
+			S_set_data($Db,'UPDATE Termine SET Used=1 WHERE id=CAST('.$termin_id.' as int);');
+		}
+		$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Geburtsdatum, Adresse, Telefon, Mailadresse, Termin_id, Tag) VALUES (?,?,?,?,?,?,?,?);");
+		mysqli_stmt_bind_param($stmt, "ssssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5], $array_data[6], $array_data[7]);
+		mysqli_stmt_execute($stmt);
+		mysqli_stmt_bind_result($stmt, $result);
+		mysqli_stmt_fetch($stmt);
+		mysqli_stmt_close($stmt);
+
+
+
+		$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Geburtsdatum=? AND Adresse=? AND Telefon=? AND Mailadresse=? AND Termin_id=? AND Tag=?;");
+		mysqli_stmt_bind_param($stmt, "ssssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5], $array_data[6], $array_data[7]);
+		mysqli_stmt_execute($stmt);
+		mysqli_stmt_bind_result($stmt, $result2);
+		mysqli_stmt_fetch($stmt);
+		mysqli_stmt_close($stmt);
+		return $result2; // need id as a return value
+	}
 }
 
 function S_get_entry_voranmeldung ($Db,$array_data) {
-	$stmt=mysqli_prepare($Db,"SELECT id_preregistration FROM Voranmeldung_Verif WHERE id=? AND Token=?;");
-	mysqli_stmt_bind_param($stmt, "s", $array_data[0], $array_data[1]);
+	$stmt=mysqli_prepare($Db,"SELECT id_preregistration FROM Voranmeldung_Verif WHERE id_preregistration=? AND Token=?;");
+	mysqli_stmt_bind_param($stmt, "is", $array_data[0], $array_data[1]);
 	mysqli_stmt_execute($stmt);
 	mysqli_stmt_bind_result($stmt, $id);
 	mysqli_stmt_fetch($stmt);
@@ -135,8 +165,8 @@ function S_get_entry_voranmeldung ($Db,$array_data) {
 
 // Generate random token
 function A_generate_token($length = 8) {
-		// without 0, O, o, z, Z, y, Y
-    $characters = '123456789abcdefghijklmnpqrstuvwxABCDEFGHIJKLMNPQRSTUVWX';
+		// without 0, O, o, z, Z, y, Y, l
+    $characters = '123456789abcdefghijkmnpqrstuvwxABCDEFGHIJKLMNPQRSTUVWX';
     $randomString = '';
     for ($i = 0; $i < $length; $i++) {
         $randomString .= $characters[rand(0, strlen($characters) - 1)];
@@ -225,7 +255,8 @@ function H_build_table_testdates( ) {
 	$res.='<tr>
     <td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue1" colspan="'.($X+2).'"><b><i>';
 	if($flag_prereg!=0) {
-		$res.='Für folgende Teststationen ist keine Terminbuchung möglich, eine Voranmeldung kann gerne gemacht werden';
+		//$res.='Für folgende Teststationen ist keine Terminbuchung möglich, eine Voranmeldung kann gerne gemacht werden';
+		$res.='Für folgende Teststationen ist keine Voranmeldung notwendig';
 	} else {
 		$res.='Für folgende Teststationen ist keine Voranmeldung notwendig';
 	}
@@ -293,6 +324,130 @@ function H_build_table_testdates( ) {
 			
 		}
 	} */
+	
+	$res.='<tr>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"><h4>Ort</h4></td>';
+	for($j=0;$j<$X;$j++) {
+		$string_date=date('d.m.', strtotime($today. ' + '.$j.' days'));
+		$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-gray"><h4>'.$string_date.'</h4></td>';
+	}
+	$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"></td></tr>';
+    
+	$res.='</table>
+	';
+
+	S_close_db($Db);
+	return $res;
+}
+
+function H_build_table_testdates2( ) {
+	$res='';
+	$Db=S_open_db();
+	$flag_prereg=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_Pre_registration";');
+	$stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station WHERE Firmencode is null OR Firmencode="";');
+	// X ist Anzahl an Tagen für Vorschau in Tabelle
+	$X=14;
+	// Ohne Terminbuchung für nächste X Tage
+	$today=date('Y-m-d');
+	$in_x_days=date('Y-m-d', strtotime($today. ' + '.$X.' days'));
+	
+
+	// Table
+	$res.='
+	<table class="FAIR-data">
+	<tr>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"><h4>Ort</h4></td>';
+	for($j=0;$j<$X;$j++) {
+		$string_date=date('d.m.', strtotime($today. ' + '.$j.' days'));
+		$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-gray"><h4>'.$string_date.'</h4></td>';
+	}
+	$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"></td></tr>';
+
+	$res.='<tr>
+    <td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue1" colspan="'.($X+2).'"><b><i>';
+	if($flag_prereg!=0) {
+		$res.='Für folgende Teststationen ist keine Terminbuchung möglich, eine Voranmeldung Ihrer Daten kann gerne gemacht werden, dann geht es vor Ort schneller - bitte dafür einen Termin wählen';
+	} else {
+		$res.='Für folgende Teststationen ist keine Voranmeldung notwendig';
+	}
+	$res.='</i></b></td>
+	</tr>';
+	foreach($stations_array as $st) {
+		// check if station has appointed times
+		if( S_get_entry($Db,'SELECT id_station FROM Termine WHERE Slot is null AND Date(Tag)>="'.$today.'" AND Date(Tag)<="'.$in_x_days.'" AND id_station='.$st[0].';')==$st[0]) {
+			$res.='<tr>';
+			$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
+			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2">'.$string_location.'</td>';
+			for($j=0;$j<$X;$j++) {
+				$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
+				$array_termine_open=S_get_multientry($Db,'SELECT id,Startzeit, Endzeit, opt_station, opt_station_adresse FROM Termine WHERE Slot is null AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Startzeit ASC;');
+				$string_times='';
+				foreach($array_termine_open as $te) {
+					if($te[3]!='') {
+						$string_times.='<span class="text-sm">'.$te[3].',<br>'.$te[4].'</span><br>';
+					}
+					$string_times.=date('H:i',strtotime($te[1])).' - '.date('H:i',strtotime($te[2])).'<br>';
+				}
+				if($string_times!='') {
+					if($flag_prereg==0) {
+						$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue2">
+						'.$string_times.'</td>';
+					} else {
+						$res.='<td onclick="window.location=\'registration/index.php?appointment='.$te[0].'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue2 calendarblue">'.$string_times.'</td>';
+					}
+					
+				} else {
+					$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue3"></td>';
+				}
+			}
+			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue3"></td>';
+			$res.='</tr>';
+		}
+		
+	}
+
+	if($flag_prereg!=0) {
+
+		$res.='<tr>
+		<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-yellow1" colspan="'.($X+2).'"><b><i>Bei folgenden Teststationen ist eine Voranmeldung und Terminbuchung erforderlich - bitte einen Termin wählen</i></b></td>
+		</tr>';
+		foreach($stations_array as $st) {
+			// check if station has appointed times
+			if( S_get_entry($Db,'SELECT id_station FROM Termine WHERE Slot>0 AND Date(Tag)>="'.$today.'" AND Date(Tag)<="'.$in_x_days.'" AND id_station='.$st[0].';')==$st[0]) {
+				$res.='<tr>';
+				$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
+				$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-yellow2">'.$string_location.'</td>';
+				for($j=0;$j<$X;$j++) {
+					$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
+					$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'";');
+
+					$count_free=$array_termine_open[0][0]-$array_termine_open[0][1];
+					$display_termine='<div style="display: block; margin-top: 5px;"><span class="label label-success">'.($count_free).'</span></div><span class="text-sm"><div style="display: block; margin-top: 5px;">freie&nbsp;Termine</div></span>';
+					if($count_free>0) {
+						$string_times='';
+						// opt location
+						$array_location_opt=S_get_multientry($Db,'SELECT opt_station, opt_station_adresse FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
+						if($array_location_opt[0][0]!='') {
+							$string_times.='<span class="text-sm">'.$array_location_opt[0][0].',<br>'.$array_location_opt[0][1].'</span><br>';
+						}
+						// get times
+						$value_termine_times1=S_get_entry($Db,'SELECT Stunde FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
+						$value_termine_times2=S_get_entry($Db,'SELECT Stunde FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde DESC;');
+						$value_termine_id=S_get_entry($Db,'SELECT id FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
+						$string_times.='<span class="text-sm"><div style="display: block; margin-top: 5px;">'.sprintf('%02d', $value_termine_times1).':00 - '.sprintf('%02d', $value_termine_times2 + 1).':00</div></span>';
+
+						$res.='<td onclick="window.location=\'registration/index.php?appointment='.($value_termine_id).'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow2 calendaryellow">'.$string_times.$display_termine.'</td>';
+					} else {
+						$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow3"></td>';
+					}
+				}
+				//$res.='<td onclick="window.location=\'registration/index.php?appointment_more='.($st[0]).'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow2 calendaryellow">Weitere Termine</td>';
+				$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow3"></td>';
+				$res.='</tr>';
+			}
+			
+		}
+	}
 	
 	$res.='<tr>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"><h4>Ort</h4></td>';

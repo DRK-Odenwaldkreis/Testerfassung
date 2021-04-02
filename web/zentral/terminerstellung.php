@@ -110,7 +110,7 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
 
     if($display_creating_termin) {
       echo '<div class="card">
-      <div class="col-sm-6">
+      <div class="col-md-6">
       <h3>Neue Termine erstellt</h3>
       <p></p>';
       echo $errorhtml0;
@@ -125,7 +125,7 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
         S_close_db($Db);
 
         echo '
-        <div class="col-sm-6"><div class="card">
+        <div class="col-lg-6"><div class="card">
         <h3>Ohne Terminbuchung / Offener Termin</h3>
         <p class="list-group-item-text">Zum Erstellen bitte alle Felder ausfüllen.</p><p></p>';
         echo '<form action="'.$current_site.'.php" method="post">
@@ -169,7 +169,7 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
         echo '</div>';
 
         echo '
-        <div class="col-sm-6"><div class="card">
+        <div class="col-lg-6"><div class="card">
         <h3>Mit Terminbuchung und verpflichtender Voranmeldung</h3>
         <p class="list-group-item-text">Zum Erstellen bitte alle Felder ausfüllen.</p><p></p>';
         echo '<form action="'.$current_site.'.php" method="post">
@@ -188,6 +188,8 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
             <div class="input-group">
             <span class="input-group-addon" id="basic-addon4">Datum</span>
             <input type="date" class="form-control" placeholder="JJJJ-MM-DD" aria-describedby="basic-addon4" value="" name="date">
+            <span class="input-group-addon" id="basic-addon4">Termine pro Slot (15 min.)</span>
+            <input type="number" min="1" max="99" class="form-control" aria-describedby="basic-addon4" name="terminzahl_slot">
             </div>
 
             <div class="input-group">
@@ -196,8 +198,7 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
             <span class="input-group-addon" id="basic-addon4">Letzter Termin (inklusiv)</span>
             <input type="time" step="900" class="form-control" aria-describedby="basic-addon4" name="endzeit_slot">
 
-            <span class="input-group-addon" id="basic-addon4">Termine pro Slot (15 min.)</span>
-            <input type="number" min="1" max="99" class="form-control" aria-describedby="basic-addon4" name="terminzahl_slot">
+            
             </div>
 
             <div class="input-group">

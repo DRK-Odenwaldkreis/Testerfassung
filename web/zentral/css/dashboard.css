@@ -39,6 +39,7 @@ body {
 .navbar-nav {
 	margin-top: 0px;
 	margin-bottom: 0px;
+	float: left;
 }
 
 @media screen and (max-width: 768px) {

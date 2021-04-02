@@ -550,6 +550,40 @@ color: #2c95c9;
 transition: all 0s ease 0s;
 }
 
+td.calendar {
+	color:#333;
+}
+td.calendarblue:hover {
+	color:#fff;
+	cursor: pointer;
+	background-color: #06447a;
+}
+td.calendaryellow:hover {
+	color:#fff;
+	cursor: pointer;
+	background-color: #c29605;
+}
+
+div.calendar_selection {
+	line-height: 3.5em;
+}
+span.calendarblue {
+	color:#111;
+	background-color: #d9edf7;
+	margin-right:5px;
+	padding:8px;
+}
+a.calendaryellow {
+	color:#111;
+	background-color: #d6cdad;
+	margin-right:5px;
+	padding:8px;
+}
+a.calendaryellow:hover {
+	color:#fff;
+	background-color: #c29605;
+	text-decoration: none;
+}
 
 /*
  * Special buttons

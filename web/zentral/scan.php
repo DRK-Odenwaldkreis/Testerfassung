@@ -199,23 +199,42 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         // Voranmeldung in Vorgang übertragen
         // ///////////////
 
+        $color_station_red='';
+        $color_slot_red='';
+        $today=date("Y-m-d",time());
+
         // Get person data
-        $array_voranmeldung=S_get_multientry($Db,'SELECT Nachname, Vorname, Geburtsdatum, Slot FROM Voranmeldung WHERE id=CAST('.$preregistration.' AS int);');
+        $array_voranmeldung=S_get_multientry($Db,'SELECT Nachname, Vorname, Geburtsdatum, Termin_id FROM Voranmeldung WHERE id=CAST('.$preregistration.' AS int);');
+        $array_termin=S_get_multientry($Db,'SELECT id_station,Tag,Stunde,Slot FROM Termine WHERE id=CAST('.$array_voranmeldung[0][3].' AS int);');
+        $val_station=S_get_entry($Db,'SELECT Ort FROM Station WHERE id=CAST('.$array_termin[0][0].' AS int);');
         // Slot data
-        // TODO
+        $display_station='S'.$array_termin[0][0].' / '.$val_station;
+        $display_slot=$array_termin[0][1].'';
+        if($array_termin[0][0]!=$_SESSION['station_id']) {
+          $color_station_red='FAIR-change-red';
+        }
+        if($array_termin[0][2]>0) {
+          $time1=sprintf('%02d', $array_termin[0][2]).':'.sprintf('%02d', ( $array_termin[0][3]*15-15 ) );
+          $display_slot.=" / $time1";
+        }
+        if($today!=$array_termin[0][1]) {
+          $color_slot_red='FAIR-change-red';
+        }
         
         // Show person data
         echo '<div class="row">';
         echo '<div class="col-sm-12">
         <h3>Termin gültig für</h3>';
         echo '<div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Slot</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_voranmeldung[0][3].'" disabled></div>
+        <span class="input-group-addon '.$color_station_red.'" id="basic-addon1">Ort</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$display_station.'" disabled></div>
+        <div class="input-group">
+        <span class="input-group-addon '.$color_slot_red.'" id="basic-addon1">Termin</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$display_slot.'" disabled></div>
         <div class="input-group">
         <span class="input-group-addon" id="basic-addon1">Name</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_voranmeldung[0][0].'" disabled></div>
         <div class="input-group">
         <span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_voranmeldung[0][1].'" disabled></div>
         <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Geboren am</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_voranmeldung[0][2].'" disabled></div>
+        <span class="input-group-addon" id="basic-addon1">Geboren am</span><input type="date" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_voranmeldung[0][2].'" disabled></div>
         ';
         echo '</div></div>';
 
