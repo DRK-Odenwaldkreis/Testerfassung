@@ -45,10 +45,11 @@ class PDFgenerator(FPDF):
 		self.multi_cell(195, 5, 'Bitte halte dich an die geltenden Abstandsregeln.',0, align='C')
 		os.remove('tmp/'+str(self.code) + '.png')
 
-	def creatPDF(self,content, location):
+	def creatPDF(self,content):
 		self.code = content[4]
 		self.vorname = content[0]
 		self.nachname = content[1]
+		self.date = content[3]
 		self.time = datetime.date.today().strftime("%d.%m.%Y")
 		self.create_page()
 		self.filename = "../../Tickets/" + str(self.vorname).replace(" ", "_") + "-" + str(self.nachname).replace(" ", "_") + "_" + str(self.date) + ".pdf"

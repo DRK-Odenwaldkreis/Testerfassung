@@ -358,7 +358,7 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment, url, fil
         return False
     
 
-def send_qr_ticket_pre_register_mail(mail,date,vorname,nachname,filename):
+def send_qr_ticket_pre_register_mail(recipient,date,vorname,nachname,filename):
     try:
         logging.debug("Receviced the following recipient: %s to be sent to." % (
             recipient))
