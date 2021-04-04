@@ -44,6 +44,10 @@ $G_html_menu2.='</div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
 			<li><a href="../impressum.php">Impressum / Datenschutz / Kontakt</a></li>';
+if($_SESSION['b2b_signedin']) {
+  $G_html_menu2.='<li><a href="logout.php" style="color: #fff; background-color: #9f0000;">Logout</a></li>';
+}
+
 
 $G_html_menu2.='</ul>
         

@@ -318,7 +318,7 @@ echo $GLOBALS['G_html_header'];
 
  
 // Print html menu
-echo $GLOBALS['G_html_menu_login'];
+echo $GLOBALS['G_html_menu'];
 echo $GLOBALS['G_html_menu2'];
 
 $html_box_login='';
@@ -451,6 +451,7 @@ html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
 	$html_box_login.='<div class="FAIR-si-button">';
 	$html_box_login.='<input type="submit" class="btn btn-danger" value="Anmelden" name="button" />';
 	$html_box_login.='</div></form>';
+	$html_box_login.='<p><span class="text-sm">Mit Klick auf Anmelden stimme ich der Verwendung von technisch notwendigen Cookies zu.</span></p>';
 	$html_box_login.='</div>';
 	
 	$html_box_login.='<p></p>';
