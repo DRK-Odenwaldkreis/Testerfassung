@@ -30,7 +30,7 @@ if __name__ == "__main__":
         requestedMonth = sys.argv[1]
         requestedYear = sys.argv[2]
         DatabaseConnect = Database()
-        sql = "Select SUM(Amount),Teststation,Ort from Abrechnung JOIN Station ON Abrechnung.Teststation = Station.id where MONTH(Abrechnung.Date)=%s and YEAR(Abrechnung.Date)=%s GROUP BY Teststation;" % (requestedMonth,requestedYear)
+        sql = "Select SUM(Amount),Teststation, Ort from Abrechnung JOIN Station ON Abrechnung.Teststation = Station.id where MONTH(Abrechnung.Date)=%s and YEAR(Abrechnung.Date)=%s GROUP BY Teststation;" % (requestedMonth,requestedYear)
         content = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' %(str(content)))
         PDF = PDFgenerator(content, requestedMonth, requestedYear)
