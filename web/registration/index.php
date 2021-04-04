@@ -9,6 +9,8 @@ March 2021
 ** ************** */
 
 include_once 'preload.php';
+if( isset($GLOBALS['G_sessionname']) ) { session_name ($GLOBALS['G_sessionname']); }
+session_start();
 
 // Include functions
 include_once 'tools.php';
@@ -257,6 +259,21 @@ if(isset($_POST['submit_person'])) {
         mysqli_stmt_fetch($stmt);
         mysqli_stmt_close($stmt);
 
+        // Check if Termin is b2b
+        $b2b_code=S_get_multientry($Db,'SELECT Station.id, Station.Firmencode FROM Station JOIN Termine ON Termine.id_station=Station.id WHERE Termine.id=CAST('.$array_appointment[0].' as int);');
+        if($b2b_code[0][1]!='') {
+            if(isset($_SESSION) && $_SESSION['b2b_signedin'] && $_SESSION['b2b_id']==$b2b_code[0][0]) {
+                $b2b_check=true;
+                $b2b_termin=true;
+            } else {
+                $b2b_check=false;
+                $b2b_termin=false;
+            }
+        } else {
+            $b2b_check=true;
+            $b2b_termin=false;
+        }
+
         // Slot booking or single Termin
         $date=date("d.m.Y",strtotime($array_appointment[1]));
         $date_sql=date("Y-m-d",strtotime($array_appointment[1]));
@@ -282,103 +299,124 @@ if(isset($_POST['submit_person'])) {
     } else {
         $val_station_id=$_GET['appointment_more'];
     }
-    // ///////////////
-    // Registrierungsformular
-    // ///////////////
-    echo '<div class="alert alert-info" role="alert">
-    <h3>Ablauf</h3>';
-    if(!$display_single_termin){
-        echo '<p>Bitte wählen Sie einen freien Termin für jede Person, die getestet werden soll.</p>';
-    }
-    echo '<p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
-    <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse einen QR-Code, den Sie bei dem Testzentrum vorzeigen müssen (gedruckt oder auf dem Display). Bitte halten Sie im Testzentrum auch einen Lichtbildausweis bereit.</p>
-    <p>Das Ergebnis Ihres Tests wird Ihnen nach dem Abstrich per E-Mail zugeschickt.</p>
-    </div>';
-    if($display_single_termin) {
-        echo '<div class="panel panel-primary">
-        <div class="panel-heading">
-        <b>Gewählter Termin</b>
-        </div>
-        <div class="panel-body">
-        <div class="row">
-        <div class="col-sm-6"><b>Datum</b> <span class="calendarblue">'.$date.'</span> / <b>Uhrzeit</b> <span class="calendarblue">'.$time1.' - '.$time2.' Uhr</span></div>
-        <div class="col-sm-6"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
-        </div>
-        </div>
-        </div>';
 
-// TODO check for valid email address
-        echo '<h3>Registrierung</h3>
-        <form action="'.$current_site.'.php" method="post">
-            <input type="text" value="'.$date_sql.'" name="date" style="display:none;">
-            <input type="text" value="'.$val_termin_id.'" name="termin_id" style="display:none;">
-
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1"></div>
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-            <div class="input-group">
-            <input type="checkbox" id="cb1" name="cb1" required/>
-            <label for="cb1">Ich habe derzeit <b>keine</b> grippeähnlichen Symptome wie Husten, Fieber oder plötzlichen Verlust des Geruchs- oder Geschmackssinnes.</label>
-            </div>
-            <div class="input-group">
-            <input type="checkbox" id="cb2" name="cb2" required/>
-            <label for="cb2">Ich bestätige die wahrheitsgemäße Angabe der Selbsteinschätzung und der angegebenen Daten. Falls sich an den obigen Antworten bis zum Testzeitpunkt etwas ändert, verpflichte ich mich, dies dem Testzentrum vor dem Abstrich mitzuteilen.</label>
-            </div>
-            <div class="input-group">
-            <input type="checkbox" id="cb3" name="cb3" required/>
-            <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
-            (<a href="../impressum.php" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
-            </div>
-            <span class="input-group-btn">
-            <input type="submit" class="btn btn-danger" value="Jetzt Registrieren" name="submit_person" />
-            </span>
-            </form>
-            <p>* optional</p>';
-        echo '</div>';
-        echo '</div>';
-    } elseif($display_slot_termin) {
-        // Show available slots
-        echo '<div class="panel panel-primary">
-        <div class="panel-heading">
-        <b>Gewählte Station</b>
-        </div>
-        <div class="panel-body">
-        <div class="row">
-        <div class="col-sm-6"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
-        <div class="col-sm-6"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
-        </div>
-        </div>
-        </div>';
-        echo '<h3>Termin auswählen</h3>
-        <div class="row"><div class="col-sm-12 calendar_selection">';
-        foreach($array_termine_slot as $k) {
-            $display_slot=sprintf('%02d', $k[1]).':'.sprintf('%02d', ( $k[2]*15-15 ) );
-            $display_slot.='&nbsp;-&nbsp;'.(date("H:i",strtotime($display_slot) + 60 * 15));
-            if($k[3]>2) {
-                $display_free='<span class="label label-success">'.$k[3].'</span>';
-            } else {
-                $display_free='<span class="label label-warning">'.$k[3].'</span>';
+    if($b2b_check) {
+        // ///////////////
+        // Registrierungsformular
+        // ///////////////
+        
+        if($b2b_termin) {
+            echo '<div class="alert alert-info" role="alert">
+            <h3>Ablauf und Information</h3><p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
+            <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse einen QR-Code, den Sie bei dem Test vorzeigen müssen (gedruckt oder auf dem Display). Bitte halten Sie beim Test auch einen Lichtbildausweis oder Mitarbeiterausweis bereit.</p>
+            <p>Das Ergebnis Ihres Tests wird Ihnen nach dem Abstrich per E-Mail zugeschickt.</p>
+            </div>';
+            echo '<div class="alert alert-danger" role="alert">
+            <p>Ihr Arbeitgeber hat keinen Zugriff auf Ihre eingegebenen Daten und auch nicht auf Ihr Testergebnis.</p>
+            </div>';
+        } else {
+            echo '<div class="alert alert-info" role="alert">
+            <h3>Ablauf</h3>';
+            if(!$display_single_termin){
+                echo '<p>Bitte wählen Sie einen freien Termin für jede Person, die getestet werden soll.</p>';
             }
-            echo '<div style="float: left;"><a class="calendaryellow" href="?appointment='.($k[0]).'&slot=100">'.$display_slot.'
-            '.$display_free.'</a></div>';
+            echo '<p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
+            <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse einen QR-Code, den Sie bei dem Testzentrum vorzeigen müssen (gedruckt oder auf dem Display). Bitte halten Sie im Testzentrum auch einen Lichtbildausweis bereit.</p>
+            <p>Das Ergebnis Ihres Tests wird Ihnen nach dem Abstrich per E-Mail zugeschickt.</p>
+            </div>';
         }
-        echo '</div>';
-        echo '</div>';
-    } else {
-        // ///////////////
-        // Kein Ort/Termin ausgewählt
-        // ///////////////
-        echo '<div class="alert alert-warning" role="alert">
-        <h3>Warnung</h3>
-        <p>Sie haben keinen Ort/Termin ausgewählt!</p>
-        <p>Bitte wählen Sie im <a href="../index.php">Kalender</a> einen Tag und eine Teststation aus.</p>
-        </div>';
+        if($display_single_termin) {
+            echo '<div class="panel panel-primary">
+            <div class="panel-heading">
+            <b>Gewählter Termin</b>
+            </div>
+            <div class="panel-body">
+            <div class="row">
+            <div class="col-sm-6"><b>Datum</b> <span class="calendarblue">'.$date.'</span> / <b>Uhrzeit</b> <span class="calendarblue">'.$time1.' - '.$time2.' Uhr</span></div>
+            <div class="col-sm-6"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
+            </div>
+            </div>
+            </div>';
 
-        echo '</div>';
-        echo '</div>';
+    // TODO check for valid email address
+            echo '<h3>Registrierung</h3>
+            <form action="'.$current_site.'.php" method="post">
+                <input type="text" value="'.$date_sql.'" name="date" style="display:none;">
+                <input type="text" value="'.$val_termin_id.'" name="termin_id" style="display:none;">
+
+                <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+                <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+                <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+                <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+                <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1"></div>
+                <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+                <div class="input-group">
+                <input type="checkbox" id="cb1" name="cb1" required/>
+                <label for="cb1">Ich habe derzeit <b>keine</b> grippeähnlichen Symptome wie Husten, Fieber oder plötzlichen Verlust des Geruchs- oder Geschmackssinnes.</label>
+                </div>
+                <div class="input-group">
+                <input type="checkbox" id="cb2" name="cb2" required/>
+                <label for="cb2">Ich bestätige die wahrheitsgemäße Angabe der Selbsteinschätzung und der angegebenen Daten. Falls sich an den obigen Antworten bis zum Testzeitpunkt etwas ändert, verpflichte ich mich, dies dem Testzentrum vor dem Abstrich mitzuteilen.</label>
+                </div>
+                <div class="input-group">
+                <input type="checkbox" id="cb3" name="cb3" required/>
+                <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
+                (<a href="../impressum.php" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
+                </div>
+                <span class="input-group-btn">
+                <input type="submit" class="btn btn-danger" value="Jetzt Registrieren" name="submit_person" />
+                </span>
+                </form>
+                <p>* optional</p>';
+            echo '</div>';
+            echo '</div>';
+        } elseif($display_slot_termin) {
+            // Show available slots
+            echo '<div class="panel panel-primary">
+            <div class="panel-heading">
+            <b>Gewählte Station</b>
+            </div>
+            <div class="panel-body">
+            <div class="row">
+            <div class="col-sm-6"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
+            <div class="col-sm-6"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
+            </div>
+            </div>
+            </div>';
+            echo '<h3>Termin auswählen</h3>
+            <div class="row"><div class="col-sm-12 calendar_selection">';
+            foreach($array_termine_slot as $k) {
+                $display_slot=sprintf('%02d', $k[1]).':'.sprintf('%02d', ( $k[2]*15-15 ) );
+                $display_slot.='&nbsp;-&nbsp;'.(date("H:i",strtotime($display_slot) + 60 * 15));
+                if($k[3]>2) {
+                    $display_free='<span class="label label-success">'.$k[3].'</span>';
+                } else {
+                    $display_free='<span class="label label-warning">'.$k[3].'</span>';
+                }
+                echo '<div style="float: left;"><a class="calendaryellow" href="?appointment='.($k[0]).'&slot=100">'.$display_slot.'
+                '.$display_free.'</a></div>';
+            }
+            echo '</div>';
+            echo '</div>';
+        } else {
+            // ///////////////
+            // Kein Ort/Termin ausgewählt
+            // ///////////////
+            echo '<div class="alert alert-warning" role="alert">
+            <h3>Warnung</h3>
+            <p>Sie haben keinen Ort/Termin ausgewählt!</p>
+            <p>Bitte wählen Sie im <a href="../index.php">Kalender</a> einen Tag und eine Teststation aus.</p>
+            </div>';
+
+            echo '</div>';
+            echo '</div>';
+        }
+    } else {
+        echo '<div class="alert alert-warning" role="alert">
+        <h3>Fehler</h3>';
+        echo '<p>Sie haben einen Termin ohne Berechtigung gewählt.</p>
+        <p>Bitte nutzen Sie die <a href="business.php">Firmenanmeldung</a>.</p>
+        </div>';
     }
 } else {
     // ///////////////
