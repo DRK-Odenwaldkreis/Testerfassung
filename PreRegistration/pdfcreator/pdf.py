@@ -52,7 +52,7 @@ class PDFgenerator(FPDF):
 		self.date = content[3]
 		self.time = datetime.date.today().strftime("%d.%m.%Y")
 		self.create_page()
-		self.filename = "../../Tickets/" + str(self.vorname).replace(" ", "_") + "-" + str(self.nachname).replace(" ", "_") + "_" + str(self.date) + ".pdf"
+		self.filename = "../../Tickets/Ticket_" + str(self.code) + "_" + str(self.date) + ".pdf"
 		self.output(self.filename)
 		return self.filename
 	
