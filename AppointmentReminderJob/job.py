@@ -14,7 +14,7 @@ from TicketGeneration.pdfcreator.pdf import PDFgenerator
 import datetime
 
 logFile = '../../Logs/reminderJob.log'
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Reminder job for appointment started on: %s'%(datetime.datetime.now()))
 logger.debug('Starting')
@@ -27,7 +27,7 @@ if __name__ == "__main__":
             logger.debug('Input parameters are not correct, date needed')
             raise Exception
         DatabaseConnect = Database()
-        sql = "Select Voranmeldung.Vorname, Voranmeldung.Nachname, Voranmeldung.Mailadresse, Termine.Slot, Termine.Stunde, Voranmeldung.Tag, Voranmeldung.Token, Voranmeldung.id from Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id where Voranmeldung.Tag Between '%s 00:00:00' and '%s 23:59:59' and Reminded = 0;" % (requestedDate,requestedDate)
+        sql = "Select Voranmeldung.Vorname, Voranmeldung.Nachname, Voranmeldung.Mailadresse, Termine.Slot, Termine.Stunde, Voranmeldung.Tag, Voranmeldung.Token, Voranmeldung.id, Station.Ort, Station.Adresse, Termine.opt_station_adresse, Termine.opt_station from Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id JOIN Station ON Termine.id_station=Station.id where Voranmeldung.Tag Between '%s 00:00:00' and '%s 23:59:59' and Reminded = 0;" % (requestedDate,requestedDate)
         logger.debug('Getting all appointments for %s, using the following query: %s' % (requestedDate,sql))
         recipients = DatabaseConnect.read_all(sql)
         logger.debug('Received the following recipients: %s' %(str(recipients)))
@@ -41,9 +41,17 @@ if __name__ == "__main__":
             entry = i[7]
             token = i[6]
             date = i[5]
-            appointment = get_slot_time(slot, stunde)
+            ort = i[8]
+            adress = i[9]
+            opt_ort = i[10]
+            opt_adress = i[11]
+            appointment = get_slot_time(slot,stunde)
+            if len(opt_ort) == 0:
+                location = str(ort) + ", " + str(adress)
+            else:
+                location = str(opt_ort) + "," + str(opt_adress)
             PDF = PDFgenerator()
-            filename = PDF.creatPDF(i)
+            filename = PDF.creatPDF(i,location)
             logger.debug('Handing over to sendmail of reminder')
             url = "https://testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token, entry)
             if send_mail_reminder(mail, date, vorname, nachname, appointment, url, filename):

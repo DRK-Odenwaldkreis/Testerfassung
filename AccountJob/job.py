@@ -39,7 +39,6 @@ if __name__ == "__main__":
                     negativ = i[0]
             sql = "INSERT INTO Abrechnung (Teststation,Date,Amount,Negativ,Positiv) VALUES(%s,%s,%s,%s,%s);"
             tupel = (station[1],requestedDate,station[0],negativ,positiv)
-            print(tupel)
             DatabaseConnect.insert(sql,tupel)
         logger.debug('Done')
     except Exception as e:
