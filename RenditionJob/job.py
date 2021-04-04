@@ -26,13 +26,14 @@ logger.debug('Starting')
 
 if __name__ == "__main__":
     try:
-        if len(sys.argv) != 2:
+        if len(sys.argv) == 2:
             logger.debug('Input parameters are not correct, station id is needed')
-            raise Exception
-        stationID = sys.argv[1]
-        DatabaseConnect = Database()
-        sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id, Adresse, Telefon, Geburtsdatum  from Vorgang where Mailsend is NULL and Ergebnis is not NULL and Teststation = %s;" % (
+            stationID = sys.argv[1]
+            sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id, Adresse, Telefon, Geburtsdatum  from Vorgang where Mailsend is NULL and Ergebnis is not NULL and Teststation = %s;" % (
             stationID)
+        else:
+            sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id, Adresse, Telefon, Geburtsdatum  from Vorgang where Mailsend is NULL and Ergebnis is not NULL;"
+        DatabaseConnect = Database()
         logger.debug('Checking for new results, using the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
         logger.debug(
