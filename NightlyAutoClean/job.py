@@ -25,6 +25,9 @@ if __name__ == "__main__":
         sql = "Delete from Voranmeldung where Used = 1;"
         logger.debug('Cleaning all Voranmeldungen that were used, using the following query: %s' % (sql))
         DatabaseConnect.delete(sql)
+        sql = "Delete from Voranmeldung where Tag <= (NOW() - INTERVAL 1 DAY);"
+        logger.debug('Cleaning all Voranmeldungen that are prior today, using the following query: %s' % (sql))
+        DatabaseConnect.delete(sql)
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
