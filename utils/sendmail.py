@@ -55,7 +55,6 @@ def send_mail_report(filenames, day, recipients):
             message.attach(part)
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -93,7 +92,6 @@ def send_month_mail_report(filenames, month, year):
             message.attach(part)
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -125,7 +123,6 @@ def send_csv_report(filename, day):
         message['To'] = ", ".join(recipients)
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -164,7 +161,6 @@ def send_positive_result(vorname, nachname, mail, date, geburtsdatum):
             message.attach(part)
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -192,7 +188,6 @@ def send_notification(vorname, nachname, date):
         message['To'] = FROM_EMAIL
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -220,7 +215,6 @@ def send_new_entry(date):
         message['To'] = GESUNDHEITSAMT
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -249,7 +243,6 @@ def send_negative_result(vorname, nachname, mail, date, geburtsdatum):
         message['To'] = mail
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -278,7 +271,6 @@ def send_indistinct_result(vorname, nachname, mail, date, geburtsdatum):
         message['To'] = mail
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -306,7 +298,6 @@ def send_cancel_appointment(recipient, date, vorname, nachname):
         message['reply-to'] = FROM_EMAIL
         message['To'] = recipient
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -343,7 +334,6 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment, url, fil
                 'Content-Disposition', "attachment; filename= " + item.replace('../../Tickets/', ''))
             message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -381,7 +371,6 @@ def send_qr_ticket_pre_register_mail(recipient,date,vorname,nachname,filename):
                 'Content-Disposition', "attachment; filename= " + item.replace('../../Tickets/', ''))
             message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -424,7 +413,6 @@ def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, ort, fi
                 'Content-Disposition', "attachment; filename= " + item.replace('../../Tickets/', ''))
             message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
