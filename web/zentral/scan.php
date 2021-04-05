@@ -265,7 +265,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       echo '
       <h3>Manuelle Eingabe</h3>
       <form action="'.$current_site.'.php" method="get">
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nummer</span><input type="text" name="scan" value="K" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off">
+            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nummer</span><input type="text" name="scan" value="" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" autofocus="on">
             <input type="text" name="prereg" value="'.$preregistration.'" class="form-control" aria-describedby="basic-addon1" style="display:none;">
             <span class="input-group-btn">
               <input type="submit" class="btn btn-danger" value="Senden" name="scan_send" />
@@ -326,18 +326,33 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       }
       
       S_set_data($Db,'UPDATE Kartennummern SET Used=1 WHERE id='.$token.';');
+
+      // check if data was written
+      $val_written=S_get_entry($Db,'SELECT Ergebnis FROM Vorgang WHERE id='.$testkarte.';');
+      if($val_written>0){
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Ergebnis gespeichert</h3>
+        <div class="list-group">';
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
+        echo '</div></div>';
+      } else {
+        echo '<div class="row"><div class="col-sm-12">
+        <div class="alert alert-danger" role="alert">
+        <h3>Speicherfehler</h3>
+        <p>Die Daten wurden nicht gespeichert. Bitte neu scannen und Ergebnis eintragen.</p>
+        </div></div>';
+        echo '</div>';
+        echo '<div class="list-group">';
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
+        echo '</div></div>';
+      }
       
-      echo '<div class="row">';
-      echo '<div class="col-sm-12">
-      <h3>Ergebnis gespeichert</h3>
-      <div class="list-group">';
-      echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
-      echo '</div></div>';
     } else {
       echo '<div class="row">';
       echo '<div class="col-sm-12">
-      <h3>Eingabe fehlerhaft - Bitte neu scannen</h3>
-      <div class="list-group">';
+      <h3>Eingabe fehlerhaft - Bitte neu scannen</h3>';
+      echo '<div class="list-group">';
       echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
       echo '</div></div>';
     }
@@ -383,8 +398,11 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       }
     } else {
       echo '<div class="col-sm-12">
-      <h3>Speicherfehler</h3>';
-      echo '<p>Daten fehlerhaft - bitte neu scannen</p>';
+        <div class="alert alert-danger" role="alert">
+        <h3>Speicherfehler</h3>
+        <p>Die Daten wurden nicht gespeichert. Bitte neu eingeben oder Seite neu laden / F5 / refresh und ggf. Frage mit JA beantworten.</p>
+        </div></div>';
+        echo '</div>';
     }
     echo '<div class="list-group">';
     echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="edit_person.php?id='.$k_id.'">Daten ändern</a>';
@@ -412,7 +430,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
 	echo '<script>
 const html5QrCode = new Html5Qrcode("reader");
 const qrCodeSuccessCallback = message => { window.location.href=`?scan=${message}`; }
-const config = { fps: 10, qrbox: 350 };
+const config = { fps: 50, qrbox: 350 };
 
 html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
 
@@ -422,7 +440,7 @@ html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
   echo '
   <h3>Manuelle Eingabe</h3>
   <form action="'.$current_site.'.php" method="get">
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nummer</span><input type="text" name="scan" value="K" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off">
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nummer</span><input type="text" name="scan" value="" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" autofocus="on">
         <span class="input-group-btn">
           <input type="submit" class="btn btn-danger" value="Senden" name="scan_send" />
           </span>

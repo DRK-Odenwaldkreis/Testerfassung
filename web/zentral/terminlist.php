@@ -48,7 +48,6 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
             $termin_id=$_POST['termin_id'];
             if($termin_id>0) {
                 $array_del_termin=S_get_multientry($Db,'SELECT id_station,Tag,Stunde,Slot FROM Termine WHERE id=CAST('.$termin_id.' as int);');
-                var_dump($array_del_termin);
                 S_set_data($Db,'DELETE From Termine WHERE id_station='.$array_del_termin[0][0].' AND Tag=\''.$array_del_termin[0][1].'\' AND Stunde='.$array_del_termin[0][2].' AND Slot='.$array_del_termin[0][3].' AND Used is null;');
             }
             $station=$array_del_termin[0][0];

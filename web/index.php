@@ -53,7 +53,15 @@ echo $GLOBALS['G_html_main_right_a'];
 <?php
 
   // Show table of available dates
-  echo H_build_table_testdates();
+  echo H_build_table_testdates2('');
+
+  echo '<div class="row">
+    <div class="col-sm-4">
+        <div class="list-group">
+            <a class="btn btn-primary" id="module-b2b" href="registration/business.php">Firmenanmeldung</a>
+        </div>
+    </div>
+</div>';
 
 ?>
     </div></div>
