@@ -51,9 +51,14 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       if(isset($_POST['create_export_csv'])) {
           $date=($_POST['date']);
+          $uid=$_SESSION['uid'];
           $dir="/home/webservice/Testerfassung/CSVExport/";
           chdir($dir);
-          $job="python3 job.py $date";
+          if( A_checkpermission(array(0,0,0,0,5)) && !A_checkpermission(array(0,2,0,4,0)) ) {
+            $job="python3 job.py $date $uid";
+          } else {
+            $job="python3 job.py $date";
+          }
           exec($job,$script_output);
           $file=$script_output[0];
           if( file_exists("/home/webservice/Reports/$file") ) {
@@ -193,7 +198,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   }
   echo '</table></div></div>';
 
-  if(A_checkpermission(array(0,2,0,4,0))) {
+  if(A_checkpermission(array(0,2,0,4,5))) {
     // Get CSV file
     echo '<div class="card">
         <div class="col-sm-4">
