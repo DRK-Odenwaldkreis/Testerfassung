@@ -34,15 +34,15 @@ class PDFgenerator(FPDF):
 		self.set_font('GNU', '', 20)
 		self.cell(200,15, 'Name: ' + self.nachname + ', ' + self.vorname, ln=1)
 		self.cell(200,15, 'Datum: ' + self.date.strftime("%d.%m.%Y"), ln=1)
-		self.qrcode = pyqrcode.create(str(self.code), error='L')
-		self.qrcode.png('tmp/'+str(self.code) + '.png', scale=5,quiet_zone=2)
+		self.qrcode = pyqrcode.create(str(self.code), error='Q')
+		self.qrcode.png('tmp/'+str(self.code) + '.png', scale=6,quiet_zone=4)
 		self.image('tmp/'+ str(self.code) + '.png', y=85,x=140)
 		self.cell(10, 10, '', ln=1)
 		self.cell(200, 10, '#%s' % (self.code), ln=1, align='C')
 		self.cell(10, 30, '', ln=1)
 		self.add_font('GNU', 'B', FreeSansBold, uni=True)
 		self.set_font('GNU', 'B', 12)
-		self.multi_cell(195, 5, 'Bitte halte dich an die geltenden Abstandsregeln.',0, align='C')
+		self.multi_cell(195, 5, 'Bitte halten Sie sich an die geltenden Abstandsregeln.',0, align='C')
 		os.remove('tmp/'+str(self.code) + '.png')
 
 	def creatPDF(self,content):

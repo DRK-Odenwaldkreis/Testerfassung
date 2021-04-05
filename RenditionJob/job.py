@@ -19,7 +19,7 @@ from utils.sendmail import send_notification
 #locale.setlocale(locale.LC_ALL, 'de_DE')
 
 logFile = '../../Logs/rotationJob.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.WARNING,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Rendition Job startet on: %s' %(datetime.datetime.now()))
 logger.debug('Starting')

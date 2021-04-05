@@ -12,7 +12,7 @@ from utils.sendmail import send_cancel_appointment
 import datetime
 
 logFile = '../../Logs/cancelJob.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.WARNING,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Cancel job for appointment cancelation started on: %s'%(datetime.datetime.now()))
 logger.debug('Starting')

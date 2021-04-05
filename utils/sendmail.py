@@ -293,7 +293,7 @@ def send_cancel_appointment(recipient, date, vorname, nachname):
             fileContent = f.read()
         messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
-        message['Subject'] = "Ihr Termin im Testzentrum des Odenwaldkreis am %s wurde stornier" % (str(date))
+        message['Subject'] = "Ihr Termin im Testzentrum des Odenwaldkreis am %s wurde storniert" % (str(date))
         message['From'] = FROM_EMAIL
         message['reply-to'] = FROM_EMAIL
         message['To'] = recipient

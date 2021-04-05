@@ -13,7 +13,7 @@ from utils.getRequesterMail import get_Leitung_from_StationID
 
 
 logFile = '../../Logs/TagesreportJob.log'
-logging.basicConfig(filename=logfile,level=logging.DEBUG,
+logging.basicConfig(filename=logfile,level=logging.WARNING,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Tagesreport')
 logger.debug('Starting')
