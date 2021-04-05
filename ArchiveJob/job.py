@@ -28,11 +28,14 @@ if __name__ == "__main__":
         logger.debug('Getting all Events for a date with the following query: %s' % (sql))
         deleteCanidate = DatabaseConnect.read_all(sql)
         for i in deleteCanidate:
-            sql = "INSERT INTO Archive (TestNr, Station, Token, Registrierungszeitpunkt) VALUES (%s,%s,%s,%s);"
-            tupel = (i)
-            if DatabaseConnect.insert(sql,tupel):
-                sql = "Delete from Vorgang where id=%s;"%(i[0])
-                DatabaseConnect.delete(sql)
+            try:
+                sql = "INSERT INTO Archive (TestNr, Station, Token, Registrierungszeitpunkt) VALUES (%s,%s,%s,%s);"
+                tupel = (i)
+                if DatabaseConnect.insert(sql,tupel):
+                    sql = "Delete from Vorgang where id=%s;"%(i[0])
+                    DatabaseConnect.delete(sql)
+            except Exception as e:
+                logging.error("The following error occured in loop of delete canidates: %s" % (e))
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

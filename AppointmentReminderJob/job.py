@@ -32,32 +32,35 @@ if __name__ == "__main__":
         recipients = DatabaseConnect.read_all(sql)
         logger.debug('Received the following recipients: %s' %(str(recipients)))
         for i in recipients:
-            logger.debug('Received the following entry: %s' %(str(i)))
-            slot = i[3]
-            vorname = i[0]
-            nachname = i[1]
-            stunde = i[4]
-            mail = i[2]
-            entry = i[7]
-            token = i[6]
-            date = i[5]
-            ort = i[8]
-            adress = i[9]
-            opt_ort = i[10]
-            opt_adress = i[11]
-            appointment = get_slot_time(slot,stunde)
-            if len(opt_ort) == 0:
-                location = str(ort) + ", " + str(adress)
-            else:
-                location = str(opt_ort) + "," + str(opt_adress)
-            PDF = PDFgenerator()
-            filename = PDF.creatPDF(i,location)
-            logger.debug('Handing over to sendmail of reminder')
-            url = "https://testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token, entry)
-            if send_mail_reminder(mail, date, vorname, nachname, appointment, url, filename):
-                logger.debug('Mail was succesfully send, closing entry in db')
-                sql = "Update Voranmeldung SET Reminded = 1 WHERE id = %s;" % (entry)
-                DatabaseConnect.update(sql)
+            try:
+                logger.debug('Received the following entry: %s' %(str(i)))
+                slot = i[3]
+                vorname = i[0]
+                nachname = i[1]
+                stunde = i[4]
+                mail = i[2]
+                entry = i[7]
+                token = i[6]
+                date = i[5]
+                ort = i[8]
+                adress = i[9]
+                opt_ort = i[10]
+                opt_adress = i[11]
+                appointment = get_slot_time(slot,stunde)
+                if len(opt_ort) == 0:
+                    location = str(ort) + ", " + str(adress)
+                else:
+                    location = str(opt_ort) + "," + str(opt_adress)
+                PDF = PDFgenerator()
+                filename = PDF.creatPDF(i,location)
+                logger.debug('Handing over to sendmail of reminder')
+                url = "https://testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token, entry)
+                if send_mail_reminder(mail, date, vorname, nachname, appointment, url, filename):
+                    logger.debug('Mail was succesfully send, closing entry in db')
+                    sql = "Update Voranmeldung SET Reminded = 1 WHERE id = %s;" % (entry)
+                    DatabaseConnect.update(sql)
+            except Exception as e:
+                logging.error("The following error occured in loop of recipients: %s" % (e))
         logger.debug('Done for all')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

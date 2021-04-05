@@ -40,7 +40,7 @@ if __name__ == "__main__":
                 logger.debug('Deleting Verif entry using the following query: %s' % (sql))
                 DatabaseConnect.delete(sql)
             except Exception as e:
-                logging.error("The following error occured: %s" % (e))
+                logging.error("The following error occured in loop for unverified: %s" % (e))
         logger.debug('Done for all')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

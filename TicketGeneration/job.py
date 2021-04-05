@@ -29,30 +29,33 @@ if __name__ == "__main__":
         content = DatabaseConnect.read_all(sql)
         logger.debug('Received the following recipients: %s' %(str(content)))
         for i in content:
-            logger.debug('Received the following entry: %s' %(str(i)))
-            vorname = i[0]
-            nachname = i[1]
-            mail = i[2]
-            slot = i[3]
-            stunde = i[4]
-            date = i[5]
-            token = i[6]
-            entry = i[7]
-            ort = i[8]
-            adress = i[9]
-            opt_ort = i[10]
-            opt_adress = i[11]
-            appointment = get_slot_time(slot,stunde)
-            if len(opt_ort) == 0:
-                location = str(ort) + ", " + str(adress)
-            else:
-                location = str(opt_ort) + "," + str(opt_adress)
-            PDF = PDFgenerator()
-            filename = PDF.creatPDF(i,location)
-            url = "https://testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token,entry)
-            if send_qr_ticket_mail(mail,date,vorname,nachname,appointment, location, filename,url): 
-                logger.debug('Mail was succesfully send, closing entry in db')
-                sql = "Update Voranmeldung SET Mailsend = 1 WHERE id = %s;" % (entry)
-                DatabaseConnect.update(sql)
+            try:
+                logger.debug('Received the following entry: %s' %(str(i)))
+                vorname = i[0]
+                nachname = i[1]
+                mail = i[2]
+                slot = i[3]
+                stunde = i[4]
+                date = i[5]
+                token = i[6]
+                entry = i[7]
+                ort = i[8]
+                adress = i[9]
+                opt_ort = i[10]
+                opt_adress = i[11]
+                appointment = get_slot_time(slot,stunde)
+                if len(opt_ort) == 0:
+                    location = str(ort) + ", " + str(adress)
+                else:
+                    location = str(opt_ort) + "," + str(opt_adress)
+                PDF = PDFgenerator()
+                filename = PDF.creatPDF(i,location)
+                url = "https://testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token,entry)
+                if send_qr_ticket_mail(mail,date,vorname,nachname,appointment, location, filename,url): 
+                    logger.debug('Mail was succesfully send, closing entry in db')
+                    sql = "Update Voranmeldung SET Mailsend = 1 WHERE id = %s;" % (entry)
+                    DatabaseConnect.update(sql)
+            except Exception as e:
+                logging.error("The following error occured in loop of content: %s" % (e))
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
