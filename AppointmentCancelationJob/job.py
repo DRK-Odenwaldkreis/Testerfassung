@@ -25,17 +25,20 @@ if __name__ == "__main__":
         canceledAppointments = DatabaseConnect.read_all(sql)
         logger.debug('Received the following cancel objects: %s' %(str(canceledAppointments)))
         for i in canceledAppointments:
-            logger.debug('Received the following entry: %s' %(str(i)))
-            vorname = i[0]
-            nachname = i[1]
-            mail = i[2]
-            entry = i[4]
-            date = i[3]
-            logger.debug('Handing over to sendmail of reminder')
-            if send_cancel_appointment(mail, date, vorname, nachname):
-                logger.debug('Mail was succesfully send, closing entry in db')
-                sql = "Delete from Voranmeldung where id = %s;" % (entry)
-                DatabaseConnect.delete(sql)
+            try:
+                logger.debug('Received the following entry: %s' %(str(i)))
+                vorname = i[0]
+                nachname = i[1]
+                mail = i[2]
+                entry = i[4]
+                date = i[3]
+                logger.debug('Handing over to sendmail of reminder')
+                if send_cancel_appointment(mail, date, vorname, nachname):
+                    logger.debug('Mail was succesfully send, closing entry in db')
+                    sql = "Delete from Voranmeldung where id = %s;" % (entry)
+                    DatabaseConnect.delete(sql)
+            except Exception as e:
+                logging.error("The following error occured in loop of cancel Appointments: %s" % (e))
         logger.debug('Done for all')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

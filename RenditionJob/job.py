@@ -42,51 +42,54 @@ if __name__ == "__main__":
             logger.debug(
                 'Content contains infos')
             for i in content:
-                result = i[3]
-                nachname = i[1]
-                vorname = i[0]
-                mail = i[2]
-                date = i[4].strftime("%d.%m.%Y um %H:%M Uhr")
-                testID = i[5]
-                adresse = i[6]
-                telefon = i[7]
-                geburtsdatum = i[8]
-                transmission = True
-                transmission_gesundheitsamt = True
-                if len(mail) > 0:
-                    logger.debug(
-                        'Mailadress seems to be enterd')
-                    if result == 2:
+                try:
+                    result = i[3]
+                    nachname = i[1]
+                    vorname = i[0]
+                    mail = i[2]
+                    date = i[4].strftime("%d.%m.%Y um %H:%M Uhr")
+                    testID = i[5]
+                    adresse = i[6]
+                    telefon = i[7]
+                    geburtsdatum = i[8]
+                    transmission = True
+                    transmission_gesundheitsamt = True
+                    if len(mail) > 0:
                         logger.debug(
-                            'Sending negative result Mail')
-                        transmission = send_negative_result(vorname, nachname, mail, date, geburtsdatum)
-                    elif result == 1:
-                        logger.debug(
-                            'Sending positive result Mail')
-                        transmission = send_positive_result(vorname, nachname, mail, date, geburtsdatum)
-                        transmission_gesundheitsamt = send_new_entry(date)
-                    elif result == 9:
-                        logger.debug(
-                            'Sending indistinct result Mail')
-                        transmission = send_indistinct_result(vorname, nachname, mail, date, geburtsdatum)
+                            'Mailadress seems to be enterd')
+                        if result == 2:
+                            logger.debug(
+                                'Sending negative result Mail')
+                            transmission = send_negative_result(vorname, nachname, mail, date, geburtsdatum)
+                        elif result == 1:
+                            logger.debug(
+                                'Sending positive result Mail')
+                            transmission = send_positive_result(vorname, nachname, mail, date, geburtsdatum)
+                            transmission_gesundheitsamt = send_new_entry(date)
+                        elif result == 9:
+                            logger.debug(
+                                'Sending indistinct result Mail')
+                            transmission = send_indistinct_result(vorname, nachname, mail, date, geburtsdatum)
+                        else:
+                            logger.debug('Sending support mail because can not interpret result')
+                            send_notification(vorname,nachname,date)
+                        logger.debug('Checking if entry for mailsend can be set to true')
                     else:
-                        logger.debug('Sending support mail because can not interpret result')
-                        send_notification(vorname,nachname,date)
-                    logger.debug('Checking if entry for mailsend can be set to true')
-                else:
-                    logger.debug(
-                        'Mailadress seems to be not enterd')
-                    tansmission = True
-                    if result == 1:
                         logger.debug(
-                            'Sending positive mail to gesundheitsamt only')
-                        transmission_gesundheitsamt = send_new_entry(date)
-                logger.debug('Checking whether mail was send properly and closing db entry')
-                if transmission and transmission_gesundheitsamt:
-                    logger.debug('Mail was succesfully send, closing entry in db')
-                    sql = "Update Vorgang SET Mailsend = 1 WHERE id = %s;" % (
-                        testID)
-                    DatabaseConnect.update(sql)
+                            'Mailadress seems to be not enterd')
+                        tansmission = True
+                        if result == 1:
+                            logger.debug(
+                                'Sending positive mail to gesundheitsamt only')
+                            transmission_gesundheitsamt = send_new_entry(date)
+                    logger.debug('Checking whether mail was send properly and closing db entry')
+                    if transmission and transmission_gesundheitsamt:
+                        logger.debug('Mail was succesfully send, closing entry in db')
+                        sql = "Update Vorgang SET Mailsend = 1 WHERE id = %s;" % (
+                            testID)
+                        DatabaseConnect.update(sql)
+                except Exception as e:
+                    logging.error("The following error occured in loop of content: %s" % (e))
         else:
             logger.debug('Nothing to do')
         logger.debug('Done')

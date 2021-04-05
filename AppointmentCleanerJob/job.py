@@ -25,7 +25,6 @@ if __name__ == "__main__":
         sql = "Select Voranmeldung_Verif.id, Voranmeldung.id, Voranmeldung.Termin_id FROM Voranmeldung_Verif JOIN Voranmeldung ON Voranmeldung_Verif.id_preregistration = Voranmeldung.id  WHERE Voranmeldung_Verif.updated < (NOW() - INTERVAL 15 MINUTE);"
         logger.debug('Finding all unverified appointments using the following query: %s' % (sql))
         unverified = DatabaseConnect.read_all(sql)
-        print(unverified)
         for i in unverified:
             try:
                 termine_id = i[2]
@@ -41,7 +40,7 @@ if __name__ == "__main__":
                 logger.debug('Deleting Verif entry using the following query: %s' % (sql))
                 DatabaseConnect.delete(sql)
             except Exception as e:
-                logging.error("The following error occured: %s" % (e))
+                logging.error("The following error occured in loop for unverified: %s" % (e))
         logger.debug('Done for all')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
