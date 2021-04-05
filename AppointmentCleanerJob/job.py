@@ -25,7 +25,6 @@ if __name__ == "__main__":
         sql = "Select Voranmeldung_Verif.id, Voranmeldung.id, Voranmeldung.Termin_id FROM Voranmeldung_Verif JOIN Voranmeldung ON Voranmeldung_Verif.id_preregistration = Voranmeldung.id  WHERE Voranmeldung_Verif.updated < (NOW() - INTERVAL 15 MINUTE);"
         logger.debug('Finding all unverified appointments using the following query: %s' % (sql))
         unverified = DatabaseConnect.read_all(sql)
-        print(unverified)
         for i in unverified:
             try:
                 termine_id = i[2]
