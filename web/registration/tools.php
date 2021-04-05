@@ -398,7 +398,7 @@ function H_build_table_testdates2( $mode ) {
 		$res.='<tr>
 		<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue1" colspan="'.($X+2).'"><b><i>';
 		if($flag_prereg!=0) {
-			$res.='Für folgende Teststationen ist keine Terminbuchung möglich, eine Voranmeldung Ihrer Daten kann gerne gemacht werden, dann geht es vor Ort schneller - bitte dafür einen Termin wählen';
+			$res.='Für folgende Teststationen ist keine Terminbuchung notwendig, eine Voranmeldung Ihrer Daten kann gerne gemacht werden, dann geht es vor Ort schneller - bitte dafür einen Termin wählen';
 		} else {
 			$res.='Für folgende Teststationen ist keine Voranmeldung notwendig';
 		}

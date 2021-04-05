@@ -120,7 +120,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     echo '<div class="col-sm-12">
       <div class="card">';
     echo '<table class="FAIR-data">
-      <tr><td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue1" colspan="4"><b><i>Ohne Terminbuchung</i></b></td></tr>
+      <tr><td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue1" colspan="5"><b><i>Ohne Terminbuchung</i></b></td></tr>
       ';
     if($array_termine_free2come==NULL) {
         echo '<tr><td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue3" colspan="4">
@@ -131,6 +131,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       <tr>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2"><h4>Datum</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2"><h4>Zeit</h4></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2"><h4>Reserviert</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2"></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2"><h4>Ort</h4></td>
       </tr>';
@@ -140,11 +141,14 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
             } else {
                 $display_location_opt=$i[4].' / '.$i[5];
             }
-
+            // How many have registered for this free2come Termin
+            $value_reservation=S_get_entry($Db,'SELECT count(id) FROM Voranmeldung WHERE Termin_id='.$i[0].';');
+            $display_termine='<span class="label label-danger">'.sprintf('%01d',$value_reservation).'</span>';
 
             echo '<tr>
             <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue3">'.date("d.m.Y",strtotime($i[1])).'</td>
-            <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue3">'.date("H:i",strtotime($i[2])).' - '.date("H:i",strtotime($i[3])).'</td>            
+            <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue3">'.date("H:i",strtotime($i[2])).' - '.date("H:i",strtotime($i[3])).'</td>
+            <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue3">'.$display_termine.'</td>
             <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue3">';
             if( A_checkpermission(array(0,2,0,4,5)) ) {
                 echo '<form action="'.$current_site.'.php" method="post">
@@ -156,12 +160,14 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
                 echo '</div></form>';
             }
             echo '</td>
+            
             <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue3">'.$display_location_opt.'</td>
             </tr>';
         }
         echo '<tr>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2"><h4>Datum</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2"><h4>Zeit</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2"><h4>Reserviert</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2"></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2"><h4>Ort</h4></td>
     </tr>';
@@ -231,6 +237,15 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     echo '</table>';
     echo '</div></div>';
 
+
+
+    if( A_checkpermission(array(0,2,0,4,0)) ) {
+        echo '<div class="col-sm-12">
+        <div class="card">
+        <h3>Alle Stationen in den nächsten Tagen (inkl. Firmen)</h3>';
+        echo H_build_table_testdates_all( );
+        echo '</div></div>';
+    }
 
 
     // Close connection to database

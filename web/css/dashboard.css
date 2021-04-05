@@ -44,7 +44,7 @@ body {
 @media screen and (max-width: 768px) {
 	.navbar-header {
 		float: left;
-		min-width: 180px;
+		min-width: 130px;
 	}
 	.navbar-right {
 		float: right;

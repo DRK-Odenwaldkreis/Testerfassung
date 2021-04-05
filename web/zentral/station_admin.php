@@ -104,7 +104,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
     <option value="" selected>Wähle...</option>
         ';
         foreach($array_staff as $i) {
-            $display=$i[1].' ('.$i[2].')';
+            $display='S'.sprintf('%02d',$i[0]).' '.$i[1].' ('.$i[2].')';
             echo '<option value="'.$i[0].'">'.$display.'</option>';
         }
         echo '
@@ -141,6 +141,32 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
         echo '</div>';
     }
 
+    echo '</div></div>';
+
+
+    // Show station list
+    echo '<div class="card"><div class="row">
+    <div class="col-sm-12">
+    <h3>Stationen</h3>';
+
+    echo '<table class="FAIR-data">
+      <tr>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Nr.</h4></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Ort</h4></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Adresse</h4></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Firmencode</h4></td>
+      </tr>';
+    $array_station=S_get_multientry($Db,'SELECT id, Ort, Adresse, Firmencode FROM Station;');
+    foreach($array_station as $i) {
+        echo '<tr>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">S'.$i[0].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[1].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[2].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'</td>
+      
+      </tr>';
+    }
+    echo '</table>';
     echo '</div></div>';
 
 
