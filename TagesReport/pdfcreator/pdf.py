@@ -48,7 +48,8 @@ class PDFgenerator:
 		self.content=content
 		self.date=date
 		self.totalSeconds=0
-		self.station = self.content[0]
+		self.station = self.content[0][1]
+		self.stationID = self.content[0][0]
 		self.tests = self.content[1]
 		self.positiv = self.content[2]
 		self.negativ = self.content[3]
@@ -105,7 +106,7 @@ class PDFgenerator:
 		pdf.image('tmp/' + str(self.date) + '.png', w=210, h=160)
 		os.remove('tmp/'+str(self.date) + '.png')
 		pdf.set_font('GNU', '', 14)
-		self.filename = "../../Reports/Tagesreport_Testzentrum_" + str(self.station).replace(" ","_") + "_"+str(self.date) + ".pdf"
+		self.filename = "../../Reports/Tagesreport_Testzentrum_ID_" + str(self.stationID) + "_"+str(self.date) + ".pdf"
 		pdf.output(self.filename)
 		return self.filename
 

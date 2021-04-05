@@ -11,7 +11,7 @@ from utils.database import Database
 import datetime
 
 logFile = '../../Logs/accountJob.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename=logFile,level=logging.WARNING,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Accounting job stated: %s'%(datetime.datetime.now()))
 logger.debug('Starting')
 

@@ -6,6 +6,7 @@ from zipfile import ZipFile
 
 import smtplib
 import datetime
+import html2text
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
@@ -55,7 +56,6 @@ def send_mail_report(filenames, day, recipients):
             message.attach(part)
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -93,7 +93,6 @@ def send_month_mail_report(filenames, month, year):
             message.attach(part)
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -125,7 +124,6 @@ def send_csv_report(filename, day):
         message['To'] = ", ".join(recipients)
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -143,13 +141,14 @@ def send_csv_report(filename, day):
 def send_positive_result(vorname, nachname, mail, date, geburtsdatum):
     try:
         logging.debug("Receviced the following recipient %s" % (mail))
-        message = MIMEMultipart()
+        message = MIMEMultipart("alternative")
         with open('../utils/MailLayout/Positive_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
         messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum))
         message.attach(MIMEText(messageContent, 'html'))
+        message.attach(MIMEText(html2text.html2text(messageContent),'plain'))
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
-        message['From'] = FROM_EMAIL
+        message['From'] = "Testzentrum Odenwaldkreis" + f' <{FROM_EMAIL}>'
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
         files = ['../utils/Share/2021-03-11Anhang_Gesundheitsamt.pdf',
@@ -164,7 +163,6 @@ def send_positive_result(vorname, nachname, mail, date, geburtsdatum):
             message.attach(part)
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -181,18 +179,18 @@ def send_positive_result(vorname, nachname, mail, date, geburtsdatum):
 
 def send_notification(vorname, nachname, date):
     try:
-        message = MIMEMultipart()
+        message = MIMEMultipart("alternative")
         with open('../utils/MailLayout/Notification.html', encoding='utf-8') as f:
             fileContent = f.read()
         messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
+        message.attach(MIMEText(html2text.html2text(messageContent),'plain'))
         message['Subject'] = "Es liegt eine Meldung vor die nicht zugeordnet werden kann."
-        message['From'] = FROM_EMAIL
+        message['From'] = "Testzentrum Odenwaldkreis" + f' <{FROM_EMAIL}>'
         message['reply-to'] = FROM_EMAIL
         message['To'] = FROM_EMAIL
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -209,18 +207,18 @@ def send_notification(vorname, nachname, date):
 
 def send_new_entry(date):
     try:
-        message = MIMEMultipart()
+        message = MIMEMultipart("alternative")
         with open('../utils/MailLayout/NewEntry.html', encoding='utf-8') as f:
             fileContent = f.read()
         messageContent = fileContent.replace('[[DATE]]', str(date))
         message.attach(MIMEText(messageContent, 'html'))
+        message.attach(MIMEText(html2text.html2text(messageContent),'plain'))
         message['Subject'] = "Es liegt eine neue Positivmeldung vor."
-        message['From'] = FROM_EMAIL
+        message['From'] = "Testzentrum Odenwaldkreis" + f' <{FROM_EMAIL}>'
         message['reply-to'] = FROM_EMAIL
         message['To'] = GESUNDHEITSAMT
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -238,18 +236,18 @@ def send_new_entry(date):
 def send_negative_result(vorname, nachname, mail, date, geburtsdatum):
     try:
         logging.debug("Receviced the following recipient %s" % (mail))
-        message = MIMEMultipart()
+        message = MIMEMultipart("alternative")
         with open('../utils/MailLayout/Negative_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
         messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum))
         message.attach(MIMEText(messageContent, 'html'))
+        message.attach(MIMEText(html2text.html2text(messageContent),'plain'))
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
-        message['From'] = FROM_EMAIL
+        message['From'] = "Testzentrum Odenwaldkreis" + f' <{FROM_EMAIL}>'
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -267,18 +265,18 @@ def send_negative_result(vorname, nachname, mail, date, geburtsdatum):
 def send_indistinct_result(vorname, nachname, mail, date, geburtsdatum):
     try:
         logging.debug("Receviced the following recipient %s" % (mail))
-        message = MIMEMultipart()
+        message = MIMEMultipart("alternative")
         with open('../utils/MailLayout/Indistinct_Result.html', encoding='utf-8') as f:
             fileContent = f.read()
         messageContent = fileContent.replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum))
         message.attach(MIMEText(messageContent, 'html'))
+        message.attach(MIMEText(html2text.html2text(messageContent),'plain'))
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
-        message['From'] = FROM_EMAIL
+        message['From'] = "Testzentrum Odenwaldkreis" + f' <{FROM_EMAIL}>'
         message['reply-to'] = FROM_EMAIL
         message['To'] = mail
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -296,17 +294,17 @@ def send_cancel_appointment(recipient, date, vorname, nachname):
     try:
         logging.debug("Receviced the following recipient: %s to be sent to." % (
             recipient))
-        message = MIMEMultipart()
+        message = MIMEMultipart("alternative")
         with open('../utils/MailLayout/Cancelation.html', encoding='utf-8') as f:
             fileContent = f.read()
         messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
         message.attach(MIMEText(messageContent, 'html'))
-        message['Subject'] = "Ihr Termin im Testzentrum des Odenwaldkreis am %s wurde stornier" % (str(date))
-        message['From'] = FROM_EMAIL
+        message.attach(MIMEText(html2text.html2text(messageContent),'plain'))
+        message['Subject'] = "Ihr Termin im Testzentrum des Odenwaldkreis am %s wurde storniert" % (str(date))
+        message['From'] = "Testzentrum Odenwaldkreis" + f' <{FROM_EMAIL}>'
         message['reply-to'] = FROM_EMAIL
         message['To'] = recipient
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -324,13 +322,14 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment, url, fil
     try:
         logging.debug("Receviced the following recipient: %s to be sent to." % (
             recipient))
-        message = MIMEMultipart()
+        message = MIMEMultipart("alternative")
         with open('../utils/MailLayout/Reminder.html', encoding='utf-8') as f:
             fileContent = f.read()
         messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment)).replace('[[LINK]]', str(url))
         message.attach(MIMEText(messageContent, 'html'))
+        message.attach(MIMEText(html2text.html2text(messageContent),'plain'))
         message['Subject'] = "Erinnerung an Termin %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
-        message['From'] = FROM_EMAIL
+        message['From'] = "Testzentrum Odenwaldkreis" + f' <{FROM_EMAIL}>'
         message['reply-to'] = FROM_EMAIL
         message['To'] = recipient
         files = [filename]
@@ -343,7 +342,6 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment, url, fil
                 'Content-Disposition', "attachment; filename= " + item.replace('../../Tickets/', ''))
             message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -362,13 +360,14 @@ def send_qr_ticket_pre_register_mail(recipient,date,vorname,nachname,filename):
     try:
         logging.debug("Receviced the following recipient: %s to be sent to." % (
             recipient))
-        message = MIMEMultipart()
+        message = MIMEMultipart("alternative")
         with open('../utils/MailLayout/QRPreTicket.html', encoding='utf-8') as f:
             fileContent = f.read()
         messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
         message['Subject'] = "Persönliches Testticket"
         message.attach(MIMEText(messageContent, 'html'))
-        message['From'] = FROM_EMAIL
+        message.attach(MIMEText(html2text.html2text(messageContent),'plain'))
+        message['From'] = "Testzentrum Odenwaldkreis" + f' <{FROM_EMAIL}>'
         message['reply-to'] = FROM_EMAIL
         message['To'] = recipient
         files = [filename]
@@ -381,7 +380,6 @@ def send_qr_ticket_pre_register_mail(recipient,date,vorname,nachname,filename):
                 'Content-Disposition', "attachment; filename= " + item.replace('../../Tickets/', ''))
             message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:
@@ -399,19 +397,14 @@ def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, ort, fi
     try:
         logging.debug("Receviced the following recipient: %s to be sent to." % (
             recipient))
-        message = MIMEMultipart()
-        if not appointment:
-            with open('../utils/MailLayout/QRPreTicket.html', encoding='utf-8') as f:
-                fileContent = f.read()
-            messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[ORT]]', str(ort))
-            message['Subject'] = "Persönliches Testticket"
-        else:
-            with open('../utils/MailLayout/QRTicket.html', encoding='utf-8') as f:
-                fileContent = f.read()
-            messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment)).replace('[[LINK]]', str(url)).replace('[[ORT]]', str(ort))
-            message['Subject'] = "Persönliches Testticket für den Termin um %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
+        message = MIMEMultipart("alternative")
+        with open('../utils/MailLayout/QRTicket.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[SLOT]]', str(appointment)).replace('[[LINK]]', str(url)).replace('[[ORT]]', str(ort))
+        message['Subject'] = "Persönliches Testticket für den Termin um %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
         message.attach(MIMEText(messageContent, 'html'))
-        message['From'] = FROM_EMAIL
+        message.attach(MIMEText(html2text.html2text(messageContent),'plain'))
+        message['From'] = "Testzentrum Odenwaldkreis" + f' <{FROM_EMAIL}>'
         message['reply-to'] = FROM_EMAIL
         message['To'] = recipient
         files = [filename]
@@ -424,7 +417,6 @@ def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, ort, fi
                 'Content-Disposition', "attachment; filename= " + item.replace('../../Tickets/', ''))
             message.attach(part)
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
-        smtp.set_debuglevel(True)
         smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
         if simulationMode == 0:

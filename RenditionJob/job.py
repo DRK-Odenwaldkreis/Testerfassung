@@ -19,20 +19,21 @@ from utils.sendmail import send_notification
 #locale.setlocale(locale.LC_ALL, 'de_DE')
 
 logFile = '../../Logs/rotationJob.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.WARNING,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Rendition Job startet on: %s' %(datetime.datetime.now()))
 logger.debug('Starting')
 
 if __name__ == "__main__":
     try:
-        if len(sys.argv) != 2:
+        if len(sys.argv) == 2:
             logger.debug('Input parameters are not correct, station id is needed')
-            raise Exception
-        stationID = sys.argv[1]
-        DatabaseConnect = Database()
-        sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id, Adresse, Telefon, Geburtsdatum  from Vorgang where Mailsend is NULL and Ergebnis is not NULL and Teststation = %s;" % (
+            stationID = sys.argv[1]
+            sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id, Adresse, Telefon, Geburtsdatum  from Vorgang where Mailsend is NULL and Ergebnis is not NULL and Teststation = %s;" % (
             stationID)
+        else:
+            sql = "Select Vorname,Nachname,Mailadresse,Ergebnis,Registrierungszeitpunkt, id, Adresse, Telefon, Geburtsdatum  from Vorgang where Mailsend is NULL and Ergebnis is not NULL;"
+        DatabaseConnect = Database()
         logger.debug('Checking for new results, using the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
         logger.debug(
