@@ -326,6 +326,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       }
       
       S_set_data($Db,'UPDATE Kartennummern SET Used=1 WHERE id='.$token.';');
+      $customer_key=A_generate_token(64);
+      S_set_data($Db,'UPDATE Vorgang SET Customer_key=\''.$customer_key.'\' WHERE id='.$testkarte.';');
 
       // check if data was written
       $val_written=S_get_entry($Db,'SELECT Ergebnis FROM Vorgang WHERE id='.$testkarte.';');
