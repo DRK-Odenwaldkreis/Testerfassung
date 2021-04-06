@@ -33,12 +33,12 @@ def send_linked_result(vorname, nachname, mail, date, link):
     try:
         logging.debug("Receviced the following recipient %s" % (mail))
         message = MIMEMultipart()
-        text = "Hallo %s, %s, \nSie waren am %s im Testzentrum und haben sich testen lassen. Das Testergebnis liegt vor. \nDieses kann, zusammen mit Ihrem Geburtsdatum über den folgenden Link abgerufen werden: \n \n%s \n \n \nViele Grüße, \nTestteam des DRK Odenwaldkreis \n\n\n----------------ENGLISH------------\nYou were at one of our testing centers. \nYour result can be received by following the link above together with your date of birth." %(vorname,nachname,date,link)
+        text = "Hallo %s, %s, \nSie waren am %s im Testzentrum und haben sich testen lassen. Das Testergebnis liegt vor. \nDieses kann zusammen mit Ihrem Geburtsdatum über den folgenden Link abgerufen werden: \n \n%s \n \n \nViele Grüße \nTestteam des DRK Odenwaldkreis \n\n\n----------------ENGLISH------------\nYou were at one of our testing centers. \nYour result can be received by following the link above together with your date of birth." %(vorname,nachname,date,link)
         messageContent = text
         message.attach(MIMEText(messageContent, 'plain'))
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
-        message['reply-to'] = FROM_EMAIL
+        message['Reply-To'] = FROM_EMAIL
         message['To'] = mail
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
