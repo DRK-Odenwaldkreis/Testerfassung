@@ -57,14 +57,14 @@ if __name__ == "__main__":
                         link = "https://www.testzentrum-odw.de/result.php?t=%s&i=%s" %(customer_key,token)
                         transmission = send_linked_result(vorname,nachname,mail,date,link)
                         if result == 1:
-                            logger.debug('Sending positive result Mail to Gesundheitsamt')
+                            logger.info('Sending positive result Mail to Gesundheitsamt')
                             transmission_gesundheitsamt = send_new_entry(date)
                         logger.debug('Checking if entry for mailsend can be set to true')
                     else:
                         logger.debug(
                             'Mailadress seems to be not enterd')
                         if result == 1:
-                            logger.debug('Sending positive mail to gesundheitsamt only')
+                            logger.info('Sending positive mail to gesundheitsamt only')
                             transmission_gesundheitsamt = send_new_entry(date)
                     logger.debug('Checking whether mail was send properly and closing db entry')
                     if transmission and transmission_gesundheitsamt:
