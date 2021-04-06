@@ -17,10 +17,10 @@ from utils.sendmail import send_notification
 #locale.setlocale(locale.LC_ALL, 'de_DE')
 
 logFile = '../../Logs/rotationJob.log'
-logging.basicConfig(filename=logFile,level=logging.WARNING,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Rendition Job startet on: %s' %(datetime.datetime.now()))
-logger.debug('Starting')
+logger.info('Starting Rendition Job')
 
 if __name__ == "__main__":
     try:
@@ -75,6 +75,6 @@ if __name__ == "__main__":
                     logging.error("The following error occured in loop of content: %s" % (e))
         else:
             logger.debug('Nothing to do')
-        logger.debug('Done')
+        logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

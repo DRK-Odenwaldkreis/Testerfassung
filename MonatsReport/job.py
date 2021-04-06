@@ -13,10 +13,10 @@ from utils.getRequesterMail import get_Leitung_from_StationID
 
 
 logFile = '../../Logs/MonatsreportJob.log'
-logging.basicConfig(filename=logFile,level=logging.WARNING,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Monatsreporting')
-logger.debug('Starting')
+logger.info('Starting Monatsreport')
 
 if __name__ == "__main__":
     try:
@@ -38,6 +38,6 @@ if __name__ == "__main__":
         if send:
             logger.debug('Sending Mail')
             send_month_mail_report(filename,requestedMonth,requestedYear)
-        logger.debug('Done')
+        logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

@@ -12,10 +12,10 @@ from utils.sendmail import send_cancel_appointment
 import datetime
 
 logFile = '../../Logs/cancelJob.log'
-logging.basicConfig(filename=logFile,level=logging.WARNING,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Cancel job for appointment cancelation started on: %s'%(datetime.datetime.now()))
-logger.debug('Starting')
+logger.info('Starting Cancelation of appointments')
 
 if __name__ == "__main__":
     try:
@@ -39,6 +39,6 @@ if __name__ == "__main__":
                     DatabaseConnect.delete(sql)
             except Exception as e:
                 logging.error("The following error occured in loop of cancel Appointments: %s" % (e))
-        logger.debug('Done for all')
+        logger.info('Done for all')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
