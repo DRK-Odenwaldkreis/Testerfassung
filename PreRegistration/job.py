@@ -38,7 +38,8 @@ if __name__ == "__main__":
                 entry = i[5]
                 PDF = PDFgenerator()
                 filename = PDF.creatPDF(i)
-                if send_qr_ticket_pre_register_mail(mail,date,vorname,nachname,filename): 
+                url = "https://testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token,entry)
+                if send_qr_ticket_pre_register_mail(mail,date,vorname,nachname,filename,url): 
                     logger.debug('Mail was succesfully send, closing entry in db')
                     sql = "Update Voranmeldung SET Mailsend = 1 WHERE id = %s;" % (entry)
                     DatabaseConnect.update(sql)

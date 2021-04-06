@@ -374,14 +374,14 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment, url, fil
         return False
     
 
-def send_qr_ticket_pre_register_mail(recipient,date,vorname,nachname,filename):
+def send_qr_ticket_pre_register_mail(recipient,date,vorname,nachname,filename,url):
     try:
         logging.debug("Receviced the following recipient: %s to be sent to." % (
             recipient))
         message = MIMEMultipart()
         with open('../utils/MailLayout/QRPreTicket.html', encoding='utf-8') as f:
             fileContent = f.read()
-        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname))
+        messageContent = fileContent.replace('[[DATE]]', date.strftime("%d.%m.%Y")).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]', str(nachname)).replace('[[LINK]]', str(url))
         message['Subject'] = "Persönliches Testticket"
         message.attach(MIMEText(messageContent, 'html'))
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
