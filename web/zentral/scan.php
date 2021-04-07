@@ -265,7 +265,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       echo '
       <h3>Manuelle Eingabe</h3>
       <form action="'.$current_site.'.php" method="get">
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nummer</span><input type="text" name="scan" value="" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" autofocus="on">
+            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Code/Nummer</span><input type="text" name="scan" value="" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" autofocus="on">
             <input type="text" name="prereg" value="'.$preregistration.'" class="form-control" aria-describedby="basic-addon1" style="display:none;">
             <span class="input-group-btn">
               <input type="submit" class="btn btn-danger" value="Senden" name="scan_send" />
@@ -442,7 +442,7 @@ html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
   echo '
   <h3>Manuelle Eingabe</h3>
   <form action="'.$current_site.'.php" method="get">
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nummer</span><input type="text" name="scan" value="" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" autofocus="on">
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Code/Nummer</span><input type="text" name="scan" value="" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" autofocus="on">
         <span class="input-group-btn">
           <input type="submit" class="btn btn-danger" value="Senden" name="scan_send" />
           </span>

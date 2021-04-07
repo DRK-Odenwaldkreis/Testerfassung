@@ -134,6 +134,9 @@ if($ALLOWANCE_RESULT>0) {
 
 	if ($FLAG_SHUTDOWN==0) {
 
+		if( !( isset($_GET['i']) && isset($_GET['t']) ) ) {
+			$errorhtml1 =  H_build_boxinfo( 322, 'Falsche Dateneingabe.', 'red' );
+		}
 		
 		// //////////////
 		// Form with birth date
@@ -145,7 +148,8 @@ if($ALLOWANCE_RESULT>0) {
 			$html_box_login.=$errorhtml1;
 		} else {
 			$html_box_login.='<div class="FAIR-foldbox-static-part">';
-			$html_box_login.='<p>Bitte geben Sie zur Verifizierung das<br><b>Geburtsdatum der getesten Person</b><br>ein.</p>';
+			$html_box_login.='<p>Bitte geben Sie zur Verifizierung<br><b>das Geburtsdatum der getesten Person</b><br>ein.</p>';
+			$html_box_login.='<p><i>For verification, please confirm<br><b>the date of birth of the tested person</b>.<br>Format: dd mm yyyy</i></p>';
 			$html_box_login.='
 			<form action="'.$current_site.'.php" method="post">
 			<div class="FAIR-si-box">

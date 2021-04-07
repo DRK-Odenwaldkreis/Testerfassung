@@ -756,6 +756,25 @@ div.input-group {
 margin-bottom:7px;
 }
 
+div.center_text {
+	text-align: center;
+	font-size: 120%;
+}
+div.header_icon_main {
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+div.header_icon {
+	display: block;
+	padding: 4px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	line-height: 1.42857143;
+}
+
 /*
  * Placeholder dashboard ideas
  */
