@@ -14,10 +14,10 @@ from TicketGeneration.pdfcreator.pdf import PDFgenerator
 import datetime
 
 logFile = '../../Logs/reminderJob.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Reminder job for appointment started on: %s'%(datetime.datetime.now()))
-logger.debug('Starting')
+logger.info('Starting reminder of Appointments')
 
 if __name__ == "__main__":
     try:
@@ -61,6 +61,6 @@ if __name__ == "__main__":
                     DatabaseConnect.update(sql)
             except Exception as e:
                 logging.error("The following error occured in loop of recipients: %s" % (e))
-        logger.debug('Done for all')
+        logger.info('Done for all')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

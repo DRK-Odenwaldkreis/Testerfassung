@@ -15,10 +15,10 @@ import logging
 
 
 logFile = '../../Logs/preRegistration.log'
-logging.basicConfig(filename=logFile,level=logging.WARNING,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Pre Registration')
-logger.debug('Starting')
+logger.info('Starting pre registration ticket creation')
 
 
 if __name__ == "__main__":
@@ -38,11 +38,13 @@ if __name__ == "__main__":
                 entry = i[5]
                 PDF = PDFgenerator()
                 filename = PDF.creatPDF(i)
-                if send_qr_ticket_pre_register_mail(mail,date,vorname,nachname,filename): 
+                url = "https://testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token,entry)
+                if send_qr_ticket_pre_register_mail(mail,date,vorname,nachname,filename,url): 
                     logger.debug('Mail was succesfully send, closing entry in db')
                     sql = "Update Voranmeldung SET Mailsend = 1 WHERE id = %s;" % (entry)
                     DatabaseConnect.update(sql)
             except Exception as e:
                 logging.error("The following error occured in loop of content: %s" % (e))
+        logger.info("Done")
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

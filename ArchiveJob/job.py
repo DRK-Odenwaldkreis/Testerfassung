@@ -11,9 +11,9 @@ from utils.database import Database
 import datetime
 
 logFile = '../../Logs/archiveJob.log'
-logging.basicConfig(filename=logFile,level=logging.WARNING,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename=logFile,level=logging.INFO,format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Archieve job stated: %s'%(datetime.datetime.now()))
-logger.debug('Starting')
+logger.info('Starting Archive')
 
 if __name__ == "__main__":
     try:
@@ -36,6 +36,6 @@ if __name__ == "__main__":
                     DatabaseConnect.delete(sql)
             except Exception as e:
                 logging.error("The following error occured in loop of delete canidates: %s" % (e))
-        logger.debug('Done')
+        logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

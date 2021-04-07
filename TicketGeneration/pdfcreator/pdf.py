@@ -37,7 +37,7 @@ class PDFgenerator(FPDF):
 		self.cell(200,15, 'Name: ' + self.nachname + ', ' + self.vorname, ln=1)
 		self.cell(200,15, 'Datum: ' + self.date.strftime("%d.%m.%Y"), ln=1)
 		self.cell(200,15, 'Uhrzeit: ' + str(self.appointment), ln=1)
-		self.multi_cell(140,10, 'Ort: ' + str(self.location), 0)
+		self.multi_cell(100,15, 'Ort: ' + str(self.location), 0)
 		self.qrcode = pyqrcode.create(str(self.code), error='Q')
 		self.qrcode.png('tmp/'+str(self.code) + '.png', scale=6,quiet_zone=4)
 		self.image('tmp/'+ str(self.code) + '.png', y=85,x=140)

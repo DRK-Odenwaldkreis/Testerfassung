@@ -11,10 +11,10 @@ from utils.database import Database
 import datetime
 
 logFile = '../../Logs/cleanJob.log'
-logging.basicConfig(filename=logFile, level=logging.DEBUG,
+logging.basicConfig(filename=logFile, level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Nightly Auto Clean started on: %s'%datetime.datetime.now())
-logger.debug('Starting')
+logger.info('Starting nightly clean')
 
 if __name__ == "__main__":
     try:
@@ -28,6 +28,6 @@ if __name__ == "__main__":
         sql = "Delete from Voranmeldung where Tag <= (NOW() - INTERVAL 1 DAY);"
         logger.debug('Cleaning all Voranmeldungen that are prior today, using the following query: %s' % (sql))
         DatabaseConnect.delete(sql)
-        logger.debug('Done')
+        logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

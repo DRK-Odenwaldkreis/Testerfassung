@@ -13,10 +13,10 @@ from utils.getRequesterMail import get_Leitung_from_StationID
 
 
 logFile = '../../Logs/TagesreportJob.log'
-logging.basicConfig(filename=logfile,level=logging.WARNING,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Tagesreport')
-logger.debug('Starting')
+logger.info('Starting Tagesreporting')
 
 
 def create_PDFs(content, date, station):
@@ -69,6 +69,6 @@ if __name__ == "__main__":
             if send:
                 logger.debug('Sending Mail')
                 send_mail_report(filename,requestedDate,get_Leitung_from_StationID(station[0]))
-        logger.debug('Done')
+        logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

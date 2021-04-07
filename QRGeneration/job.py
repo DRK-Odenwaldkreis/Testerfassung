@@ -15,10 +15,10 @@ import logging
 
 
 logFile = '../../Logs/qrgeneration.log'
-logging.basicConfig(filename=logFile,level=logging.WARNING,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Generating QR Codes')
-logger.debug('Starting')
+logger.info('Starting creation of cards')
 
 def get_codes(amount):
     i=0
@@ -43,5 +43,6 @@ if __name__ == "__main__":
         PDF = PDFgenerator()  
         PDF.add_codes(get_codes(amount))
         PDF.creatPDF()
+        logger.info("Done")
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

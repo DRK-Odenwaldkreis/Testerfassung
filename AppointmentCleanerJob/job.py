@@ -14,10 +14,10 @@ from TicketGeneration.pdfcreator.pdf import PDFgenerator
 import datetime
 
 logFile = '../../Logs/clean.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Cleaning for not verified appointments started on: %s'%(datetime.datetime.now()))
-logger.debug('Starting')
+logger.info('Starting cleaner of unverified appointments')
 
 if __name__ == "__main__":
     try:
@@ -41,6 +41,6 @@ if __name__ == "__main__":
                 DatabaseConnect.delete(sql)
             except Exception as e:
                 logging.error("The following error occured in loop for unverified: %s" % (e))
-        logger.debug('Done for all')
+        logger.info('Done for all')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
