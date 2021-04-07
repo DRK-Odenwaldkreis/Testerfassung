@@ -168,6 +168,7 @@ function A_login($Db,$uid,$mode) {
 		5 - Gruppenleitung */
 	$t = S_get_multientry($Db,'SELECT 0, role_1, role_2, role_3, role_4, role_5 FROM li_user WHERE id='.$uid.';');
 	$_SESSION['roles']=$t[0];
+	$_SESSION['display_sensitive']=0;
 
 	if($mode!='check' && $mode!='chguserid') {
 		// Cookie will expire after 12 hrs after log-in
