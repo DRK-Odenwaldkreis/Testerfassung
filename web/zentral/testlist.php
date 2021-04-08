@@ -42,7 +42,13 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       $u_date=($_POST['date']);
       $today=date("Y-m-d",strtotime($u_date.' + 1 days'));
     } elseif(isset($_POST['show_times_today'])){
-      
+      $today=$today;
+    } elseif(isset($_POST['show_sensitive_data'])) {
+      $today=$_POST['date'];
+      $_SESSION['display_sensitive']=1;
+    } elseif(isset($_POST['unshow_sensitive_data'])) {
+      $today=$_POST['date'];
+      $_SESSION['display_sensitive']=0;
     }
   }
 
@@ -92,13 +98,13 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   if( A_checkpermission(array(1,0,0,0,0)) && !A_checkpermission(array(0,2,0,4,5)) ) {
     // only for own station and today
     $today=date("Y-m-d",time());
-    $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'" AND Teststation=CAST('.$_SESSION['station_id'].' AS int) ORDER BY Registrierungszeitpunkt DESC;');
+    $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated, customer_lock FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'" AND Teststation=CAST('.$_SESSION['station_id'].' AS int) ORDER BY Registrierungszeitpunkt DESC;');
   } elseif( A_checkpermission(array(0,0,0,0,5)) && !A_checkpermission(array(0,2,0,4,0)) ) {
     // only for own station
-    $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'" AND Teststation=CAST('.$_SESSION['station_id'].' AS int)  ORDER BY Registrierungszeitpunkt DESC;');
+    $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated, customer_lock FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'" AND Teststation=CAST('.$_SESSION['station_id'].' AS int)  ORDER BY Registrierungszeitpunkt DESC;');
   } else {
     // for all stations
-    $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'"  ORDER BY Registrierungszeitpunkt DESC;');
+    $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Telefon, Mailadresse, Geburtsdatum, Ergebnis, Mailsend, Updated, customer_lock FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'"  ORDER BY Registrierungszeitpunkt DESC;');
 
   }
 
@@ -106,10 +112,10 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
 
   echo '<h1>Ansicht der registrierten Tests</h1>';
 
-  echo '<div class="row">';
-
   echo '<div class="card">
-  <div class="col-sm-4">';
+  <div class="row">';
+
+  echo '<div class="col-sm-4">';
   echo '<p></p>';
   if( A_checkpermission(array(1,0,0,0,0)) && !A_checkpermission(array(0,2,0,4,5)) ) {
     // only today
@@ -121,16 +127,28 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     <span class="input-group-addon" id="basic-addonA2">Tag auswählen</span>
     <input type="date" class="form-control" placeholder="Tag wählen" aria-describedby="basic-addonA2" value="'.$today.'" name="date">
     <span class="input-group-btn">
+    <input type="submit" class="btn btn-primary" value="Liste anzeigen" name="show_times" />
     <input type="submit" class="btn btn-default" value="- 1 Tag" name="show_times_minus1" />
     <input type="submit" class="btn btn-default" value="Heute" name="show_times_today" />
     <input type="submit" class="btn btn-default" value="+ 1 Tag" name="show_times_plus1" />
     </span>
-    </div>
-    <div class="FAIR-si-button">
-      <input type="submit" class="btn btn-danger" value="Liste anzeigen" name="show_times" />
-      </div></form>
-    </div>';
+    </div></form>';
   }
+
+  // Button to switch between sensitive data to display
+  echo'<form action="'.$current_site.'.php" method="post">
+  <input type="date" value="'.$today.'" name="date" style="display: none;">
+  <div class="FAIR-si-button">';
+  if($_SESSION['display_sensitive']==0) {
+    echo '<button type="submit" class="btn btn-primary" name="show_sensitive_data"><span class="icon-eye"></span>&nbsp;Zeige personenbezogene Daten</button>';
+  } else {
+    echo '<button type="submit" class="btn btn-primary active" name="unshow_sensitive_data"><span class="icon-eye-blocked"></span>&nbsp;Blende personenbezogene Daten aus</button>';
+  }
+  echo'
+    </div></form>
+  </div>';
+
+  echo '</div>';
 
   echo '
   <div class="col-sm-12">
@@ -139,18 +157,19 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   
     echo '
     <tr>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Lfd. ID</h3></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3></h3></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Stations-ID</h3></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Test Nummer</h3></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"d><h3>Registrierung</h3></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Name</h3></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Geburtsdatum</h3></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Adresse</h3></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Telefonnummer</h3></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>E-Mail</h3></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>Resultat</h3></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h3>versendet</h3></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Lfd. ID</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4></h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Stations-ID</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Test Nummer</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Registrierung</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Name</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Geburtsdatum</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Adresse</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Telefonnummer</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>E-Mail</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Resultat</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Ergebnis abgeholt</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>versendet</h4></td>
     </tr>';
 
   //Get list of times
@@ -158,24 +177,45 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     if($i[11]==1) {
       // Test POSITIV
       $class_ergebnis='FAIR-change-red';
-      $text_ergebnis='POS';
+      $text_ergebnis='<span class="icon-plus"></span> POS / '.$i[4];
     } elseif($i[11]==2) {
       // Test NEGATIV
       $class_ergebnis='FAIR-text-green';
-      $text_ergebnis='NEG';
+      $text_ergebnis='<span class="icon-minus"></span> NEG / '.$i[4];
     } elseif($i[11]==9) {
       // Test FEHLERHAFT
       $class_ergebnis='FAIR-text-blue';
-      $text_ergebnis='ERR';
+      $text_ergebnis='<span class="icon-question2"></span> ERR / '.$i[4];
     } else {
       $class_ergebnis='';
-      $text_ergebnis='---';
+      $text_ergebnis='<span class="icon-busy"></span> ---';
     }
     if($i[12]==1 && $i[9]!='') {
       $text_mailsend='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="edit_person.php?reset=mail&id='.$i[0].'">E-Mail Reset</a>';
     } else {
       $text_mailsend='keine E-Mail verschickt';
     }
+
+    if($i[14]==0 && $i[14]!= null) {
+      $text_result_delivered='<span class="icon-download"></span><span class="FAIR-sep"></span><span class="icon-checkmark"></span>';
+    } elseif($i[14]>0 && $i[14]<10) {
+      $text_result_delivered='<span class="icon-download"></span><span class="FAIR-sep"></span><span class="icon-minus"></span> (Versuche '.$i[14].')';
+    } elseif($i[14]>=10) {
+      $text_result_delivered='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="edit_person.php?reset=lock&id='.$i[0].'"><span class="icon-download"></span><span class="FAIR-sep"></span><span class="icon-blocked"></span>&nbsp;Gesperrt (Versuche '.$i[14].') Reset</a>
+      ';
+    } else {
+      $text_result_delivered='';
+    }
+    if($i[1]<15) {
+      $color_st_code=(255-5*$i[1]).','.(255-7*$i[1]).','.(255-11*$i[1]);
+    } elseif($i[1]<30) {
+      $color_st_code=(255-3*$i[1]).','.(255-2*$i[1]).','.(255-1*$i[1]);
+    } elseif($i[1]<50) {
+      $color_st_code=(255-2*$i[1]).','.(255-1*$i[1]).','.(255-2*$i[1]);
+    } else {
+      $color_st_code='255,255,255';
+    }
+
     echo '
     
     <tr>
@@ -183,18 +223,33 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">
     <a class="list-group-item list-group-item-action list-group-item-redtext" href="edit_person.php?id='.$i[0].'">Ändern</a>
     </td>
-
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">S'.$i[1].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">K'.$i[2].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"d>Reg '.$i[3].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Person '.$i[5].'/'.$i[6].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Geb '.$i[10].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[7].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[8].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[9].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">Erg '.$text_ergebnis.' / '.$i[4].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_mailsend.'</td>
-    </tr>';
+    ';
+    if($_SESSION['display_sensitive']==0) {
+      echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top" style="background-color:rgb('.$color_st_code.');">S'.$i[1].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">K'.$i[2].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">'.$text_ergebnis.'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_mailsend.'</td>';
+    } else {
+      echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top" style="background-color:rgb('.$color_st_code.');">S'.$i[1].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">K'.$i[2].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[5].', '.$i[6].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[10].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[7].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[8].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[9].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">'.$text_ergebnis.'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_mailsend.'</td>';
+    }
+    echo '</tr>';
   }
   echo '</table></div></div>';
 

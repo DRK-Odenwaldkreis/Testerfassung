@@ -122,10 +122,10 @@ function S_get_entry_vorgang ($Db,$scanevent) {
 
 function S_set_entry_voranmeldung ($Db,$array_data) {
 	// First, check if Termin_id is already used
-	$stmt=mysqli_prepare($Db,"SELECT id, Slot FROM Termine WHERE id=?;");
+	$stmt=mysqli_prepare($Db,"SELECT id, Slot, id_station, Tag, Stunde FROM Termine WHERE id=?;");
 	mysqli_stmt_bind_param($stmt, "i", $array_data[6]);
 	mysqli_stmt_execute($stmt);
-	mysqli_stmt_bind_result($stmt, $termin_id, $termin_slot);
+	mysqli_stmt_bind_result($stmt, $termin_id, $termin_slot, $termin_station, $termin_tag, $termin_stunde);
 	mysqli_stmt_fetch($stmt);
 	mysqli_stmt_close($stmt);
 	if($termin_slot>0) {
@@ -135,29 +135,38 @@ function S_set_entry_voranmeldung ($Db,$array_data) {
 	}
 
 	if($check_termin_id>0) {
-		return 0;
-	} else {
-		// Write data because Termin_id is not used or Termin_id has no slots
-		if($termin_slot>0) {
-			S_set_data($Db,'UPDATE Termine SET Used=1 WHERE id=CAST('.$termin_id.' as int);');
+		// Selected Termin is used, select another in same slot if available
+		$new_termin_id=S_get_entry($Db,'SELECT id FROM Termine WHERE id_station='.$termin_station.' AND Tag="'.$termin_tag.'" AND Stunde='.$termin_stunde.' AND Slot='.$termin_slot.' AND Used is null;');
+		if($new_termin_id>0) {
+			// is available - use new termin_id
+			$termin_id=$new_termin_id;
+		} else {
+			// is not available
+			return 0;
 		}
-		$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Geburtsdatum, Adresse, Telefon, Mailadresse, Termin_id, Tag) VALUES (?,?,?,?,?,?,?,?);");
-		mysqli_stmt_bind_param($stmt, "ssssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5], $array_data[6], $array_data[7]);
-		mysqli_stmt_execute($stmt);
-		mysqli_stmt_bind_result($stmt, $result);
-		mysqli_stmt_fetch($stmt);
-		mysqli_stmt_close($stmt);
+	} 
 
-
-
-		$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Geburtsdatum=? AND Adresse=? AND Telefon=? AND Mailadresse=? AND Termin_id=? AND Tag=?;");
-		mysqli_stmt_bind_param($stmt, "ssssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5], $array_data[6], $array_data[7]);
-		mysqli_stmt_execute($stmt);
-		mysqli_stmt_bind_result($stmt, $result2);
-		mysqli_stmt_fetch($stmt);
-		mysqli_stmt_close($stmt);
-		return $result2; // need id as a return value
+	// Write data because Termin_id is not used or Termin_id has no slots
+	if($termin_slot>0) {
+		S_set_data($Db,'UPDATE Termine SET Used=1 WHERE id=CAST('.$termin_id.' as int);');
 	}
+	$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Geburtsdatum, Adresse, Telefon, Mailadresse, Termin_id, Tag) VALUES (?,?,?,?,?,?,?,?);");
+	mysqli_stmt_bind_param($stmt, "ssssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5], $termin_id, $array_data[7]);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $result);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+
+
+
+	$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Geburtsdatum=? AND Adresse=? AND Telefon=? AND Mailadresse=? AND Termin_id=? AND Tag=? ORDER BY id DESC;");
+	mysqli_stmt_bind_param($stmt, "ssssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5], $termin_id, $array_data[7]);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $result2);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+	return $result2; // need id as a return value
+	
 }
 
 function S_get_entry_voranmeldung ($Db,$array_data) {
@@ -383,6 +392,7 @@ function H_build_table_testdates2( $mode ) {
 	$today=date('Y-m-d');
 	$in_x_days=date('Y-m-d', strtotime($today. ' + '.$X.' days'));
 	
+	$bool_valid_appointments_found=false;
 
 	// Table
 	$res.='
@@ -423,6 +433,7 @@ function H_build_table_testdates2( $mode ) {
 					if($mode=='b2b') {
 						$string_times.='<span class="text-sm">Offener Termin</span><br>';
 					}
+					$bool_valid_appointments_found=true;
 				}
 				
 				if($string_times!='') {
@@ -475,6 +486,8 @@ function H_build_table_testdates2( $mode ) {
 						$string_times.='<span class="text-sm"><div style="display: block; margin-top: 5px;">'.sprintf('%02d', $value_termine_times1).':00 - '.sprintf('%02d', $value_termine_times2 + 1).':00</div></span>';
 
 						$res.='<td onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow2 calendaryellow">'.$string_times.$display_termine.'</td>';
+
+						$bool_valid_appointments_found=true;
 					} else {
 						$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow3"></td>';
 					}
@@ -485,6 +498,10 @@ function H_build_table_testdates2( $mode ) {
 			}
 			
 		}
+	}
+
+	if(!$bool_valid_appointments_found) {
+		$res.='<tr><td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1" colspan="'.($X+2).'"><b>Keine Termine gefunden<b></td></tr>';
 	}
 	
 	$res.='<tr>

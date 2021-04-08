@@ -28,6 +28,7 @@ $G_html_header='<html lang="en">
 <link href="css/bootstrap.css" rel="stylesheet">
 <!-- Custom styles for this template -->
 <link href="css/dashboard.css" rel="stylesheet">
+<link href="css/symbols-fair.css" rel="stylesheet">
     
   </head>';
 

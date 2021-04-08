@@ -85,7 +85,24 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       
       echo '</div></div>';
 
-    } elseif( isset($_GET['id']) ) {
+    } elseif( isset($_GET['id']) && isset($_GET['reset']) && $_GET['reset']=='lock' ) {
+      // ///////////////
+      // Reset customer_lock=NULL
+      // ///////////////
+          
+          S_set_data($Db,'UPDATE Vorgang SET
+          customer_lock=NULL
+          WHERE id=CAST('.$_GET['id'].' AS int);');
+    
+          echo '<div class="row">';
+          echo '<div class="col-sm-12">
+          <h3>Kunden-Daten geändert</h3>
+          <p>Reset der Sperre (Abholung des Ergebnisses wieder möglich</p>';      
+          echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="testlist.php">Zurück zur Testliste</a>';
+          
+          echo '</div></div>';
+    
+        } elseif( isset($_GET['id']) ) {
 
   // ///////////////
   // Registrierung ändern / Formular
