@@ -48,8 +48,13 @@ class PDFgenerator:
 		self.content=content
 		self.date=date
 		self.totalSeconds=0
-		self.station = self.content[0][1]
 		self.stationID = self.content[0][0]
+		if len(self.content[0][3]) > 0:
+			self.station = self.content[0][3]
+			self.address = self.content[0][4]
+		else:
+			self.station = self.content[0][1]
+			self.address = self.content[0][2]
 		self.tests = self.content[1]
 		self.positiv = self.content[2]
 		self.negativ = self.content[3]
@@ -96,7 +101,7 @@ class PDFgenerator:
 		pdf.set_font('GNU', 'B' , 20)
 		pdf.ln(15)
 		pdf.set_font('GNU', 'B', 14)
-		pdf.cell(35, 10, 'Testzentrum: %s' %(self.station), 0, 1)
+		pdf.cell(35, 10, 'Testzentrum: %s, %s' %(self.station,self.address), 0, 1)
 
 		current_x =pdf.get_x()
 		current_y =pdf.get_y()
