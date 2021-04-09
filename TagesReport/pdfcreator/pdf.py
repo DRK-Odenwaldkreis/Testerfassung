@@ -49,7 +49,7 @@ class PDFgenerator:
 		self.date=date
 		self.totalSeconds=0
 		self.stationID = self.content[0][0]
-		if len(self.content[0][3]) > 0:
+		if self.content[0][3]:
 			self.station = self.content[0][3]
 			self.address = self.content[0][4]
 		else:
