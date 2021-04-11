@@ -24,7 +24,7 @@ logger.info('Starting pre registration ticket creation')
 if __name__ == "__main__":
     try:
         DatabaseConnect = Database()
-        sql = "Select Voranmeldung.Vorname, Voranmeldung.Nachname, Voranmeldung.Mailadresse, Voranmeldung.Tag, Voranmeldung.Token, Voranmeldung.id from Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id where Token is not NULL and Mailsend = 0 and Termine.Slot is NULL;"
+        sql = "Select Voranmeldung.Vorname, Voranmeldung.Nachname, Voranmeldung.Mailadresse, Voranmeldung.Tag, Voranmeldung.Token, Voranmeldung.id, Station.Ort, Station.Adresse, Termine.opt_station_adresse, Termine.opt_station from Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id JOIN Station ON Termine.id_station=Station.id where Token is not NULL and Mailsend = 0 and Termine.Slot is NULL;"
         content = DatabaseConnect.read_all(sql)
         logger.debug('Received the following recipients: %s' %(str(content)))
         for i in content:
@@ -36,10 +36,18 @@ if __name__ == "__main__":
                 date = i[3]
                 token = i[4]
                 entry = i[5]
+                ort = i[6]
+                adress = i[7]
+                opt_ort = i[8]
+                opt_adress = i[9]
+                if len(opt_ort) == 0:
+                    location = str(ort) + ", " + str(adress)
+                else:
+                    location = str(opt_ort) + "," + str(opt_adress)
                 PDF = PDFgenerator()
-                filename = PDF.creatPDF(i)
+                filename = PDF.creatPDF(i,location)
                 url = "https://testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token,entry)
-                if send_qr_ticket_pre_register_mail(mail,date,vorname,nachname,filename,url): 
+                if send_qr_ticket_pre_register_mail(mail,date,vorname,nachname,location,filename,url): 
                     logger.debug('Mail was succesfully send, closing entry in db')
                     sql = "Update Voranmeldung SET Mailsend = 1 WHERE id = %s;" % (entry)
                     DatabaseConnect.update(sql)

@@ -29,27 +29,31 @@ class PDFgenerator(FPDF):
 		self.add_font('GNU', 'B', FreeSansBold, uni=True)
 		self.set_font('GNU', 'B', 30)
 		self.cell(10, 30, '', ln=1)
-		self.cell(200, 5, 'Test-Ticket für einen', ln=1, align='C')
+		self.cell(200, 5, 'Voranmeldung für einen', ln=1, align='C')
 		self.cell(200, 30, 'SARS-CoV-2-Schnelltest(PoC)', ln=1, align='C')
 		self.set_font('GNU', '', 20)
+		self.cell(10, 15, '', ln=1)
 		self.cell(200,15, 'Name: ' + self.nachname + ', ' + self.vorname, ln=1)
 		self.cell(200,15, 'Datum: ' + self.date.strftime("%d.%m.%Y"), ln=1)
+		self.cell(200,15, 'Ort:', ln=1)
+		self.multi_cell(200,15, str(self.location), 0)
 		self.qrcode = pyqrcode.create(str(self.code), error='Q')
 		self.qrcode.png('tmp/'+str(self.code) + '.png', scale=6,quiet_zone=4)
 		self.image('tmp/'+ str(self.code) + '.png', y=85,x=140)
 		self.cell(10, 10, '', ln=1)
 		self.cell(200, 10, '#%s' % (self.code), ln=1, align='C')
-		self.cell(10, 30, '', ln=1)
+		self.cell(10, 25, '', ln=1)
 		self.add_font('GNU', 'B', FreeSansBold, uni=True)
 		self.set_font('GNU', 'B', 12)
 		self.multi_cell(195, 5, 'Bitte halten Sie sich an die geltenden Abstandsregeln.',0, align='C')
 		os.remove('tmp/'+str(self.code) + '.png')
 
-	def creatPDF(self,content):
+	def creatPDF(self,content,location):
 		self.code = content[4]
 		self.vorname = content[0]
 		self.nachname = content[1]
 		self.date = content[3]
+		self.location = location
 		self.time = datetime.date.today().strftime("%d.%m.%Y")
 		self.create_page()
 		self.filename = "../../Tickets/Ticket_" + str(self.code) + "_" + str(self.date) + ".pdf"

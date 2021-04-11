@@ -57,7 +57,7 @@ if __name__ == "__main__":
             logger.debug('Input parameters are not correct, date and/or requested needed')
             raise Exception
         DatabaseConnect = Database()
-        sql = "Select Teststation, Ort from Vorgang JOIN Station ON Vorgang.Teststation = Station.id where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59' GROUP BY Teststation" % (requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
+        sql = "Select Vorgang.Teststation, Station.Ort, Station.Adresse, Termine.opt_station, Termine.opt_station_adresse from Vorgang JOIN Station ON Vorgang.Teststation = Station.id JOIN Termine ON Termine.id_station=Vorgang.Teststation where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59' GROUP BY Vorgang.Teststation;" % (requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
         teststationen = DatabaseConnect.read_all(sql)
         for station in teststationen:
             sql = "Select id,Ergebnis,Ergebniszeitpunkt,Teststation,TIMEDIFF(Ergebniszeitpunkt,Registrierungszeitpunkt) from Vorgang where Teststation = %s and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (station[0],

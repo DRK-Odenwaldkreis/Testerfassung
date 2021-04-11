@@ -8,6 +8,8 @@ import os
 import sys
 
 def get_slot_time(slot, stunde):
+    start ='00'
+    ende = '00'
     if slot == 1:
         start = '00'
         ende = '15'
@@ -20,8 +22,11 @@ def get_slot_time(slot, stunde):
     elif slot == 4:
         start = '45'
         ende = '00'
+    if slot !=4:
+        stundeStart = stunde
+        stundeEnd = stunde
     else:
-        start ='00'
-        ende = '00'
-    appointment = "%s:%s - %s:%s" % (str(stunde),str(start),str(stunde),str(ende))
+        stundeStart = stunde
+        stundeEnd = stunde + 1
+    appointment = "%s:%s - %s:%s" % (str(stundeStart),str(start),str(stundeEnd),str(ende))
     return appointment
