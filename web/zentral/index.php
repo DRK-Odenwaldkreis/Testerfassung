@@ -45,25 +45,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 // Menu
-$_module_array=array(
+$_module_array1=array(
     0=>array("text"=>'<h4 class="list-group-item-heading">Kunden-Registrierung / Test-Auswertung</h4><p class="list-group-item-text">TESTKARTE QR Code scannen</p>',"link"=>"scan.php","role"=>array(1,0,0,4,0),"role-disabled"=>array(0,2,0,0,5)),
+    2=>array("text"=>'<h4 class="list-group-item-heading">Voranmeldungen</h4><p class="list-group-item-text">Liste der Voranmeldungen und Übernahme in Reg-Prozess</p>',"link"=>"prereglist.php","role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
     10=>array("text"=>'<h4 class="list-group-item-heading">Liste an Tests</h4><p class="list-group-item-text">Aktive Tests und Export CSV</p>',"link"=>"testlist.php","role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
     15=>array("text"=>'<h4 class="list-group-item-heading">Liste an Positivmeldungen</h4><p class="list-group-item-text">Positivmeldungen und Export CSV</p>',"link"=>"gesundheitsamt.php","role"=>array(0,0,3,4,0),"role-disabled"=>array(0,0,0,0,0)),
-    20=>array("text"=>'<h4 class="list-group-item-heading">Testkarten</h4><p class="list-group-item-text">Erstellung von neuen Testkarten</p>',"link"=>"testkarten.php","role"=>array(0,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
+    99=>array("text"=>'<h4 class="list-group-item-heading">Öffentliche Startseite Testzentrum</h4><p class="list-group-item-text"></p>',"link"=>"../index.php","role"=>array(1,2,3,4,5),"role-disabled"=>array(0,0,0,0,0))
+);
+$_module_array2=array(
+    20=>array("text"=>'<h4 class="list-group-item-heading">Stationen</h4><p class="list-group-item-text">Stations-Management</p>',"link"=>"station_admin.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    22=>array("text"=>'<h4 class="list-group-item-heading">Testkarten</h4><p class="list-group-item-text">Erstellung von neuen Testkarten</p>',"link"=>"testkarten.php","role"=>array(0,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
     25=>array("text"=>'<h4 class="list-group-item-heading">Termine</h4><p class="list-group-item-text">Übersicht der angelegten Termine</p>',"link"=>"terminlist.php","role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
     26=>array("text"=>'<h4 class="list-group-item-heading">Termine erstellen</h4><p class="list-group-item-text">Neue Termine für eine Teststation erstellen</p>',"link"=>"terminerstellung.php","role"=>array(0,2,0,4,5),"role-disabled"=>array(1,0,0,0,0)),
     30=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"link"=>"user_admin.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,2,0,0,0)),
-    31=>array("text"=>'<h4 class="list-group-item-heading">Admin: Stationen</h4><p class="list-group-item-text">Stations-Management</p>',"link"=>"station_admin.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
     33=>array("text"=>'<h4 class="list-group-item-heading">Admin: Files</h4><p class="list-group-item-text">Dateien</p>',"link"=>"downloadlist.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
-    34=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Übersicht der Logs</p>',"link"=>"log.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
-    99=>array("text"=>'<h4 class="list-group-item-heading">Öffentliche Startseite Testzentrum</h4><p class="list-group-item-text"></p>',"link"=>"../index.php","role"=>array(1,2,3,4,5),"role-disabled"=>array(0,0,0,0,0))
+    34=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Übersicht der Logs</p>',"link"=>"log.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0))
 );
 
 echo '<div class="row">';
-echo '<div class="col-sm-8">
-<h3>Modul wählen</h3>
+echo '<div class="col-sm-6">
+<h3>Vor Ort</h3>
 <div class="list-group">';
-foreach($_module_array as $key=>$a) {
+foreach($_module_array1 as $key=>$a) {
+    $show_entry=false;
+    $show_entry_disabled=false;
+    foreach($a["role"] as $b) {
+        if($b>0 && $_SESSION['roles'][$b]==1) { 
+            $show_entry=true;
+        }
+    }
+    foreach($a["role-disabled"] as $b) {
+        if($b>0 && $_SESSION['roles'][$b]==1) { 
+            $show_entry_disabled=true;
+        }
+    }
+    if($show_entry) { 
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" id="module-'.$key.'" href="'.$a["link"].'">'.$a["text"].'</a>';
+    } elseif($show_entry_disabled) {
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR disabled" id="module-'.$key.'" >'.$a["text"].'</a>';
+    }
+}
+echo '</div></div>';
+echo '<div class="col-sm-6">
+<h3>Verwaltung</h3>
+<div class="list-group">';
+foreach($_module_array2 as $key=>$a) {
     $show_entry=false;
     $show_entry_disabled=false;
     foreach($a["role"] as $b) {

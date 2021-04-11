@@ -47,7 +47,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		
 		$token = $_POST['token'];
 		$customer_key = $_POST['customer_key'];
-		$gebdatum = $_POST['gebdatum'];
+		//$gebdatum = $_POST['gebdatum'];
+		$gebdatum_d = $_POST['gebdatum_d'];
+		$gebdatum_m = $_POST['gebdatum_m'];
+		$gebdatum_y = $_POST['gebdatum_y'];
+		$gebdatum=sprintf('%04d',$gebdatum_y).'-'.sprintf('%02d',$gebdatum_m).'-'.sprintf('%02d',$gebdatum_d);
 
 		// Daten werde überprüft
 		if($gebdatum!='') {
@@ -127,9 +131,9 @@ if($ALLOWANCE_RESULT>0) {
 
 	// /////////////////
 	// LOGIN
-	echo '<div style="text-align: center;">';
 
-	echo '<div style="margin-bottom:45px; margin-top:0px;">';
+	// Print html content part A
+	echo $GLOBALS['G_html_main_right_a'];
 
 
 	if ($FLAG_SHUTDOWN==0) {
@@ -141,31 +145,54 @@ if($ALLOWANCE_RESULT>0) {
 		// //////////////
 		// Form with birth date
 		
-		$html_box_login.='<div style="text-align: left; display: inline-block; vertical-align: top;">';
-		$html_box_login.=H_build_boxhead( $box_width, 'boxl1', 'Ihr Testergebnis kann abgerufen werden' );
+		$html_box_login.='<div class="panel panel-primary">
+		<div class="panel-heading">
+		<b>Ihr Testergebnis kann abgerufen werden</b>
+		</div>
+		<div class="panel-body">
+		<div class="row">
+		
+		';
 		
 		if($errorhtml1!='') {
+			$html_box_login.='<div class="col-sm-12">';
 			$html_box_login.=$errorhtml1;
 		} else {
-			$html_box_login.='<div class="FAIR-foldbox-static-part">';
-			$html_box_login.='<p>Bitte geben Sie zur Verifizierung<br><b>das Geburtsdatum der getesten Person</b><br>ein.</p>';
-			$html_box_login.='<p><i>For verification, please confirm<br><b>the date of birth of the tested person</b>.<br>Format: dd mm yyyy</i></p>';
-			$html_box_login.='
+			$html_box_login.='<div class="col-sm-6"><p>Bitte geben Sie zur Verifizierung <b>das Geburtsdatum der getesteten Person</b> ein.</p>
+			<p>Ihr Ergebnis kann hierüber nur bis maximal 48 Stunden nach der Testung abgerufen werden. Anschließend werden die Daten gelöscht.</p></div>
+			
+			<div class="col-sm-6"><p><i>For verification, please confirm <b>the date of birth of the tested person</b>.<br>Format: dd mm yyyy</i></p>
+			<p><i>The test result is available only for max. 48 hours after your swab test. Your data will be deleted after this time.</i></p></div></div>
+			<div class="row"><div class="col-sm-12">
 			<form action="'.$current_site.'.php" method="post">
-			<div class="FAIR-si-box">
+			
 			<input type="text" value="'.$_GET['i'].'" name="token" style="display:none;">
 			<input type="text" value="'.$_GET['t'].'" name="customer_key" style="display:none;">';
-			$html_box_login.='<input type="date" class="FAIR-textbox-large" name="gebdatum" />';
-			$html_box_login.='</div>';
-			
+			$html_box_login.='
+			<div class="input-group">
+			<span class="input-group-addon" id="basic-addon1">Geburtsdatum / <i>Date Of Birth</i></span>
+			</div>
+			<div class="input-group">
+			<span class="input-group-addon" id="basic-addon1">Tag</span>
+			<input type="number" min="1" max="31" placeholder="TT" class="form-control" name="gebdatum_d" required>
+			</div><div class="input-group">
+			<span class="input-group-addon" id="basic-addon1">Monat</span>
+			<input type="number" min="1" max="12" placeholder="MM" class="form-control" name="gebdatum_m" required>
+			</div><div class="input-group">
+			<span class="input-group-addon" id="basic-addon1">Jahr</span>
+			<input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" required>
+			</div>';
+
 			$html_box_login.='<div class="FAIR-si-button">';
 			$html_box_login.='<input type="submit" class="btn btn-primary" value="Testergebnis anzeigen" name="button" />';
 			$html_box_login.='</div></form>';
 			$html_box_login.='</div>';
 		}
 		
-		$html_box_login.=H_build_boxfoot( );
-		$html_box_login.='</div>';
+		$html_box_login.='</div>
+		</div>
+		</div>
+		</div>';
 	
 			
 	} elseif($FLAG_SHUTDOWN==1) {

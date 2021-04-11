@@ -48,7 +48,10 @@ if(isset($_POST['submit_person'])) {
     // save data
     $k_nname=$_POST['nname'];
     $k_vname=$_POST['vname'];
-    $k_geb=$_POST['geburtsdatum'];
+    $gebdatum_d = $_POST['gebdatum_d'];
+	$gebdatum_m = $_POST['gebdatum_m'];
+	$gebdatum_y = $_POST['gebdatum_y'];
+    $k_geb=sprintf('%04d',$gebdatum_y).'-'.sprintf('%02d',$gebdatum_m).'-'.sprintf('%02d',$gebdatum_d);
     $k_adresse=$_POST['adresse'];
     $k_telefon=$_POST['telefon'];
     $k_email=$_POST['email'];
@@ -332,8 +335,9 @@ if(isset($_POST['submit_person'])) {
             </div>
             <div class="panel-body">
             <div class="row">
-            <div class="col-sm-6"><b>Datum</b> <span class="calendarblue">'.$date.'</span> / <b>Uhrzeit</b> <span class="calendarblue">'.$time1.' - '.$time2.' Uhr</span></div>
-            <div class="col-sm-6"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
+            <div class="col-sm-4" style="margin-bottom:17px;"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
+            <div class="col-sm-4" style="margin-bottom:17px;"><b>Uhrzeit</b> <span class="calendarblue">'.$time1.' - '.$time2.' Uhr</span></div>
+            <div class="col-sm-4" style="margin-bottom:17px;"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
             </div>
             </div>
             </div>';
@@ -346,10 +350,17 @@ if(isset($_POST['submit_person'])) {
 
                 <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
                 <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-                <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+
+                <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span>
+                <input type="number" min="1" max="31" placeholder="TT" class="form-control" name="gebdatum_d" required>
+                <input type="number" min="1" max="12" placeholder="MM" class="form-control" name="gebdatum_m" required>
+                <input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" required>
+                </div>
+
                 <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
                 <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1"></div>
                 <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+
                 <div class="input-group">
                 <input type="checkbox" id="cb1" name="cb1" required/>
                 <label for="cb1">Ich habe derzeit <b>keine</b> grippeähnlichen Symptome wie Husten, Fieber oder plötzlichen Verlust des Geruchs- oder Geschmackssinnes.</label>

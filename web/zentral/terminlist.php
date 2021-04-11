@@ -43,6 +43,14 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
                 S_set_data($Db,'DELETE From Termine WHERE id_station='.$array_del_termin[0][0].' AND Tag=\''.$array_del_termin[0][1].'\' AND Stunde='.$array_del_termin[0][2].' AND Slot='.$array_del_termin[0][3].';');
             }
             $station=$array_del_termin[0][0];
+        } elseif(isset($_POST['delete_termin_all1day'])) {
+            // Delete all Termine for one day
+            $termin_id=$_POST['termin_id'];
+            if($termin_id>0) {
+                $array_del_termin=S_get_multientry($Db,'SELECT id_station,Tag,Stunde,Slot FROM Termine WHERE id=CAST('.$termin_id.' as int);');
+                S_set_data($Db,'DELETE From Termine WHERE id_station='.$array_del_termin[0][0].' AND Tag=\''.$array_del_termin[0][1].'\';');
+            }
+            $station=$array_del_termin[0][0];
         } elseif(isset($_POST['delete_termin_free1slot'])) {
             // Delete Termine in one slot with no reservation
             $termin_id=$_POST['termin_id'];
@@ -137,7 +145,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       </tr>';
         foreach($array_termine_free2come as $i) {
             if($i[4]=='') {
-                $display_location_opt='Standard: '.$stations_array[$station][1].' / '.$stations_array[$station][2];
+                $display_location_opt='Standard: '.S_get_entry($Db,'SELECT Ort FROM Station WHERE id='.$station.';').' / '.S_get_entry($Db,'SELECT Adresse FROM Station WHERE id='.$station.';');
             } else {
                 $display_location_opt=$i[4].' / '.$i[5];
             }
@@ -197,7 +205,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     </tr>';
         foreach($array_termine_reservation as $i) {
             if($i[4]=='') {
-                $display_location_opt='Standard: '.$stations_array[$station][1].' / '.$stations_array[$station][2];
+                $display_location_opt='Standard: '.S_get_entry($Db,'SELECT Ort FROM Station WHERE id='.$station.';').' / '.S_get_entry($Db,'SELECT Adresse FROM Station WHERE id='.$station.';');
             } else {
                 $display_location_opt=$i[4].' / '.$i[5];
             }
@@ -216,8 +224,9 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
                 <div class="input-group">';
                 echo '<input type="text" value="'.$i[0].'" name="termin_id" style="display:none;">';
                 echo'<span class="input-group-btn">
-                    <input type="submit" class="btn btn-success" value="Freie Termine löschen" name="delete_termin_free1slot" />
-                    <input type="submit" class="btn btn-danger" value="Alle Termine löschen" name="delete_termin_all1slot" />
+                    <input type="submit" class="btn btn-success" value="Freie Term. löschen" name="delete_termin_free1slot" />
+                    <input type="submit" class="btn btn-warning" value="Alle Term. löschen" name="delete_termin_all1slot" />
+                    <input type="submit" class="btn btn-danger" value="Alle Term. für S'.$station.' am '.date("d.m.",strtotime($i[1])).' löschen" name="delete_termin_all1day" />
                     </span>';
                 echo '</div></form>';
             }
