@@ -872,3 +872,7 @@ div.ui-menu-item-wrapper:hover {
 .ui-helper-hidden-accessible {
 	display: none;
 }
+
+div.dataTables_filter {
+	float: left !important;
+}
