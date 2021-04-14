@@ -446,3 +446,29 @@ def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, ort, fi
             "The following error occured in send mail qr ticket: %s" % (err))
         return False
 
+
+def send_mail_download(filename, requester):
+    try:
+        logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
+        message = MIMEMultipart()
+        url = 'https://testzentrum-odw.de/download.php?file=' + str(filename)
+        logging.debug("The created url is %s" % (url))
+        with open('../utils/MailLayout/NewDownload.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[LINK]]', str(url))
+        message.attach(MIMEText(messageContent, 'html'))        
+        message['Subject'] = "Zertifikate sind zum Download verfügbar"
+        message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
+        message['To'] = requester
+        smtp = smtplib.SMTP(SMTP_SERVER,port=587)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        logging.debug(
+            "Sending Mail with following tupel: %s" % (message))
+        smtp.send_message(message)
+        logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error("The following error occured in send mail download: %s" % (err))
+        return False
