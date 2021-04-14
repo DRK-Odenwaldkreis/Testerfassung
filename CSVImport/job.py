@@ -28,7 +28,7 @@ def generate_token():
 if __name__ == "__main__":
     try:
         if len(sys.argv)  != 4:
-            logger.debug('Input parameters are not correct, filename and/or requested needed')
+            logger.debug('Input parameters are not correct, filename,termin_id and requested needed')
             raise Exception
         else:
             DatabaseConnect = Database()
