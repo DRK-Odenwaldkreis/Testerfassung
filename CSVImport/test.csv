@@ -1,2 +1,2 @@
-Vorname,Nachname,Wohnort,Strasse,Geburtsdatumm
-1,2,3,4,5
+Vorname;Nachname;Wohnort;Adresse;Geburtsdatum
+1;2;3;4;2021-01-2

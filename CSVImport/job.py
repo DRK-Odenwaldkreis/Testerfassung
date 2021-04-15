@@ -9,6 +9,7 @@ import locale
 import time
 import datetime
 import sys
+import os
 import csv
 import random
 sys.path.append("..")
@@ -57,16 +58,17 @@ if __name__ == "__main__":
                         vorname = row[0]
                         nachname = row[1]
                         wohnort = row[2]
-                        strasse = row[3]
+                        adresse = row[3]
                         gebdatum = row[4]
-                        sql = "Insert INTO Voranmeldung (Token,Vorname,Nachname,Wohnort,Strasse,Geburtsdatum,Tag,Termin_id,zip_request,Reminded,Mailadresse) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                        tupel = (token,vorname,nachname,wohnort,strasse,gebdatum,tag,int(termin_id),1,1,mail,)
+                        sql = "Insert INTO Voranmeldung (Token,Vorname,Nachname,Wohnort,Adresse,Geburtsdatum,Tag,Termin_id,zip_request,Reminded,Mailadresse) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                        tupel = (token,vorname,nachname,wohnort,adresse,gebdatum,tag,int(termin_id),1,1,mail,)
                         if DatabaseConnect.insert(sql,tupel):
                             counter +=1
                             logger.debug('Adding +1 to counter')
                     except Exception as e:
                         logging.error("The following error occured: %s" % (e))
         print(counter)
+        os.remove(filename)
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
