@@ -57,6 +57,7 @@ if __name__ == "__main__":
             print(filename.replace('../../Reports/', ''))
         else:
             print(filename.replace('../../Reports/', ''))
+        DatabaseConnect.close_connection()
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

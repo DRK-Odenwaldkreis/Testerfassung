@@ -62,6 +62,7 @@ if __name__ == "__main__":
                     logging.error("The following error occured: %s" % (e))
             zipObj.close()
             send_mail_download(zipFilename, get_Mail_from_UserID(requester))
+            DatabaseConnect.close_connection()
             logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
