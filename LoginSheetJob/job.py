@@ -16,7 +16,7 @@ import logging
 
 
 logFile = '../../Logs/loginSheet.log'
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Generating of Login Sheet')
 logger.info('Starting creation of login sheet')
