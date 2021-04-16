@@ -457,7 +457,7 @@ def send_mail_download(filename, requester):
             fileContent = f.read()
         messageContent = fileContent.replace('[[LINK]]', str(url))
         message.attach(MIMEText(messageContent, 'html'))        
-        message['Subject'] = "Zertifikate sind zum Download verfügbar"
+        message['Subject'] = "Neuer Download verfügbar"
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
         message['To'] = requester
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
