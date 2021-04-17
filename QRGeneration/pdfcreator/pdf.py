@@ -39,7 +39,7 @@ class PDFgenerator(FPDF):
 		self.image('tmp/'+str(code) + '.png', x=80)
 		#self.cell(10, 0, '', ln=1)
 		self.current_x=self.get_x
-		self.cell(200, 10, '#%s' % (self.code), ln=1, align='C')
+		self.cell(200, 10, 'K%s' % (self.code), ln=1, align='C')
 		os.remove('tmp/'+str(code) + '.png')
 
 	def add_codes(self,codes):

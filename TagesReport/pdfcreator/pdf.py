@@ -49,12 +49,8 @@ class PDFgenerator:
 		self.date=date
 		self.totalSeconds=0
 		self.stationID = self.content[0][0]
-		if self.content[0][3]:
-			self.station = self.content[0][3]
-			self.address = self.content[0][4]
-		else:
-			self.station = self.content[0][1]
-			self.address = self.content[0][2]
+		self.station = self.content[0][1]
+		self.address = self.content[0][2]
 		self.tests = self.content[1]
 		self.positiv = self.content[2]
 		self.negativ = self.content[3]

@@ -120,3 +120,12 @@ class Database(object):
             self.connection.rollback()
             raise DeleteError
 
+
+    def close_connection(self):
+        try:
+            logger.debug("Closing Cursor and connection")
+            self.cursor.close()
+            self.connection.close()
+            logger.debug('Connection and Cursor closed')
+        except Exception as e:
+            logger.error('The following error occured: %s' % (e))

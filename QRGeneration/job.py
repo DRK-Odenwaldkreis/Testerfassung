@@ -29,7 +29,7 @@ def get_codes(amount):
         id = DatabaseConnect.insert_feedbacked(sql)
         code_list.append(id)
         i+=1
-    DatabaseConnect.cursor.close()
+    DatabaseConnect.close_connection()
     return code_list
 
 
