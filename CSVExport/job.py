@@ -13,6 +13,7 @@ sys.path.append("..")
 from utils.database import Database
 from createCSV import create_CSV
 from utils.sendmail import send_csv_report
+import pyexcel
 
 logFile = '../../Logs/CSVExportJob.log'
 logging.basicConfig(level=logging.DEBUG,
@@ -52,9 +53,11 @@ if __name__ == "__main__":
         exportEvents = DatabaseConnect.read_all(sql)
         logger.debug('Received the following entries: %s' %
                      (str(exportEvents)))
-        filename = create_CSV(exportEvents, requestedDate) 
+        filename = create_CSV(exportEvents, requestedDate)
         if gesundheitsamt:
-            print(filename.replace('../../Reports/', ''))
+            sheet = pyexcel.get_sheet(file_name=filename, delimiter=";")
+            sheet.save_as(str(filename).replace('csv','xlsx')) 
+            print(filename.replace('csv','xlsx').replace('../../Reports/', ''))
         else:
             print(filename.replace('../../Reports/', ''))
         DatabaseConnect.close_connection()
