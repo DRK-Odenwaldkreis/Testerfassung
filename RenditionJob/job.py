@@ -14,7 +14,7 @@ from utils.sendmail import send_linked_result
 
 
 logFile = '../../Logs/rotationJob.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Rendition Job startet on: %s' %(datetime.datetime.now()))
 logger.info('Starting Rendition Job')

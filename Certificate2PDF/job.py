@@ -29,7 +29,6 @@ if __name__ == "__main__":
             DatabaseConnect = Database()
             sql = "Select Vorname,Nachname,Ergebnis,Registrierungszeitpunkt,Geburtsdatum from Vorgang where Token=%s;"%(requestedNumber)
             requester = DatabaseConnect.read_single(sql)
-            print(requester)
             vorname = requester[0]
             nachname = requester[1]
             ergebnis = requester[2]

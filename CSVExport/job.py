@@ -16,7 +16,7 @@ from utils.sendmail import send_csv_report
 import pyexcel
 
 logFile = '../../Logs/CSVExportJob.log'
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Export')
 logger.debug('Starting')

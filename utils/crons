@@ -14,7 +14,8 @@
 55 23 * * * /home/webservice/Testerfassung/DailyJobs/accounting.sh >> /home/webservice/Logs/accounting.log 2>&1
 57 23 * * * /home/webservice/Testerfassung/DailyJobs/archieve.sh >> /home/webservice/Logs/archieve.log 2>&1
 0 8 * * * /home/webservice/Testerfassung/DailyJobs/reminding.sh >> /home/webservice/Logs/reminder.log 2>&1
-50 23 * * * /home/webservice/Testerfassung/WeeklyJobs/clean_reports.sh >> /home/webservice/Logs/reminder.log 2>&1
+50 23 * * * /home/webservice/Testerfassung/WeeklyJobs/clean_reports.sh >> /home/webservice/Logs/clean.log 2>&1
+51 23 * * * /home/webservice/Testerfassung/WeeklyJobs/clean.sh >> /home/webservice/Logs/clean.log 2>&1
 59 23 * * * cd /home/webservice/Testerfassung/NightlyAutoClean && python3 job.py >> /home/webservice/Logs/clean.log 2>&1
 
 #0 0 * * * /etc/mysql/ssl/copy_keys.sh > /home/philipp/copy_key.log
@@ -38,6 +39,7 @@
 1-59/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 16 >> ../../Logs/mail.log 2>&1
 2-59/5 * * * * cd /home/webservice/Testerfassung/RenditionJob && python3 job.py 17 >> ../../Logs/mail.log 2>&1
 
+*/30 * * * * cd /home/webservice/Testerfassung/GARenditionJob && python3 job.py >> ../../Logs/mail.log 2>&1
 
 */10 * * * * cd /home/webservice/Testerfassung/TicketGeneration && python3 job.py >> ../../Logs/ticket.log 2>&1
 */2 * * * * cd /home/webservice/Testerfassung/PreRegistration && python3 job.py >> ../../Logs/preRegistration.log 2>&1

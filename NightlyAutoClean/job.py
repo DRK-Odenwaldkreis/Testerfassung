@@ -28,7 +28,7 @@ if __name__ == "__main__":
         sql = "Delete from Voranmeldung where Tag <= (NOW() - INTERVAL 1 DAY);"
         logger.debug('Cleaning all Voranmeldungen that are prior today, using the following query: %s' % (sql))
         DatabaseConnect.delete(sql)
-        sql = "Delete from Termine where Tag <= (NOW() - INTERVAL 2 DAY);"
+        sql = "Delete from Termine where Tag <= (NOW() - INTERVAL 1 DAY);"
         logger.debug('Cleaning all Termine that are prior today, using the following query: %s' % (sql))
         DatabaseConnect.delete(sql)
         DatabaseConnect.close_connection()
