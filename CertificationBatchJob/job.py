@@ -5,6 +5,7 @@
 
 import datetime
 from os import path
+import os
 import logging
 import pdfkit
 import codecs
@@ -13,7 +14,8 @@ import sys
 sys.path.append("..")
 from utils.database import Database
 from utils.getRequesterMail import get_Mail_from_UserID
-from utils.sendmail import send_mail_download
+from utils.sendmail import send_mail_download_certificate
+from utils.token import generate_token
 
 
 logFile = '../../Logs/certificateJob.log'
@@ -31,7 +33,10 @@ if __name__ == "__main__":
             requestedDate = sys.argv[1]
             requestedStation = sys.argv[2]
             requester = sys.argv[3]
-            zipFilename = '../../Zertifikate/Zertifikate_' + str(requestedDate) + '_Station_' + str(requestedStation) + '.zip'
+            token = generate_token(32)
+            dir = "../../Zertifikate/" + token + '/'
+            os.mkdir(dir)
+            zipFilename = str(dir) + 'Zertifikate_' + str(requestedDate) + '_Station_' + str(requestedStation) + '.zip'
             zipObj = ZipFile(zipFilename, 'w')
             DatabaseConnect = Database()
             sql = "Select Nachname, Vorname, Ergebniszeitpunkt, Geburtsdatum, Ergebnis from Vorgang where zip_request=1 and Ergebnis !=5 and Teststation=%s and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';"%(requestedStation,requestedDate,requestedDate)
@@ -55,13 +60,14 @@ if __name__ == "__main__":
                         raise Exception
                     layout = open(inputFile, 'r', encoding='utf-8')
                     inputContent = layout.read().replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum))
-                    outputFile = "../../Zertifikate/" + str(vorname).replace(" ","") + "_" + str(nachname).replace(" ","") + "_" + date.strftime("%Y-%m-%d") + ".pdf" 
+                    outputFile = str(dir) + str(vorname).replace(" ","") + "_" + str(nachname).replace(" ","") + "_" + date.strftime("%Y-%m-%d") + ".pdf" 
                     pdfkit.from_string(inputContent, outputFile)
-                    zipObj.write(outputFile, outputFile.replace('../../Zertifikate/', ''))
+                    zipObj.write(outputFile, outputFile.replace(str(dir), ''))
                 except Exception as e:
                     logging.error("The following error occured: %s" % (e))
             zipObj.close()
-            send_mail_download(zipFilename, get_Mail_from_UserID(requester))
+            send_mail_download_certificate('Zertifikate_' + str(requestedDate) + '_Station_' + str(requestedStation) + '.zip', token, get_Mail_from_UserID(requester))
+            print(dir)
             DatabaseConnect.close_connection()
             logger.info('Done')
     except Exception as e:

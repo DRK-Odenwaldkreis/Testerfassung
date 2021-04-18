@@ -8,7 +8,7 @@ import sys
 sys.path.append("..")
 from utils.database import Database
 from utils.getRequesterMail import get_Mail_from_UserID
-from utils.sendmail import send_mail_download
+from utils.sendmail import send_mail_download_sheet
 from pdfcreator.pdf import PDFgenerator
 import datetime
 import time
@@ -35,9 +35,9 @@ if __name__ == "__main__":
         password = sys.argv[3]
         station = sys.argv[4]
         PDF = PDFgenerator()
-        result = PDF.creatPDF(user, password, station)
+        result = PDF.creatPDF(user, password, station).replace('../../LoginSheet/','')
         logger.debug('Done')
-        send_mail_download(result,get_Mail_from_UserID(requester))
+        #send_mail_download_sheet(result,get_Mail_from_UserID(requester))
         print(result)
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
