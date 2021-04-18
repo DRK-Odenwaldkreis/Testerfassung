@@ -302,11 +302,15 @@ function H_build_table_testdates_all( ) {
 	foreach($stations_array as $st) {
 		// check if station has appointed times
 		if( S_get_entry($Db,'SELECT id_station FROM Termine WHERE Slot is null AND Date(Tag)>="'.$today.'" AND Date(Tag)<="'.$in_x_days.'" AND id_station='.$st[0].';')==$st[0]) {
-			
-
+			$location_thirdline_val=S_get_entry($Db,'SELECT Oeffnungszeiten FROM Station WHERE id='.$st[0].';');
+			if($location_thirdline_val!='') {
+				$display_location_thirdline='<br><span class="text-sm">'.$location_thirdline_val.'</span>';
+			} else {
+				$display_location_thirdline='';
+			}
 			$res.='<tr>';
 			$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
-			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2">'.$string_location.'</td>';
+			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2">'.$string_location.$display_location_thirdline.'</td>';
 			for($j=0;$j<$X;$j++) {
 				$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
 				$array_termine_open=S_get_multientry($Db,'SELECT id,Startzeit, Endzeit, opt_station, opt_station_adresse FROM Termine WHERE Slot is null AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Startzeit ASC;');
@@ -346,9 +350,15 @@ function H_build_table_testdates_all( ) {
 	foreach($stations_array as $st) {
 		// check if station has appointed times
 		if( S_get_entry($Db,'SELECT id_station FROM Termine WHERE Slot>0 AND Date(Tag)>="'.$today.'" AND Date(Tag)<="'.$in_x_days.'" AND id_station='.$st[0].';')==$st[0]) {
+			$location_thirdline_val=S_get_entry($Db,'SELECT Oeffnungszeiten FROM Station WHERE id='.$st[0].';');
+			if($location_thirdline_val!='') {
+				$display_location_thirdline='<br><span class="text-sm">'.$location_thirdline_val.'</span>';
+			} else {
+				$display_location_thirdline='';
+			}
 			$res.='<tr>';
 			$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
-			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-yellow2">'.$string_location.'</td>';
+			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-yellow2">'.$string_location.$display_location_thirdline.'</td>';
 			for($j=0;$j<$X;$j++) {
 				$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
 				$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'";');

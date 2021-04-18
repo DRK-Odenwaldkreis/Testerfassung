@@ -19,7 +19,8 @@ include_once 'tools.php';
 include_once 'auth.php';
 
 // role check
-if( A_checkpermission(array(0,0,0,4,0)) ) {
+$bool_no_permission=false;
+if( A_checkpermission(array(0,2,0,4,5)) ) {
 
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $file=($_GET['file']);
@@ -29,25 +30,38 @@ if( A_checkpermission(array(0,0,0,4,0)) ) {
                 $dir="Testkarten";
                 break;
             case "r":
-                $dir="Reports";
+                if( A_checkpermission(array(0,2,0,4,0)) ) {
+                    $dir="Reports";
+                } else {
+                    $bool_no_permission=true;
+                }
                 break;
             default:
+            if( A_checkpermission(array(0,2,0,4,0)) ) {
                 $dir="Reports";
+            } else {
+                $bool_no_permission=true;
+            }
                 break; 
         }
-        
-        if( file_exists("/home/webservice/$dir/$file") ) {
-            //header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.basename($file).'"');
-            header('Pragma: no-cache');
-            header('Expires: 0');
-            //header('Content-Length: ' . filesize($file));
-            readfile("/home/webservice/$dir/$file");
-            exit;
+        if(!$bool_no_permission) {
+            if( file_exists("/home/webservice/$dir/$file") ) {
+                //header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename="'.basename($file).'"');
+                header('Pragma: no-cache');
+                header('Expires: 0');
+                //header('Content-Length: ' . filesize($file));
+                readfile("/home/webservice/$dir/$file");
+                exit;
+            }
         }
     }
 } else {
+    $bool_no_permission=true;
+}
+
+if($bool_no_permission) {
     // Print html header
     echo $GLOBALS['G_html_header'];
   

@@ -10,10 +10,13 @@ March 2021
 
 
 // Include functions
+include_once 'admin01.php';
 include_once 'preload.php';
 include_once 'menu.php';
-include_once 'registration/auth.php';
-include_once 'registration/tools.php';
+if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
+    include_once 'registration/auth.php';
+    include_once 'registration/tools.php';
+}
 
 // Print html header
 echo $GLOBALS['G_html_header'];
@@ -121,6 +124,7 @@ echo $GLOBALS['G_html_main_right_a'];
     </div>
     <div class="col-sm-12"><div class="card">
 <?php
+if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 
   // Show table of available dates
   echo H_build_table_testdates2('');
@@ -132,6 +136,14 @@ echo $GLOBALS['G_html_main_right_a'];
         </div>
     </div>
 </div>';
+} else {
+    echo '<div class="alert alert-danger" role="alert">
+    <h3>Wartungsarbeiten</h3>
+    <p>Derzeit finden Arbeiten an dieser Seite statt, der Kalender und die Terminbuchung stehen momentan nicht zur Verfügung. Bald geht es wieder weiter...wir bitten um etwas Geduld.</p>
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsep"></div>
+</div>';
+}
 
 ?>
     </div></div>

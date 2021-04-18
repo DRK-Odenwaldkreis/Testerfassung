@@ -209,6 +209,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
             } else {
                 $display_location_opt=$i[4].' / '.$i[5];
             }
+
             $display_slot=sprintf('%02d', $i[2]).':'.sprintf('%02d', ( $i[3]*15-15 ) );
             $display_slot.=' - '.(date("H:i",strtotime($display_slot) + 60 * 15));
             $display_termine='<span class="label label-success">'.($i[6]-$i[7]).'</span>&nbsp;<span class="label label-danger">'.sprintf('%01d',$i[7]).'</span>';

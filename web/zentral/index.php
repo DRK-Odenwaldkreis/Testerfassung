@@ -44,23 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 
-// Menu
-$_module_array1=array(
-    0=>array("text"=>'<h4 class="list-group-item-heading">Kunden-Registrierung / Test-Auswertung</h4><p class="list-group-item-text">TESTKARTE QR Code scannen</p>',"link"=>"scan.php","role"=>array(1,0,0,4,0),"role-disabled"=>array(0,2,0,0,5)),
-    2=>array("text"=>'<h4 class="list-group-item-heading">Voranmeldungen</h4><p class="list-group-item-text">Liste der Voranmeldungen und Übernahme in Reg-Prozess</p>',"link"=>"prereglist.php","role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
-    10=>array("text"=>'<h4 class="list-group-item-heading">Liste an Tests</h4><p class="list-group-item-text">Aktive Tests und Export CSV</p>',"link"=>"testlist.php","role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
-    15=>array("text"=>'<h4 class="list-group-item-heading">Liste an Positivmeldungen</h4><p class="list-group-item-text">Positivmeldungen und Export CSV</p>',"link"=>"gesundheitsamt.php","role"=>array(0,0,3,4,0),"role-disabled"=>array(0,0,0,0,0)),
-    99=>array("text"=>'<h4 class="list-group-item-heading">Öffentliche Startseite Testzentrum</h4><p class="list-group-item-text"></p>',"link"=>"../index.php","role"=>array(1,2,3,4,5),"role-disabled"=>array(0,0,0,0,0))
-);
-$_module_array2=array(
-    20=>array("text"=>'<h4 class="list-group-item-heading">Stationen</h4><p class="list-group-item-text">Stations-Management</p>',"link"=>"station_admin.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
-    22=>array("text"=>'<h4 class="list-group-item-heading">Testkarten</h4><p class="list-group-item-text">Erstellung von neuen Testkarten</p>',"link"=>"testkarten.php","role"=>array(0,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
-    25=>array("text"=>'<h4 class="list-group-item-heading">Termine</h4><p class="list-group-item-text">Übersicht der angelegten Termine</p>',"link"=>"terminlist.php","role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
-    26=>array("text"=>'<h4 class="list-group-item-heading">Termine erstellen</h4><p class="list-group-item-text">Neue Termine für eine Teststation erstellen</p>',"link"=>"terminerstellung.php","role"=>array(0,2,0,4,5),"role-disabled"=>array(1,0,0,0,0)),
-    30=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"link"=>"user_admin.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,2,0,0,0)),
-    33=>array("text"=>'<h4 class="list-group-item-heading">Admin: Files</h4><p class="list-group-item-text">Dateien</p>',"link"=>"downloadlist.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
-    34=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Übersicht der Logs</p>',"link"=>"log.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0))
-);
+
 
 echo '<div class="row">';
 echo '<div class="col-sm-6">
@@ -121,7 +105,7 @@ $today=date("Y-m-d",time());
 $yesterday=date("Y-m-d",time() - 60 * 60 * 24);
 $beforetwodays=date("Y-m-d",time() - 2 * 60 * 60 * 24);
 $stat_val_total_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\';');
-$stat_val_neg_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\'AND Ergebnis=2;');
+$stat_val_neg_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Ergebnis=2;');
 $stat_val_pos_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Ergebnis=1;');
 
 $stat_val_total_yday=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\';');
@@ -132,6 +116,9 @@ $stat_val_total_2day=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE D
 $stat_val_neg_2day=S_get_entry($Db,'SELECT sum(Negativ) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\';');
 $stat_val_pos_2day=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\';');
 
+$stat_val_total_day_st=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Teststation='.$station.';');
+$stat_val_neg_day_st=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Teststation='.$station.' AND Ergebnis=2;');
+$stat_val_pos_day_st=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Teststation='.$station.' AND Ergebnis=1;');
 
 $stat_val_total_yday_st=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\' AND Teststation='.$station.';');
 $stat_val_neg_yday_st=S_get_entry($Db,'SELECT sum(Negativ) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\' AND Teststation='.$station.';');
@@ -199,6 +186,11 @@ if($_SESSION['station_id']>0) {
     </form>';
 }
 
+if($stat_val_total_day_st>0) {
+    echo '<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day_st.', <span class="FAIR-text-sm">Neg:</span> '.$stat_val_neg_day_st.', <span class="FAIR-text-sm">Pos:</span> '.$stat_val_pos_day_st.' ('.(number_format(($stat_val_pos_day_st/$stat_val_total_day_st*100),2,',','.')).' %)</h3>';
+} else {
+    echo '<h3><span class="FAIR-text-sm">(heute keine Tests durchgeführt)</span></h3>';
+}
 if($stat_val_total_yday_st>0) {
     echo '<h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_total_yday_st.', <span class="FAIR-text-sm">Neg:</span> '.$stat_val_neg_yday_st.', <span class="FAIR-text-sm">Pos:</span> '.$stat_val_pos_yday_st.' ('.(number_format(($stat_val_pos_yday_st/$stat_val_total_yday_st*100),2,',','.')).' %)</h3>';
 } else {

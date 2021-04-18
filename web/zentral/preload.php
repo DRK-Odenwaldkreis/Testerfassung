@@ -12,7 +12,7 @@ file with global used values to load at beginning
 ** ************** */
 
 // Version of website
-$G_version="2.0";
+$G_version="3.0";
 // Session name
 $G_sessionname="DRKTestZentrumWebODW";
 

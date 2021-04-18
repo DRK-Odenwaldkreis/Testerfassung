@@ -38,7 +38,7 @@ echo '<h3>Rückfragen</h3>
 <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
 <p>&nbsp;</p>';
 
-echo '<h3>Technischer Support für die Teams vor Ort</h3>
+echo '<h3>Technischer Support für die Teams vor Ort und Behörden</h3>
 <p><a target="_blank" href="https://github.com/DRK-Odenwaldkreis/Testerfassung">Für die Dokumentation der Web-Anwendung hier klicken</a></p>
 <p>&nbsp;</p>
 <p>Bei technischen Fragen zum Erfassungssystem bitte eine E-Mail schreiben an den Support:</p>
