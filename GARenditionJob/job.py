@@ -39,6 +39,7 @@ if __name__ == "__main__":
             try:
                 date = datetime.datetime.now().strftime("%d.%m.%Y um %H:%M Uhr")
                 transmission = send_new_entry(date)
+                logger.info('Sending Mail to Gesundheitsamt')
                 logger.debug('Checking whether mail was send properly and closing db entry')
                 if transmission:
                     listIds = []
