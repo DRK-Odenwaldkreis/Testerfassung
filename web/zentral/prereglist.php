@@ -93,19 +93,20 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	
-<link rel="shortcut icon" href="img/favicon.png" type="image/x-ico; charset=binary" />
-<link rel="icon" href="img/favicon.png" type="image/x-ico; charset=binary" />
+    <link rel="shortcut icon" href="img/favicon.png" type="image/x-ico; charset=binary" />
+    <link rel="icon" href="img/favicon.png" type="image/x-ico; charset=binary" />
 
 
-<link href="css/bootstrap.css" rel="stylesheet">
-<!-- Custom styles for this template -->
-<link href="css/dashboard.css" rel="stylesheet">
-<link href="css/symbols-fair.css" rel="stylesheet">
-    
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/symbols-fair.css" rel="stylesheet">
+        
+    <script type="text/javascript" src="lib/datatables/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="lib/datatables/Bootstrap-3.3.7/js/bootstrap.min.js"></script>
 
-  <link rel="stylesheet" type="text/css" href="lib/datatables/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/datatables/datatables.min.css"/>
     <script type="text/javascript" src="lib/datatables/datatables.min.js"></script>
-    
     
     </head>';
 
@@ -121,7 +122,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
 
   // Get all pre registrations for today or another day
   // for all stations
-  $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, Voranmeldung.Adresse, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Voranmeldung.Used=0 ORDER BY Voranmeldung.Anmeldezeitpunkt DESC;');
+  $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, Voranmeldung.Adresse, Voranmeldung.Wohnort, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Voranmeldung.Used=0 ORDER BY Voranmeldung.Anmeldezeitpunkt DESC;');
 
 
   echo '<h1>Ansicht der Voranmeldungen</h1>';
@@ -186,7 +187,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     // Show appointment
     if($i[7]>0) {
       // Slot was booked
-      $display_appointment=sprintf('%02d', $i[6]).':'.sprintf('%02d', ( ($i[7]-1)*15 ));
+      $display_appointment=sprintf('%02d', $i[7]).':'.sprintf('%02d', ( ($i[8]-1)*15 ));
     } else {
       $display_appointment='';
     }
@@ -197,8 +198,8 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     <tr>
     
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">
-    <a class="list-group-item list-group-item-action list-group-item-redtext" href="scan.php?scan='.$i[9].'" title="Transfer in Registrierung"><span class="icon-forward"></span>&nbsp;#'.$i[0].'</a></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">S'.$i[5].'/'.substr($i[8],0,10).'</td>
+    <a class="list-group-item list-group-item-action list-group-item-redtext" href="scan.php?scan='.$i[10].'" title="Transfer in Registrierung"><span class="icon-forward"></span>&nbsp;#'.$i[0].'</a></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">S'.$i[6].'/'.substr($i[9],0,10).'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$display_appointment.'</td>
     ';
     if($_SESSION['display_sensitive']==0) {
@@ -209,11 +210,11 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     } else {
       echo '
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[1].', '.$i[2].'</td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'<br>'.$i[4].'</td>
       ';
     }
     echo '
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="text-sm">'.sprintf('%02d', $i[6]).'-'.sprintf('%01d', $i[7]).'-'.$i[0].'</span></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="text-sm">'.sprintf('%02d', $i[7]).'-'.sprintf('%01d', $i[8]).'-'.sprintf('%06d', $i[0]).'</span></td>
     ';
     echo '</tr>';
   }

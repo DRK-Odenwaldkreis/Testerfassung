@@ -227,6 +227,12 @@ a.badge-white-text:hover {
 	color: #111;;
 	background-color: red;
 }
+.anweisung {
+	color: red;
+	padding: 3px;
+	background-clip: content-box,border-box;
+	background-image: linear-gradient(0deg,#f2acac 30%,transparent 0);
+}
 a.list-group-item-redtext {
 	color: #2c95c9;;
 }

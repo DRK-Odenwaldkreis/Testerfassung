@@ -584,6 +584,17 @@ a.calendaryellow:hover {
 	background-color: #c29605;
 	text-decoration: none;
 }
+a.calendaryellow-dis {
+	color:#ddd;
+	background-color: #5e522e;
+	margin-right:5px;
+	padding:8px;
+}
+a.calendaryellow-dis:hover {
+	color:#ddd;
+	background-color: #473e23;
+	text-decoration: none;
+}
 
 /*
  * Special buttons

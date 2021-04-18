@@ -39,12 +39,13 @@ if( A_checkpermission(array(0,0,0,4,0)) ) {
         // Edit user in database
         if(isset($_POST['edit_staff'])) {
             $user_id=($_POST['user_id']);
-            $old_email=($_POST['old_email']);
+            $old_username=($_POST['old_username']);
             $email=($_POST['e_email']);
             $username=($_POST['e_username']);
+            $station_id=($_POST['e_station_id']);
 
-            // check unique email or same email
-            if( $email==$old_email || !(S_get_entry($Db,'SELECT id FROM li_user WHERE username=\''.$email.'\';')>0) ) {
+            // check unique username
+            if($old_username==$username || !(S_get_entry($Db,'SELECT id FROM li_user WHERE username=\''.$username.'\';')>0) ) {
 
                 $attempts=$_POST['e_attempts'];
                 if(isset($_POST['e_r1'])) { $u_role_1=1;} else {$u_role_1=0;}
@@ -57,58 +58,61 @@ if( A_checkpermission(array(0,0,0,4,0)) ) {
                 // write data
                 if($email!='') {
                     // update email
-                    S_set_data($Db,'UPDATE li_user SET username=\''.$email.'\' WHERE id='.$user_id.';');
+                    S_set_data($Db,'UPDATE li_user SET email=\''.$email.'\' WHERE id='.$user_id.';');
                 } else {
                     // email field is empty
                     $errorhtml4=  H_build_boxinfo( 0, 'E-Mail-Feld darf nicht leer sein.', 'red' );
                 }
 
                 //  edit staff data
-                S_set_data($Db,'UPDATE li_user SET username=\''.$username.'\',login_attempts=CAST('.$attempts.' AS int), role_1='.$u_role_1.', role_2='.$u_role_2.', role_3='.$u_role_3.', role_4='.$u_role_4.', role_5='.$u_role_5.'  WHERE id='.$user_id.';');
+                S_set_data($Db,'UPDATE li_user SET username=\''.$username.'\', login_attempts=CAST('.$attempts.' AS int), Station=CAST('.$station_id.' AS int), role_1='.$u_role_1.', role_2='.$u_role_2.', role_3='.$u_role_3.', role_4='.$u_role_4.', role_5='.$u_role_5.'  WHERE id='.$user_id.';');
                 $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
                 
             } else {
-                // Message email exists already
-                $errorhtml3 =  H_build_boxinfo( 0, 'Eingetragene E-Mail-Adresse bereits eingetragen. Es sind keine Dopplungen erlaubt.<br>Sollte die Person bereits einen Login-Zugang haben, bitte den Support kontaktieren.', 'red' );
+                // Message username exists already
+                $errorhtml3 =  H_build_boxinfo( 0, 'Eingetragener Benutername bereits eingetragen. Es sind keine Dopplungen erlaubt.', 'red' );
             }
 
+        } elseif(isset($_POST['create_user'])) {
+            $username_new=($_POST['n_username']);
+            $email_new=($_POST['n_email']);
+            if (filter_var($email_new, FILTER_VALIDATE_EMAIL)) {
+                $new_id=S_get_entry($Db,'SELECT id FROM li_user WHERE username=\''.$username_new.'\';');
+                if($username_new=='' || $email_new=='' || $new_id>0) {
+                    $errorhtml2 =  H_build_boxinfo( 0, 'Fehler beim Erstellen. Username existiert bereits.', 'red' );
+                } else {
+                    S_set_data($Db,'INSERT INTO li_user (username, email) VALUES (
+                    \''.$username_new.'\',
+                    \''.$email_new.'\');');
+                    $errorhtml2 =  H_build_boxinfo( 0, 'User wurde erstellt. Bitte Rollen und Station setzen.', 'green' );
+                }
+            } else {
+                $errorhtml2 =  H_build_boxinfo( 0, 'Fehler beim Erstellen. E-Mail ungültig.', 'red' );
+            }
         }
 
         // Search on number
-        if( isset($_POST['search_staff']) || isset($_POST['edit_staff']) || isset($_POST['create_staff']) ) {
+        if( isset($_POST['search_staff']) || isset($_POST['edit_staff']) ) {
             if( isset($_POST['search_staff']) ) {
                 $user_id=($_POST['user_id']);
             }
             $bool_staff_display=true;
             $u_name=S_get_entry($Db,'SELECT username FROM li_user WHERE id=CAST('.$user_id.' AS int);');
             $u_email=S_get_entry($Db,'SELECT email FROM li_user WHERE id=CAST('.$user_id.' AS int);');
-            //$u_nname=S_get_entry($Db,'SELECT Personal.Nachname FROM Personal JOIN li_user ON Personal.id_li_user=li_user.id WHERE li_user.id=CAST('.$user_id.' AS int);');
-            //$u_vname=S_get_entry($Db,'SELECT Personal.Vorname FROM Personal JOIN li_user ON Personal.id_li_user=li_user.id WHERE li_user.id=CAST('.$user_id.' AS int);');
+            $u_station=S_get_entry($Db,'SELECT Station FROM li_user WHERE id=CAST('.$user_id.' AS int);');
             $u_attempts=S_get_entry($Db,'SELECT login_attempts FROM li_user WHERE id=CAST('.$user_id.' AS int);');
             $u_role_1=S_get_entry($Db,'SELECT role_1 FROM li_user WHERE id=CAST('.$user_id.' AS int);');
             $u_role_2=S_get_entry($Db,'SELECT role_2 FROM li_user WHERE id=CAST('.$user_id.' AS int);');
             $u_role_3=S_get_entry($Db,'SELECT role_3 FROM li_user WHERE id=CAST('.$user_id.' AS int);');
             $u_role_4=S_get_entry($Db,'SELECT role_4 FROM li_user WHERE id=CAST('.$user_id.' AS int);');
             $u_role_5=S_get_entry($Db,'SELECT role_5 FROM li_user WHERE id=CAST('.$user_id.' AS int);');
-            /* if($u_nname!='') {
-                $u_display=$u_nname.', '.$u_vname;
-            } else {
-                $u_display='(nicht mit Mitarbeiter*in verknüpft)';
-            } */
         }
 
-        // save settings for web app
-        if( isset($_POST['save_settings']) ) {
-            if(isset($_POST['s_1'])) {
-                S_set_data($Db,'UPDATE website_settings SET value=1 WHERE name="FLAG_EMAIL_NEWEMPLOYEE";');
-            } else {
-                S_set_data($Db,'UPDATE website_settings SET value=0 WHERE name="FLAG_EMAIL_NEWEMPLOYEE";');
-            }
-        }
     }
 
     // Get user details
     $array_staff=S_get_multientry($Db,'SELECT li_user.Id, li_user.username, li_user.email FROM li_user;');
+    $stations_array=S_get_multientry($Db,'SELECT id, Ort FROM Station;');
 
     // Print html header
     echo $GLOBALS['G_html_header'];
@@ -131,7 +135,7 @@ if( A_checkpermission(array(0,0,0,4,0)) ) {
 
     echo "<script>
     $(document).ready(function () {
-        $('select').selectize({
+        $('#select-state').selectize({
             sortField: 'text'
         });
     });
@@ -140,7 +144,7 @@ if( A_checkpermission(array(0,0,0,4,0)) ) {
 
     echo '<div class="card"><div class="row">
     <div class="col-sm-4">
-    <h3>Personal wählen</h3>';
+    <h3>User wählen</h3>';
 
     echo'<form action="'.$current_site.'.php" method="post">
     <div class="input-group">
@@ -179,13 +183,29 @@ if( A_checkpermission(array(0,0,0,4,0)) ) {
         echo'<form action="'.$current_site.'.php" method="post">
         <div class="input-group">
         <input type="text" value="'.$user_id.'" name="user_id" style="display:none;">
-        <input type="text" value="'.$u_email.'" name="old_email" style="display:none;">
+        <input type="text" value="'.$u_name.'" name="old_username" style="display:none;">
         <span class="input-group-addon" id="basic-addon1">Username</span>
         <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" name="e_username" autocomplete="off" value="'.$u_name.'">
         <span class="input-group-addon" id="basic-addon1">E-Mail</span>
         <input type="text" class="form-control" placeholder="E-Mail-Adresse" aria-describedby="basic-addon1" name="e_email" autocomplete="off" value="'.$u_email.'">
         <span class="input-group-addon" id="basic-addon1">Login-Versuche</span>
         <input type="text" class="form-control" placeholder="Login-Versuche" aria-describedby="basic-addon2" name="e_attempts" autocomplete="off" value="'.$u_attempts.'">
+        </div><div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Station</span>
+        <select id="select-state-2" placeholder="Wähle eine Station..." class="custom-select" style="margin-top:0px;" name="e_station_id">
+            <option value="" selected>Wähle Station...</option>
+                ';
+                foreach($stations_array as $i) {
+                    $selected='';
+                    if($i[0]==$u_station) {
+                        $selected='selected';
+                    }
+                    $display=$i[1].' / S'.$i[0];
+                    echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
+                }
+                echo '
+            </select>
+        
         </div><div class="input-group">
         <span class="input-group-addon">
         <input type="checkbox" aria-label="r1" name="e_r1" '.$u_role_1_selected.'>
@@ -250,6 +270,32 @@ if( A_checkpermission(array(0,0,0,4,0)) ) {
 		}
         echo $errorhtml1;
 
+    }
+    echo '</div></div>';
+
+    //
+    // Add user
+    //
+    if(true) {
+        echo '<div class="card"><div class="row">
+        <div class="col-sm-12">
+        <h3>Neuen User anlegen</h3>';
+
+        echo'<form action="'.$current_site.'.php" method="post">
+        <div class="input-group">
+
+        <span class="input-group-addon" id="basic-addon1">Username</span>
+        <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_username" autocomplete="off" required>
+        </div><div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">E-Mail</span>
+        <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_email" autocomplete="off" required>
+
+        </div>
+        <div class="FAIR-si-button">
+        <input type="submit" class="btn btn-danger" value="Erstellen" name="create_user" />
+        </div></form>';
+        echo $errorhtml2;
+        echo '</div></div></div>';
     }
 
 
