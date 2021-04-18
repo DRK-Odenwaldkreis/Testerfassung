@@ -286,6 +286,7 @@ function H_build_table_testdates_all( ) {
 	// Ohne Terminbuchung für nächste X Tage / free2come
 	$today=date('Y-m-d');
 	$in_x_days=date('Y-m-d', strtotime($today. ' + '.$X.' days'));
+	$yesterday=date('Y-m-d', strtotime($today. ' -1 days'));
 	
 
 	// Table
@@ -293,15 +294,16 @@ function H_build_table_testdates_all( ) {
 	<table class="FAIR-data">
 	<tr>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"><h4>Ort</h4></td>';
+	$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-gray"><h4>Gestern</h4></td>';
 	for($j=0;$j<$X;$j++) {
 		$string_date=date('d.m.', strtotime($today. ' + '.$j.' days'));
 		$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-gray"><h4>'.$string_date.'</h4></td>';
 	}
-	$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"></td></tr>';
+	$res.='</tr>';
 
 	foreach($stations_array as $st) {
 		// check if station has appointed times
-		if( S_get_entry($Db,'SELECT id_station FROM Termine WHERE Slot is null AND Date(Tag)>="'.$today.'" AND Date(Tag)<="'.$in_x_days.'" AND id_station='.$st[0].';')==$st[0]) {
+		if( S_get_entry($Db,'SELECT id_station FROM Termine WHERE Slot is null AND Date(Tag)>="'.$yesterday.'" AND Date(Tag)<="'.$in_x_days.'" AND id_station='.$st[0].';')==$st[0]) {
 			$location_thirdline_val=S_get_entry($Db,'SELECT Oeffnungszeiten FROM Station WHERE id='.$st[0].';');
 			if($location_thirdline_val!='') {
 				$display_location_thirdline='<br><span class="text-sm">'.$location_thirdline_val.'</span>';
@@ -311,8 +313,8 @@ function H_build_table_testdates_all( ) {
 			$res.='<tr>';
 			$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
 			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2">'.$string_location.$display_location_thirdline.'</td>';
-			for($j=0;$j<$X;$j++) {
-				$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
+			for($j=0;$j<=$X;$j++) {
+				$in_j_days=date('Y-m-d', strtotime($yesterday. ' + '.$j.' days'));
 				$array_termine_open=S_get_multientry($Db,'SELECT id,Startzeit, Endzeit, opt_station, opt_station_adresse FROM Termine WHERE Slot is null AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Startzeit ASC;');
 				$string_times='';
 
@@ -322,10 +324,17 @@ function H_build_table_testdates_all( ) {
 					if($te[3]!='') {
 						$string_times.='<span class="text-sm">'.$te[3].',<br>'.$te[4].'</span><br>';
 					}
-					// How many have registered for this free2come Termin
+					// How many have registered for this free2come appointment
 					$value_reservation=S_get_entry($Db,'SELECT count(id) FROM Voranmeldung WHERE Termin_id='.$te[0].';');
-					$display_termine='<br><div style="display: block; margin-top: 5px;"><span class="label label-danger">'.sprintf('%01d',$value_reservation).'</span></div>
+					$display_termine='<br><div style="display: block; margin-top: 5px;"><span class="label label-primary">'.sprintf('%01d',$value_reservation).'</span></div>
 					<span class="text-sm"><div style="display: block; margin-top: 5px;">Reservierungen</div></span>';
+
+					// How many have registered and not shown up
+					if($j<2) {
+						$value_reservation_used=S_get_entry($Db,'SELECT count(id) FROM Voranmeldung WHERE Termin_id='.$te[0].' AND Used=1;');
+						$display_termine.='<div style="display: block; margin-top: 5px;"><span class="label label-danger">'.sprintf('%01d',$value_reservation-$value_reservation_used).'</span></div>
+						<span class="text-sm"><div style="display: block; margin-top: 5px;">no-show</div></span>';
+					}
 
 					$string_times.=date('H:i',strtotime($te[1])).' - '.date('H:i',strtotime($te[2])).$display_termine.'<br>';
 
@@ -340,7 +349,7 @@ function H_build_table_testdates_all( ) {
 					$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue3"></td>';
 				}
 			}
-			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue3"></td>';
+			
 			$res.='</tr>';
 		}
 		
@@ -349,7 +358,7 @@ function H_build_table_testdates_all( ) {
 
 	foreach($stations_array as $st) {
 		// check if station has appointed times
-		if( S_get_entry($Db,'SELECT id_station FROM Termine WHERE Slot>0 AND Date(Tag)>="'.$today.'" AND Date(Tag)<="'.$in_x_days.'" AND id_station='.$st[0].';')==$st[0]) {
+		if( S_get_entry($Db,'SELECT id_station FROM Termine WHERE Slot>0 AND Date(Tag)>="'.$yesterday.'" AND Date(Tag)<="'.$in_x_days.'" AND id_station='.$st[0].';')==$st[0]) {
 			$location_thirdline_val=S_get_entry($Db,'SELECT Oeffnungszeiten FROM Station WHERE id='.$st[0].';');
 			if($location_thirdline_val!='') {
 				$display_location_thirdline='<br><span class="text-sm">'.$location_thirdline_val.'</span>';
@@ -359,12 +368,25 @@ function H_build_table_testdates_all( ) {
 			$res.='<tr>';
 			$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
 			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-yellow2">'.$string_location.$display_location_thirdline.'</td>';
-			for($j=0;$j<$X;$j++) {
-				$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
+			for($j=0;$j<=$X;$j++) {
+				$in_j_days=date('Y-m-d', strtotime($yesterday. ' + '.$j.' days'));
 				$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'";');
-
 				$count_free=$array_termine_open[0][0]-$array_termine_open[0][1];
-				$display_termine='<div style="display: block; margin-top: 5px;"><span class="label label-success">'.($count_free).'</span></div><span class="text-sm"><div style="display: block; margin-top: 5px;">freie&nbsp;Termine</div></span>';
+				if( ($count_free/$array_termine_open[0][0])<0.1 ) {
+					$label_free='default';
+				} elseif( ($count_free/$array_termine_open[0][0])<0.5 ) {
+					$label_free='warning';
+				} else {
+					$label_free='success';
+				}
+				$display_termine='<div style="display: block; margin-top: 5px;"><span class="label label-'.$label_free.'">'.($count_free).' von '.$array_termine_open[0][0].'</span></div><span class="text-sm"><div style="display: block; margin-top: 5px;">freie&nbsp;Termine</div></span>';
+				// How many have registered and not shown up
+				if($j<2) {
+					$current_hour=date('G');
+					$value_reservation_unused=S_get_entry($Db,'SELECT count(Voranmeldung.id) FROM Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Termine.Slot>0 AND Termine.id_station='.$st[0].' AND Date(Termine.Tag)="'.$in_j_days.'" AND Termine.Stunde<'.$current_hour.' AND Voranmeldung.Used=0;');
+					$display_termine.='<div style="display: block; margin-top: 5px;"><span class="label label-danger">'.sprintf('%01d',$value_reservation_unused).'</span></div>
+					<span class="text-sm"><div style="display: block; margin-top: 5px;">no-show</div></span>';
+				}
 				if($count_free>0) {
 					$string_times='';
 					// opt location
@@ -375,7 +397,7 @@ function H_build_table_testdates_all( ) {
 					// get times
 					$value_termine_times1=S_get_entry($Db,'SELECT Stunde FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
 					$value_termine_times2=S_get_entry($Db,'SELECT Stunde FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde DESC;');
-					$value_termine_id=S_get_entry($Db,'SELECT id FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
+					//$value_termine_id=S_get_entry($Db,'SELECT id FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
 					$string_times.='<span class="text-sm"><div style="display: block; margin-top: 5px;">'.sprintf('%02d', $value_termine_times1).':00 - '.sprintf('%02d', $value_termine_times2 + 1).':00</div></span>';
 
 					$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow2 calendaryellow">'.$string_times.$display_termine.'</td>';
@@ -383,7 +405,7 @@ function H_build_table_testdates_all( ) {
 					$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow3"></td>';
 				}
 			}
-			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow3"></td>';
+			
 			$res.='</tr>';
 		}
 			
@@ -392,11 +414,12 @@ function H_build_table_testdates_all( ) {
 	
 	$res.='<tr>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"><h4>Ort</h4></td>';
+	$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-gray"><h4>Gestern</h4></td>';
 	for($j=0;$j<$X;$j++) {
 		$string_date=date('d.m.', strtotime($today. ' + '.$j.' days'));
 		$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-gray"><h4>'.$string_date.'</h4></td>';
 	}
-	$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"></td></tr>';
+	$res.='</tr>';
     
 	$res.='</table>
 	';

@@ -187,7 +187,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     // Show appointment
     if($i[7]>0) {
       // Slot was booked
-      $display_appointment=sprintf('%02d', $i[6]).':'.sprintf('%02d', ( ($i[7]-1)*15 ));
+      $display_appointment=sprintf('%02d', $i[7]).':'.sprintf('%02d', ( ($i[8]-1)*15 ));
     } else {
       $display_appointment='';
     }
