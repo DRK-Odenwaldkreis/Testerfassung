@@ -41,7 +41,6 @@ if __name__ == "__main__":
             DatabaseConnect = Database()
             sql = "Select Nachname, Vorname, Ergebniszeitpunkt, Geburtsdatum, Ergebnis from Vorgang where zip_request=1 and Ergebnis !=5 and Teststation=%s and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';"%(requestedStation,requestedDate,requestedDate)
             content = DatabaseConnect.read_all(sql)
-            print(content)
             for i in content:
                 try:
                     print(i)
