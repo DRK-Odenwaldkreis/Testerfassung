@@ -44,7 +44,7 @@ class PDFgenerator(FPDF):
 
 
 	def creatPDF(self, user, password, station):
-		self.whitelist = set('abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+		self.whitelist = set('abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ_1234567890')
 		self.user = ''.join(filter(self.whitelist.__contains__, user)) 
 		self.password = password
 		self.station = station

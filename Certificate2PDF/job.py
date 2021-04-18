@@ -14,7 +14,7 @@ from utils.database import Database
 
 
 logFile = '../../Logs/certificateJob.log'
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Single Certification Job startet on: %s' %(datetime.datetime.now()))
 logger.info('Starting single certificate creation Job')
