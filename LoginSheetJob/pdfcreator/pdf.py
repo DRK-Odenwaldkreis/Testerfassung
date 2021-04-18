@@ -44,12 +44,15 @@ class PDFgenerator(FPDF):
 
 
 	def creatPDF(self, user, password, station):
-		self.user = user
+		self.whitelist = set('abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+		self.user = ''.join(filter(self.whitelist.__contains__, user))
+		#self.user = userresult = ''.join(filter(str.isalpha, s))  
 		self.password = password
 		self.station = station
 		self.time = datetime.date.today().strftime("%d.%m.%Y")
 		self.create_page()
 		self.filename = "../../LoginSheet/Login_" + str(self.user) + ".pdf"
+		self.output(self.filename)
 		return self.filename
 	
 
