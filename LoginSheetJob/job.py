@@ -8,6 +8,7 @@ import sys
 sys.path.append("..")
 from utils.database import Database
 from utils.getRequesterMail import get_Mail_from_UserID
+from utils.sendmail import send_mail_download
 from pdfcreator.pdf import PDFgenerator
 import datetime
 import time
@@ -27,7 +28,7 @@ if __name__ == "__main__":
     try:
         if len(sys.argv) != 5:
             logger.debug(
-                'Input parameters are not correct, requester, user, passwort, station is neeeded')
+                'Input parameters are not correct, requester, user, password, station is needed')
             raise Exception
         requester = sys.argv[1]
         user = sys.argv[2]
@@ -36,7 +37,7 @@ if __name__ == "__main__":
         PDF = PDFgenerator()
         result = PDF.creatPDF(user, password, station)
         logger.debug('Done')
-        send_mail_report(result,get_Mail_from_UserID(requester))
+        send_mail_download(result,get_Mail_from_UserID(requester))
         print(result)
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
