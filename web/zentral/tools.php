@@ -326,8 +326,11 @@ function H_build_table_testdates_all( ) {
 					}
 					// How many have registered for this free2come appointment
 					$value_reservation=S_get_entry($Db,'SELECT count(id) FROM Voranmeldung WHERE Termin_id='.$te[0].';');
-					$display_termine='<br><div style="display: block; margin-top: 5px;"><span class="label label-primary">'.sprintf('%01d',$value_reservation).'</span></div>
-					<span class="text-sm"><div style="display: block; margin-top: 5px;">Reservierungen</div></span>';
+					if($j>0) {
+						$display_termine='<br><div style="display: block; margin-top: 5px;"><span class="label label-primary">'.sprintf('%01d',$value_reservation).'</span></div><span class="text-sm"><div style="display: block; margin-top: 5px;">Reservierungen</div></span>';
+					} else {
+						$display_termine='';
+					}
 
 					// How many have registered and not shown up
 					if($j<2) {
@@ -382,7 +385,11 @@ function H_build_table_testdates_all( ) {
 				$display_termine='<div style="display: block; margin-top: 5px;"><span class="label label-'.$label_free.'">'.($count_free).' von '.$array_termine_open[0][0].'</span></div><span class="text-sm"><div style="display: block; margin-top: 5px;">freie&nbsp;Termine</div></span>';
 				// How many have registered and not shown up
 				if($j<2) {
-					$current_hour=date('G');
+					if($j==0) {
+						$current_hour=24;
+					} else {
+						$current_hour=date('G');
+					}
 					$value_reservation_unused=S_get_entry($Db,'SELECT count(Voranmeldung.id) FROM Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Termine.Slot>0 AND Termine.id_station='.$st[0].' AND Date(Termine.Tag)="'.$in_j_days.'" AND Termine.Stunde<'.$current_hour.' AND Voranmeldung.Used=0;');
 					$display_termine.='<div style="display: block; margin-top: 5px;"><span class="label label-danger">'.sprintf('%01d',$value_reservation_unused).'</span></div>
 					<span class="text-sm"><div style="display: block; margin-top: 5px;">no-show</div></span>';

@@ -134,7 +134,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][2].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][3].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][4].'" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="Ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][5].'" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][5].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][6].'"></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][7].'" required></div>
         <div class="FAIRsepdown"></div>';
@@ -456,9 +456,14 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       } else {
         $k_prereg=false;
       }
+      if($k_email!='') {
+        $k_privatemail_req=1;
+      } else {
+        $k_privatemail_req=0;
+      }
       $now=date("Y-m-d H:i:s",time());
 
-      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,CWA_request,handout_request) VALUES ('.$_SESSION['station_id'].',
+      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,CWA_request,handout_request,privateMail_request) VALUES ('.$_SESSION['station_id'].',
         \''.$k_token.'\',
         \''.$k_vname.'\',
         \''.$k_nname.'\',
@@ -468,7 +473,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         \''.$k_tel.'\',
         \''.$k_email.'\',
         '.$k_val_cwa.',
-        '.$k_val_print_cert.'
+        '.$k_val_print_cert.',
+        '.$k_privatemail_req.'
         );');
       $k_id=S_get_entry($Db,'SELECT id FROM Vorgang WHERE Token=\''.$k_token.'\'');
       $array_written=S_get_multientry($Db,'SELECT id, Teststation, Token, Vorname, Nachname, Geburtsdatum, Adresse, Wohnort, Telefon, Mailadresse FROM Vorgang WHERE id='.$k_id.';');

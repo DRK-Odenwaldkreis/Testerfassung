@@ -249,7 +249,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     }
     //Buttons resend mail to customer
     if($i[14]==1) {
-      if($i[13]==0) {
+      if($i[13]==0 && $i[12]!=5) {
         $text_mailsend='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="edit_person.php?reset=mail&id='.$i[0].'"><span class="icon-mail5"></span>&nbsp;Nochmal senden</a>';
       } elseif($i[12]==1 || $i[12]==2 || $i[12]==9) {
         $text_mailsend='keine E-Mail verschickt';
