@@ -14,7 +14,7 @@ from utils.database import Database
 
 
 logFile = '../../Logs/certificateJob.log'
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Single Certification Job startet on: %s' %(datetime.datetime.now()))
 logger.info('Starting single certificate creation Job')
@@ -46,7 +46,7 @@ if __name__ == "__main__":
             inputContent = layout.read().replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum))
             outputFile = "../../Zertifikate/" + str(requestedNumber) + ".pdf" 
             pdfkit.from_string(inputContent, outputFile)
-            print(outputFile)
+            print(str(requestedNumber) + ".pdf")
             DatabaseConnect.close_connection()
             logger.info('Done')
     except Exception as e:

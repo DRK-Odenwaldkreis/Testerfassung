@@ -5,4 +5,5 @@
 echo "Starting Cleaning"
 rm -rf /home/webservice/Zertifikate/*
 rm -rf /home/webservice/LoginSheet/*
+rm -rf /home/webservice/Tickets/*
 echo "Cleaning complete"
