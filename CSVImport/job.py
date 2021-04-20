@@ -20,7 +20,7 @@ logFile = '../../Logs/CSVImportJob.log'
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Import')
-logger.debug('Starting')
+logger.info('Starting')
 
 def generate_token():
     x = 'P' + ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz') for i in range(8))
@@ -70,6 +70,6 @@ if __name__ == "__main__":
         print(counter)
         os.remove(filename)
         DatabaseConnect.close_connection()
-        logger.debug('Done')
+        logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
