@@ -17,7 +17,7 @@ from utils.database import Database
 from utils.getRequesterMail import get_Mail_from_UserID
 
 logFile = '../../Logs/CSVImportJob.log'
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Import')
 logger.info('Starting')
