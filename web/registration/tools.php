@@ -121,7 +121,19 @@ function S_get_entry_vorgang ($Db,$scanevent) {
 }
 
 function S_set_entry_voranmeldung ($Db,$array_data) {
-	// First, check if Termin_id is already used
+	// First, check if Termin_id is already used by same person (  to fix a bug found by N.B. <3  )
+	$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Geburtsdatum=? AND Adresse=? AND Wohnort=? AND Telefon=? AND Mailadresse=? AND Tag=?;");
+	mysqli_stmt_bind_param($stmt, "ssssssss", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5], $array_data[6], $array_data[8]);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $double_entry_id);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+
+	if($double_entry_id>0) {
+		return 'DOUBLE_ENTRY';
+	}
+
+	// Second, check if Termin_id is already used by other person
 	$stmt=mysqli_prepare($Db,"SELECT id, Slot, id_station, Tag, Stunde FROM Termine WHERE id=?;");
 	mysqli_stmt_bind_param($stmt, "i", $array_data[7]);
 	mysqli_stmt_execute($stmt);
@@ -145,7 +157,7 @@ function S_set_entry_voranmeldung ($Db,$array_data) {
 			return 0;
 		}
 	} 
-
+	
 	// Write data because Termin_id is not used or Termin_id has no slots
 	if($termin_slot>0) {
 		S_set_data($Db,'UPDATE Termine SET Used=1 WHERE id=CAST('.$termin_id.' as int);');

@@ -83,6 +83,37 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 				$errorhtml1 =  H_build_boxinfo( 322, 'Daten nicht korrekt.', 'red' );
 			}
 			
+		} elseif(isset($_POST['download_pdf'])) {
+			$token=$_POST['token'];
+			$customer_key=$_POST['customer_key'];
+			$gebdatum=$_POST['gebdat'];
+
+			// Daten werde überprüft
+			$stmt=mysqli_prepare($Db,"SELECT id, Geburtsdatum, Customer_lock FROM Vorgang WHERE Token=? AND Customer_key=? AND (Customer_lock is null OR Customer_lock<10);");
+			mysqli_stmt_bind_param($stmt, "ss", $token, $customer_key);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $k_vorgang_id, $k_geb, $val_lock);
+			mysqli_stmt_fetch($stmt);
+			mysqli_stmt_close($stmt);
+
+			if($k_vorgang_id>0) {
+				if($gebdatum==$k_geb) {
+					$dir="/home/webservice/Testerfassung/Certificate2PDF/";
+					chdir($dir);
+					$job="python3 job.py $token";
+					exec($job,$script_output);
+					$file=$script_output[0];
+
+					if( file_exists("/home/webservice/Zertifikate/$token.pdf") ) {
+						header('Content-Type: application/octet-stream');
+						header('Content-Disposition: attachment; filename="'.basename("$token.pdf").'"');
+						header('Pragma: no-cache');
+						header('Expires: 0');
+						readfile("/home/webservice/Zertifikate/$token.pdf");
+						exit;
+					}
+				}
+			}
 		}
 
 		
@@ -109,6 +140,43 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		$display_result=str_replace('[[NACHNAME]]', $result_array[0][3], $display_result);
 		$display_result=str_replace('[[GEBDATUM]]', date('d.m.Y',strtotime($result_array[0][4])), $display_result);
 		$display_result=str_replace('[[DATE]]', date('d.m.Y',strtotime($result_array[0][1])).' um '.date('H:i',strtotime($result_array[0][1])).' Uhr', $display_result);
+
+		echo '<div style="margin-top:20px;">
+		<form action="'.$current_site.'.php" method="post">
+		
+		<input type="text" value="'.$token.'" name="token" style="display:none;">
+		<input type="text" value="'.$customer_key.'" name="customer_key" style="display:none;">
+		<input type="text" value="'.$gebdatum.'" name="gebdat" style="display:none;">
+		<div style="margin-top: 18px;
+		margin-bottom: 25px;">
+		<input type="submit" style="display: inline-block;
+		padding: 6px 12px;
+		margin-bottom: 0;
+		font-size: 14px;
+		font-weight: normal;
+		line-height: 1.42857143;
+		text-align: center;
+		white-space: nowrap;
+		vertical-align: middle;
+		-ms-touch-action: manipulation;
+		touch-action: manipulation;
+		cursor: pointer;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		background-image: none;
+		border: 1px solid transparent;
+			border-top-color: transparent;
+			border-right-color: transparent;
+			border-bottom-color: transparent;
+			border-left-color: transparent;
+		border-radius: 4px;
+		color: #fff;
+background-color: #286090;
+border-color: #204d74;" value="PDF herunterladen" name="download_pdf" />
+		</div></form>
+		</div>';
 
 		echo $display_result;
 		

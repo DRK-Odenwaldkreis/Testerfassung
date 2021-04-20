@@ -291,7 +291,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
   }
   echo '</table></div></div>';
 
-  // Get CSV file
+  // Get XLSX file
   echo '<div class="card">
       <div class="col-sm-4">
       <h3>Export</h3>
@@ -301,7 +301,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
         <span class="input-group-addon" id="basic-addonA2">Tag auswählen</span>
         <input type="date" class="form-control" placeholder="Tag wählen" aria-describedby="basic-addonA2" value="'.$today.'" name="date">
         </div>
-          <input type="submit" class="btn btn-danger" value="Export CSV" name="create_export_csv" />
+          <input type="submit" class="btn btn-danger" value="Export Excel-Datei" name="create_export_csv" />
           </span>
           </div>
           </form>';
