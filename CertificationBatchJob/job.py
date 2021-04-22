@@ -43,7 +43,6 @@ if __name__ == "__main__":
             content = DatabaseConnect.read_all(sql)
             for i in content:
                 try:
-                    print(i)
                     nachname = i[0]
                     vorname = i[1]
                     date = i[2]
@@ -62,12 +61,11 @@ if __name__ == "__main__":
                     inputContent = layout.read().replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum)).replace('[[TESTTYP]]', str(testtype))
                     outputFile = str(dir) + str(vorname).replace(" ","") + "_" + str(nachname).replace(" ","") + "_" + date.strftime("%Y-%m-%d") + ".pdf" 
                     pdfkit.from_string(inputContent, outputFile)
-                    zipObj.write(outputFile, outputFile.replace(str(dir), ''))
+                    zipObj.write(outputFile, outputFile.replace(dir, 'Zertifikat_'))
                 except Exception as e:
                     logging.error("The following error occured: %s" % (e))
             zipObj.close()
             send_mail_download_certificate('Zertifikate_' + str(requestedDate) + '_Station_' + str(requestedStation) + '.zip', token, get_Mail_from_UserID(requester))
-            print(dir)
             DatabaseConnect.close_connection()
             logger.info('Done')
     except Exception as e:
