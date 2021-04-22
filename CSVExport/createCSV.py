@@ -29,7 +29,8 @@ def create_CSV(content, date):
                              "Mailadresse",
                              "Ergebnis",
                              "Testzeitpunkt",
-                             "Teststation"
+                             "Teststation",
+                             "Test-Typ"
                              ])
         for i in content:
             writeEntry.writerow(i)
