@@ -169,7 +169,20 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		';
 
 		// Show table of available dates
-		echo H_build_table_testdates2('b2b');
+		$calendar=H_build_table_testdates2('b2b');
+		//large display
+		echo '<div class="calendar-large">';
+		echo $calendar[0];
+		echo '</div>';
+		// small display
+		echo '<div class="calendar-small">
+		<div class="cal-day-head-yellow"><i>Für gelbe Teststationen ist eine Voranmeldung und Terminbuchung erforderlich - bitte einen Termin wählen</i></div>
+		<div class="cal-day-head-blue"><i>Für blaue Teststationen ist keine Terminbuchung notwendig, eine Voranmeldung Ihrer Daten kann gerne gemacht werden, dann geht es vor Ort schneller - bitte dafür einen Termin wählen</i></div>
+		';
+		foreach($calendar[1] as $i) {
+			echo $i[0].$i[1];
+		}
+		echo '</div>';
 
 		echo '</div></div>
 

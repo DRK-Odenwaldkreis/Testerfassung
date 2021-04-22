@@ -43,7 +43,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 
 	$ALLOWANCE_RESULT=0;
 
-	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	if ( $_SERVER['REQUEST_METHOD'] == 'POST' || isset($_GET['internal_download']) ) {
 
 		if(isset($_POST['button'])) {
 			// Check birth date to show result
@@ -83,10 +83,16 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 				$errorhtml1 =  H_build_boxinfo( 322, 'Daten nicht korrekt.', 'red' );
 			}
 			
-		} elseif(isset($_POST['download_pdf'])) {
-			$token=$_POST['token'];
-			$customer_key=$_POST['customer_key'];
-			$gebdatum=$_POST['gebdat'];
+		} elseif(isset($_POST['download_pdf']) || isset($_GET['internal_download'])) {
+			if(isset($_POST['download_pdf'])) {
+				$token=$_POST['token'];
+				$customer_key=$_POST['customer_key'];
+				$gebdatum=$_POST['gebdat'];
+			} elseif(isset($_GET['internal_download'])) {
+				$token=$_GET['i'];
+				$customer_key=$_GET['t'];
+				$gebdatum=$_GET['g'];
+			}
 
 			// Daten werde überprüft
 			$stmt=mysqli_prepare($Db,"SELECT id, Geburtsdatum, Customer_lock FROM Vorgang WHERE Token=? AND Customer_key=? AND (Customer_lock is null OR Customer_lock<10);");

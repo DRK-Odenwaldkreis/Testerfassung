@@ -253,7 +253,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         echo '<div class="col-sm-12">
         <div class="card">
         <h3>Alle Stationen in den nächsten Tagen (inkl. Firmen)</h3>';
-        echo H_build_table_testdates_all( );
+        echo H_build_table_testdates_all('');
         echo '</div></div>';
     }
 

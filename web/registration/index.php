@@ -134,9 +134,9 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
                 </div>
                 <div class="panel-body">
                 <div class="row">
-                <div class="col-sm-4" style="margin-bottom:17px;"><b>Datum</b> <span class="calendarblue">'.$k_int_date.'</span></div>
-                <div class="col-sm-4" style="margin-bottom:17px;"><b>Uhrzeit</b> <span class="calendarblue">'.$k_int_time1.' - '.$k_int_time2.' Uhr</span></div>
-                <div class="col-sm-4" style="margin-bottom:17px;"><b>Ort</b> <span class="calendarblue">'.$k_int_location.'</span></div>
+                <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="calendarblue">'.$k_int_date.'</span></div>
+                <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="calendarblue">'.$k_int_time1.' - '.$k_int_time2.' Uhr</span></div>
+                <div class="col-sm-4 calendar-col"><b>Ort</b> <span class="calendarblue">'.$k_int_location.'</span></div>
                 </div>
                 </div>
                 </div>';
@@ -266,9 +266,9 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
             <div class="panel-body">
             
             <div class="row calendar_selection">
-            <div class="col-sm-4"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
-            <div class="col-sm-4"><b>Uhrzeit</b> <span class="calendarblue">'.$time1.' - '.$time2.' Uhr</span></div>
-            <div class="col-sm-4"><b>Name</b> <span class="calendarblue">'.$k_name.', '.$k_vorname.'</span></div>
+            <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
+            <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="calendarblue">'.$time1.' - '.$time2.' Uhr</span></div>
+            <div class="col-sm-4 calendar-col"><b>Name</b> <span class="calendarblue">'.$k_name.', '.$k_vorname.'</span></div>
             </div>
 
             <p>Sie möchten Ihren Termin stornieren bzw. die Voranmeldung löschen?</p>
@@ -424,9 +424,9 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
                 </div>
                 <div class="panel-body">
                 <div class="row">
-                <div class="col-sm-4" style="margin-bottom:17px;"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
-                <div class="col-sm-4" style="margin-bottom:17px;"><b>Uhrzeit</b> <span class="calendarblue">'.$time1.' - '.$time2.' Uhr</span></div>
-                <div class="col-sm-4" style="margin-bottom:17px;"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
+                <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
+                <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="calendarblue">'.$time1.' - '.$time2.' Uhr</span></div>
+                <div class="col-sm-4 calendar-col"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
                 </div>
                 </div>
                 </div>';
@@ -483,8 +483,8 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
                 </div>
                 <div class="panel-body">
                 <div class="row">
-                <div class="col-sm-6"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
-                <div class="col-sm-6"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
+                <div class="col-sm-6 calendar-col"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
+                <div class="col-sm-6 calendar-col"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
                 </div>
                 </div>
                 </div>';
@@ -503,8 +503,7 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
                         } else {
                             $display_free='<span class="label label-warning">'.($k[3]-$k[4]).'</span>';
                         }
-                        echo '<div style="float: left;"><a class="calendaryellow-dis">'.$display_slot.'<span class="text-sm">
-                        ausgebucht</span></a></div>';
+                        echo '<div style="float: left;"><a class="calendaryellow-dis">'.$display_slot.' ausgebucht</a></div>';
                         $at_least_one=true;
                     } else {
                         $display_slot=sprintf('%02d', $k[1]).':'.sprintf('%02d', ( $k[2]*15-15 ) );
