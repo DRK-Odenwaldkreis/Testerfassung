@@ -27,7 +27,7 @@ logger.info('Starting certificate creation Job')
 if __name__ == "__main__":
     try:
         if len(sys.argv)  != 4:
-            logger.debug('Input parameters are not correct, station,date and requested needed')
+            logger.debug('Input parameters are not correct, date station and requested needed')
             raise Exception
         else:
             requestedDate = sys.argv[1]
