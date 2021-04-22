@@ -149,13 +149,13 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   if( A_checkpermission(array(1,0,0,0,0)) && !A_checkpermission(array(0,2,0,4,5)) ) {
     // only for own station and today
     $today=date("Y-m-d",time());
-    $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Wohnort, Telefon, Mailadresse, Geburtsdatum, Ergebnis, privateMail_lock, privateMail_request, customer_lock, Customer_key, zip_request, CWA_request, CWA_lock, handout_request, zip_lock FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'" AND Teststation=CAST('.$_SESSION['station_id'].' AS int) ORDER BY Registrierungszeitpunkt DESC;');
+    $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id WHERE Date(Vorgang.Registrierungszeitpunkt)="'.$today.'" AND Vorgang.Teststation=CAST('.$_SESSION['station_id'].' AS int) ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
   } elseif( A_checkpermission(array(0,0,0,0,5)) && !A_checkpermission(array(0,2,0,4,0)) ) {
     // only for own station
-    $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Wohnort, Telefon, Mailadresse, Geburtsdatum, Ergebnis, privateMail_lock, privateMail_request, customer_lock, Customer_key, zip_request, CWA_request, CWA_lock, handout_request, zip_lock FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'" AND Teststation=CAST('.$_SESSION['station_id'].' AS int)  ORDER BY Registrierungszeitpunkt DESC;');
+    $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id WHERE Date(Vorgang.Registrierungszeitpunkt)="'.$today.'" AND Vorgang.Teststation=CAST('.$_SESSION['station_id'].' AS int)  ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
   } else {
     // for all stations
-    $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Wohnort, Telefon, Mailadresse, Geburtsdatum, Ergebnis, privateMail_lock, privateMail_request, customer_lock, Customer_key, zip_request, CWA_request, CWA_lock, handout_request, zip_lock FROM Vorgang WHERE Date(Registrierungszeitpunkt)="'.$today.'"  ORDER BY Registrierungszeitpunkt DESC;');
+    $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id WHERE Date(Vorgang.Registrierungszeitpunkt)="'.$today.'"  ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
 
   }
 
@@ -203,6 +203,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
 
   echo '
   <div class="col-sm-12">
+  <p class="FAIR-text-blue">Hinweis: Typ* ist derzeit ein Standardwert und wird demnächst (vsl. 25.4.) richtig angezeigt.</p>
   <table class="FAIR-data" id="maintable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'10000\'>';
   
   
@@ -218,6 +219,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Telefon</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>E-Mail</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4></h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4 class="FAIR-text-blue">Typ*</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Ergebnis</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Erg abgeholt</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"></td>
@@ -261,7 +263,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
 
     // Download result
     if($i[12]==1 || $i[12]==2 || $i[12]==9) {
-      $text_result_download='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="../result.php?i='.$i[2].'&t='.$i[16].'"><span class="icon-file4"></span><span class="FAIR-sep"></span><span class="icon-lab"></span>&nbsp;Zertifikat</a>';
+      $text_result_download='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="../result.php?internal_download=1&i='.$i[2].'&t='.$i[16].'&g='.$i[11].'"><span class="icon-file-pdf"></span><span class="FAIR-sep"></span><span class="icon-lab"></span>&nbsp;Zertifikat</a>';
     } else {
       $text_result_download='';
     }
@@ -275,7 +277,15 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       // mail request
       if($i[15]==null) {
         // mail request and customer has done nothing
-        $text_result_delivered='<span class="icon-download"></span><span class="FAIR-sep"></span><span class="icon-busy"></span> wartend';
+        if($i[13]==null) {
+          $text_result_delivered='<span class="icon-download"></span><span class="FAIR-sep"></span><span class="icon-busy"></span> Versand...';
+        } elseif($i[13]==0) {
+          $text_result_delivered='<span class="icon-download"></span><span class="FAIR-sep"></span><span class="icon-busy"></span> Abruf wartend';
+        } else {
+          // error
+          $text_result_delivered='<span class="icon-download"></span><span class="FAIR-sep"></span><span class="icon-minus"></span> Mail Fehler';
+        }
+        
       } elseif($i[15]==0) {
         // mail request and customer downloaded
         $text_result_delivered='<span class="icon-download"></span><span class="FAIR-sep"></span><span class="icon-checkmark"></span> online';
@@ -350,6 +360,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">'.$text_ergebnis.'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_deliveredCWA.'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_download.$text_mailsend.'</td>';
@@ -363,6 +374,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[9].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[10].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><a class="list-group-item list-group-item-action list-group-item-redtext" href="edit_person.php?id='.$i[0].'">Ändern</a></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">'.$text_ergebnis.'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_deliveredCWA.'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_download.$text_mailsend.'</td>';

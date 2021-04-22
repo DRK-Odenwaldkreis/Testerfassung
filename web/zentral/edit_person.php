@@ -53,6 +53,8 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       $k_ort=$_POST['ort'];
       $k_tel=$_POST['telefon'];
       $k_email=$_POST['email'];
+      $k_print_cert=$_POST['cb_print_cert'];
+      if($k_print_cert=='on') { $k_val_print_cert=1; } else { $k_val_print_cert=0; }
       if (filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
   
         S_set_data($Db,'UPDATE Vorgang SET
@@ -62,7 +64,9 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         Adresse=\''.$k_adresse.'\',
         Wohnort=\''.$k_ort.'\',
         Telefon=\''.$k_tel.'\',
-        Mailadresse=\''.$k_email.'\'
+        Mailadresse=\''.$k_email.'\',
+        handout_request='.$k_val_print_cert.',
+        privateMail_request=1
         WHERE id=CAST('.$k_id.' AS int);');
         echo '<div class="row">';
         echo '<div class="col-sm-12">
@@ -79,7 +83,8 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         Geburtsdatum=\''.$k_geb.'\',
         Adresse=\''.$k_adresse.'\',
         Wohnort=\''.$k_ort.'\',
-        Telefon=\''.$k_tel.'\'
+        Telefon=\''.$k_tel.'\',
+        handout_request='.$k_val_print_cert.'
         WHERE id=CAST('.$k_id.' AS int);');
         echo '<div class="row">';
         echo '<div class="col-sm-12">
@@ -102,7 +107,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   // ///////////////
       
       S_set_data($Db,'UPDATE Vorgang SET
-      Mailsend=NULL
+      privateMail_lock=NULL
       WHERE id=CAST('.$_GET['id'].' AS int);');
 
       echo '<div class="row">';
