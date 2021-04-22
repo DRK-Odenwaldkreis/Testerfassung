@@ -134,7 +134,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][2].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][3].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][4].'" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="Ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][5].'" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][5].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][6].'"></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][7].'" required></div>
         <div class="FAIRsepdown"></div>';
@@ -165,7 +165,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
           echo '<div class="input-group">
           <span class="input-group-addon">Sammel-Zertifikat:</span>
           <span class="input-group-addon">
-          <input type="checkbox" id="cb_zip" name="cb_zip" checked disabled/>
+          <input type="checkbox" id="cb_zip_display" name="cb_zip_display" checked disabled/>
+          <input type="checkbox" id="cb_zip" name="cb_zip" checked style="display:none;"/>
           <label for="cb_cwa">Ergebnisse werden gesammelt vom Büro abgeholt</label>
           </span>
           </div>';
@@ -449,6 +450,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
     if($k_cwa=='on') { $k_val_cwa=1; } else { $k_val_cwa=0; }
     $k_print_cert=$_POST['cb_print_cert'];
     if($k_print_cert=='on') { $k_val_print_cert=1; } else { $k_val_print_cert=0; }
+    $k_zip=$_POST['cb_zip'];
+    if($k_zip=='on') { $k_val_zip=1; $k_privatemail_req=0; } else { $k_val_zip=0; }
     if ($k_email=='' || filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
     
       if( isset($_POST['prereg']) ) {
@@ -456,9 +459,14 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       } else {
         $k_prereg=false;
       }
+      if($k_email!='' && !isset($k_privatemail_req) ) {
+        $k_privatemail_req=1;
+      } else {
+        $k_privatemail_req=0;
+      }
       $now=date("Y-m-d H:i:s",time());
 
-      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,CWA_request,handout_request) VALUES ('.$_SESSION['station_id'].',
+      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,CWA_request,handout_request,privateMail_request,zip_request) VALUES ('.$_SESSION['station_id'].',
         \''.$k_token.'\',
         \''.$k_vname.'\',
         \''.$k_nname.'\',
@@ -468,7 +476,9 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         \''.$k_tel.'\',
         \''.$k_email.'\',
         '.$k_val_cwa.',
-        '.$k_val_print_cert.'
+        '.$k_val_print_cert.',
+        '.$k_privatemail_req.',
+        '.$k_val_zip.'
         );');
       $k_id=S_get_entry($Db,'SELECT id FROM Vorgang WHERE Token=\''.$k_token.'\'');
       $array_written=S_get_multientry($Db,'SELECT id, Teststation, Token, Vorname, Nachname, Geburtsdatum, Adresse, Wohnort, Telefon, Mailadresse FROM Vorgang WHERE id='.$k_id.';');

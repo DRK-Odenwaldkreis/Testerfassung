@@ -33,7 +33,7 @@ def send_linked_result(vorname, nachname, mail, date, link):
     try:
         logging.debug("Receviced the following recipient %s" % (mail))
         message = MIMEMultipart()
-        text = "Hallo %s %s, \nSie waren am %s im Testzentrum und haben sich testen lassen. Das Testergebnis liegt vor. \nDieses kann zusammen mit Ihrem Geburtsdatum über den folgenden Link abgerufen werden: \n \n%s \n \nBitte beachten Sie: Der Link ist individuelle nur für die Person in der Ansprache. Sofern Sie für mehrere \nPersonen die gleiche Mailadresse eingegeben haben bekommen Sie individuelle Mails für jede getestete Person. \nViele Grüße \nTestteam des DRK Odenwaldkreis \n\n\n----------------ENGLISH------------\nYou were at one of our testing centers. \nYour result can be received by following the link above together with your date of birth." %(vorname,nachname,date,link)
+        text = "Hallo %s %s, \nSie waren am %s im Testzentrum und haben sich testen lassen. Das Testergebnis liegt vor. \nDieses kann zusammen mit Ihrem Geburtsdatum über den folgenden Link abgerufen werden: \n \n%s \n \nBitte beachten Sie: Der Link ist individuell nur für die Person in der Ansprache. Sofern Sie für mehrere \nPersonen die gleiche Mailadresse eingegeben haben bekommen Sie individuelle Mails für jede getestete Person. \nViele Grüße \nTestteam des DRK Odenwaldkreis \n\n\n----------------ENGLISH------------\nYou were at one of our testing centers. \nYour result can be received by following the link above together with your date of birth." %(vorname,nachname,date,link)
         messageContent = text
         message.attach(MIMEText(messageContent, 'plain'))
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
@@ -451,7 +451,7 @@ def send_mail_download_sheet(filename, requester):
     try:
         logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
         message = MIMEMultipart()
-        url = 'https://testzentrum-odw.de/download.php?dir=ls&file=' + str(filename)
+        url = 'https://www.testzentrum-odw.de/zentral/download.php?dir=ls&file=' + str(filename)
         logging.debug("The created url is %s" % (url))
         with open('../utils/MailLayout/NewDownload.html', encoding='utf-8') as f:
             fileContent = f.read()
@@ -477,7 +477,7 @@ def send_mail_download_certificate(filename, token, requester):
     try:
         logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
         message = MIMEMultipart()
-        url = 'https://testzentrum-odw.de/download.php?dir=zip&t=%sfile=%s' %(token,filename)
+        url = 'https://www.testzentrum-odw.de/zentral/download.php?dir=zip&t=%s&file=%s' %(token,filename)
         logging.debug("The created url is %s" % (url))
         with open('../utils/MailLayout/NewDownload.html', encoding='utf-8') as f:
             fileContent = f.read()

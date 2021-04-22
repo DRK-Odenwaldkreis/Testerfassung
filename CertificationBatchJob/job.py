@@ -39,17 +39,16 @@ if __name__ == "__main__":
             zipFilename = str(dir) + 'Zertifikate_' + str(requestedDate) + '_Station_' + str(requestedStation) + '.zip'
             zipObj = ZipFile(zipFilename, 'w')
             DatabaseConnect = Database()
-            sql = "Select Nachname, Vorname, Ergebniszeitpunkt, Geburtsdatum, Ergebnis from Vorgang where zip_request=1 and Ergebnis !=5 and Teststation=%s and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';"%(requestedStation,requestedDate,requestedDate)
+            sql = "Select Nachname, Vorname, Ergebniszeitpunkt, Geburtsdatum, Ergebnis, Testtyp.Name from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where zip_request=1 and Ergebnis !=5 and Teststation=%s and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';"%(requestedStation,requestedDate,requestedDate)
             content = DatabaseConnect.read_all(sql)
-            print(content)
             for i in content:
                 try:
-                    print(i)
                     nachname = i[0]
                     vorname = i[1]
                     date = i[2]
                     geburtsdatum = i[3]
                     ergebnis = i[4]
+                    testtype = i[5]
                     if ergebnis == 1:
                         inputFile = "../utils/MailLayout/Positive_Result.html"
                     elif ergebnis == 2:
@@ -59,15 +58,14 @@ if __name__ == "__main__":
                     else:
                         raise Exception
                     layout = open(inputFile, 'r', encoding='utf-8')
-                    inputContent = layout.read().replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum))
+                    inputContent = layout.read().replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum)).replace('[[TESTTYP]]', str(testtype))
                     outputFile = str(dir) + str(vorname).replace(" ","") + "_" + str(nachname).replace(" ","") + "_" + date.strftime("%Y-%m-%d") + ".pdf" 
                     pdfkit.from_string(inputContent, outputFile)
-                    zipObj.write(outputFile, outputFile.replace(str(dir), ''))
+                    zipObj.write(outputFile, outputFile.replace(dir, 'Zertifikat_'))
                 except Exception as e:
                     logging.error("The following error occured: %s" % (e))
             zipObj.close()
             send_mail_download_certificate('Zertifikate_' + str(requestedDate) + '_Station_' + str(requestedStation) + '.zip', token, get_Mail_from_UserID(requester))
-            print(dir)
             DatabaseConnect.close_connection()
             logger.info('Done')
     except Exception as e:

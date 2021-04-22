@@ -65,10 +65,18 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
         $k_int_time1=$_POST['int_time1'];
         $k_int_time2=$_POST['int_time1'];
         $k_int_location=$_POST['int_location'];
+        
         if (filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
             $prereg_id=S_set_entry_voranmeldung($Db,array($k_vname,$k_nname,$k_geb,$k_adresse,$k_ort,$k_telefon,$k_email,$k_slot_id,$k_date));
-
-            if($prereg_id>0) {
+            if($prereg_id=='DOUBLE_ENTRY') {
+                echo '<div class="alert alert-danger" role="alert">
+                <h3>Ungültiger Vorgang</h3>
+                <p>Sie haben bereits einen Termin für diesen Tag gewählt.</p>
+                </div>';
+                echo '<div class="list-group">';
+                echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="../index.php">Zur Startseite</a>';
+                echo '</div>';
+            } elseif($prereg_id>0) {
                 // Generate verification via email
                 $token_ver=A_generate_token(16);
                 S_set_data($Db,'INSERT INTO Voranmeldung_Verif (Token,id_preregistration) VALUES (\''.$token_ver.'\','.$prereg_id.');');
@@ -76,12 +84,12 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                 $header = "From: no-reply@testzentrum-odenwald.de\r\n";
                 $header .= "Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit";
                 $content="Guten Tag,\n
-    Sie wurden soeben für einen Termin im DRK Testzentrum Odenwaldkreis eingetragen. Falls diese Anfrage von Ihnen nicht initiiert wurde, können Sie diese Nachricht ignorieren.\n
-    Bitte mit diesem Link den Termin bestätigen:\n";
+Sie wurden soeben für einen Termin im DRK Testzentrum Odenwaldkreis eingetragen. Falls diese Anfrage von Ihnen nicht initiiert wurde, können Sie diese Nachricht ignorieren.\n
+Bitte mit diesem Link den Termin bestätigen:\n";
                 $content.=$FLAG_http.'://'.$hostname.($path == '/' ? '' : $path)."/index.php?confirm=confirm&t=$token_ver&i=$prereg_id";
                 $content.="\n\n
-    Mit freundlichen Grüßen\n
-    Das Team vom DRK Testzentrum Odenwaldkreis";
+Mit freundlichen Grüßen\n
+Das Team vom DRK Testzentrum Odenwaldkreis";
                 $title='DRK Covid-19 Testzentrum Odenwaldkreis - Termin bestätigen';
                 $res=mail($k_email, $title, $content, $header, "-r no-reply@testzentrum-odenwald.de");
 
@@ -126,9 +134,9 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                 </div>
                 <div class="panel-body">
                 <div class="row">
-                <div class="col-sm-4" style="margin-bottom:17px;"><b>Datum</b> <span class="calendarblue">'.$k_int_date.'</span></div>
-                <div class="col-sm-4" style="margin-bottom:17px;"><b>Uhrzeit</b> <span class="calendarblue">'.$k_int_time1.' - '.$k_int_time2.' Uhr</span></div>
-                <div class="col-sm-4" style="margin-bottom:17px;"><b>Ort</b> <span class="calendarblue">'.$k_int_location.'</span></div>
+                <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="calendarblue">'.$k_int_date.'</span></div>
+                <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="calendarblue">'.$k_int_time1.' - '.$k_int_time2.' Uhr</span></div>
+                <div class="col-sm-4 calendar-col"><b>Ort</b> <span class="calendarblue">'.$k_int_location.'</span></div>
                 </div>
                 </div>
                 </div>';
@@ -258,9 +266,9 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             <div class="panel-body">
             
             <div class="row calendar_selection">
-            <div class="col-sm-4"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
-            <div class="col-sm-4"><b>Uhrzeit</b> <span class="calendarblue">'.$time1.' - '.$time2.' Uhr</span></div>
-            <div class="col-sm-4"><b>Name</b> <span class="calendarblue">'.$k_name.', '.$k_vorname.'</span></div>
+            <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
+            <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="calendarblue">'.$time1.' - '.$time2.' Uhr</span></div>
+            <div class="col-sm-4 calendar-col"><b>Name</b> <span class="calendarblue">'.$k_name.', '.$k_vorname.'</span></div>
             </div>
 
             <p>Sie möchten Ihren Termin stornieren bzw. die Voranmeldung löschen?</p>
@@ -416,9 +424,9 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                 </div>
                 <div class="panel-body">
                 <div class="row">
-                <div class="col-sm-4" style="margin-bottom:17px;"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
-                <div class="col-sm-4" style="margin-bottom:17px;"><b>Uhrzeit</b> <span class="calendarblue">'.$time1.' - '.$time2.' Uhr</span></div>
-                <div class="col-sm-4" style="margin-bottom:17px;"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
+                <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
+                <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="calendarblue">'.$time1.' - '.$time2.' Uhr</span></div>
+                <div class="col-sm-4 calendar-col"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
                 </div>
                 </div>
                 </div>';
@@ -475,15 +483,16 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                 </div>
                 <div class="panel-body">
                 <div class="row">
-                <div class="col-sm-6"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
-                <div class="col-sm-6"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
+                <div class="col-sm-6 calendar-col"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
+                <div class="col-sm-6 calendar-col"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
                 </div>
                 </div>
                 </div>';
                 echo '<h3>Termin auswählen</h3>
                 <div class="row"><div class="col-sm-12 calendar_selection">';
+                $at_least_one=false;
                 foreach($array_termine_slot as $k) {
-                    if( $current_time > strtotime(sprintf('%02d', $k[1]).':'.sprintf('%02d', ( $k[2]*15-15 )).':00') ) {
+                    if( $date==date('d.m.Y') && $current_time > strtotime(sprintf('%02d', $k[1]).':'.sprintf('%02d', ( $k[2]*15-15 )).':00') ) {
                         // time over
                         
                     } elseif(($k[3]<=$k[4])) {
@@ -494,8 +503,8 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                         } else {
                             $display_free='<span class="label label-warning">'.($k[3]-$k[4]).'</span>';
                         }
-                        echo '<div style="float: left;"><a class="calendaryellow-dis">'.$display_slot.'<span class="text-sm">
-                        ausgebucht</span></a></div>';
+                        echo '<div style="float: left;"><a class="calendaryellow-dis">'.$display_slot.' ausgebucht</a></div>';
+                        $at_least_one=true;
                     } else {
                         $display_slot=sprintf('%02d', $k[1]).':'.sprintf('%02d', ( $k[2]*15-15 ) );
                         $display_slot.='&nbsp;-&nbsp;'.(date("H:i",strtotime($display_slot) + 60 * 15));
@@ -506,7 +515,13 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                         }
                         echo '<div style="float: left;"><a class="calendaryellow" href="?appointment='.($k[0]).'&slot=100">'.$display_slot.'
                         '.$display_free.'</a></div>';
+                        $at_least_one=true;
                     }
+                }
+                if(!$at_least_one) {
+                    echo '<div class="alert alert-warning" role="alert">
+                <p>Die Station hat heute keine Termine mehr</p>
+                </div>';
                 }
                 echo '</div>';
                 echo '</div>';

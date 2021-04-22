@@ -11,7 +11,6 @@ March 2021
 
 // Include functions
 include_once 'admin01.php';
-include_once 'preload.php';
 include_once 'menu.php';
 if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
     include_once 'registration/auth.php';
@@ -89,7 +88,7 @@ echo $GLOBALS['G_html_main_right_a'];
         <img src="img/icon/wait_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             
         <div class="caption center_text">
-        <h5>Etwa 20 min. warten</h5>
+        <h5>Etwa 20-30 min. warten</h5>
         </div>
         </div>
     </div>
@@ -127,7 +126,20 @@ echo $GLOBALS['G_html_main_right_a'];
 if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 
   // Show table of available dates
-  echo H_build_table_testdates2('');
+  $calendar=H_build_table_testdates2('');
+  //large display
+  echo '<div class="calendar-large">';
+  echo $calendar[0];
+  echo '</div>';
+  // small display
+  echo '<div class="calendar-small">
+  <div class="cal-day-head-yellow"><i>Für gelbe Teststationen ist eine Voranmeldung und Terminbuchung erforderlich - bitte einen Termin wählen</i></div>
+  <div class="cal-day-head-blue"><i>Für blaue Teststationen ist keine Terminbuchung notwendig, eine Voranmeldung Ihrer Daten kann gerne gemacht werden, dann geht es vor Ort schneller - bitte dafür einen Termin wählen</i></div>
+  ';
+  foreach($calendar[1] as $i) {
+      echo $i[0].$i[1];
+  }
+  echo '</div>';
 
   echo '<div class="row">
     <div class="col-sm-4">

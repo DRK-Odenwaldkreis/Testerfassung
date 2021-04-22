@@ -41,7 +41,7 @@ if( A_checkpermission(array(0,0,0,4,0)) ) {
             $user_id=($_POST['user_id']);
             $old_username=($_POST['old_username']);
             $email=($_POST['e_email']);
-            $username=($_POST['e_username']);
+            $username=str_replace(' ','',$_POST['e_username']);
             $station_id=($_POST['e_station_id']);
 
             // check unique username
@@ -74,7 +74,7 @@ if( A_checkpermission(array(0,0,0,4,0)) ) {
             }
 
         } elseif(isset($_POST['create_user'])) {
-            $username_new=($_POST['n_username']);
+            $username=str_replace(' ','',$_POST['n_username']);
             $email_new=($_POST['n_email']);
             if (filter_var($email_new, FILTER_VALIDATE_EMAIL)) {
                 $new_id=S_get_entry($Db,'SELECT id FROM li_user WHERE username=\''.$username_new.'\';');

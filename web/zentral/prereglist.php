@@ -122,7 +122,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
 
   // Get all pre registrations for today or another day
   // for all stations
-  $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, Voranmeldung.Adresse, Voranmeldung.Wohnort, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Voranmeldung.Used=0 ORDER BY Voranmeldung.Anmeldezeitpunkt DESC;');
+  $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, Voranmeldung.Adresse, Voranmeldung.Wohnort, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Voranmeldung.Used=0 AND Token IS NOT NULL ORDER BY Voranmeldung.Anmeldezeitpunkt DESC;');
 
 
   echo '<h1>Ansicht der Voranmeldungen</h1>';

@@ -121,7 +121,19 @@ function S_get_entry_vorgang ($Db,$scanevent) {
 }
 
 function S_set_entry_voranmeldung ($Db,$array_data) {
-	// First, check if Termin_id is already used
+	// First, check if Termin_id is already used by same person (  to fix a bug found by N.B. <3  )
+	$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Geburtsdatum=? AND Adresse=? AND Wohnort=? AND Telefon=? AND Mailadresse=? AND Tag=?;");
+	mysqli_stmt_bind_param($stmt, "ssssssss", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5], $array_data[6], $array_data[8]);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $double_entry_id);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+
+	if($double_entry_id>0) {
+		return 'DOUBLE_ENTRY';
+	}
+
+	// Second, check if Termin_id is already used by other person
 	$stmt=mysqli_prepare($Db,"SELECT id, Slot, id_station, Tag, Stunde FROM Termine WHERE id=?;");
 	mysqli_stmt_bind_param($stmt, "i", $array_data[7]);
 	mysqli_stmt_execute($stmt);
@@ -145,7 +157,7 @@ function S_set_entry_voranmeldung ($Db,$array_data) {
 			return 0;
 		}
 	} 
-
+	
 	// Write data because Termin_id is not used or Termin_id has no slots
 	if($termin_slot>0) {
 		S_set_data($Db,'UPDATE Termine SET Used=1 WHERE id=CAST('.$termin_id.' as int);');
@@ -205,6 +217,15 @@ function A_login_firmencode($Db,$sid) {
 	$_SESSION['b2b_username'] = S_get_entry($Db,'SELECT Ort FROM Station WHERE id='.$sid.';');
 
     return true;
+}
+
+function A_get_day_name($number_of_week) {
+	$days=array('Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag');
+	return $days[$number_of_week];
+}
+function A_get_day_name_2($number_of_week) {
+	$days=array('So','Mo','Di','Mi','Do','Fr','Sa');
+	return $days[$number_of_week];
 }
 
 
@@ -356,6 +377,7 @@ function H_build_table_testdates2( $mode ) {
 		
 	}
 	$res='';
+	$res_s_array=array(); // for small displays - array with one element per day
 	$Db=S_open_db();
 	$flag_prereg=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_Pre_registration";');
 	$stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station WHERE '.$query_b2b.';');
@@ -373,8 +395,10 @@ function H_build_table_testdates2( $mode ) {
 	<tr>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"><h4>Ort</h4></td>';
 	for($j=0;$j<$X;$j++) {
-		$string_date=date('d.m.', strtotime($today. ' + '.$j.' days'));
+		$string_date=A_get_day_name_2(date('w', strtotime($today. ' + '.$j.' days'))).' '.date('d.m.', strtotime($today. ' + '.$j.' days'));
 		$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-gray"><h4>'.$string_date.'</h4></td>';
+		$string_date=A_get_day_name(date('w', strtotime($today. ' + '.$j.' days'))).' '.date('d.m.', strtotime($today. ' + '.$j.' days'));
+		$res_s_array[$j][0]='<div class="cal-day-head">'.$string_date.'</div>';
 	}
 	$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"></td></tr>';
 	if($mode!='b2b') {
@@ -419,8 +443,10 @@ function H_build_table_testdates2( $mode ) {
 					if($flag_prereg==0) {
 						$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue2">
 						'.$string_times.'</td>';
+						$res_s_array[$j][1].='<div class="cal-element calendarblue">'.$string_location.$display_location_thirdline.'<br>'.$string_times.'</div>';
 					} else {
 						$res.='<td onclick="window.location=\''.$path_to_reg.'index.php?appointment='.$te[0].'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue2 calendarblue">'.$string_times.'</td>';
+						$res_s_array[$j][1].='<div class="cal-element calendarblue" onclick="window.location=\''.$path_to_reg.'index.php?appointment='.$te[0].'\'">'.$string_location.$display_location_thirdline.'<br>'.$string_times.'</div>';
 					}
 					
 				} else {
@@ -471,6 +497,7 @@ function H_build_table_testdates2( $mode ) {
 						//$string_times.='<span class="text-sm"><div style="display: block; margin-top: 5px;">'.sprintf('%02d', $value_termine_times1).':00 - '.sprintf('%02d', $value_termine_times2 + 1).':00</div></span>';
 
 						$res.='<td onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow2 calendaryellow">'.$string_times.$display_termine.'</td>';
+						$res_s_array[$j][1].='<div class="cal-element calendaryellow" onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'">'.$string_location.$display_location_thirdline.'<br>'.$string_times.$display_termine.'</div>';
 
 						$bool_valid_appointments_found=true;
 					} else {
@@ -492,7 +519,7 @@ function H_build_table_testdates2( $mode ) {
 	$res.='<tr>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"><h4>Ort</h4></td>';
 	for($j=0;$j<$X;$j++) {
-		$string_date=date('d.m.', strtotime($today. ' + '.$j.' days'));
+		$string_date=A_get_day_name_2(date('w', strtotime($today. ' + '.$j.' days'))).' '.date('d.m.', strtotime($today. ' + '.$j.' days'));
 		$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-gray"><h4>'.$string_date.'</h4></td>';
 	}
 	$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"></td></tr>';
@@ -501,7 +528,7 @@ function H_build_table_testdates2( $mode ) {
 	';
 
 	S_close_db($Db);
-	return $res;
+	return array($res,$res_s_array);
 }
 
 ?>

@@ -29,6 +29,10 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
             case "t":
                 $dir="Testkarten";
                 break;
+            case "zip":
+                $dir_extra=$_GET['t'];
+                $dir="Zertifikate/$dir_extra";
+                break;
             case "r":
                 if( A_checkpermission(array(0,2,0,4,0)) ) {
                     $dir="Reports";

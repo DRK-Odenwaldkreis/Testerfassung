@@ -42,9 +42,10 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             $station_ort=($_POST['e_username']);
             $address=($_POST['e_address']);
             $b2b_code=($_POST['e_b2b']);
+            $testtyp=($_POST['e_testtyp']);
 
             //  edit station data
-            S_set_data($Db,'UPDATE Station SET Ort=\''.$station_ort.'\',Adresse=\''.$address.'\',Firmencode=\''.$b2b_code.'\' WHERE id='.$user_id.';');
+            S_set_data($Db,'UPDATE Station SET Ort=\''.$station_ort.'\',Adresse=\''.$address.'\',Firmencode=\''.$b2b_code.'\',Testtyp_id=\''.$testtyp.'\' WHERE id='.$user_id.';');
             $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
 
         } elseif(isset($_POST['create_station'])) {
@@ -52,18 +53,20 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             $station_ort=($_POST['n_username']);
             $address=($_POST['n_address']);
             $b2b_code=($_POST['n_b2b']);
+            $testtyp=($_POST['n_testtyp']);
             $new_id=S_get_entry($Db,'SELECT id FROM Station WHERE id=CAST('.$stationid_new.' as int);');
             if($station_ort=='' || $new_id>0) {
                 $errorhtml2 =  H_build_boxinfo( 0, 'Fehler beim Erstellen, möglicherweise ist die gewählte Stations-ID bereits vergeben.', 'red' );
             } else {
-                S_set_data($Db,'INSERT INTO Station (id, Ort, Adresse, Firmencode) VALUES (
+                S_set_data($Db,'INSERT INTO Station (id, Ort, Adresse, Firmencode, Testtyp_id) VALUES (
                 CAST('.$stationid_new.' AS int),
                 \''.$station_ort.'\',
                 \''.$address.'\',
-                \''.$b2b_code.'\');');
+                \''.$b2b_code.'\',
+                '.$testtyp.');');
                 // Create web user for new station
                 $new_pw=A_generate_token(14);
-                $new_username='team_'.$station_ort;
+                $new_username='team_'.str_replace(' ','',$station_ort);
                 $newpasswordhash = password_hash($new_pw, PASSWORD_BCRYPT);
                 S_set_data($Db,'INSERT INTO li_user (username,password_hash,Station) VALUES (
                     \''.$new_username.'\',
@@ -74,10 +77,10 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
                 // Send job for PDF with QR code for scanning password
                 $dir="/home/webservice/Testerfassung/LoginSheetJob/";
                 chdir($dir);
-                $job="python3 job.py ".$_SESSION['uid']." $new_username $new_pw $station_ort";
+                $station_ort_space=str_replace(' ','',$station_ort);
+                $job="python3 job.py ".$_SESSION['uid']." $new_username $new_pw $station_ort_space";
                 exec($job,$script_output);
                 $file=$script_output[0];
-                var_dump($file);
                 if( file_exists("/home/webservice/LoginSheet/$file") ) {
                     header('Content-Type: application/octet-stream');
                     header('Content-Disposition: attachment; filename="'.basename($file).'"');
@@ -102,12 +105,14 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             $u_name=S_get_entry($Db,'SELECT Ort FROM Station WHERE id=CAST('.$user_id.' AS int);');
             $u_address=S_get_entry($Db,'SELECT Adresse FROM Station WHERE id=CAST('.$user_id.' AS int);');
             $u_b2b=S_get_entry($Db,'SELECT Firmencode FROM Station WHERE id=CAST('.$user_id.' AS int);');
+            $u_testtyp_id=S_get_entry($Db,'SELECT Testtyp_id FROM Station WHERE id=CAST('.$user_id.' AS int);');
         }
 
     }
 
     // Get user details
     $array_staff=S_get_multientry($Db,'SELECT id, Ort, Adresse, Firmencode FROM Station;');
+    $testtyp_array=S_get_multientry($Db,'SELECT id, Kurzbezeichnung FROM Testtyp;');
 
     // Print html header
     echo $GLOBALS['G_html_header'];
@@ -130,7 +135,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
 
     echo "<script>
     $(document).ready(function () {
-        $('select').selectize({
+        $('#select-state').selectize({
             sortField: 'text'
         });
     });
@@ -177,6 +182,18 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
         <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_address" autocomplete="off" value="'.$u_address.'">
         <span class="input-group-addon" id="basic-addon1">Firmencode</span>
         <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_b2b" autocomplete="off" value="'.$u_b2b.'">
+        </div><div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Testtyp</span>
+            <select id="select-state_typ" placeholder="Wähle einen Standard-Typ..." class="custom-select" style="margin-top:0px;" name="e_testtyp">
+            <option value="" selected>Wähle Station...</option>
+                ';
+                foreach($testtyp_array as $i) {
+                    $display='T'.$i[0].' / '.$i[1];
+                    if($i[0]==$u_testtyp_id) { $selected='selected'; } else { $selected=''; }
+                    echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
+                }
+                echo '
+            </select>
         </div>
         <div class="FAIR-si-button">
         <input type="submit" class="btn btn-danger" value="Änderung speichern" name="edit_station" />
@@ -198,14 +215,16 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Nr.</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Ort</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Adresse</h4></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Testtyp</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Firmencode</h4></td>
       </tr>';
-    $array_station=S_get_multientry($Db,'SELECT id, Ort, Adresse, Firmencode FROM Station;');
+    $array_station=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Station.Firmencode, Testtyp.id, Testtyp.Kurzbezeichnung FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id;');
     foreach($array_station as $i) {
         echo '<tr>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">S'.$i[0].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[1].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[2].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">T'.$i[4].' / '.$i[5].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'</td>
       
       </tr>';
@@ -217,6 +236,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
     // Add station
     //
     if(true) {
+        
         echo '<div class="card"><div class="row">
         <div class="col-sm-12">
         <h3>Neue Station anlegen</h3>';
@@ -234,6 +254,17 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
 
         <span class="input-group-addon" id="basic-addon1">Firmencode</span>
         <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_b2b" autocomplete="off">
+        </div><div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Testtyp</span>
+            <select id="select-state_typnew" placeholder="Wähle einen Standard-Typ..." class="custom-select" style="margin-top:0px;" name="n_testtyp">
+            <option value="" selected>Wähle Station...</option>
+                ';
+                foreach($testtyp_array as $i) {
+                    $display='T'.$i[0].' / '.$i[1];
+                    echo '<option value="'.$i[0].'">'.$display.'</option>';
+                }
+                echo '
+            </select>
         </div>
         <div class="FAIR-si-button">
         <input type="submit" class="btn btn-danger" value="Erstellen" name="create_station" />

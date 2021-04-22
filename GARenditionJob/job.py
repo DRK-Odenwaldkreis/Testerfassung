@@ -48,7 +48,6 @@ if __name__ == "__main__":
                     listIds = listIds[:-1]
                     logger.debug('Mail was succesfully send, closing entry in db')
                     sql = "Update Vorgang SET gaMail_lock=0 WHERE id IN (%s);" % (listIds)
-                    print(sql)
                     DatabaseConnect.update(sql)
                 else:
                     logger.debug('mail was not send properly updating gaMail_lock')

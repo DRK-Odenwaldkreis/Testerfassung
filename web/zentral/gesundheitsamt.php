@@ -125,7 +125,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
   $Db=S_open_db();
 
   // Get all test for today
-  $array_tests=S_get_multientry($Db,'SELECT id, Teststation, Token, Registrierungszeitpunkt, Ergebniszeitpunkt, Nachname, Vorname, Adresse, Wohnort, Telefon, Mailadresse, Geburtsdatum, Ergebnis, privateMail_lock, privateMail_request, customer_lock, Customer_key, zip_request, CWA_request, CWA_lock, handout_request, zip_lock FROM Vorgang WHERE Ergebnis = 1 AND Date(Registrierungszeitpunkt)="'.$today.'"  ORDER BY Registrierungszeitpunkt DESC;');
+  $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id WHERE Vorgang.Ergebnis = 1 AND Date(Vorgang.Registrierungszeitpunkt)="'.$today.'"  ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
 
 
   echo '<h1>Ansicht der Positivmeldungen</h1>';
@@ -163,6 +163,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
 
   echo '
   <div class="col-sm-12">
+  <p class="FAIR-text-blue">Hinweis: Typ* ist derzeit ein Standardwert und wird demnächst (vsl. 25.4.) richtig angezeigt.</p>
   <table class="FAIR-data" id="maintable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'10000\'>';
   
   echo '<thead>
@@ -176,6 +177,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Adresse</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Telefonnummer</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Mail</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4 class="FAIR-text-blue">Typ*</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Testergebnis</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Ergebnis</h4></td>
     </tr>
@@ -273,6 +275,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">Erg '.$text_ergebnis.' / '.$i[4].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_deliveredCWA.'</td>';
     } else {
@@ -284,6 +287,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[7].'<br>'.$i[8].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[9].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[10].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">Erg '.$text_ergebnis.' / '.$i[4].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_deliveredCWA.'</td>';
     }
@@ -291,7 +295,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
   }
   echo '</table></div></div>';
 
-  // Get CSV file
+  // Get XLSX file
   echo '<div class="card">
       <div class="col-sm-4">
       <h3>Export</h3>
@@ -301,7 +305,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
         <span class="input-group-addon" id="basic-addonA2">Tag auswählen</span>
         <input type="date" class="form-control" placeholder="Tag wählen" aria-describedby="basic-addonA2" value="'.$today.'" name="date">
         </div>
-          <input type="submit" class="btn btn-danger" value="Export CSV" name="create_export_csv" />
+          <input type="submit" class="btn btn-danger" value="Export Excel-Datei" name="create_export_csv" />
           </span>
           </div>
           </form>';

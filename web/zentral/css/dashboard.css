@@ -557,6 +557,18 @@ color: #2c95c9;
 transition: all 0s ease 0s;
 }
 
+span.calendarblue {
+	color:#111;
+	background-color: #d9edf7;
+	margin-right:5px;
+	padding:8px;
+}
+div.calendar-col {
+	padding-top:8px;
+	padding-bottom:8px;
+	line-height: 36px;
+}
+
 
 /*
  * Special buttons
