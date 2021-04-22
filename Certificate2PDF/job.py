@@ -27,13 +27,14 @@ if __name__ == "__main__":
         else:
             requestedNumber = sys.argv[1]
             DatabaseConnect = Database()
-            sql = "Select Vorname,Nachname,Ergebnis,Registrierungszeitpunkt,Geburtsdatum from Vorgang where Token=%s;"%(requestedNumber)
+            sql = "Select Vorname,Nachname,Ergebnis,Registrierungszeitpunkt,Geburtsdatum,Testtyp.Name from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where Token=%s;"%(requestedNumber)
             requester = DatabaseConnect.read_single(sql)
             vorname = requester[0]
             nachname = requester[1]
             ergebnis = requester[2]
             date = requester[3].strftime("%d.%m.%Y um %H:%M Uhr")
             geburtsdatum = requester[4]
+            testtype = requester[5]
             if ergebnis == 1:
                 inputFile = "../utils/MailLayout/Positive_Result.html"
             elif ergebnis == 2:
@@ -43,7 +44,7 @@ if __name__ == "__main__":
             else:
                 raise Exception
             layout = open(inputFile, 'r', encoding='utf-8')
-            inputContent = layout.read().replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum))
+            inputContent = layout.read().replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum)).replace('[[TESTTYP]]', str(testtype))
             outputFile = "../../Zertifikate/" + str(requestedNumber) + ".pdf" 
             pdfkit.from_string(inputContent, outputFile)
             print(str(requestedNumber) + ".pdf")

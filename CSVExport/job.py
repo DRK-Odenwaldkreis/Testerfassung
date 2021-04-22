@@ -16,10 +16,10 @@ from utils.sendmail import send_csv_report
 import pyexcel
 
 logFile = '../../Logs/CSVExportJob.log'
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Export')
-logger.debug('Starting')
+logger.info('Starting')
 
 
 if __name__ == "__main__":
@@ -58,6 +58,6 @@ if __name__ == "__main__":
         sheet.save_as(str(filename).replace('csv','xlsx')) 
         print(filename.replace('csv','xlsx').replace('../../Reports/', ''))
         DatabaseConnect.close_connection()
-        logger.debug('Done')
+        logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))

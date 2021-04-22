@@ -36,7 +36,7 @@ if __name__ == "__main__":
         station = sys.argv[4]
         PDF = PDFgenerator()
         result = PDF.creatPDF(user, password, station).replace('../../LoginSheet/','')
-        logger.debug('Done')
+        logger.info('Done')
         #send_mail_download_sheet(result,get_Mail_from_UserID(requester))
         print(result)
     except Exception as e:

@@ -17,10 +17,10 @@ from utils.database import Database
 from utils.getRequesterMail import get_Mail_from_UserID
 
 logFile = '../../Logs/CSVImportJob.log'
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Import')
-logger.debug('Starting')
+logger.info('Starting')
 
 def generate_token():
     x = 'P' + ''.join(random.choice('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz') for i in range(8))
@@ -60,8 +60,8 @@ if __name__ == "__main__":
                         wohnort = row[2]
                         adresse = row[3]
                         gebdatum = row[4]
-                        sql = "Insert INTO Voranmeldung (Token,Vorname,Nachname,Wohnort,Adresse,Geburtsdatum,Tag,Termin_id,zip_request,Reminded,Mailadresse) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                        tupel = (token,vorname,nachname,wohnort,adresse,gebdatum,tag,int(termin_id),1,1,mail,)
+                        sql = "Insert INTO Voranmeldung (Token,Mailsend,Vorname,Nachname,Wohnort,Adresse,Geburtsdatum,Tag,Termin_id,zip_request,Reminded,Mailadresse) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                        tupel = (token,1,vorname,nachname,wohnort,adresse,gebdatum,tag,int(termin_id),1,1,mail,)
                         if DatabaseConnect.insert(sql,tupel):
                             counter +=1
                             logger.debug('Adding +1 to counter')
@@ -70,6 +70,6 @@ if __name__ == "__main__":
         print(counter)
         os.remove(filename)
         DatabaseConnect.close_connection()
-        logger.debug('Done')
+        logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
