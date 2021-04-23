@@ -89,30 +89,45 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         echo '<div class="col-sm-12">
         <h3>Testergebnis eintragen</h3>';
 
-        $array_vorgang=S_get_multientry($Db,'SELECT Teststation, Token, Registrierungszeitpunkt, Nachname, Vorname FROM Vorgang WHERE id=CAST('.$testkarte.' AS int);');
+        $array_vorgang=S_get_multientry($Db,'SELECT Teststation, Token, Registrierungszeitpunkt, Nachname, Vorname, Testtyp_id FROM Vorgang WHERE id=CAST('.$testkarte.' AS int);');
+        $testtyp_array=S_get_multientry($Db,'SELECT id, Kurzbezeichnung FROM Testtyp WHERE Aktiv=1 OR id='.$array_vorgang[0][5].';');
 
-        echo '<div class="input-group">
+        echo '<form action="'.$current_site.'.php" method="post"><div class="input-group">
         <span class="input-group-addon" id="basic-addon1">S</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][0].'" disabled></div>
         <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">K</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][1].'" disabled></div>
+        <span class="input-group-addon" id="basic-addon1">K</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][1].'" disabled>
+        <input type="text" name="token" value="K'.$array_vorgang[0][1].'" style="display:none;"></div>
         <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Zeit</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][2].'" disabled></div>
+        <span class="input-group-addon" id="basic-addon1">Reg</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][2].'" disabled></div>
         <div class="input-group">
         <span class="input-group-addon" id="basic-addon1">Person</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][3].'/'.$array_vorgang[0][4].'" disabled>
+        </div><div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Testtyp</span>
+            <select id="select-state_typ" placeholder="Wähle den Test-Typ" class="custom-select" style="margin-top:0px;" name="testtyp">
+            <option value="" selected>Wähle...</option>
+                ';
+                foreach($testtyp_array as $i) {
+                    $display='T'.$i[0].' / '.$i[1];
+                    if($array_vorgang[0][5]==$i[0]) { $selected='selected'; } else { $selected=''; }
+                    echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
+                }
+                echo '
+            </select>
         </div>';
 
-        echo '<div class="list-group">
-        <br> <br>
-        <a class="list-group-item list-group-item-danger list-group-item-FAIR" id="module-positiv" href="'.$current_site.'.php?t=K'.$array_vorgang[0][1].'&e=1">POSITIV</a>
-        <br>
-        <br>
-        <br>
-        <a class="list-group-item list-group-item-success list-group-item-FAIR" id="module-positiv" href="'.$current_site.'.php?t=K'.$array_vorgang[0][1].'&e=2">NEGATIV</a>
-        <br>
-        <br>
-        <br>
-        <a class="list-group-item list-group-item-warning list-group-item-FAIR" id="module-positiv" href="'.$current_site.'.php?t=K'.$array_vorgang[0][1].'&e=9">FEHLERHAFT</a>
-        ';
+        echo '<div class="FAIRsepdown"></div>
+        <div class="FAIR-si-button">
+        <input type="submit" class="btn btn-danger btn-lg" style="width:100%;" value="POSITIV" name="result_positive" />
+        </div>
+        <div class="FAIRsepdown"></div>
+        <div class="FAIR-si-button">
+        <input type="submit" class="btn btn-success btn-lg" style="width:100%;" value="NEGATIV" name="result_negative" />
+        </div>
+        <div class="FAIRsepdown"></div>
+        <div class="FAIR-si-button">
+        <input type="submit" class="btn btn-warning btn-lg" style="width:100%;" value="FEHLERHAFT" name="result_failure" />
+        </div>
+        </form>';
         echo '</div></div>';
 
       } elseif( isset($_GET['prereg']) ) {
@@ -341,9 +356,49 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       }
     }
 
-  } elseif( isset($_GET['t']) && isset($_GET['e']) && !isset($_GET['c']) ) {
+  } elseif( isset($_POST['token']) && ( isset($_POST['result_positive']) || isset($_POST['result_negative']) || isset($_POST['result_failure']) ) ) {
+    // ///////////////
+    // Ergebniseingabe bestätigen lassen (POST) mit Testtyp
+    // ///////////////
+      $testkarte=$_POST['token'];
+      $testtyp=$_POST['testtyp'];
+      if(isset($_POST['result_positive'])) {
+        $ergebnis=1;
+      } elseif(isset($_POST['result_negative'])) {
+        $ergebnis=2;
+      } elseif(isset($_POST['result_failure'])) {
+        $ergebnis=9;
+      }
+      $testtyp_name=S_get_entry($Db,'SELECT Kurzbezeichnung FROM Testtyp WHERE id=CAST('.$testtyp.' AS int);');
+      echo '<div class="row">';
+      echo '<div class="col-sm-12">
+      <h3>Bitte '.$testkarte.' bestätigen</h3>
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Testtyp</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$testtyp_name.'" disabled></div>';
+
+      switch ($ergebnis) {
+        case "2":
+          // Test NEGATIV
+          echo '<div class="list-group">
+      <a class="list-group-item list-group-item-success list-group-item-FAIR" href="'.$current_site.'.php?t='.$testkarte.'&typ='.$testtyp.'&e=2&c=confirmed">NEGATIV bestätigen</a>
+      '; break;
+        case "1":
+          // Test POSITIV
+          echo '<div class="list-group">
+      <a class="list-group-item list-group-item-danger list-group-item-FAIR" href="'.$current_site.'.php?t='.$testkarte.'&typ='.$testtyp.'&e=1&c=confirmed">POSITIV bestätigen</a>
+      '; break;
+        case "9":
+          // Test FEHLERHAFT
+          echo '<div class="list-group">
+      <a class="list-group-item list-group-item-warning list-group-item-FAIR" href="'.$current_site.'.php?t='.$testkarte.'&typ='.$testtyp.'&e=9&c=confirmed">FEHLERHAFT bestätigen</a>
+      '; break;
+      }
+      echo '<a class="list-group-item list-group-item-default list-group-item-FAIR" href="'.$current_site.'.php">Abbruch - neu scannen</a>';
+      echo '</div></div>';
+  
+    } elseif( isset($_GET['t']) && isset($_GET['e']) && !isset($_GET['c']) ) {
   // ///////////////
-  // Ergebniseingabe bestätigen lassen
+  // Ergebniseingabe bestätigen lassen GET
   // ///////////////
     $testkarte=$_GET['t'];
     $ergebnis=$_GET['e'];
@@ -375,19 +430,20 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
   // Ergebniseingabe speichern
   // ///////////////
     $testkarte=S_get_entry_vorgang($Db,$_GET['t']);
-    if( $testkarte!="Not registered" && $testkarte!="Used" && $testkarte>0 ) {
+    $testtyp=$_GET['typ'];
+    if( $testkarte!="Not registered" && $testkarte!="Used" && $testkarte>0 && $testtyp>0) {
       $now=date("Y-m-d H:i:s",time());
       $token=S_get_entry($Db,'SELECT Token FROM Vorgang WHERE id='.$testkarte.';');
       switch ($_GET['e']) {
         case "2":
           // Test NEGATIV
-          S_set_data($Db,'UPDATE Vorgang SET Ergebniszeitpunkt=\''.$now.'\', Ergebnis=2 WHERE id='.$testkarte.';'); break;
+          S_set_data($Db,'UPDATE Vorgang SET Ergebniszeitpunkt=\''.$now.'\', Ergebnis=2, Testtyp_id=CAST('.$testtyp.' AS int) WHERE id='.$testkarte.';'); break;
         case "1":
           // Test POSITIV
-          S_set_data($Db,'UPDATE Vorgang SET Ergebniszeitpunkt=\''.$now.'\', Ergebnis=1 WHERE id='.$testkarte.';'); break;
+          S_set_data($Db,'UPDATE Vorgang SET Ergebniszeitpunkt=\''.$now.'\', Ergebnis=1, Testtyp_id=CAST('.$testtyp.' AS int) WHERE id='.$testkarte.';'); break;
         case "9":
           // Test FEHLERHAFT
-          S_set_data($Db,'UPDATE Vorgang SET Ergebniszeitpunkt=\''.$now.'\', Ergebnis=9 WHERE id='.$testkarte.';'); break;
+          S_set_data($Db,'UPDATE Vorgang SET Ergebniszeitpunkt=\''.$now.'\', Ergebnis=9, Testtyp_id=CAST('.$testtyp.' AS int) WHERE id='.$testkarte.';'); break;
       }
       
       S_set_data($Db,'UPDATE Kartennummern SET Used=1 WHERE id='.$token.';');
@@ -465,8 +521,9 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         $k_privatemail_req=0;
       }
       $now=date("Y-m-d H:i:s",time());
+      $testtyp_default=S_get_entry($Db,'SELECT Testtyp_id FROM Station WHERE id='.$_SESSION['station_id'].';');
 
-      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,CWA_request,handout_request,privateMail_request,zip_request) VALUES ('.$_SESSION['station_id'].',
+      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,handout_request,privateMail_request,zip_request) VALUES ('.$_SESSION['station_id'].',
         \''.$k_token.'\',
         \''.$k_vname.'\',
         \''.$k_nname.'\',
@@ -475,6 +532,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         \''.$k_ort.'\',
         \''.$k_tel.'\',
         \''.$k_email.'\',
+        '.$testtyp_default.',
         '.$k_val_cwa.',
         '.$k_val_print_cert.',
         '.$k_privatemail_req.',
@@ -487,7 +545,9 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         echo '<div class="col-sm-12">
         <div class="alert alert-success" role="alert">
         <h3>Kunde registriert</h3>';
-        echo "<h4>Daten: S".$array_written[0][1]." / <b>K".$array_written[0][2]."</b> / ".$array_written[0][4]." / ".$array_written[0][3]." / ".$array_written[0][5]." / ".$array_written[0][6]." / ".$array_written[0][7]." / ".$array_written[0][8]." / <b>".$array_written[0][9]."</b></h4>";
+        $testtyp_name=S_get_entry($Db,'SELECT Kurzbezeichnung FROM Testtyp WHERE id='.$testtyp_default.';');
+        echo "<h4>S".$array_written[0][1]." / <b>K".$array_written[0][2]."</b> / Typ: $testtyp_name</h4>
+        <h4>Kunde: ".$array_written[0][4]." / ".$array_written[0][3]." / ".$array_written[0][5]." / ".$array_written[0][6]." / ".$array_written[0][7]." / ".$array_written[0][8]." / <b>".$array_written[0][9]."</b></h4>";
         echo '<div class="FAIRsepdown"></div>
         <p><span class="anweisung"><span class="icon-notification"></span> ANWEISUNG:</span> Hat Kunde diese Daten sichtgeprüft? - Andernfalls jetzt zeigen und ggf. ändern!</p></div>';
         // Pre-registration -> set value to used

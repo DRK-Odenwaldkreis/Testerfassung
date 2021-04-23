@@ -185,7 +185,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
         </div><div class="input-group">
         <span class="input-group-addon" id="basic-addon1">Testtyp</span>
             <select id="select-state_typ" placeholder="Wähle einen Standard-Typ..." class="custom-select" style="margin-top:0px;" name="e_testtyp">
-            <option value="" selected>Wähle Station...</option>
+            <option value="" selected>Wähle...</option>
                 ';
                 foreach($testtyp_array as $i) {
                     $display='T'.$i[0].' / '.$i[1];
@@ -257,7 +257,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
         </div><div class="input-group">
         <span class="input-group-addon" id="basic-addon1">Testtyp</span>
             <select id="select-state_typnew" placeholder="Wähle einen Standard-Typ..." class="custom-select" style="margin-top:0px;" name="n_testtyp">
-            <option value="" selected>Wähle Station...</option>
+            <option value="" selected>Wähle...</option>
                 ';
                 foreach($testtyp_array as $i) {
                     $display='T'.$i[0].' / '.$i[1];

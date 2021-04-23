@@ -46,7 +46,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             if($date!='' && $station_id!='') {
                 $dir="/home/webservice/Testerfassung/CertificationBatchJob/";
                 chdir($dir);
-                $job="python3 job.py $station_id $date $uid";
+                $job="python3 job.py $date $station_id $uid > /dev/null &";
                 exec($job,$script_output);
                 $errorhtml2 .= H_build_boxinfo( 0, "Zertifikate werden erzeugt und ein Downloadlink per E-Mail versendet.", 'green' );
             } else {
