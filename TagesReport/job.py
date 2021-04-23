@@ -13,7 +13,7 @@ from utils.getRequesterMail import get_Leitung_from_StationID
 
 
 logFile = '../../Logs/TagesreportJob.log'
-logging.basicConfig(filename=logFile,level=logging.INFO,
+logging.basicConfig(filename=logFile,level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Tagesreport')
 logger.info('Starting Tagesreporting')
@@ -25,8 +25,15 @@ def create_PDFs(content, date, station):
     negativ = 0
     unklar = 0
     times = []
+    age = []
+    children = 0
     for i in content:
         times.append(i[4].total_seconds()/60)
+        today = datetime.date.today()
+        diff = (today - datetime.date.fromisoformat(i[5])).days/365
+        age.append(diff)
+        if diff < 18:
+            children += 1
         ergebnis = i[1]
         if ergebnis == 2:
             negativ += 1
@@ -41,7 +48,7 @@ def create_PDFs(content, date, station):
     logger.debug('Unclear tests: %s' % (str(unklar)))
     tests = unklar + negativ + positiv
     logger.debug('Calculated this total number of tests: %s' % (str(tests)))
-    pdfcontent = [station, tests, positiv, negativ, unklar, times]
+    pdfcontent = [station, tests, positiv, negativ, unklar, times, age, children]
     PDF = PDFgenerator(pdfcontent, f"{date}")
     return PDF.generate()
 
@@ -60,7 +67,7 @@ if __name__ == "__main__":
         sql = "Select Vorgang.Teststation, Station.Ort, Station.Adresse from Vorgang JOIN Station ON Vorgang.Teststation = Station.id where Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59' GROUP BY Vorgang.Teststation;" % (requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
         teststationen = DatabaseConnect.read_all(sql)
         for station in teststationen:
-            sql = "Select id,Ergebnis,Ergebniszeitpunkt,Teststation,TIMEDIFF(Ergebniszeitpunkt,Registrierungszeitpunkt) from Vorgang where Teststation = %s and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (station[0],
+            sql = "Select id,Ergebnis,Ergebniszeitpunkt,Teststation,TIMEDIFF(Ergebniszeitpunkt,Registrierungszeitpunkt),Geburtsdatum from Vorgang where Teststation = %s and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (station[0],
             requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
             logger.debug('Getting all Events for a date with the following query: %s' % (sql))
             exportEvents = DatabaseConnect.read_all(sql)

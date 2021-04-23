@@ -451,7 +451,7 @@ def send_mail_download_sheet(filename, requester):
     try:
         logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
         message = MIMEMultipart()
-        url = 'https://testzentrum-odw.de/download.php?dir=ls&file=' + str(filename)
+        url = 'https://www.testzentrum-odw.de/zentral/download.php?dir=ls&file=' + str(filename)
         logging.debug("The created url is %s" % (url))
         with open('../utils/MailLayout/NewDownload.html', encoding='utf-8') as f:
             fileContent = f.read()
@@ -477,7 +477,7 @@ def send_mail_download_certificate(filename, token, requester):
     try:
         logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
         message = MIMEMultipart()
-        url = 'https://testzentrum-odw.de/download.php?dir=zip&t=%sfile=%s' %(token,filename)
+        url = 'https://www.testzentrum-odw.de/zentral/download.php?dir=zip&t=%s&file=%s' %(token,filename)
         logging.debug("The created url is %s" % (url))
         with open('../utils/MailLayout/NewDownload.html', encoding='utf-8') as f:
             fileContent = f.read()
