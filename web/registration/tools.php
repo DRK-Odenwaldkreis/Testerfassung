@@ -428,13 +428,19 @@ function H_build_table_testdates2( $mode ) {
 				$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
 				$array_termine_open=S_get_multientry($Db,'SELECT id,Startzeit, Endzeit, opt_station, opt_station_adresse FROM Termine WHERE Slot is null AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Startzeit ASC;');
 				$string_times='';
+				$string_times_small='';
 				foreach($array_termine_open as $te) {
 					if($te[3]!='') {
-						$string_times.='<span class="text-sm">'.$te[3].',<br>'.$te[4].'</span><br>';
+						$string_times.='<span class="text-sm">'.$te[3].'<br>'.$te[4].'</span><br>';
+						$string_location_small='<b>'.$te[3].'</b><br>'.$te[4].'';
+					} else {
+						$string_location_small=$string_location;
 					}
 					$string_times.=date('H:i',strtotime($te[1])).' - '.date('H:i',strtotime($te[2])).'<br>';
+					$string_times_small.=date('H:i',strtotime($te[1])).' - '.date('H:i',strtotime($te[2])).'<br>';
 					if($mode=='b2b') {
 						$string_times.='<span class="text-sm">Offener Termin</span><br>';
+						$string_times_small.='<span class="text-sm">Offener Termin</span><br>';
 					}
 					$bool_valid_appointments_found=true;
 				}
@@ -443,10 +449,12 @@ function H_build_table_testdates2( $mode ) {
 					if($flag_prereg==0) {
 						$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue2">
 						'.$string_times.'</td>';
-						$res_s_array[$j][1].='<div class="cal-element calendarblue">'.$string_location.$display_location_thirdline.'<br>'.$string_times.'</div>';
+
+						$res_s_array[$j][1].='<div class="cal-element calendarblue">'.$string_location_small.$display_location_thirdline.'<br>'.$string_times_small.'</div>';
+
 					} else {
 						$res.='<td onclick="window.location=\''.$path_to_reg.'index.php?appointment='.$te[0].'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue2 calendarblue">'.$string_times.'</td>';
-						$res_s_array[$j][1].='<div class="cal-element calendarblue" onclick="window.location=\''.$path_to_reg.'index.php?appointment='.$te[0].'\'">'.$string_location.$display_location_thirdline.'<br>'.$string_times.'</div>';
+						$res_s_array[$j][1].='<div class="cal-element calendarblue" onclick="window.location=\''.$path_to_reg.'index.php?appointment='.$te[0].'\'">'.$string_location_small.$display_location_thirdline.'<br>'.$string_times_small.'</div>';
 					}
 					
 				} else {
