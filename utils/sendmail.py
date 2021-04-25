@@ -10,6 +10,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
+from email.message import EmailMessage
 import logging
 import sys
 import os
@@ -29,16 +30,16 @@ SMTP_PASSWORD = read_config("Mail", "SMTP_PASSWORD")
 GESUNDHEITSAMT = read_config("Mail", "GESUNDHEITSAMT")
 simulationMode = 0
 
+
 def send_linked_result(vorname, nachname, mail, date, link):
     try:
         logging.debug("Receviced the following recipient %s" % (mail))
-        message = MIMEMultipart()
+        message = EmailMessage()
         text = "Hallo %s %s, \nSie waren am %s im Testzentrum und haben sich testen lassen. Das Testergebnis liegt vor. \nDieses kann zusammen mit Ihrem Geburtsdatum über den folgenden Link abgerufen werden: \n \n%s \n \nBitte beachten Sie: Der Link ist individuell nur für die Person in der Ansprache. Sofern Sie für mehrere \nPersonen die gleiche Mailadresse eingegeben haben bekommen Sie individuelle Mails für jede getestete Person. \nViele Grüße \nTestteam des DRK Odenwaldkreis \n\n\n----------------ENGLISH------------\nYou were at one of our testing centers. \nYour result can be received by following the link above together with your date of birth." %(vorname,nachname,date,link)
-        messageContent = text
-        message.attach(MIMEText(messageContent, 'plain'))
+        message.set_content(text)
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
-        message['Reply-To'] = FROM_EMAIL
+        message['reply-To'] = FROM_EMAIL
         message['To'] = mail
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
