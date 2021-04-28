@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# coding=utf-8
 
 # This file is part of DRK Testerfassung.
 
@@ -39,7 +38,7 @@ if __name__ == "__main__":
             mail = get_Mail_from_UserID(requester)
             sql = "Select Tag from Termine where id=%s" % (termin_id)
             tag = DatabaseConnect.read_single(sql)[0]
-            with open(filename, newline='') as csvfile:
+            with open(filename, newline='',encoding='ISO-8859-1') as csvfile:
                 next(csvfile)
                 counter = 0
                 for row in csv.reader(csvfile, delimiter=';', quotechar='|'):
