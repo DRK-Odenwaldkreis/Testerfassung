@@ -190,6 +190,15 @@ function S_get_entry_voranmeldung ($Db,$array_data) {
 	mysqli_stmt_close($stmt);
 	return $id;
 }
+function S_get_entry_voranmeldung_debug ($Db,$data) {
+	$stmt=mysqli_prepare($Db,"SELECT Token FROM Voranmeldung WHERE id=?;");
+	mysqli_stmt_bind_param($stmt, "i", $data);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $id);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+	return $id;
+}
 
 
 /****************************************/

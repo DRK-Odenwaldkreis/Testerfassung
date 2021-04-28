@@ -214,13 +214,26 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
             <p>Der Versand dieser E-Mail kann ein paar Minuten in Anspruch nehmen - bitte haben Sie etwas Geduld.</p>
             </div>';
         } else {
-            echo '<div class="alert alert-success" role="alert">
-            <h3>Ungültiger Code</h3>
-            <p>Der Link ist bereits abgelaufen. Sie müssen sich neu registrieren und einen neuen Termin auswählen.</p>
-            </div>';
-            echo '<div class="list-group">';
-            echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="../index.php">Neue Registrierung starten</a>';
-            echo '</div>';
+            $token_check=S_get_entry_voranmeldung_debug($Db,$prereg_id);
+            if($token_check==null) {
+                echo '<div class="alert alert-warning" role="alert">
+                <h3>Ungültiger Code</h3>
+                <p>Der Link ist bereits abgelaufen. Sie müssen sich neu registrieren und einen neuen Termin auswählen.</p>
+                </div>';
+                echo '<div class="list-group">';
+                echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="../index.php">Neue Registrierung starten</a>';
+                echo '</div>';
+            } else {
+                echo '<div class="alert alert-success" role="alert">
+                <h3>Ihr Termin wurde bereits bestätigt</h3>
+                <p>Sie sollten eine E-Mail mit den Termindaten und einem QR-Code bereits erhalten haben.</p>
+                <p>Der Versand dieser E-Mail kann ein paar Minuten in Anspruch nehmen - bitte haben Sie etwas Geduld.</p>
+                </div>';
+                echo '<div class="list-group">';
+                echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="../index.php">Neue Registrierung starten</a>';
+                echo '</div>';
+            }
+            
         }
         
     } elseif(isset($_GET['cancel'])) {
@@ -243,12 +256,12 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
             $array_appointment=S_get_multientry($Db,'SELECT id, Tag, Startzeit, Endzeit, Slot, Stunde FROM Termine WHERE id=CAST('.$k_termin_id.' as int);');
             if($array_appointment[0][0]>0) {
                 $date=date("d.m.Y",strtotime($array_appointment[0][1]));
-                if($array_appointment[0][4]>0) {
+                if($array_appointment[0][4]>=1) {
                     $time1=sprintf('%02d', $array_appointment[0][5]).':'.sprintf('%02d', ( $array_appointment[0][4]*15-15 ) );
                     $time2=(date("H:i",strtotime($time1) + 60 * 15));
                 } else {
-                    $time1=date("H:i",strtotime($array_appointment[2]));
-                    $time2=date("H:i",strtotime($array_appointment[3]));
+                    $time1=date("H:i",strtotime($array_appointment[0][2]));
+                    $time2=date("H:i",strtotime($array_appointment[0][3]));
                 }
                 $valid_appointment=true;
             } else {

@@ -218,7 +218,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Testtyp</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Firmencode</h4></td>
       </tr>';
-    $array_station=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Station.Firmencode, Testtyp.id, Testtyp.Kurzbezeichnung FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id;');
+    $array_station=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Station.Firmencode, Testtyp.id, Testtyp.Kurzbezeichnung FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id ORDER BY Station.id ASC;');
     foreach($array_station as $i) {
         echo '<tr>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">S'.$i[0].'</td>
