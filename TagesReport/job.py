@@ -76,7 +76,8 @@ if __name__ == "__main__":
             if send:
                 logger.debug('Sending Mail')
                 send_mail_report(filename,requestedDate,get_Leitung_from_StationID(station[0]))
-        DatabaseConnect.close_connection()
         logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
+    finally:
+        DatabaseConnect.close_connection()

@@ -65,8 +65,11 @@ if __name__ == "__main__":
                 except Exception as e:
                     logging.error("The following error occured: %s" % (e))
             zipObj.close()
-            send_mail_download_certificate('Zertifikate_' + str(requestedDate) + '_Station_' + str(requestedStation) + '.zip', token, get_Mail_from_UserID(requester))
-            DatabaseConnect.close_connection()
+            if send_mail_download_certificate('Zertifikate_' + str(requestedDate) + '_Station_' + str(requestedStation) + '.zip', token, get_Mail_from_UserID(requester)):
+                            sql = "Update Vorgang SET zip_lock=0 where zip_request=1 and Ergebnis !=5 and Teststation=%s and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';"%(requestedStation,requestedDate,requestedDate)
+                            DatabaseConnect.update(sql)
             logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
+    finally:
+        DatabaseConnect.close_connection()

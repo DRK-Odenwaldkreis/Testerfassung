@@ -14,10 +14,11 @@ def get_Mail_from_UserID(id):
         DatabaseConnect = Database()
         sql = 'Select email from li_user where id = %s' % (id)
         userMail = DatabaseConnect.read_single(sql)
-        DatabaseConnect.close_connection()
         return userMail[0]
     except:
         return "info@testzentrum-odenwald.de"
+    finally:
+        DatabaseConnect.close_connection()
 
 
 def get_Mail_List(idList):
@@ -28,10 +29,11 @@ def get_Mail_List(idList):
         mailingList = []
         for i in userMail:
             mailingList.append(i[0])
-        DatabaseConnect.close_connection()
         return mailingList
     except Exception as e:
         print("The following error occured in reminder job: %s" % (e))
+    finally:
+        DatabaseConnect.close_connection()
 
 
 def get_Mail_from_StationID(id):
@@ -41,10 +43,11 @@ def get_Mail_from_StationID(id):
         userMail = DatabaseConnect.read_single(sql)
         if len(userMail) == 0:
             userMail = ["info@testzentrum-odenwald.de"]
-        DatabaseConnect.close_connection()
         return userMail
     except:
         return ["info@testzentrum-odenwald.de"]
+    finally:
+        DatabaseConnect.close_connection()
 
 
 def get_Leitung_from_StationID(id):
@@ -54,7 +57,8 @@ def get_Leitung_from_StationID(id):
         userMail = DatabaseConnect.read_single(sql)
         if len(userMail) == 0:
             userMail = ["info@testzentrum-odenwald.de"]
-        DatabaseConnect.close_connection()
         return userMail
     except:
         return ["info@testzentrum-odenwald.de"]
+    finally:
+        DatabaseConnect.close_connection()

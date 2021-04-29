@@ -61,7 +61,8 @@ if __name__ == "__main__":
                     DatabaseConnect.update(sql)
             except Exception as e:
                 logging.error("The following error occured in loop of recipients: %s" % (e))
-        DatabaseConnect.close_connection()
         logger.info('Done for all')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
+    finally:
+        DatabaseConnect.close_connection()
