@@ -208,6 +208,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
     // //////////////////
     // Result delivered
     $text_result_delivered='';
+    $text_result_delivered_paper='';
     $text_result_deliveredCWA='';
 
     if( $i[14]==1 && $i[12]!=5) {
@@ -226,12 +227,13 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
           $text_result_delivered='<span class="icon-download"></span><span class="FAIR-sep"></span><span class="icon-blocked"></span>&nbsp;Mail Sperre - zu viele falsche Versuche';
         }
       }
-    } elseif($i[20]==1) {
+    }
+    if($i[20]==1) {
       // point of care request w/ printed certificate
-      $text_result_delivered='<span class="icon-file4"></span> Papierzertifikat';
+      $text_result_delivered_paper='<br><span class="icon-file4"></span> Papierzertifikat';
     } elseif($i[14]==0 && $i[17]==0 && $i[12]!=5) {
       // point of care request / no certificate printed
-      $text_result_delivered='<span class="icon-bubble"></span> vor Ort mündlich';
+      $text_result_delivered_paper='<span class="icon-bubble"></span> vor Ort mündlich';
     } elseif($i[17]==1) {
       // zip request
       if($i[21]==null) {
@@ -276,7 +278,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">Erg '.$text_ergebnis.' / '.$i[4].'</td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_deliveredCWA.'</td>';
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.'</td>';
     } else {
       echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">S'.$i[1].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">K'.$i[2].'</td>
@@ -288,7 +290,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[10].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">Erg '.$text_ergebnis.' / '.$i[4].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_deliveredCWA.'</td>';
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.'</td>';
     }
     echo '</tr>';
   }

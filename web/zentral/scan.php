@@ -143,7 +143,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <h3>Kunden-Registrierung aus Voranmeldung</h3>';
         echo '<form action="'.$current_site.'.php" method="post">
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Testkarte</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$_GET['scan'].'" disabled>
-        <input type="text" name="token" value="'.$_GET['scan'].'" style="display:none;"></div>
+        <input type="text" name="token" value="'.$_GET['scan'].'" style="display:none;">
+        <input type="text" name="reg_type" value="PREREG" style="display:none;"></div>
         <div class="input-group"><input type="text" name="prereg" value="'.$array_voranmeldung[0][0].'" style="display:none;"></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][1].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][2].'" required></div>
@@ -204,10 +205,15 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <h3>Kunden-Registrierung</h3>';
         echo '<form action="'.$current_site.'.php" method="post">
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Testkarte</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$_GET['scan'].'" disabled>
-        <input type="text" name="token" value="'.$_GET['scan'].'" style="display:none;"></div>
+        <input type="text" name="token" value="'.$_GET['scan'].'" style="display:none;">
+        <input type="text" name="reg_type" value="POCREG" style="display:none;"></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span>
+        <input type="number" min="1" max="31" placeholder="TT" class="form-control" name="gebdatum_d" required>
+        <input type="number" min="1" max="12" placeholder="MM" class="form-control" name="gebdatum_m" required>
+        <input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" required>
+        </div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off"></div>
@@ -229,17 +235,22 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         }
         echo '<div class="FAIRsepdown"></div>
         <div><span class="anweisung"><span class="icon-notification"></span> ANWEISUNG:</span> (Wenn keine E-Mail'.$display_cwa_question.', dann fragen) <b>Benötigen Sie ein Papierzertifikat oder reicht eine mündliche Mitteilung?</b></div>
-        </div>
+        
         <div class="input-group">
         <span class="input-group-addon">Zertifikat:</span>
         <span class="input-group-addon">
         <input type="checkbox" id="cb_print_cert" name="cb_print_cert"/>
         <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label></span>
         </div>
+        <div class="input-group">
+        <span class="input-group-addon">Sammeltestung:</span>
+        <span class="input-group-addon">
+        <input type="checkbox" id="cb_zip_req" name="cb_zip_req"/>
+        <label for="cb_zip_req">Person mit Sammeltestung (Sammel-Zertifikat-Abruf)</label></span>
         </div>';
         echo '<div class="FAIRsepdown"></div>
         <span class="input-group-btn">
-          <input type="submit" class="btn btn-danger" value="Registrieren" name="submit_person" />
+          <input type="submit" class="btn btn-lg btn-danger" value="Registrieren" name="submit_person" />
           </span>
         </form>
         <p>* optional</p>';
@@ -379,21 +390,21 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       switch ($ergebnis) {
         case "2":
           // Test NEGATIV
-          echo '<div class="list-group">
-      <a class="list-group-item list-group-item-success list-group-item-FAIR" href="'.$current_site.'.php?t='.$testkarte.'&typ='.$testtyp.'&e=2&c=confirmed">NEGATIV bestätigen</a>
+          echo '<div class="list-group"><div class="FAIRsepdown"></div>
+      <a class="list-group-item btn-lg list-group-item-success list-group-item-FAIR" href="'.$current_site.'.php?t='.$testkarte.'&typ='.$testtyp.'&e=2&c=confirmed">NEGATIV bestätigen</a><div class="FAIRsepdown"></div>
       '; break;
         case "1":
           // Test POSITIV
-          echo '<div class="list-group">
-      <a class="list-group-item list-group-item-danger list-group-item-FAIR" href="'.$current_site.'.php?t='.$testkarte.'&typ='.$testtyp.'&e=1&c=confirmed">POSITIV bestätigen</a>
+          echo '<div class="list-group"><div class="FAIRsepdown"></div>
+      <a class="list-group-item btn-lg list-group-item-danger list-group-item-FAIR" href="'.$current_site.'.php?t='.$testkarte.'&typ='.$testtyp.'&e=1&c=confirmed">POSITIV bestätigen</a><div class="FAIRsepdown"></div>
       '; break;
         case "9":
           // Test FEHLERHAFT
-          echo '<div class="list-group">
-      <a class="list-group-item list-group-item-warning list-group-item-FAIR" href="'.$current_site.'.php?t='.$testkarte.'&typ='.$testtyp.'&e=9&c=confirmed">FEHLERHAFT bestätigen</a>
+          echo '<div class="list-group"><div class="FAIRsepdown"></div>
+      <a class="list-group-item btn-lg list-group-item-warning list-group-item-FAIR" href="'.$current_site.'.php?t='.$testkarte.'&typ='.$testtyp.'&e=9&c=confirmed">FEHLERHAFT bestätigen</a><div class="FAIRsepdown"></div>
       '; break;
       }
-      echo '<a class="list-group-item list-group-item-default list-group-item-FAIR" href="'.$current_site.'.php">Abbruch - neu scannen</a>';
+      echo '<div class="FAIRsepdown"></div><a class="list-group-item btn-lg list-group-item-default list-group-item-FAIR" href="'.$current_site.'.php">Abbruch - neu scannen</a>';
       echo '</div></div>';
   
     } elseif( isset($_GET['t']) && isset($_GET['e']) && !isset($_GET['c']) ) {
@@ -497,17 +508,26 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
     $k_token=substr($k_token, strrpos($k_token, 'K' )+1);
     $k_nname=$_POST['nname'];
     $k_vname=$_POST['vname'];
-    $k_geb=$_POST['geburtsdatum'];
+    if(isset($_POST['gebdatum_d'])) {
+      $gebdatum_d = $_POST['gebdatum_d'];
+      $gebdatum_m = $_POST['gebdatum_m'];
+      $gebdatum_y = $_POST['gebdatum_y'];
+      $k_geb=sprintf('%04d',$gebdatum_y).'-'.sprintf('%02d',$gebdatum_m).'-'.sprintf('%02d',$gebdatum_d);
+    } else {
+      $k_geb=$_POST['geburtsdatum'];
+    }
     $k_adresse=$_POST['adresse'];
     $k_ort=$_POST['ort'];
     $k_tel=$_POST['telefon'];
     $k_email=$_POST['email'];
+    $k_reg_type=$_POST['reg_type'];
     $k_cwa=$_POST['cb_cwa'];
     if($k_cwa=='on') { $k_val_cwa=1; } else { $k_val_cwa=0; }
     $k_print_cert=$_POST['cb_print_cert'];
     if($k_print_cert=='on') { $k_val_print_cert=1; } else { $k_val_print_cert=0; }
+    $k_zip_req=$_POST['cb_zip_req'];
     $k_zip=$_POST['cb_zip'];
-    if($k_zip=='on') { $k_val_zip=1; $k_privatemail_req=0; } else { $k_val_zip=0; }
+    if($k_zip=='on' || $k_zip_req=='on') { $k_val_zip=1; } else { $k_val_zip=0; }
     if ($k_email=='' || filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
     
       if( isset($_POST['prereg']) ) {
@@ -515,7 +535,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       } else {
         $k_prereg=false;
       }
-      if($k_email!='' && !isset($k_privatemail_req) ) {
+      if($k_email!='' && $k_val_zip==0 ) {
         $k_privatemail_req=1;
       } else {
         $k_privatemail_req=0;
@@ -523,8 +543,9 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       $now=date("Y-m-d H:i:s",time());
       $testtyp_default=S_get_entry($Db,'SELECT Testtyp_id FROM Station WHERE id='.$_SESSION['station_id'].';');
 
-      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,handout_request,privateMail_request,zip_request) VALUES ('.$_SESSION['station_id'].',
+      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,reg_type,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,handout_request,privateMail_request,zip_request) VALUES ('.$_SESSION['station_id'].',
         \''.$k_token.'\',
+        \''.$k_reg_type.'\',
         \''.$k_vname.'\',
         \''.$k_nname.'\',
         \''.$k_geb.'\',
@@ -563,7 +584,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
           echo '</div>';
       }
       echo '<div class="list-group">';
-      echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="edit_person.php?id='.$k_id.'">Daten ändern</a>';
+      echo '<a class="list-group-item list-group-item-action list-group-item-redtext" href="edit_person.php?id='.$k_id.'">Daten ändern</a>
+      <div class="FAIRsepdown"></div>';
       echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
       echo '</div></div>';
   // TODO SHOW QR CODE FOR CWA CONNECTION TO BE SCANNED BY CUSTOMER
@@ -587,10 +609,15 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <h3>Kunden-Registrierung</h3>';
         echo '<form action="'.$current_site.'.php" method="post">
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Testkarte</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="K'.$k_token.'" disabled>
-        <input type="text" name="token" value="K'.$k_token.'" style="display:none;"></div>
+        <input type="text" name="token" value="K'.$k_token.'" style="display:none;">
+        <input type="text" name="reg_type" value="'.$k_reg_type.'" style="display:none;"></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$k_vname.'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$k_nname.'" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_geb.'" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span>
+        <input type="number" min="1" max="31" placeholder="TT" value="'.$gebdatum_d.'" class="form-control" name="gebdatum_d" required>
+        <input type="number" min="1" max="12" placeholder="MM" value="'.$gebdatum_m.'" class="form-control" name="gebdatum_m" required>
+        <input type="number" min="1900" max="2999" placeholder="JJJJ" value="'.$gebdatum_y.'" class="form-control" name="gebdatum_y" required>
+        </div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$k_adresse.'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$k_ort.'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_tel.'" autocomplete="off"></div>
@@ -619,6 +646,11 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         } else {
           $print_cert_selected='';
         }
+        if($k_zip_req=='on') {
+          $print_zip_selected='checked';
+        } else {
+          $print_zip_selected='';
+        }
         echo '<div class="FAIRsepdown"></div>
         <div><span class="anweisung"><span class="icon-notification"></span> ANWEISUNG:</span> (Wenn keine E-Mail'.$display_cwa_question.', dann fragen) <b>Benötigen Sie ein Papierzertifikat oder reicht eine mündliche Mitteilung?</b></div>
         </div>
@@ -628,7 +660,13 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <input type="checkbox" id="cb_print_cert" name="cb_print_cert" '.$print_cert_selected.'/>
         <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label></span>
         </div>
-        </div>';
+        <div class="input-group">
+        <span class="input-group-addon">Sammeltestung:</span>
+        <span class="input-group-addon">
+        <input type="checkbox" id="cb_zip_req" name="cb_zip_req"  '.$print_zip_selected.'/>
+        <label for="cb_zip_req">Person mit Sammeltestung (Sammel-Zertifikat-Abruf)</label></span>
+        </div>
+        ';
         echo '<div class="FAIRsepdown"></div>
         <span class="input-group-btn">
           <input type="submit" class="btn btn-danger" value="Registrieren" name="submit_person" />

@@ -41,11 +41,12 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             $user_id=($_POST['user_id']);
             $station_ort=($_POST['e_username']);
             $address=($_POST['e_address']);
+            $opening=($_POST['e_opening']);
             $b2b_code=($_POST['e_b2b']);
             $testtyp=($_POST['e_testtyp']);
 
             //  edit station data
-            S_set_data($Db,'UPDATE Station SET Ort=\''.$station_ort.'\',Adresse=\''.$address.'\',Firmencode=\''.$b2b_code.'\',Testtyp_id=\''.$testtyp.'\' WHERE id='.$user_id.';');
+            S_set_data($Db,'UPDATE Station SET Ort=\''.$station_ort.'\',Adresse=\''.$address.'\',Oeffnungszeiten=\''.$opening.'\',Firmencode=\''.$b2b_code.'\',Testtyp_id=\''.$testtyp.'\' WHERE id='.$user_id.';');
             $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
 
         } elseif(isset($_POST['create_station'])) {
@@ -104,6 +105,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             $bool_staff_display=true;
             $u_name=S_get_entry($Db,'SELECT Ort FROM Station WHERE id=CAST('.$user_id.' AS int);');
             $u_address=S_get_entry($Db,'SELECT Adresse FROM Station WHERE id=CAST('.$user_id.' AS int);');
+            $u_opening=S_get_entry($Db,'SELECT Oeffnungszeiten FROM Station WHERE id=CAST('.$user_id.' AS int);');
             $u_b2b=S_get_entry($Db,'SELECT Firmencode FROM Station WHERE id=CAST('.$user_id.' AS int);');
             $u_testtyp_id=S_get_entry($Db,'SELECT Testtyp_id FROM Station WHERE id=CAST('.$user_id.' AS int);');
         }
@@ -168,7 +170,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
     echo '</div>';
 
     if($bool_staff_display) {
-        // Show data of staff member
+        // Show data of station
         echo '<div class="col-sm-8">
         <h3>Station S'.$user_id.'</h3>
         <p>'.$u_display.'</p>';
@@ -180,6 +182,9 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
         <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_username" autocomplete="off" value="'.$u_name.'">
         <span class="input-group-addon" id="basic-addon1">Adresse</span>
         <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_address" autocomplete="off" value="'.$u_address.'">
+        </div><div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Öffnungsz.</span>
+        <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_opening" autocomplete="off" value="'.$u_opening.'">
         <span class="input-group-addon" id="basic-addon1">Firmencode</span>
         <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_b2b" autocomplete="off" value="'.$u_b2b.'">
         </div><div class="input-group">
@@ -215,15 +220,17 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Nr.</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Ort</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Adresse</h4></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Öffnungsz.</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Testtyp</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Firmencode</h4></td>
       </tr>';
-    $array_station=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Station.Firmencode, Testtyp.id, Testtyp.Kurzbezeichnung FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id ORDER BY Station.id ASC;');
+    $array_station=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Station.Firmencode, Testtyp.id, Testtyp.Kurzbezeichnung, Station.Oeffnungszeiten FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id ORDER BY Station.id ASC;');
     foreach($array_station as $i) {
         echo '<tr>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">S'.$i[0].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[1].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[2].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[6].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">T'.$i[4].' / '.$i[5].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'</td>
       

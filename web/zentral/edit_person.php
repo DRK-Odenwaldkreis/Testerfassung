@@ -74,7 +74,9 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         <h3>Änderung gespeichert</h3>
         </div>';
         echo '<div class="list-group">';
-        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="testlist.php">Zurück zur Testliste</a>';
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="testlist.php">Zurück zur Testliste</a>
+        <div class="FAIRsepdown"></div>';
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="scan.php">Neuen Scan durchführen</a>';
         echo '</div></div>';
       } else {
         S_set_data($Db,'UPDATE Vorgang SET
@@ -94,7 +96,9 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         <p><span class="anweisung"><span class="icon-notification"></span> ANWEISUNG:</span> E-Mail nochmal ändern? <a href="?id='.$k_id.'">Dazu hier klicken</a>.</p>
         </div>';
         echo '<div class="list-group">';
-        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="testlist.php">Zurück zur Testliste</a>';
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="testlist.php">Zurück zur Testliste</a>
+        <div class="FAIRsepdown"></div>';
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="scan.php">Neuen Scan durchführen</a>';
         echo '</div></div>';
       }
   
@@ -197,7 +201,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     if($array_vorgang[0][13]==0) {
       echo '<div class="FAIRsepdown"></div>
       <div><span class="anweisung"><span class="icon-notification"></span> ANWEISUNG:</span> (Wenn keine E-Mail'.$display_cwa_question.', dann fragen) <b>Benötigen Sie ein Papierzertifikat oder reicht eine mündliche Mitteilung?</b></div>
-      </div>';
+      ';
     }
 
     echo '<div class="input-group">
@@ -205,12 +209,11 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     <span class="input-group-addon">
     <input type="checkbox" id="cb_print_cert" name="cb_print_cert" '.$print_cert_selected.'/>
     <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label></span>
-    </div>
     </div>';
 
     echo '<div class="FAIRsepdown"></div>
     <span class="input-group-btn">
-      <input type="submit" class="btn btn-danger" value="Änderung speichern" name="submit_person" />
+      <input type="submit" class="btn btn-lg btn-danger" value="Änderung speichern" name="submit_person" />
       </span>
     </form>
     <p>* optional</p>';

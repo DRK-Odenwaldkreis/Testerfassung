@@ -479,7 +479,7 @@ function H_build_table_testdates2( $mode ) {
 	if($flag_prereg!=0) {
 		if($mode!='b2b') {
 			$res.='<tr>
-			<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-yellow1" colspan="'.($X+2).'"><b><i>Bei folgenden Teststationen ist eine Voranmeldung und Terminbuchung erforderlich - bitte einen Termin wählen</i></b></td>
+			<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-yellow1" colspan="'.($X+2).'"><b><i>Bei folgenden Teststationen ist eine Voranmeldung und Terminbuchung empfohlen - bitte einen Termin wählen</i></b></td>
 			</tr>';
 		}
 		foreach($stations_array as $st) {
