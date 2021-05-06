@@ -48,7 +48,8 @@ if __name__ == "__main__":
             outputFile = "../../Zertifikate/" + str(requestedNumber) + ".pdf" 
             pdfkit.from_string(inputContent, outputFile)
             print(str(requestedNumber) + ".pdf")
-            DatabaseConnect.close_connection()
             logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
+    finally:
+        DatabaseConnect.close_connection()

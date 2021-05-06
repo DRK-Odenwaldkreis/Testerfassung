@@ -57,7 +57,8 @@ if __name__ == "__main__":
         sheet = pyexcel.get_sheet(file_name=filename, delimiter=";")
         sheet.save_as(str(filename).replace('csv','xlsx')) 
         print(filename.replace('csv','xlsx').replace('../../Reports/', ''))
-        DatabaseConnect.close_connection()
         logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
+    finally:
+        DatabaseConnect.close_connection()
