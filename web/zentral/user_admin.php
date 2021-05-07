@@ -74,7 +74,7 @@ if( A_checkpermission(array(0,0,0,4,0)) ) {
             }
 
         } elseif(isset($_POST['create_user'])) {
-            $username=str_replace(' ','',$_POST['n_username']);
+            $username_new=str_replace(' ','',$_POST['n_username']);
             $email_new=($_POST['n_email']);
             if (filter_var($email_new, FILTER_VALIDATE_EMAIL)) {
                 $new_id=S_get_entry($Db,'SELECT id FROM li_user WHERE username=\''.$username_new.'\';');
