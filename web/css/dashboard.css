@@ -573,6 +573,11 @@ span.calendarblue {
 	margin-right:5px;
 	padding:8px;
 }
+div.calendar-col {
+	padding-top:8px;
+	padding-bottom:8px;
+	line-height: 36px;
+}
 a.calendaryellow {
 	color:#111;
 	background-color: #d6cdad;
@@ -584,6 +589,101 @@ a.calendaryellow:hover {
 	background-color: #c29605;
 	text-decoration: none;
 }
+a.calendaryellow-dis {
+	color:#ddd;
+	background-color: #5e522e;
+	margin-right:5px;
+	padding:8px;
+}
+a.calendaryellow-dis:hover {
+	color:#ddd;
+	background-color: #473e23;
+	text-decoration: none;
+}
+
+@media (min-width: 1249px) {
+	div.calendar-large {
+		display: block;
+	}
+	div.calendar-small {
+		display: none;
+	}
+}
+@media (max-width: 1250px) {
+	div.calendar-large {
+		display: none;
+	}
+	div.calendar-small {
+		display: block;
+	}
+}
+div.cal-day-head {
+    display: block;
+    padding: 8px;
+    margin-bottom: 2px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 10px;
+	font-size: 120%;
+	text-align: center;
+	background-color: #333;
+	color: #fff;
+}
+div.cal-day-head-blue {
+    display: block;
+    padding: 8px;
+    margin-bottom: 2px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 10px;
+	font-size: 120%;
+	text-align: center;
+	background-color: #337ab7;
+	color: #fff;
+}
+div.cal-day-head-yellow {
+    display: block;
+    padding: 8px;
+    margin-bottom: 2px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 10px;
+	font-size: 120%;
+	text-align: center;
+	background-color: #e7bd32;
+	color: #111;
+}
+
+div.cal-element {
+	display: block;
+    padding: 8px;
+    margin-bottom: 1px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 1px;
+	text-align: center;
+}
+
+div.calendaryellow {
+	background-color: #e7bd327a;
+	color:#111;
+}
+div.calendaryellow:hover {
+	color:#fff;
+	cursor: pointer;
+	background-color: #c29605;
+}
+
+div.calendarblue {
+	background-color: #3379b77a;
+	color:#111;
+}
+div.calendarblue:hover {
+	color:#fff;
+	cursor: pointer;
+	background-color: #06447a;
+}
+
 
 /*
  * Special buttons

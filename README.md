@@ -1,5 +1,16 @@
 # Testerfassung
-Eine Lösung zur Erfassung und Verarbeitung der Testergebnisse in den Testzentren des Odenwaldkreises.
+Eine Open Source Lösung zur Erfassung und Dokumentation von Corona-Antigen-Schnelltest-Ergebnissen. 
+
+- Online Erfassung von Testergebnissen
+- Online Abholung von Testzertifikaten
+- CSV Exportfunktion von Testergebnissen für Gesundheitsämter
+- Online Terminbuchungen
+- Spezialfeatures für Tests in Behinderten- und Pflegeheimen
+- Statistiktool
+- Automatische Löschung von personenbezogenen Daten
+- geplante Anbindung an CWA
+
+Bisher ist die Lösung auf die Erfassung und Verarbeitung der Testergebnisse in den Testzentren des Odenwaldkreises optimiert. Die Komponenten sind jedoch flexibel genug gestaltet, dass auch andere Testzentren damit betrieben werden können. Einzige Vorraussetzung ist ein Server mit LAMP Stack und TSL Zertifikaten
 
 # Komponenten
 

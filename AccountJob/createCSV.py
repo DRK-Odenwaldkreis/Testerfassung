@@ -30,7 +30,7 @@ def create_CSV(content, month, year):
     return filename
 
 logFile = '../../Logs/AccountingExport.log'
-logging.basicConfig(filename=logFile,level=logging.DEBUG,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('CSV Export')
 logger.debug('Starting')
@@ -56,3 +56,5 @@ if __name__ == "__main__":
         logger.debug('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
+    finally:
+        DatabaseConnect.close_connection()

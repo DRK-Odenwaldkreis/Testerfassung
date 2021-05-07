@@ -24,7 +24,7 @@ logger.info('Starting pre registration ticket creation')
 if __name__ == "__main__":
     try:
         DatabaseConnect = Database()
-        sql = "Select Voranmeldung.Vorname, Voranmeldung.Nachname, Voranmeldung.Mailadresse, Voranmeldung.Tag, Voranmeldung.Token, Voranmeldung.id, Station.Ort, Station.Adresse, Termine.opt_station_adresse, Termine.opt_station from Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id JOIN Station ON Termine.id_station=Station.id where Token is not NULL and Mailsend = 0 and Termine.Slot is NULL;"
+        sql = "Select Voranmeldung.Vorname, Voranmeldung.Nachname, Voranmeldung.Mailadresse, Voranmeldung.Tag, Voranmeldung.Token, Voranmeldung.id, Station.Ort, Station.Adresse, Termine.opt_station_adresse, Termine.opt_station from Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id JOIN Station ON Termine.id_station=Station.id where Voranmeldung.Token is not NULL and Voranmeldung.Mailsend = 0 and Termine.Slot is NULL;"
         content = DatabaseConnect.read_all(sql)
         logger.debug('Received the following recipients: %s' %(str(content)))
         for i in content:
@@ -40,7 +40,7 @@ if __name__ == "__main__":
                 adress = i[7]
                 opt_ort = i[8]
                 opt_adress = i[9]
-                if len(opt_ort) == 0:
+                if len(opt_ort) == 0 and len(opt_adress) == 0:
                     location = str(ort) + ", " + str(adress)
                 else:
                     location = str(opt_ort) + "," + str(opt_adress)
@@ -56,3 +56,5 @@ if __name__ == "__main__":
         logger.info("Done")
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
+    finally:
+        DatabaseConnect.close_connection()

@@ -10,6 +10,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
+from email.message import EmailMessage
 import logging
 import sys
 import os
@@ -29,13 +30,13 @@ SMTP_PASSWORD = read_config("Mail", "SMTP_PASSWORD")
 GESUNDHEITSAMT = read_config("Mail", "GESUNDHEITSAMT")
 simulationMode = 0
 
+
 def send_linked_result(vorname, nachname, mail, date, link):
     try:
         logging.debug("Receviced the following recipient %s" % (mail))
-        message = MIMEMultipart()
-        text = "Hallo %s %s, \nSie waren am %s im Testzentrum und haben sich testen lassen. Das Testergebnis liegt vor. \nDieses kann zusammen mit Ihrem Geburtsdatum über den folgenden Link abgerufen werden: \n \n%s \n \n \nViele Grüße \nTestteam des DRK Odenwaldkreis \n\n\n----------------ENGLISH------------\nYou were at one of our testing centers. \nYour result can be received by following the link above together with your date of birth." %(vorname,nachname,date,link)
-        messageContent = text
-        message.attach(MIMEText(messageContent, 'plain'))
+        message = EmailMessage()
+        text = "Hallo %s %s, \nSie waren am %s im Testzentrum und haben sich testen lassen. Das Testergebnis liegt vor. \nDieses kann zusammen mit Ihrem Geburtsdatum über den folgenden Link abgerufen werden: \n \n%s \n \nBitte beachten Sie: Der Link ist individuell nur für die Person in der Ansprache. Sofern Sie für mehrere \nPersonen die gleiche Mailadresse eingegeben haben bekommen Sie individuelle Mails für jede getestete Person. \nViele Grüße \nTestteam des DRK Odenwaldkreis \n\n\n----------------ENGLISH------------\nYou were at one of our testing centers. \nYour result can be received by following the link above together with your date of birth." %(vorname,nachname,date,link)
+        message.set_content(text)
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
         message['Reply-To'] = FROM_EMAIL
@@ -67,7 +68,7 @@ def send_mail_report(filenames, day, recipients):
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Neuer Tagesreport für: %s" % (str(day))
         message['From'] = FROM_EMAIL
-        message['reply-to'] = FROM_EMAIL
+        message['Reply-To'] = FROM_EMAIL
         message['Cc'] = 'testzentrum@drk-odenwaldkreis.de, info@testzentrum-odenwald.de'
         message['To'] = ", ".join(recipients)
         files = [filenames]
@@ -105,7 +106,7 @@ def send_month_mail_report(filenames, month, year):
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Neuer Report für den Monat: %s, %s" % (str(monthInt_to_string(int(month))),str(year))
         message['From'] = FROM_EMAIL
-        message['reply-to'] = FROM_EMAIL
+        message['Reply-To'] = FROM_EMAIL
         message['To'] = 'testzentrum@drk-odenwaldkreis.de, info@testzentrum-odenwald.de'
         files = [filenames]
         for item in files:
@@ -145,7 +146,7 @@ def send_csv_report(filename, day):
         recipients = ['','','']
         message['Subject'] = "Neuer CSV Export für: %s" % (str(day))
         message['From'] = FROM_EMAIL
-        message['reply-to'] = FROM_EMAIL
+        message['Reply-To'] = FROM_EMAIL
         message['To'] = ", ".join(recipients)
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER,port=587)
@@ -173,7 +174,7 @@ def send_positive_result(vorname, nachname, mail, date, geburtsdatum):
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
-        message['reply-to'] = FROM_EMAIL
+        message['Reply-To'] = FROM_EMAIL
         message['To'] = mail
         files = ['../utils/Share/2021-03-11Anhang_Gesundheitsamt.pdf',
                  '../utils/Share/HMSI-Informationen.pdf']
@@ -210,7 +211,7 @@ def send_notification(vorname, nachname, date):
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Es liegt eine Meldung vor die nicht zugeordnet werden kann."
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
-        message['reply-to'] = FROM_EMAIL
+        message['Reply-To'] = FROM_EMAIL
         message['To'] = FROM_EMAIL
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
@@ -237,7 +238,7 @@ def send_new_entry(date):
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Es liegt eine neue Positivmeldung vor."
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
-        message['reply-to'] = FROM_EMAIL
+        message['Reply-To'] = FROM_EMAIL
         message['To'] = GESUNDHEITSAMT
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
@@ -265,7 +266,7 @@ def send_negative_result(vorname, nachname, mail, date, geburtsdatum):
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
-        message['reply-to'] = FROM_EMAIL
+        message['Reply-To'] = FROM_EMAIL
         message['To'] = mail
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
@@ -293,7 +294,7 @@ def send_indistinct_result(vorname, nachname, mail, date, geburtsdatum):
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ergebnis Ihres Tests liegt vor"
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
-        message['reply-to'] = FROM_EMAIL
+        message['Reply-To'] = FROM_EMAIL
         message['To'] = mail
         logging.debug("Starting SMTP Connection")
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
@@ -321,7 +322,7 @@ def send_cancel_appointment(recipient, date, vorname, nachname):
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Ihr Termin im Testzentrum des Odenwaldkreis am %s wurde storniert" % (str(date))
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
-        message['reply-to'] = FROM_EMAIL
+        message['Reply-To'] = FROM_EMAIL
         message['To'] = recipient
         smtp = smtplib.SMTP(SMTP_SERVER, port=587)
         smtp.starttls()
@@ -348,7 +349,7 @@ def send_mail_reminder(recipient, date, vorname, nachname, appointment, url, fil
         message.attach(MIMEText(messageContent, 'html'))
         message['Subject'] = "Erinnerung an Termin %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
-        message['reply-to'] = FROM_EMAIL
+        message['Reply-To'] = FROM_EMAIL
         message['To'] = recipient
         files = [filename]
         for item in files:
@@ -385,7 +386,7 @@ def send_qr_ticket_pre_register_mail(recipient,date,vorname,nachname,ort,filenam
         message['Subject'] = "Persönliches Testticket"
         message.attach(MIMEText(messageContent, 'html'))
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
-        message['reply-to'] = FROM_EMAIL
+        message['Reply-To'] = FROM_EMAIL
         message['To'] = recipient
         files = [filename]
         for item in files:
@@ -421,7 +422,7 @@ def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, ort, fi
         message['Subject'] = "Persönliches Testticket für den Termin um %s im Testzentrum des Odenwaldkreis am %s" % (str(appointment), str(date))
         message.attach(MIMEText(messageContent, 'html'))
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
-        message['reply-to'] = FROM_EMAIL
+        message['Reply-To'] = FROM_EMAIL
         message['To'] = recipient
         files = [filename]
         for item in files:
@@ -446,3 +447,55 @@ def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, ort, fi
             "The following error occured in send mail qr ticket: %s" % (err))
         return False
 
+
+def send_mail_download_sheet(filename, requester):
+    try:
+        logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
+        message = MIMEMultipart()
+        url = 'https://www.testzentrum-odw.de/zentral/download.php?dir=ls&file=' + str(filename)
+        logging.debug("The created url is %s" % (url))
+        with open('../utils/MailLayout/NewDownload.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[LINK]]', str(url))
+        message.attach(MIMEText(messageContent, 'html'))        
+        message['Subject'] = "Neuer Download verfügbar"
+        message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
+        message['To'] = requester
+        smtp = smtplib.SMTP(SMTP_SERVER,port=587)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        logging.debug(
+            "Sending Mail with following tupel: %s" % (message))
+        smtp.send_message(message)
+        logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error("The following error occured in send mail download: %s" % (err))
+        return False
+
+def send_mail_download_certificate(filename, token, requester):
+    try:
+        logging.debug("Receviced the following filename %s to be sent to %s" % (filename, requester))
+        message = MIMEMultipart()
+        url = 'https://www.testzentrum-odw.de/zentral/download.php?dir=zip&t=%s&file=%s' %(token,filename)
+        logging.debug("The created url is %s" % (url))
+        with open('../utils/MailLayout/NewDownload.html', encoding='utf-8') as f:
+            fileContent = f.read()
+        messageContent = fileContent.replace('[[LINK]]', str(url))
+        message.attach(MIMEText(messageContent, 'html'))        
+        message['Subject'] = "Neuer Download verfügbar"
+        message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
+        message['To'] = requester
+        smtp = smtplib.SMTP(SMTP_SERVER,port=587)
+        smtp.starttls()
+        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+        logging.debug(
+            "Sending Mail with following tupel: %s" % (message))
+        smtp.send_message(message)
+        logging.debug("Mail was send")
+        smtp.quit()
+        return True
+    except Exception as err:
+        logging.error("The following error occured in send mail download: %s" % (err))
+        return False

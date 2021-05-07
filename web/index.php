@@ -10,10 +10,12 @@ March 2021
 
 
 // Include functions
-include_once 'preload.php';
+include_once 'admin01.php';
 include_once 'menu.php';
-include_once 'registration/auth.php';
-include_once 'registration/tools.php';
+if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
+    include_once 'registration/auth.php';
+    include_once 'registration/tools.php';
+}
 
 // Print html header
 echo $GLOBALS['G_html_header'];
@@ -86,7 +88,7 @@ echo $GLOBALS['G_html_main_right_a'];
         <img src="img/icon/wait_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             
         <div class="caption center_text">
-        <h5>Etwa 20 min. warten</h5>
+        <h5>Etwa 20-30 min. warten</h5>
         </div>
         </div>
     </div>
@@ -121,9 +123,23 @@ echo $GLOBALS['G_html_main_right_a'];
     </div>
     <div class="col-sm-12"><div class="card">
 <?php
+if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 
   // Show table of available dates
-  echo H_build_table_testdates2('');
+  $calendar=H_build_table_testdates2('');
+  //large display
+  echo '<div class="calendar-large">';
+  echo $calendar[0];
+  echo '</div>';
+  // small display
+  echo '<div class="calendar-small">
+  <div class="cal-day-head-yellow"><i>Für gelbe Teststationen ist eine Voranmeldung und Terminbuchung erforderlich - bitte einen Termin wählen</i></div>
+  <div class="cal-day-head-blue"><i>Für blaue Teststationen ist keine Terminbuchung empfohlen, eine Voranmeldung Ihrer Daten kann gerne gemacht werden, dann geht es vor Ort schneller - bitte dafür einen Termin wählen</i></div>
+  ';
+  foreach($calendar[1] as $i) {
+      echo $i[0].$i[1];
+  }
+  echo '</div>';
 
   echo '<div class="row">
     <div class="col-sm-4">
@@ -132,6 +148,14 @@ echo $GLOBALS['G_html_main_right_a'];
         </div>
     </div>
 </div>';
+} else {
+    echo '<div class="alert alert-danger" role="alert">
+    <h3>Wartungsarbeiten</h3>
+    <p>Derzeit finden Arbeiten an dieser Seite statt, der Kalender und die Terminbuchung stehen momentan nicht zur Verfügung. Bald geht es wieder weiter...wir bitten um etwas Geduld.</p>
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsep"></div>
+</div>';
+}
 
 ?>
     </div></div>

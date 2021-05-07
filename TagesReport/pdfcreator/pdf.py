@@ -19,7 +19,6 @@ FreeSans = '../utils/Schriftart/FreeSans.ttf'
 FreeSansBold = '../utils/Schriftart/FreeSansBold.ttf'
 
 
-
 class MyPDF(FPDF):
 
 	time='zeit'
@@ -49,34 +48,43 @@ class PDFgenerator:
 		self.date=date
 		self.totalSeconds=0
 		self.stationID = self.content[0][0]
-		if self.content[0][3]:
-			self.station = self.content[0][3]
-			self.address = self.content[0][4]
-		else:
-			self.station = self.content[0][1]
-			self.address = self.content[0][2]
+		self.station = self.content[0][1]
+		self.address = self.content[0][2]
 		self.tests = self.content[1]
 		self.positiv = self.content[2]
 		self.negativ = self.content[3]
 		self.unklar = self.content[4]
 		self.cycleTime = self.content[5]
+		self.gebDates = self.content[6]
+		self.numberChildren = self.content[7]
 
 		# Pie chart, where the slices will be ordered and plotted counter-clockwise:
 		self.labels = 'Positiv', 'Negativ', 'Unklar'
 		self.sizes = [self.positiv, self.negativ, self.unklar]
 		self.explode = (1, 0.1, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
-		self.fig1, (self.ax1, self.ax2) = plt.subplots(1,2)
-		self.fig1.suptitle("Gesamtanzahl der Tests: %s" % (self.tests))
-		self.ax1.pie(self.sizes, explode=self.explode, labels=self.labels, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),
+		self.fig, self.ax = plt.subplots(2,2)
+		plt.subplots_adjust(wspace=0.5,hspace=0.5,left=0.07)
+		self.fig.suptitle("Gesamtanzahl der Tests: %s" % (self.tests))
+		self.ax[0,0].pie(self.sizes, explode=self.explode, labels=self.labels, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),
                     shadow=False, startangle=90)
 		# Equal aspect ratio ensures that pie is drawn as a circle.
-		self.ax1.axis('equal')
+		self.ax[0,0].axis('equal')
 		# Histogram of Durchlaufzeiten
 		self.cycleTimeArray = np.array(self.cycleTime)
-		plt.hist(self.cycleTimeArray, range(15,30))
-		self.ax2.set_title("Schnitt: %s min" %(round(self.cycleTimeArray.mean(),1)))
-		self.ax2.set_ylabel("Anzahl")
-		self.ax2.set_xlabel("Durchlaufzeit [min]")
+		self.ax[0,1].hist(self.cycleTimeArray, range(15,30),color = "green")
+		self.ax[0,1].set_title("Schnitt: %s min" %(int(self.cycleTimeArray.mean())))
+		self.ax[0,1].set_ylabel("Anzahl")
+		self.ax[0,1].set_xlabel("Durchlaufzeit [min]")
+		#Pi charts kids <-> Adults
+		self.ageArray = np.array(self.gebDates)
+		self.ax[1,0].hist(self.ageArray, 10, color = "green")
+		self.ax[1,0].set_title("Altersschnitt: %s Jahre" %(int(self.ageArray.mean())))
+		self.ax[1,0].set_ylabel("Anzahl")
+		self.ax[1,0].set_xlabel("Alter")
+		#Pi charts kids <-> Adults
+		self.labels = 'Kinder', 'Erwachsene'
+		self.sizes = [self.numberChildren, self.positiv+self.negativ+self.unklar-self.numberChildren]
+		self.ax[1,1].pie(self.sizes, labels=self.labels, shadow=False, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),startangle=90)
 		plt.savefig('tmp/' + str(self.date) + '.png', dpi=(170))
 
 

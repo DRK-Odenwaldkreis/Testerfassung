@@ -43,7 +43,7 @@ class PDFgenerator(FPDF):
 		self.qrcode.png('tmp/'+str(self.code) + '.png', scale=6,quiet_zone=4)
 		self.image('tmp/'+ str(self.code) + '.png', y=85,x=140)
 		self.cell(10, 10, '', ln=1)
-		self.cell(200, 10, '#%s' % (self.code), ln=1, align='C')
+		self.cell(200, 10, '%s' % (self.code), ln=1, align='C')
 		self.cell(10, 15, '', ln=1)
 		self.add_font('GNU', 'B', FreeSansBold, uni=True)
 		self.set_font('GNU', 'B', 12)
@@ -82,7 +82,7 @@ class PDFgenerator(FPDF):
 		self.cell(210, 10, 'Einwilligungserklärung:', ln=1)
 		self.add_font('GNU', '', FreeSans, uni=True)
 		self.set_font('GNU', '', 12)
-		self.multi_cell(195, 5, 'Ich haben mich soeben zu einer Teilnahme an einem SARS-CoV-2-Schnelltest(Corona-PoC-Test) angemeldet. Ich weiß, dass der Test durch unterwiesenes, ggf. nichtmedizinisches Hilfspersonal gemäß dem Drittem Gesetz zum Schutz der Bevölkerung bei einer epidemischen Lage von nationaler Tragweite vom 18.11.2020 durchgeführt wird. Mit der Verarbeitung meiner persönlichen Daten sowie dem Testergebnis durch das DRK bin ich einverstanden. Sofern der Test positiv ist, werden die Daten aufgrund einer gesetzlichen Meldepflicht an das Gesundheitsamt weitergegeben.',0)
+		self.multi_cell(195, 5, 'Ich habe mich soeben zu einer Teilnahme an einem SARS-CoV-2-Schnelltest(Corona-PoC-Test) angemeldet. Ich weiß, dass der Test durch unterwiesenes, ggf. nichtmedizinisches Hilfspersonal gemäß dem Drittem Gesetz zum Schutz der Bevölkerung bei einer epidemischen Lage von nationaler Tragweite vom 18.11.2020 durchgeführt wird. Mit der Verarbeitung meiner persönlichen Daten sowie dem Testergebnis durch das DRK bin ich einverstanden. Sofern der Test positiv ist, werden die Daten aufgrund einer gesetzlichen Meldepflicht an das Gesundheitsamt weitergegeben.',0)
 		self.ln(5)
 		self.image(Logo2,x=60,w=110, h=24)
 

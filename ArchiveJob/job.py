@@ -24,7 +24,7 @@ if __name__ == "__main__":
                 'Input parameters are not correct, date needed')
             raise Exception
         DatabaseConnect = Database()
-        sql = "Select id, Teststation, Token, Registrierungszeitpunkt from Vorgang where Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s' or (Ergebnis = 1 and DATE(Registrierungszeitpunkt) <= '%s') or Ergebnis is NULL;" % (requestedDate-datetime.timedelta(days=2),requestedDate-datetime.timedelta(days=90))
+        sql = "Select id, Teststation, Token, Registrierungszeitpunkt from Vorgang where Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s' or (Ergebnis = 1 and DATE(Registrierungszeitpunkt) <= '%s') or Ergebnis=5;" % (requestedDate-datetime.timedelta(days=2),requestedDate-datetime.timedelta(days=90))
         logger.debug('Getting all Events for a date with the following query: %s' % (sql))
         deleteCanidate = DatabaseConnect.read_all(sql)
         for i in deleteCanidate:
@@ -39,3 +39,5 @@ if __name__ == "__main__":
         logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
+    finally:
+        DatabaseConnect.close_connection()

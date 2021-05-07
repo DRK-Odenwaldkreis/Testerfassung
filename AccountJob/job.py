@@ -46,3 +46,5 @@ if __name__ == "__main__":
         logger.info('Done')
     except Exception as e:
         logging.error("The following error occured: %s" % (e))
+    finally:
+        DatabaseConnect.close_connection()

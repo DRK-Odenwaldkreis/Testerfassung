@@ -23,12 +23,14 @@ def create_CSV(content, date):
                              "Nachname",
                              "Vorname",
                              "Geburtsdatum",
-                             "Adresse",
+                             "Wohnort",
+                             "Adresse,",
                              "Telefonnummer",
                              "Mailadresse",
                              "Ergebnis",
                              "Testzeitpunkt",
-                             "Teststation"
+                             "Teststation",
+                             "Test-Typ"
                              ])
         for i in content:
             writeEntry.writerow(i)
