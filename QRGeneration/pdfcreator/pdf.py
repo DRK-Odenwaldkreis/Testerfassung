@@ -51,7 +51,7 @@ class PDFgenerator(FPDF):
 		self.time = datetime.date.today().strftime("%d.%m.%Y")
 		for i in self.codes:
 			self.create_page(i)
-		self.filename = "./Testkartensatz_" + \
+		self.filename = "../../Testkarten/Testkartensatz_" + \
 			str(self.codes[0]) + "-" + str(self.codes[-1]) + ".pdf"
 		self.output(self.filename)
 	
