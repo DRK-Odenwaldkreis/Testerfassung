@@ -31,7 +31,7 @@ class PDFgenerator(FPDF):
 		self.set_font('GNU', 'B', 30)
 		self.cell(10, 25, '', ln=1)
 		self.cell(200, 10, 'Login für', ln=1, align='C')
-		self.cell(200, 25, self.station, ln=1, align='C')
+		self.multi_cell(200, 25, self.station, align='C')
 		self.set_font('GNU', '', 20)
 		self.string = "/user/" + str(self.user) + "/password/" + str(self.password)
 		self.qrcode = pyqrcode.create(str(self.string), error='Q')
@@ -39,13 +39,12 @@ class PDFgenerator(FPDF):
 		self.image('tmp/'+str(self.user) + '.png', x=80)
 		#self.cell(10, 0, '', ln=1)
 		self.current_x=self.get_x
-		self.cell(200, 10, str(self.string), ln=1, align='C')
+		self.multi_cell(200, 10, str(self.string), align='C')
 		os.remove('tmp/'+str(self.user) + '.png')
 
 
 	def creatPDF(self, user, password, station):
-		self.whitelist = set('abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ_1234567890')
-		self.user = ''.join(filter(self.whitelist.__contains__, user)) 
+		self.user = user
 		self.password = password
 		self.station = station
 		self.time = datetime.date.today().strftime("%d.%m.%Y")
