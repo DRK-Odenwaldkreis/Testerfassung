@@ -381,11 +381,11 @@ function H_build_table_testdates2( $mode ) {
 		$query_b2b='id='.$_SESSION['b2b_id'];
 		$path_to_reg='';
 	} elseif($mode=='pcr') {
-		$query_b2b='Firmencode is null OR Firmencode="" AND Testtyp.IsPCR=1';
+		$query_b2b='(Firmencode is null OR Firmencode="") AND Testtyp.IsPCR=1';
 		$path_to_reg='registration/';
 		
 	} elseif($mode=='ag') {
-		$query_b2b='Firmencode is null OR Firmencode="" AND Testtyp.IsPCR=0';
+		$query_b2b='(Firmencode is null OR Firmencode="") AND Testtyp.IsPCR=0';
 		$path_to_reg='registration/';
 	} else {
 		$query_b2b='Firmencode is null OR Firmencode=""';

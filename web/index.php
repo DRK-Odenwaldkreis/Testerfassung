@@ -159,7 +159,7 @@ echo $GLOBALS['G_html_main_right_a'];
 <div class="row">
     
     <div class="col-sm-12">
-    <h2 style="text-align: center;">Covid-19 Schnelltest - Termine und Orte im Landkreis Odenwald</h2>
+    <h2 style="text-align: center;">SARS-CoV-2 Testungen - Termine und Orte im Odenwaldkreis</h2>
     </div>
     <div class="col-sm-12"><div class="card">
 <?php
