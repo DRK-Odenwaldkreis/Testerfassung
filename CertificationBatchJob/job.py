@@ -39,7 +39,7 @@ if __name__ == "__main__":
             zipFilename = str(dir) + 'Zertifikate_' + str(requestedDate) + '_Station_' + str(requestedStation) + '.zip'
             zipObj = ZipFile(zipFilename, 'w')
             DatabaseConnect = Database()
-            sql = "Select Nachname, Vorname, Ergebniszeitpunkt, Geburtsdatum, Ergebnis, Testtyp.Name from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where zip_request=1 and Ergebnis !=5 and Teststation=%s and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';"%(requestedStation,requestedDate,requestedDate)
+            sql = "Select Nachname, Vorname, Ergebniszeitpunkt, Geburtsdatum, Ergebnis, Testtyp.Name, Testtyp.IsPCR from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where zip_request=1 and Ergebnis !=5 and Teststation=%s and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';"%(requestedStation,requestedDate,requestedDate)
             content = DatabaseConnect.read_all(sql)
             for i in content:
                 try:
@@ -48,7 +48,12 @@ if __name__ == "__main__":
                     date = i[2]
                     geburtsdatum = i[3]
                     ergebnis = i[4]
-                    testtype = i[5]
+                    manufacturer = i[5]
+                    isPCR = i[6]
+                    if isPCR == 1:
+                        testtype = "RT-PCR Labortest"
+                    else:
+                        testtype = "SARS-CoV-2 PoC Ag Test"
                     if ergebnis == 1:
                         inputFile = "../utils/MailLayout/Positive_Result.html"
                     elif ergebnis == 2:
@@ -58,7 +63,7 @@ if __name__ == "__main__":
                     else:
                         raise Exception
                     layout = open(inputFile, 'r', encoding='utf-8')
-                    inputContent = layout.read().replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum)).replace('[[TESTTYP]]', str(testtype))
+                    inputContent = layout.read().replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum)).replace('[[MANUFACTURER]]', str(manufacturer)).replace('[[TESTTYPE]]', str(testtype))
                     outputFile = str(dir) + str(vorname).replace(" ","") + "_" + str(nachname).replace(" ","") + "_" + date.strftime("%Y-%m-%d") + ".pdf" 
                     pdfkit.from_string(inputContent, outputFile)
                     zipObj.write(outputFile, outputFile.replace(dir, 'Zertifikat_'))
