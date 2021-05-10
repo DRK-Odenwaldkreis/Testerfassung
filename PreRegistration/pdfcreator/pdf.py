@@ -30,7 +30,7 @@ class PDFgenerator(FPDF):
 		self.set_font('GNU', 'B', 20)
 		self.cell(10, 30, '', ln=1)
 		self.cell(200, 5, 'Voranmeldung für einen', ln=1, align='C')
-		self.cell(200, 5, 'SARS-CoV-2-Schnelltest(PoC)', ln=1, align='C')
+		self.cell(200, 30, 'SARS-CoV-2-Schnelltest(PoC)', ln=1, align='C')
 		self.cell(200, 30, 'bzw. RT-PCR Labortest', ln=1, align='C')
 		self.set_font('GNU', '', 20)
 		self.cell(10, 15, '', ln=1)
