@@ -29,7 +29,7 @@ class PDFgenerator(FPDF):
 		self.add_page()
 		self.add_font('GNU', '', FreeSans, uni=True)
 		self.add_font('GNU', 'B', FreeSansBold, uni=True)
-		self.set_font('GNU', 'B', 25)
+		self.set_font('GNU', 'B', 20)
 		self.cell(10, 30, '', ln=1)
 		self.cell(200, 5, 'Termin-Ticket für einen', ln=1, align='C')
 		self.cell(200, 30, 'SARS-CoV-2-Schnelltest(PoC) bzw. RT-PCR Labortest', ln=1, align='C')
