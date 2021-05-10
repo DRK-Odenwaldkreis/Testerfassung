@@ -14,6 +14,7 @@ session_start();
 
 // Include functions
 include_once '../admin01.php';
+//$GLOBALS['FLAG_SHUTDOWN_MAIN']=false;
 include_once 'tools.php';
 include_once 'auth.php';
 include_once 'menu.php';
@@ -35,7 +36,7 @@ echo $GLOBALS['G_html_main_right_a'];
 
 echo '<div class="row">';
 echo '<div class="col-sm-12">
-<h2>Voranmeldung für einen Covid-19 Test</h2>';
+<h2>Voranmeldung für einen SARS-CoV-2 Test</h2>';
 
 if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 
@@ -65,9 +66,11 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
         $k_int_time1=$_POST['int_time1'];
         $k_int_time2=$_POST['int_time1'];
         $k_int_location=$_POST['int_location'];
+        $k_cwa_req=$_POST['cb_cwa'];
+        if($k_cwa_req=='on') { $k_cwa_req=1; } else { $k_cwa_req=0; }
         
         if (filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
-            $prereg_id=S_set_entry_voranmeldung($Db,array($k_vname,$k_nname,$k_geb,$k_adresse,$k_ort,$k_telefon,$k_email,$k_slot_id,$k_date));
+            $prereg_id=S_set_entry_voranmeldung($Db,array($k_vname,$k_nname,$k_geb,$k_adresse,$k_ort,$k_telefon,$k_email,$k_slot_id,$k_date,$k_cwa_req));
             if($prereg_id=='DOUBLE_ENTRY') {
                 echo '<div class="alert alert-danger" role="alert">
                 <h3>Ungültiger Vorgang</h3>
@@ -119,6 +122,7 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
         } else {
              // ///////////////////////////
             // Email invalid !!!
+            $val_cwa_connection=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_CWA_prereg";');
             echo '
             <div class="alert alert-danger" role="alert">
             <h3>E-Mail ungültig</h3>
@@ -163,25 +167,55 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
                     <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_ort.'" required></div>
                     <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_telefon.'"></div>
                     <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_email.'" required></div>
+                    <p>* optional</p>';
+                    if($val_cwa_connection==1) {
+                        if($k_cwa_req==1) {
+                            $cwa_selected='checked';
+                          } else {
+                            $cwa_selected='';
+                          }
+                        echo '<div class="FAIRsepdown"></div>
+                        <div class="header_icon_main">
+                        <div class="row ">
+                            <div class="col-sm-12">
+                                <div class="header_icon">
+                                    <img src="../img/BPA_Corona-Warn-App_Wortbildmarke_B_RGB_RZ01.png" style="display: block; margin-left: auto; margin-right: auto; width: 200px;"></img>
+                                    <div class="caption center_text">
+                                    <h5>Sie erhalten das Testergebnis unabhängig von der Corona-Warn-App auch per E-Mail zum Abruf. Den QR-Code für die App bekommen Sie bei der Testung vor Ort.</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="input-group">
+                        <div class="FAIRsepdown"></div>
+                        <div class="cb_drk">
+                        <input type="checkbox" id="cb_cwa" name="cb_cwa" '.$cwa_selected.'/>
+                        <label for="cb_cwa">Ergebnisabruf über die Corona-Warn-App (CWA) <span class="text-sm">*optional</span><br><span class="text-sm">Hiermit erkläre ich mein Einverständnis zum Übermitteln des Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Ich willige außerdem in die Übermittlung meines Namens und Geburtsdatums an die App ein, damit mein Test ergebnis in der App als namentlicher Testnachweis angezeigt werden kann. Mir wurden Hinweise zum Datenschutz ausgehändigt.</span><br>
+                        (<a href="../impressum.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
+                        </div>
+                        </div><div class="FAIRsepdown"></div>';
+                    }
+
+                    echo '<div class="FAIRsepdown"></div><div class="cb_drk">
                     <input type="checkbox" id="cb1" name="cb1" required/>
                     <label for="cb1">Ich habe derzeit <b>keine</b> grippeähnlichen Symptome wie Husten, Fieber oder plötzlichen Verlust des Geruchs- oder Geschmackssinnes.</label>
                     </div>
-                    <div class="input-group">
+                    <div class="FAIRsepdown"></div><div class="cb_drk">
                     <input type="checkbox" id="cb2" name="cb2" required/>
                     <label for="cb2">Ich bestätige die wahrheitsgemäße Angabe der Selbsteinschätzung und der angegebenen Daten. Falls sich an den obigen Antworten bis zum Testzeitpunkt etwas ändert, verpflichte ich mich, dies dem Testzentrum vor dem Abstrich mitzuteilen.</label>
                     </div>
-                    <div class="input-group">
+                    <div class="FAIRsepdown"></div><div class="cb_drk">
                     <input type="checkbox" id="cb3" name="cb3" required/>
                     <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
-                    (<a href="../impressum.php" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
+                    (<a href="../impressum.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
                     </div>
+                    <div class="FAIRsepdown"></div>
                     <span class="input-group-btn">
-                    <input type="submit" class="btn btn-danger" value="Jetzt Registrieren" name="submit_person" />
+                    <input type="submit" class="btn btn-lg btn-primary" value="Jetzt Registrieren" name="submit_person" />
                     </span>
                     </form>
-                    <p>* optional</p>';
+                    <div class="FAIRsepdown"></div>
+                    ';
                 echo '</div>';
                 echo '</div>';
 
@@ -378,6 +412,9 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
                 $b2b_termin=false;
             }
 
+            // Check if Termin is PCR
+            $pcr_test=S_get_entry($Db,'SELECT Testtyp.IsPCR FROM Testtyp JOIN Station ON Station.Testtyp_id=Testtyp.id JOIN Termine ON Termine.id_station=Station.id WHERE Termine.id=CAST('.$array_appointment[0].' as int);');
+
             // Slot booking or single Termin
             $date=date("d.m.Y",strtotime($array_appointment[1]));
             $date_sql=date("Y-m-d",strtotime($array_appointment[1]));
@@ -409,6 +446,8 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
             // ///////////////
             // Registrierungsformular
             // ///////////////
+
+            $val_cwa_connection=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_CWA_prereg";');
             
             if($b2b_termin) {
                 echo '<div class="alert alert-info" role="alert">
@@ -466,25 +505,62 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
                     <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
                     <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1"></div>
                     <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+                    <p>* optional</p>';
+                    if($val_cwa_connection==1 && $pcr_test==0) {
+                        echo '<div class="FAIRsepdown"></div>
+                        <div class="header_icon_main">
+                        <div class="row ">
+                            <div class="col-sm-12">
+                                <div class="header_icon">
+                                    <img src="../img/BPA_Corona-Warn-App_Wortbildmarke_B_RGB_RZ01.png" style="display: block; margin-left: auto; margin-right: auto; width: 200px;"></img>
+                                    <div class="caption center_text">
+                                    <h5>Sie erhalten das Testergebnis unabhängig von der Corona-Warn-App auch per E-Mail zum Abruf. Den QR-Code für die App bekommen Sie bei der Testung vor Ort.</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="input-group">
+                        <div class="FAIRsepdown"></div>
+                        <div class="cb_drk">
+                        <input type="checkbox" id="cb_cwa" name="cb_cwa"/>
+                        <label for="cb_cwa">Ergebnisabruf über die Corona-Warn-App (CWA) <span class="text-sm">*optional</span><br><span class="text-sm">Hiermit erkläre ich mein Einverständnis zum Übermitteln des Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Ich willige außerdem in die Übermittlung meines Namens und Geburtsdatums an die App ein, damit mein Testergebnis in der App als namentlicher Testnachweis angezeigt werden kann. Mir wurden Hinweise zum Datenschutz ausgehändigt.</span><br>
+                        (<a href="../impressum.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
+                        </div>
+                        </div><div class="FAIRsepdown"></div>';
+                    } elseif($pcr_test==1) {
+                        echo '<div class="FAIRsepdown"></div>
+                        <div class="alert alert-warning" role="alert">
+                                <div class="header_icon">
+                                    <img src="../img/icon/certified_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
+                                    <div class="caption center_text">
+                                    <h3>Sie haben einen PCR-Test ausgewählt.</h3>
+                                    <h4>Wurde dieser Test von Ihrem Gesundheitsamt oder einer anderen Stelle mit Befugnis angeordnet, so ist die Testung kostenfrei. Bitte bringen Sie dafür eine Bestätigung zum Testzentrum mit (z. B. ein Schnelltest-Zertifikat mit positivem Ergebnis).</h4>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="FAIRsepdown"></div>';
+                    }
+
+                    echo '<div class="FAIRsepdown"></div><div class="cb_drk">
                     <input type="checkbox" id="cb1" name="cb1" required/>
                     <label for="cb1">Ich habe derzeit <b>keine</b> grippeähnlichen Symptome wie Husten, Fieber oder plötzlichen Verlust des Geruchs- oder Geschmackssinnes.</label>
                     </div>
-                    <div class="input-group">
+                    <div class="FAIRsepdown"></div><div class="cb_drk">
                     <input type="checkbox" id="cb2" name="cb2" required/>
                     <label for="cb2">Ich bestätige die wahrheitsgemäße Angabe der Selbsteinschätzung und der angegebenen Daten. Falls sich an den obigen Antworten bis zum Testzeitpunkt etwas ändert, verpflichte ich mich, dies dem Testzentrum vor dem Abstrich mitzuteilen.</label>
                     </div>
-                    <div class="input-group">
+                    <div class="FAIRsepdown"></div><div class="cb_drk">
                     <input type="checkbox" id="cb3" name="cb3" required/>
                     <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
-                    (<a href="../impressum.php" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
+                    (<a href="../impressum.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
                     </div>
+                    <div class="FAIRsepdown"></div>
                     <span class="input-group-btn">
-                    <input type="submit" class="btn btn-danger" value="Jetzt Registrieren" name="submit_person" />
+                    <input type="submit" class="btn btn-lg btn-primary" value="Jetzt Registrieren" name="submit_person" />
                     </span>
                     </form>
-                    <p>* optional</p>';
+                    <div class="FAIRsepdown"></div>
+                    ';
                 echo '</div>';
                 echo '</div>';
             } elseif($display_slot_termin) {

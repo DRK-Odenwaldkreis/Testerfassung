@@ -12,7 +12,12 @@ QR code generator module
 // Include library for QR codes
 include_once 'lib/phpqrcode/qrlib.php';
 
-$param = $_GET['id']; // remember to sanitize that - it is user input!
+if(isset($_GET['id'])) {
+    $param = $_GET['id']; // remember to sanitize that - it is user input!
+} elseif(isset($_GET['cwa'])) {
+    $param = 'https://s.coronawarn.app?v=1#'.$_GET['cwa']; // for CWA QR code
+}
+
     
 // we need to be sure ours script does not output anything!!!
 // otherwise it will break up PNG binary!

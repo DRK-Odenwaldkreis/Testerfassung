@@ -162,8 +162,8 @@ function S_set_entry_voranmeldung ($Db,$array_data) {
 	if($termin_slot>0) {
 		S_set_data($Db,'UPDATE Termine SET Used=1 WHERE id=CAST('.$termin_id.' as int);');
 	}
-	$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Geburtsdatum, Adresse, Wohnort, Telefon, Mailadresse, Termin_id, Tag) VALUES (?,?,?,?,?,?,?,?,?);");
-	mysqli_stmt_bind_param($stmt, "sssssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5], $array_data[6], $termin_id, $array_data[8]);
+	$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Geburtsdatum, Adresse, Wohnort, Telefon, Mailadresse, Termin_id, Tag, CWA_request) VALUES (?,?,?,?,?,?,?,?,?,?);");
+	mysqli_stmt_bind_param($stmt, "sssssssisi", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5], $array_data[6], $termin_id, $array_data[8],$array_data[9]);
 	mysqli_stmt_execute($stmt);
 	mysqli_stmt_bind_result($stmt, $result);
 	mysqli_stmt_fetch($stmt);
@@ -380,6 +380,13 @@ function H_build_table_testdates2( $mode ) {
 	if($mode=='b2b') {
 		$query_b2b='id='.$_SESSION['b2b_id'];
 		$path_to_reg='';
+	} elseif($mode=='pcr') {
+		$query_b2b='Firmencode is null OR Firmencode="" AND Testtyp.IsPCR=1';
+		$path_to_reg='registration/';
+		
+	} elseif($mode=='ag') {
+		$query_b2b='Firmencode is null OR Firmencode="" AND Testtyp.IsPCR=0';
+		$path_to_reg='registration/';
 	} else {
 		$query_b2b='Firmencode is null OR Firmencode=""';
 		$path_to_reg='registration/';
@@ -389,7 +396,7 @@ function H_build_table_testdates2( $mode ) {
 	$res_s_array=array(); // for small displays - array with one element per day
 	$Db=S_open_db();
 	$flag_prereg=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_Pre_registration";');
-	$stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station WHERE '.$query_b2b.';');
+	$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Testtyp.IsPCR FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id WHERE '.$query_b2b.';');
 	// X ist Anzahl an Tagen für Vorschau in Tabelle
 	$X=14;
 	// Ohne Terminbuchung für nächste X Tage
@@ -410,7 +417,7 @@ function H_build_table_testdates2( $mode ) {
 		$res_s_array[$j][0]='<div class="cal-day-head">'.$string_date.'</div>';
 	}
 	$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-gray"></td></tr>';
-	if($mode!='b2b') {
+	if($mode=='ag') {
 		$res.='<tr>
 		<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue1" colspan="'.($X+2).'"><b><i>';
 		if($flag_prereg!=0) {
@@ -422,17 +429,17 @@ function H_build_table_testdates2( $mode ) {
 		</tr>';
 	}
 	foreach($stations_array as $st) {
+		if($st[3]==1) {
+			$cal_color='red';
+		} else {
+			$cal_color='blue';
+		}
 		// check if station has appointed times
 		if( S_get_entry($Db,'SELECT id_station FROM Termine WHERE Slot is null AND Date(Tag)>="'.$today.'" AND Date(Tag)<="'.$in_x_days.'" AND id_station='.$st[0].';')==$st[0]) {
-			/* $location_thirdline_val=S_get_entry($Db,'SELECT Oeffnungszeiten FROM Station WHERE id='.$st[0].';');
-			if($location_thirdline_val!='') {
-				$display_location_thirdline='<br><span class="text-sm">Öffnungszeiten '.$location_thirdline_val.'</span>';
-			} else {
-				$display_location_thirdline='';
-			} */$display_location_thirdline='';
+			$display_location_thirdline='';
 			$res.='<tr>';
 			$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
-			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2">'.$string_location.$display_location_thirdline.'</td>';
+			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-'.$cal_color.'2">'.$string_location.$display_location_thirdline.'</td>';
 			for($j=0;$j<$X;$j++) {
 				$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
 				$array_termine_open=S_get_multientry($Db,'SELECT id,Startzeit, Endzeit, opt_station, opt_station_adresse FROM Termine WHERE Slot is null AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Startzeit ASC;');
@@ -456,14 +463,14 @@ function H_build_table_testdates2( $mode ) {
 				
 				if($string_times!='') {
 					if($flag_prereg==0) {
-						$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue2">
+						$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-'.$cal_color.'2">
 						'.$string_times.'</td>';
 
-						$res_s_array[$j][1].='<div class="cal-element calendarblue">'.$string_location_small.$display_location_thirdline.'<br>'.$string_times_small.'</div>';
+						$res_s_array[$j][1].='<div class="cal-element calendar'.$cal_color.'">'.$string_location_small.$display_location_thirdline.'<br>'.$string_times_small.'</div>';
 
 					} else {
-						$res.='<td onclick="window.location=\''.$path_to_reg.'index.php?appointment='.$te[0].'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-blue2 calendarblue">'.$string_times.'</td>';
-						$res_s_array[$j][1].='<div class="cal-element calendarblue" onclick="window.location=\''.$path_to_reg.'index.php?appointment='.$te[0].'\'">'.$string_location_small.$display_location_thirdline.'<br>'.$string_times_small.'</div>';
+						$res.='<td onclick="window.location=\''.$path_to_reg.'index.php?appointment='.$te[0].'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-'.$cal_color.'2 calendar'.$cal_color.'">'.$string_times.'</td>';
+						$res_s_array[$j][1].='<div class="cal-element calendar'.$cal_color.'" onclick="window.location=\''.$path_to_reg.'index.php?appointment='.$te[0].'\'">'.$string_location_small.$display_location_thirdline.'<br>'.$string_times_small.'</div>';
 					}
 					
 				} else {
@@ -478,11 +485,22 @@ function H_build_table_testdates2( $mode ) {
 
 	if($flag_prereg!=0) {
 		if($mode!='b2b') {
-			$res.='<tr>
-			<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-yellow1" colspan="'.($X+2).'"><b><i>Bei folgenden Teststationen ist eine Voranmeldung und Terminbuchung empfohlen - bitte einen Termin wählen</i></b></td>
-			</tr>';
+			if($mode=='pcr') {
+				$res.='<tr>
+				<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-red1" colspan="'.($X+2).'"><b>PCR-Testung: <i>Eine Terminbuchung ist notwendig</i></b></td>
+				</tr>';
+			} else {
+				$res.='<tr>
+				<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-yellow1" colspan="'.($X+2).'"><b><i>Bei folgenden Teststationen ist eine Voranmeldung und Terminbuchung empfohlen - bitte einen Termin wählen</i></b></td>
+				</tr>';
+			}
 		}
 		foreach($stations_array as $st) {
+			if($st[3]==1) {
+				$cal_color='red';
+			} else {
+				$cal_color='yellow';
+			}
 			// check if station has appointed times
 			if( S_get_entry($Db,'SELECT id_station FROM Termine WHERE Slot>0 AND Date(Tag)>="'.$today.'" AND Date(Tag)<="'.$in_x_days.'" AND id_station='.$st[0].';')==$st[0]) {
 				$location_thirdline_val=S_get_entry($Db,'SELECT Oeffnungszeiten FROM Station WHERE id='.$st[0].';');
@@ -493,7 +511,7 @@ function H_build_table_testdates2( $mode ) {
 				}
 				$res.='<tr>';
 				$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
-				$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-yellow2">'.$string_location.$display_location_thirdline.'</td>';
+				$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-'.$cal_color.'2">'.$string_location.$display_location_thirdline.'</td>';
 				for($j=0;$j<$X;$j++) {
 					$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
 					$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'";');
@@ -513,8 +531,8 @@ function H_build_table_testdates2( $mode ) {
 						$value_termine_id=S_get_entry($Db,'SELECT id FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
 						//$string_times.='<span class="text-sm"><div style="display: block; margin-top: 5px;">'.sprintf('%02d', $value_termine_times1).':00 - '.sprintf('%02d', $value_termine_times2 + 1).':00</div></span>';
 
-						$res.='<td onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow2 calendaryellow">'.$string_times.$display_termine.'</td>';
-						$res_s_array[$j][1].='<div class="cal-element calendaryellow" onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'">'.$string_location.$display_location_thirdline.'<br>'.$string_times.$display_termine.'</div>';
+						$res.='<td onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-'.$cal_color.'2 calendar'.$cal_color.'">'.$string_times.$display_termine.'</td>';
+						$res_s_array[$j][1].='<div class="cal-element calendar'.$cal_color.'" onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'">'.$string_location.$display_location_thirdline.'<br>'.$string_times.$display_termine.'</div>';
 
 						$bool_valid_appointments_found=true;
 					} else {

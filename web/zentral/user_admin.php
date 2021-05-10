@@ -206,19 +206,21 @@ if( A_checkpermission(array(0,0,0,4,0)) ) {
                 echo '
             </select>
         
-        </div><div class="input-group">
-        <span class="input-group-addon">
-        <input type="checkbox" aria-label="r1" name="e_r1" '.$u_role_1_selected.'>
-        <label for="e_r1">Rolle Teststation</label><span style="padding-left:10px;"></span>
-        <input type="checkbox" aria-label="r2" name="e_r2" '.$u_role_2_selected.'>
-        <label for="e_r2">Rolle Backoffice</label><span style="padding-left:10px;"></span>
-        <input type="checkbox" aria-label="r3" name="e_r3" '.$u_role_3_selected.'>
-        <label for="e_r3">Rolle Gesundheitsamt</label><span style="padding-left:10px;"></span>
-        <input type="checkbox" aria-label="r4" name="e_r4" '.$u_role_4_selected.'>
-        <label for="e_r4">Rolle Admin</label><span style="padding-left:10px;"></span>
-        <input type="checkbox" aria-label="r5" name="e_r5" '.$u_role_5_selected.'>
-        <label for="e_r5">Rolle Gruppenleitung einer Station</label><span style="padding-left:10px;"></span>
-        </span>
+        </div><div class="FAIRsepdown"></div><div class="cb_drk">
+        <input type="checkbox" id="r1" name="e_r1" '.$u_role_1_selected.'>
+        <label for="r1">Rolle Teststation</label>
+        </div><div class="FAIRsepdown"></div><div class="cb_drk">
+        <input type="checkbox" id="r2" name="e_r2" '.$u_role_2_selected.'>
+        <label for="r2">Rolle Backoffice</label>
+        </div><div class="FAIRsepdown"></div><div class="cb_drk">
+        <input type="checkbox" id="r3" name="e_r3" '.$u_role_3_selected.'>
+        <label for="r3">Rolle Gesundheitsamt</label>
+        </div><div class="FAIRsepdown"></div><div class="cb_drk">
+        <input type="checkbox" id="r4" name="e_r4" '.$u_role_4_selected.'>
+        <label for="r4">Rolle Admin</label>
+        </div><div class="FAIRsepdown"></div><div class="cb_drk">
+        <input type="checkbox" id="r5" name="e_r5" '.$u_role_5_selected.'>
+        <label for="r5">Rolle Gruppenleitung einer Station</label>
         </div>
         <div class="FAIR-si-button">
         <input type="submit" class="btn btn-danger" value="Änderung speichern" name="edit_staff" />
