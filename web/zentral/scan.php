@@ -40,6 +40,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
   $Db=S_open_db();
 
   $val_cwa_connection=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_CWA";');
+  $val_cwa_connection_poc=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_CWA_pocreg";');
 
 
   if( isset($_GET['scan']) ) {
@@ -155,41 +156,48 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][7].'" required></div>
         <div class="FAIRsepdown"></div>';
         if($array_voranmeldung[0][9]==0) {
-          echo '<div><span class="text-sm">Voranmeldung mit E-Mail - Ergebnis wird nicht auf Papier ausgestellt.</span></div>';
+          echo '<div class="FAIRsepdown"></div>
+          <div class="cb_drk">
+          <input type="checkbox" id="cb_print_cert" name="cb_print_cert"/>
+          <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label>
+          </div>';
         }
         if($val_cwa_connection==1) {
           if($array_voranmeldung[0][8]==1) {
-            $cwa_selected='checked';
-            $cwa_selected_text='<div><span class="text-sm">CWA wurde bei Voranmeldung gewünscht.</span></div>';
+            echo '<div class="FAIRsepdown"></div>
+          <div class="cb_drk">
+          <input type="checkbox" id="cb_cwa" name="cb_cwa" checked style="display:none;"/>
+          <input type="checkbox" id="cb_cwa_display" name="cb_cwa_display" checked disabled/>
+          <label for="cb_cwa">Corona-Warn-App (CWA)</label>
+          </div>';
+          } elseif($val_cwa_connection_poc==1) {
+            echo '<div class="FAIRsepdown"></div>
+            <div class="cb_drk">
+            <input type="checkbox" id="cb_cwa" name="cb_cwa"/>
+            <label for="cb_cwa">Corona-Warn-App (CWA)</label>
+            </div>';
           } else {
             $cwa_selected='';
-            $cwa_selected_text='';
-          }
-          echo '<div class="FAIRsepdown"></div>
-          '.$cwa_selected_text.'
-          <div class="input-group">
-          <span class="input-group-addon">CWA:</span>
-          <span class="input-group-addon">
-          <input type="checkbox" id="cb_cwa" name="cb_cwa" '.$cwa_selected.'/>
-          <label for="cb_cwa">Corona-Warn-App (CWA) nutzen?</label>
-          </span>
+            echo '<div class="FAIRsepdown"></div>
+          <div class="cb_drk">
+          <input type="checkbox" id="cb_cwa" name="cb_cwa" disabled/>
+          <label for="cb_cwa">Corona-Warn-App (CWA) nicht gewünscht vom Kunden</label>
           </div>';
+          }
+          
         } else {
           echo '<div class="input-group"><span class="text-sm">Derzeit keine Corona-Warn-App (CWA) Verbindung möglich</span></div>';
         }
         if($array_voranmeldung[0][9]==1) {
-          echo '<div class="input-group">
-          <span class="input-group-addon">Sammel-Zertifikat:</span>
-          <span class="input-group-addon">
-          <input type="checkbox" id="cb_zip_display" name="cb_zip_display" checked disabled/>
+          echo '<div class="FAIRsepdown"></div><div class="cb_drk">
           <input type="checkbox" id="cb_zip" name="cb_zip" checked style="display:none;"/>
-          <label for="cb_cwa">Ergebnisse werden gesammelt vom Büro abgeholt</label>
-          </span>
+          <input type="checkbox" id="cb_zip_display" name="cb_zip_display" checked disabled/>
+          <label for="cb_zip">Sammel-Zertifikat (Ergebnisse werden gesammelt vom Büro abgeholt)</label>
           </div>';
         }
         echo '<div class="FAIRsepdown"></div>
         <span class="input-group-btn">
-          <input type="submit" class="btn btn-danger" value="Registrieren" name="submit_person" />
+          <input type="submit" class="btn btn-lg btn-danger" value="Registrieren" name="submit_person" />
           </span>
         </form>
         <p>* optional</p>';
@@ -219,14 +227,18 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off"></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off"></div>
         ';
-        if($val_cwa_connection==1) {
+        if($val_cwa_connection==1 && $val_cwa_connection_poc==1) {
           echo '<div class="FAIRsepdown"></div>
-          <div class="input-group">
-          <span class="input-group-addon">CWA:</span>
-          <span class="input-group-addon">
+          <div class="cb_drk">
           <input type="checkbox" id="cb_cwa" name="cb_cwa"/>
-          <label for="cb_cwa">Corona-Warn-App (CWA) nutzen?</label>
-          </span>
+          <label for="cb_cwa">Corona-Warn-App (CWA)</label>
+          </div>';
+          $display_cwa_question=' und kein CWA';
+        } elseif($val_cwa_connection==1) {
+          echo '<div class="FAIRsepdown"></div>
+          <div class="cb_drk">
+          <input type="checkbox" id="cb_cwa" name="cb_cwa" disabled/>
+          <label for="cb_cwa">Corona-Warn-App (CWA) nur bei Voranmeldung erlaubt</label>
           </div>';
           $display_cwa_question=' und kein CWA';
         } else {
@@ -235,18 +247,15 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         }
         echo '<div class="FAIRsepdown"></div>
         <div><span class="anweisung"><span class="icon-notification"></span> ANWEISUNG:</span> (Wenn keine E-Mail'.$display_cwa_question.', dann fragen) <b>Benötigen Sie ein Papierzertifikat oder reicht eine mündliche Mitteilung?</b></div>
-        
-        <div class="input-group">
-        <span class="input-group-addon">Zertifikat:</span>
-        <span class="input-group-addon">
+        <div class="FAIRsepdown"></div>
+        <div class="cb_drk">
         <input type="checkbox" id="cb_print_cert" name="cb_print_cert"/>
-        <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label></span>
+        <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label>
         </div>
-        <div class="input-group">
-        <span class="input-group-addon">Sammeltestung:</span>
-        <span class="input-group-addon">
+        <div class="FAIRsepdown"></div>
+        <div class="cb_drk">
         <input type="checkbox" id="cb_zip_req" name="cb_zip_req"/>
-        <label for="cb_zip_req">Person mit Sammeltestung (Sammel-Zertifikat-Abruf)</label></span>
+        <label for="cb_zip_req">Sammeltestung (Sammel-Zertifikat-Abruf)</label>
         </div>';
         echo '<div class="FAIRsepdown"></div>
         <span class="input-group-btn">
@@ -521,13 +530,17 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
     $k_tel=$_POST['telefon'];
     $k_email=$_POST['email'];
     $k_reg_type=$_POST['reg_type'];
+
     $k_cwa=$_POST['cb_cwa'];
     if($k_cwa=='on') { $k_val_cwa=1; } else { $k_val_cwa=0; }
+
     $k_print_cert=$_POST['cb_print_cert'];
     if($k_print_cert=='on') { $k_val_print_cert=1; } else { $k_val_print_cert=0; }
+
     $k_zip_req=$_POST['cb_zip_req'];
     $k_zip=$_POST['cb_zip'];
     if($k_zip=='on' || $k_zip_req=='on') { $k_val_zip=1; } else { $k_val_zip=0; }
+
     if ($k_email=='' || filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
     
       if( isset($_POST['prereg']) ) {
@@ -543,7 +556,13 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       $now=date("Y-m-d H:i:s",time());
       $testtyp_default=S_get_entry($Db,'SELECT Testtyp_id FROM Station WHERE id='.$_SESSION['station_id'].';');
 
-      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,reg_type,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,handout_request,privateMail_request,zip_request) VALUES ('.$_SESSION['station_id'].',
+      if($k_val_cwa==1) {
+        $cwa_salt=A_generate_cwa_salt();
+      } else {
+        $cwa_salt=null;
+      }
+
+      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,reg_type,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,salt,handout_request,privateMail_request,zip_request) VALUES ('.$_SESSION['station_id'].',
         \''.$k_token.'\',
         \''.$k_reg_type.'\',
         \''.$k_vname.'\',
@@ -555,12 +574,13 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         \''.$k_email.'\',
         '.$testtyp_default.',
         '.$k_val_cwa.',
+        \''.$cwa_salt.'\',
         '.$k_val_print_cert.',
         '.$k_privatemail_req.',
         '.$k_val_zip.'
         );');
       $k_id=S_get_entry($Db,'SELECT id FROM Vorgang WHERE Token=\''.$k_token.'\'');
-      $array_written=S_get_multientry($Db,'SELECT id, Teststation, Token, Vorname, Nachname, Geburtsdatum, Adresse, Wohnort, Telefon, Mailadresse FROM Vorgang WHERE id='.$k_id.';');
+      $array_written=S_get_multientry($Db,'SELECT id, Teststation, Token, Vorname, Nachname, Geburtsdatum, Adresse, Wohnort, Telefon, Mailadresse, CWA_request FROM Vorgang WHERE id='.$k_id.';');
       echo '<div class="row">';
       if($array_written[0][0]>0) {
         echo '<div class="col-sm-12">
@@ -576,6 +596,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
           S_set_data($Db,'UPDATE Voranmeldung SET Used=1 WHERE id=CAST('.$k_prereg.' AS int);');
         }
       } else {
+        
         echo '<div class="col-sm-12">
           <div class="alert alert-danger" role="alert">
           <h3>Speicherfehler</h3>
@@ -588,7 +609,14 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       <div class="FAIRsepdown"></div>';
       echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
       echo '</div></div>';
-  // TODO SHOW QR CODE FOR CWA CONNECTION TO BE SCANNED BY CUSTOMER
+      // SHOW QR CODE FOR CWA CONNECTION TO BE SCANNED BY CUSTOMER
+      if($array_written[0][10]==1) {
+        echo '<div class="FAIRsepdown"></div>
+        <div class="col-sm-12 placeholders"><h3 class="imprint">CWA QR-Code für Kunde</h3>';
+        $cwa_base64=S_get_cwa_qr_code ($Db,$array_written[0][0]);
+        echo '<img src="qrcode.php?cwa='.$cwa_base64.'" />';
+        echo '</div>';
+      }
     } else {
       // ///////////////////////////
       // Email invalid !!!
@@ -623,19 +651,32 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_tel.'" autocomplete="off"></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_email.'" autocomplete="off"></div>';
         if($val_cwa_connection==1) {
+          // CWA allowed
           if($k_cwa=='on') {
-            $cwa_selected='checked';
+            // CWA was selected
+            echo '<div class="FAIRsepdown"></div>
+            <div class="cb_drk">
+            <input type="checkbox" id="cb_cwa" name="cb_cwa" checked/>
+            <label for="cb_cwa">Corona-Warn-App (CWA)</label>
+            </div>';
           } else {
-            $cwa_selected='';
+            // CWA was not selected
+            if($val_cwa_connection_poc==1) {
+              // but PoC CWA is allowed
+              echo '<div class="FAIRsepdown"></div>
+              <div class="cb_drk">
+              <input type="checkbox" id="cb_cwa" name="cb_cwa"/>
+              <label for="cb_cwa">Corona-Warn-App (CWA)</label>
+              </div>';
+            } else {
+              // PoC CWA is not allowed
+              echo '<div class="FAIRsepdown"></div>
+              <div class="cb_drk">
+              <input type="checkbox" id="cb_cwa" name="cb_cwa" disabled/>
+              <label for="cb_cwa">Corona-Warn-App (CWA)</label>
+              </div>';
+            }
           }
-          echo '<div class="FAIRsepdown"></div>
-          <div class="input-group">
-          <span class="input-group-addon">CWA:</span>
-          <span class="input-group-addon">
-          <input type="checkbox" id="cb_cwa" name="cb_cwa" '.$cwa_selected.'/>
-          <label for="cb_cwa">Corona-Warn-App (CWA) nutzen?</label>
-          </span>
-          </div>';
           $display_cwa_question=' und kein CWA';
         } else {
           echo '<div class="input-group"><span class="text-sm">Derzeit keine Corona-Warn-App (CWA) Verbindung möglich</span></div>';
@@ -653,18 +694,14 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         }
         echo '<div class="FAIRsepdown"></div>
         <div><span class="anweisung"><span class="icon-notification"></span> ANWEISUNG:</span> (Wenn keine E-Mail'.$display_cwa_question.', dann fragen) <b>Benötigen Sie ein Papierzertifikat oder reicht eine mündliche Mitteilung?</b></div>
-        </div>
-        <div class="input-group">
-        <span class="input-group-addon">Zertifikat:</span>
-        <span class="input-group-addon">
+        <div class="FAIRsepdown"></div>
+        <div class="cb_drk">
         <input type="checkbox" id="cb_print_cert" name="cb_print_cert" '.$print_cert_selected.'/>
-        <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label></span>
+        <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label>
         </div>
-        <div class="input-group">
-        <span class="input-group-addon">Sammeltestung:</span>
-        <span class="input-group-addon">
+        <div class="cb_drk">
         <input type="checkbox" id="cb_zip_req" name="cb_zip_req"  '.$print_zip_selected.'/>
-        <label for="cb_zip_req">Person mit Sammeltestung (Sammel-Zertifikat-Abruf)</label></span>
+        <label for="cb_zip_req">Sammeltestung (Sammel-Zertifikat-Abruf)</label>
         </div>
         ';
         echo '<div class="FAIRsepdown"></div>

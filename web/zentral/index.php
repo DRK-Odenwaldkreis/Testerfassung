@@ -104,27 +104,34 @@ $stations_array=S_get_multientry($Db,'SELECT id, Ort FROM Station;');
 $today=date("Y-m-d",time());
 $yesterday=date("Y-m-d",time() - 60 * 60 * 24);
 $beforetwodays=date("Y-m-d",time() - 2 * 60 * 60 * 24);
+
 $stat_val_total_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\';');
+$stat_val_total_pocreg_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND reg_type=\'POCREG\';');
 $stat_val_neg_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Ergebnis=2;');
 $stat_val_pos_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Ergebnis=1;');
 
 $stat_val_total_yday=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\';');
+$stat_val_total_pocreg_yday=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$yesterday.'\' AND reg_type=\'POCREG\';');
 $stat_val_neg_yday=S_get_entry($Db,'SELECT sum(Negativ) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\';');
 $stat_val_pos_yday=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\';');
 
 $stat_val_total_2day=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\';');
+$stat_val_total_pocreg_2day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$beforetwodays.'\' AND reg_type=\'POCREG\';');
 $stat_val_neg_2day=S_get_entry($Db,'SELECT sum(Negativ) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\';');
 $stat_val_pos_2day=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\';');
 
 $stat_val_total_day_st=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Teststation='.$station.';');
+$stat_val_total_pocreg_day_st=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Teststation='.$station.' AND reg_type=\'POCREG\';');
 $stat_val_neg_day_st=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Teststation='.$station.' AND Ergebnis=2;');
 $stat_val_pos_day_st=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Teststation='.$station.' AND Ergebnis=1;');
 
 $stat_val_total_yday_st=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\' AND Teststation='.$station.';');
+$stat_val_total_pocreg_yday_st=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$yesterday.'\' AND Teststation='.$station.' AND reg_type=\'POCREG\';');
 $stat_val_neg_yday_st=S_get_entry($Db,'SELECT sum(Negativ) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\' AND Teststation='.$station.';');
 $stat_val_pos_yday_st=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\' AND Teststation='.$station.';');
 
 $stat_val_total_2day_st=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\' AND Teststation='.$station.';');
+$stat_val_total_pocreg_2day_st=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$beforetwodays.'\' AND Teststation='.$station.' AND reg_type=\'POCREG\';');
 $stat_val_neg_2day_st=S_get_entry($Db,'SELECT sum(Negativ) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\' AND Teststation='.$station.';');
 $stat_val_pos_2day_st=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\' AND Teststation='.$station.';');
 
@@ -132,16 +139,16 @@ $stat_val_pos_2day_st=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE
 S_close_db($Db);
 
 echo '<div class="row">';
-echo '<div class="col-sm-3">
+echo '<div class="col-md-3">
 <div class="alert alert-info" role="alert">
 <p>Getestete Personen</p>
-<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day.'</h3>
-<h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_total_yday.'</h3>
-<h3><span class="FAIR-text-sm">vorgestern</span> '.$stat_val_total_2day.'</h3>
+<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day.' <span class="FAIR-text-sm">(PoC Reg '.(number_format(($stat_val_total_pocreg_day/$stat_val_total_day*100),0,',','.')).' %)</span></h3>
+<h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_total_yday.' <span class="FAIR-text-sm">(PoC Reg '.(number_format(($stat_val_total_pocreg_yday/$stat_val_total_yday*100),0,',','.')).' %)</span></h3>
+<h3><span class="FAIR-text-sm">vorgestern</span> '.$stat_val_total_2day.'<span class="FAIR-text-sm">(PoC Reg '.(number_format(($stat_val_total_pocreg_2day/$stat_val_total_2day*100),0,',','.')).' %)</span></h3>
 </div>';
 
 echo '</div>';
-echo '<div class="col-sm-3">
+echo '<div class="col-md-3">
 <div class="alert alert-success" role="alert">
 <p>Negative Fälle</p>
 <h3><span class="FAIR-text-sm">heute</span> '.$stat_val_neg_day.'</h3>
@@ -150,17 +157,17 @@ echo '<div class="col-sm-3">
 </div>';
 
 echo '</div>';
-echo '<div class="col-sm-3">
+echo '<div class="col-md-3">
 <div class="alert alert-danger" role="alert">
 <p>Positive Fälle</p>
-<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_pos_day.' ('.(number_format(($stat_val_pos_day/$stat_val_total_day*100),2,',','.')).' %)</h3>
-<h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_pos_yday.' ('.(number_format(($stat_val_pos_yday/$stat_val_total_yday*100),2,',','.')).' %)</h3>
-<h3><span class="FAIR-text-sm">vorgestern</span> '.$stat_val_pos_2day.' ('.(number_format(($stat_val_pos_2day/$stat_val_total_2day*100),2,',','.')).' %)</h3>
+<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_pos_day.' ('.(number_format(($stat_val_pos_day/$stat_val_total_day*100),1,',','.')).' %)</h3>
+<h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_pos_yday.' ('.(number_format(($stat_val_pos_yday/$stat_val_total_yday*100),1,',','.')).' %)</h3>
+<h3><span class="FAIR-text-sm">vorgestern</span> '.$stat_val_pos_2day.' ('.(number_format(($stat_val_pos_2day/$stat_val_total_2day*100),1,',','.')).' %)</h3>
 </div>';
 
 echo '</div>';
 
-echo '<div class="col-sm-3">
+echo '<div class="col-md-3">
     <div class="alert alert-warning" role="alert">';
 
 if($_SESSION['station_id']>0) {
@@ -187,17 +194,17 @@ if($_SESSION['station_id']>0) {
 }
 
 if($stat_val_total_day_st>0) {
-    echo '<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day_st.', <span class="FAIR-text-sm">Neg:</span> '.$stat_val_neg_day_st.', <span class="FAIR-text-sm">Pos:</span> '.$stat_val_pos_day_st.' ('.(number_format(($stat_val_pos_day_st/$stat_val_total_day_st*100),2,',','.')).' %)</h3>';
+    echo '<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day_st.', <span class="FAIR-text-sm">PoC Reg: '.(number_format(($stat_val_total_pocreg_day_st/$stat_val_total_day_st*100),0,',','.')).' %</span>, <span class="FAIR-text-sm">Pos:</span> '.$stat_val_pos_day_st.' ('.(number_format(($stat_val_pos_day_st/$stat_val_total_day_st*100),1,',','.')).' %)</h3>';
 } else {
     echo '<h3><span class="FAIR-text-sm">(heute keine Tests durchgeführt)</span></h3>';
 }
 if($stat_val_total_yday_st>0) {
-    echo '<h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_total_yday_st.', <span class="FAIR-text-sm">Neg:</span> '.$stat_val_neg_yday_st.', <span class="FAIR-text-sm">Pos:</span> '.$stat_val_pos_yday_st.' ('.(number_format(($stat_val_pos_yday_st/$stat_val_total_yday_st*100),2,',','.')).' %)</h3>';
+    echo '<h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_total_yday_st.', <span class="FAIR-text-sm">PoC Reg: '.(number_format(($stat_val_total_pocreg_yday_st/$stat_val_total_yday_st*100),0,',','.')).' %</span>, <span class="FAIR-text-sm">Pos:</span> '.$stat_val_pos_yday_st.' ('.(number_format(($stat_val_pos_yday_st/$stat_val_total_yday_st*100),1,',','.')).' %)</h3>';
 } else {
     echo '<h3><span class="FAIR-text-sm">(gestern keine Tests durchgeführt)</span></h3>';
 }
 if($stat_val_total_2day_st>0) {
-    echo '<h3><span class="FAIR-text-sm">vorgestern</span> '.$stat_val_total_2day_st.', <span class="FAIR-text-sm">Neg:</span> '.$stat_val_neg_2day_st.', <span class="FAIR-text-sm">Pos:</span> '.$stat_val_pos_2day_st.' ('.(number_format(($stat_val_pos_2day_st/$stat_val_total_2day_st*100),2,',','.')).' %)</h3>';
+    echo '<h3><span class="FAIR-text-sm">vorgestern</span> '.$stat_val_total_2day_st.', <span class="FAIR-text-sm">PoC Reg: '.(number_format(($stat_val_total_pocreg_2day_st/$stat_val_total_2day_st*100),0,',','.')).' %</span>, <span class="FAIR-text-sm">Pos:</span> '.$stat_val_pos_2day_st.' ('.(number_format(($stat_val_pos_2day_st/$stat_val_total_2day_st*100),1,',','.')).' %)</h3>';
 } else {
     echo '<h3><span class="FAIR-text-sm">(vorgestern keine Tests durchgeführt)</span></h3>';
 }

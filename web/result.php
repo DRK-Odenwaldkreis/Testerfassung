@@ -126,7 +126,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 	}
 		
 	if($ALLOWANCE_RESULT>0) {
-		$result_array=S_get_multientry($Db,'SELECT Vorgang.Teststation, Vorgang.Ergebniszeitpunkt, Vorgang.Vorname, Vorgang.Nachname, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Testtyp.Name FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id WHERE Vorgang.id=CAST('.$ALLOWANCE_RESULT.' as int);');
+		$result_array=S_get_multientry($Db,'SELECT Vorgang.Teststation, Vorgang.Ergebniszeitpunkt, Vorgang.Vorname, Vorgang.Nachname, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Testtyp.Name, Testtyp.IsPCR FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id WHERE Vorgang.id=CAST('.$ALLOWANCE_RESULT.' as int);');
 
 
 
@@ -144,9 +144,15 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 			$display_result=file_get_contents('result_html/Indistinct_Result.html');
 			break;
 		}
+		if($result_array[0][7] == 1) {
+			$testtyp='RT-PCR Labortest';
+		} else {
+			$testtyp='SARS-CoV-2 PoC Ag-Test';
+		}
 		$display_result=str_replace('[[VORNAME]]', $result_array[0][2], $display_result);
 		$display_result=str_replace('[[NACHNAME]]', $result_array[0][3], $display_result);
-		$display_result=str_replace('[[TESTTYP]]', $result_array[0][6], $display_result);
+		$display_result=str_replace('[[TESTTYP]]', $testtyp, $display_result);
+		$display_result=str_replace('[[MANUFACTURER]]', $result_array[0][6], $display_result);
 		$display_result=str_replace('[[GEBDATUM]]', date('d.m.Y',strtotime($result_array[0][4])), $display_result);
 		$display_result=str_replace('[[DATE]]', date('d.m.Y',strtotime($result_array[0][1])).' um '.date('H:i',strtotime($result_array[0][1])).' Uhr', $display_result);
 

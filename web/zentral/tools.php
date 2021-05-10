@@ -127,6 +127,18 @@ function S_get_entry_voranmeldung ($Db,$scanevent) {
 	}
 }
 
+function S_get_cwa_qr_code ($Db,$test_id) {
+	$test_array=S_get_multientry($Db,'SELECT Geburtsdatum, Vorname, Nachname, Registrierungszeitpunkt, Salt, Token FROM Vorgang WHERE id=CAST('.$test_id.' AS int);');
+	// build hash
+	$pre_hash=$test_array[0][0].'#'.$test_array[0][1].'#'.$test_array[0][2].'#'.strtotime($test_array[0][3]).'#'.$test_array[0][5].'#'.$test_array[0][4];
+	$hash=hash("sha256",$pre_hash);
+	// build json
+	$json='{"dob":"'.$test_array[0][0].'","fn":"'.$test_array[0][1].'","ln":"'.$test_array[0][2].'","testid":"'.$test_array[0][5].'","timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","hash":"'.$hash.'"}';
+	// build base64coded
+	$base64=rtrim( strtr( base64_encode( $json ), '+/', '-_'), '=');
+	return $base64;
+}
+
 
 
 /****************************************/
@@ -142,6 +154,16 @@ function A_generate_token($length = 8) {
         $randomString .= $characters[rand(0, strlen($characters) - 1)];
     }
     return $randomString;
+}
+// Generate random salt
+function A_generate_cwa_salt($length = 32) {
+	// Generierte 128-Bit Zufallszahl in Hexadezimal-Darstellung, nur mit Großbuchstaben und fester Breite von 32 Stellen
+$characters = '1234567890ABCDEF';
+$randomString = '';
+for ($i = 0; $i < $length; $i++) {
+	$randomString .= $characters[rand(0, strlen($characters) - 1)];
+}
+return $randomString;
 }
 
 // Login for user with $uid
