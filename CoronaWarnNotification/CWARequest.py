@@ -33,7 +33,6 @@ def notify(hash,result):
         array = []
         array.append(entry)
         payload["testResults"] = array
-        print(payload)
         response = requests.request("POST", url, headers=headers, data = json.dumps(payload),cert=(clientCrt, clientKey))
         logger.debug('Response from request: ' + str(response.text))
         logger.debug('Response from request with code : ' + str(response.status_code))
