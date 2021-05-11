@@ -248,7 +248,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
       }
     }
 
-    if( $i[18]==1) {
+    if( $i[18]>0) {
       // CWA request
       if($i[19]==0 && $i[19]!=null) {
         // delivered to CWA

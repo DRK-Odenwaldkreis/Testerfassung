@@ -34,6 +34,8 @@ echo $GLOBALS['G_html_main_right_a'];
 
 
 
+
+
 echo '<div class="row">';
 echo '<div class="col-sm-12">
 <h2>Voranmeldung für einen SARS-CoV-2 Test</h2>';
@@ -68,9 +70,12 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
         $k_int_location=$_POST['int_location'];
         $k_cwa_req=$_POST['cb_cwa'];
         if($k_cwa_req=='on') { $k_cwa_req=1; } else { $k_cwa_req=0; }
+        $k_cwa_anonym_req=$_POST['cb_cwa_anonym'];
+        if($k_cwa_anonym_req=='on') { $k_cwa_req=2; }
+        if(isset($_POST['pcr_grund'])) { $k_pcr_grund=intval($_POST['pcr_grund']); } else { $k_pcr_grund=null; }
         
         if (filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
-            $prereg_id=S_set_entry_voranmeldung($Db,array($k_vname,$k_nname,$k_geb,$k_adresse,$k_ort,$k_telefon,$k_email,$k_slot_id,$k_date,$k_cwa_req));
+            $prereg_id=S_set_entry_voranmeldung($Db,array($k_vname,$k_nname,$k_geb,$k_adresse,$k_ort,$k_telefon,$k_email,$k_slot_id,$k_date,$k_cwa_req,$k_pcr_grund));
             if($prereg_id=='DOUBLE_ENTRY') {
                 echo '<div class="alert alert-danger" role="alert">
                 <h3>Ungültiger Vorgang</h3>
@@ -123,6 +128,9 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
              // ///////////////////////////
             // Email invalid !!!
             $val_cwa_connection=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_CWA_prereg";');
+            // Check if Termin is PCR
+            $pcr_test=S_get_entry($Db,'SELECT Testtyp.IsPCR FROM Testtyp JOIN Station ON Station.Testtyp_id=Testtyp.id JOIN Termine ON Termine.id_station=Station.id WHERE Termine.id=CAST('.$k_slot_id.' as int);');
+
             echo '
             <div class="alert alert-danger" role="alert">
             <h3>E-Mail ungültig</h3>
@@ -168,7 +176,7 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
                     <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_telefon.'"></div>
                     <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_email.'" required></div>
                     <p>* optional</p>';
-                    if($val_cwa_connection==1) {
+                    if($val_cwa_connection==1 && $pcr_test==0) {
                         if($k_cwa_req==1) {
                             $cwa_selected='checked';
                           } else {
@@ -189,11 +197,65 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
 
                         <div class="FAIRsepdown"></div>
                         <div class="cb_drk">
+                        <input type="checkbox" id="cb_cwa_anonym" name="cb_cwa_anonym" '.$cwa_anonym_selected.'/>
+                        <label for="cb_cwa_anonym">Einwilligung zur pseudonymisierten Übermittlung (Nicht-namentliche Anzeige) über die Corona-Warn-App (CWA) <span class="text-sm">*optional</span>
+                        <br><span class="text-sm">
+                        Hiermit erkläre ich mein Einverständnis zum Übermitteln meines Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Das Testergebnis in der App kann hierbei nicht als namentlicher Testnachweis verwendet werden. Mir wurden Hinweise zum Datenschutz ausgehändigt.
+                        </span><br>
+                        (<a href="../impressum.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
+                        </div>
+                        <div class="FAIRsepdown"></div>
+                        <div class="cb_drk">
                         <input type="checkbox" id="cb_cwa" name="cb_cwa" '.$cwa_selected.'/>
-                        <label for="cb_cwa">Ergebnisabruf über die Corona-Warn-App (CWA) <span class="text-sm">*optional</span><br><span class="text-sm">Hiermit erkläre ich mein Einverständnis zum Übermitteln des Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Ich willige außerdem in die Übermittlung meines Namens und Geburtsdatums an die App ein, damit mein Test ergebnis in der App als namentlicher Testnachweis angezeigt werden kann. Mir wurden Hinweise zum Datenschutz ausgehändigt.</span><br>
+                        <label for="cb_cwa">Einwilligung zur personalisierten Übermittlung (Namentlicher Testnachweis) über die Corona-Warn-App (CWA) <span class="text-sm">*optional</span>
+                        <br><span class="text-sm">
+                        Hiermit erkläre ich mein Einverständnis zum Übermitteln des Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Ich willige außerdem in die Übermittlung meines Namens und Geburtsdatums an die App ein, damit mein Testergebnis in der App als namentlicher Testnachweis angezeigt werden kann. Mir wurden Hinweise zum Datenschutz ausgehändigt.
+                        </span><br>
                         (<a href="../impressum.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
                         </div>
                         </div><div class="FAIRsepdown"></div>';
+
+                        echo "
+
+                        <script>
+                            var input_anonym = document.getElementById('cb_cwa_anonym');
+                            var input_pers = document.getElementById('cb_cwa');
+                        
+                            input_anonym.addEventListener('change',function(){
+                                if(this.checked) {
+                                    input_pers.checked = false;
+                                }
+                            });
+                            input_pers.addEventListener('change',function(){
+                                if(this.checked) {
+                                    input_anonym.checked = false;
+                                }
+                            });
+                        </script>
+                        ";
+                    } elseif($pcr_test==1) {
+                        $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR;');
+                        echo '<div class="FAIRsepdown"></div>
+                        <div class="alert alert-warning" role="alert">
+                                <div class="header_icon">
+                                    <img src="../img/icon/certified_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
+                                    <div class="caption center_text">
+                                    <h3>Sie haben einen PCR-Test ausgewählt.</h3>
+                                    <h4>Wurde dieser Test angeordnet nach positivem Schnelltest oder aufgrund Kontakt zu einer positiv getesteten Person, so ist die Testung kostenfrei. Bitte bringen Sie dafür eine Bestätigung zum Testzentrum mit (z. B. ein Schnelltest-Zertifikat mit positivem Ergebnis).</h4>
+                                    <h4>Andernfalls fallen für den PCR-Test Gebühren an, die Sie im Testzentrum entrichten müssen.</h4>
+                                    </div>
+                                </div>
+                                <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für einen PCR-Test</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+                                <option value="" selected>Bitte wählen...</option>
+                                    ';
+                                    foreach($pcr_grund_array as $i) {
+                                        $display=$i[1];
+                                        echo '<option value="'.$i[0].'">'.$display.'</option>';
+                                    }
+                                    echo '
+                                </select></div>
+                        </div>
+                        <div class="FAIRsepdown"></div>';
                     }
 
                     echo '<div class="FAIRsepdown"></div><div class="cb_drk">
@@ -522,21 +584,63 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
 
                         <div class="FAIRsepdown"></div>
                         <div class="cb_drk">
+                        <input type="checkbox" id="cb_cwa_anonym" name="cb_cwa_anonym"/>
+                        <label for="cb_cwa_anonym">Einwilligung zur pseudonymisierten Übermittlung (Nicht-namentliche Anzeige) über die Corona-Warn-App (CWA) <span class="text-sm">*optional</span>
+                        <br><span class="text-sm">
+                        Hiermit erkläre ich mein Einverständnis zum Übermitteln meines Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Das Testergebnis in der App kann hierbei nicht als namentlicher Testnachweis verwendet werden. Mir wurden Hinweise zum Datenschutz ausgehändigt.
+                        </span><br>
+                        (<a href="../impressum.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
+                        </div>
+                        <div class="FAIRsepdown"></div>
+                        <div class="cb_drk">
                         <input type="checkbox" id="cb_cwa" name="cb_cwa"/>
-                        <label for="cb_cwa">Ergebnisabruf über die Corona-Warn-App (CWA) <span class="text-sm">*optional</span><br><span class="text-sm">Hiermit erkläre ich mein Einverständnis zum Übermitteln des Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Ich willige außerdem in die Übermittlung meines Namens und Geburtsdatums an die App ein, damit mein Testergebnis in der App als namentlicher Testnachweis angezeigt werden kann. Mir wurden Hinweise zum Datenschutz ausgehändigt.</span><br>
+                        <label for="cb_cwa">Einwilligung zur personalisierten Übermittlung (Namentlicher Testnachweis) über die Corona-Warn-App (CWA) <span class="text-sm">*optional</span>
+                        <br><span class="text-sm">
+                        Hiermit erkläre ich mein Einverständnis zum Übermitteln des Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Ich willige außerdem in die Übermittlung meines Namens und Geburtsdatums an die App ein, damit mein Testergebnis in der App als namentlicher Testnachweis angezeigt werden kann. Mir wurden Hinweise zum Datenschutz ausgehändigt.
+                        </span><br>
                         (<a href="../impressum.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
                         </div>
                         </div><div class="FAIRsepdown"></div>';
+
+                        echo "
+
+                        <script>
+                            var input_anonym = document.getElementById('cb_cwa_anonym');
+                            var input_pers = document.getElementById('cb_cwa');
+                        
+                            input_anonym.addEventListener('change',function(){
+                                if(this.checked) {
+                                    input_pers.checked = false;
+                                }
+                            });
+                            input_pers.addEventListener('change',function(){
+                                if(this.checked) {
+                                    input_anonym.checked = false;
+                                }
+                            });
+                        </script>
+                        ";
                     } elseif($pcr_test==1) {
+                        $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR;');
                         echo '<div class="FAIRsepdown"></div>
                         <div class="alert alert-warning" role="alert">
                                 <div class="header_icon">
                                     <img src="../img/icon/certified_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
                                     <div class="caption center_text">
                                     <h3>Sie haben einen PCR-Test ausgewählt.</h3>
-                                    <h4>Wurde dieser Test von Ihrem Gesundheitsamt oder einer anderen Stelle mit Befugnis angeordnet, so ist die Testung kostenfrei. Bitte bringen Sie dafür eine Bestätigung zum Testzentrum mit (z. B. ein Schnelltest-Zertifikat mit positivem Ergebnis).</h4>
+                                    <h4>Wurde dieser Test angeordnet nach positivem Schnelltest oder aufgrund Kontakt zu einer positiv getesteten Person, so ist die Testung kostenfrei. Bitte bringen Sie dafür eine Bestätigung zum Testzentrum mit (z. B. ein Schnelltest-Zertifikat mit positivem Ergebnis).</h4>
+                                    <h4>Andernfalls fallen für den PCR-Test Gebühren an, die Sie im Testzentrum entrichten müssen.</h4>
                                     </div>
                                 </div>
+                                <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für einen PCR-Test</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+                                <option value="" selected>Bitte wählen...</option>
+                                    ';
+                                    foreach($pcr_grund_array as $i) {
+                                        $display=$i[1];
+                                        echo '<option value="'.$i[0].'">'.$display.'</option>';
+                                    }
+                                    echo '
+                                </select></div>
                         </div>
                         <div class="FAIRsepdown"></div>';
                     }
