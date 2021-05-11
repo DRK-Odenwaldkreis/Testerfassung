@@ -8,8 +8,8 @@ import os
 import sys
 import datetime
 sys.path.append("..")
-clientCrt = "/home/murat/Certificates/CWA-WRU.cer"
-clientKey = "/home/murat/Certificates/plain-wru.key"
+clientCrt = "/home/murat/Certificates/CWA-PRD.cer"
+clientKey = "/home/murat/Certificates/plain-prd.key"
 
 logger = logging.getLogger('Corona Warn Request: %s' %(datetime.datetime.now()))
 logger.info('Starting CWA Request')
@@ -18,7 +18,7 @@ headers = {'Content-Type': 'application/json','Accept': 'application/json'}
 
 def notify(hash,result):
     try:
-        url = "https://quicktest-result-cff4f7147260.coronawarn.app/api/v1/quicktest/results"
+        url = "https://quicktest-result.coronawarn.app/api/v1/quicktest/results"
         hash_string = str(hash)
         sha_signature = hashlib.sha256(hash_string.encode()).hexdigest()
         payload = {}
