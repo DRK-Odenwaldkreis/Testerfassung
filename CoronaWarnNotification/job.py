@@ -25,7 +25,7 @@ logger.info('Starting Rendition Job')
 
 if __name__ == "__main__":
     try:
-        sql = "Select Geburtsdatum,Vorname,Nachname,Registrierungszeitpunkt,Token,id,salt,Ergebnis,CWA_lock from Vorgang where Ergebnis !=5 and CWA_request=1 and ((CWA_lock < 6 and CWA_lock != 0) or CWA_lock is NULL);"
+        sql = "Select Geburtsdatum,Vorname,Nachname,Registrierungszeitpunkt,Token,id,salt,Ergebnis,CWA_lock,CWA_request from Vorgang where Ergebnis !=5 and CWA_request!=0 and ((CWA_lock < 6 and CWA_lock != 0) or CWA_lock is NULL);"
         DatabaseConnect = Database()
         logger.debug('Checking for new results, using the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
@@ -45,9 +45,15 @@ if __name__ == "__main__":
                     entry = i[5]
                     result = i[7]
                     failedAttempts=i[8]
+                    requestType=i[9]
                     if failedAttempts is None:
                         failedAttempts=0
-                    hash_string = str(gebDatum) + "#" + str(vorname) + "#" + str(nachname) + "#" + str(timestamp) + "#" + str(testid) + "#" + str(salt)
+                    if requestType == 1:
+                        hash_string = str(gebDatum) + "#" + str(vorname) + "#" + str(nachname) + "#" + str(timestamp) + "#" + str(testid) + "#" + str(salt)
+                    elif requestType == 2:
+                        hash_string = str(timestamp) + "#" + str(salt)
+                    else:
+                        continue
                     notified = notify(hash=hash_string,result=result)
                     if notified:
                         logger.debug('Corona Warn Nofification was succesfully send, closing entry in db')
