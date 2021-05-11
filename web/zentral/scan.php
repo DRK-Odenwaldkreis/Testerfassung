@@ -136,7 +136,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         // Registrierung mit Voranmeldung
         // ///////////////
         // Get data
-        $array_voranmeldung=S_get_multientry($Db,'SELECT id, Vorname, Nachname, Geburtsdatum, Adresse, Wohnort, Telefon, Mailadresse, CWA_request, zip_request FROM Voranmeldung WHERE id=CAST('.$_GET['prereg'].' AS int);');
+        $array_voranmeldung=S_get_multientry($Db,'SELECT id, Vorname, Nachname, Geburtsdatum, Adresse, Wohnort, Telefon, Mailadresse, CWA_request, zip_request, PCR_Grund FROM Voranmeldung WHERE id=CAST('.$_GET['prereg'].' AS int);');
 
         // Show data
         echo '<div class="row">';
@@ -155,26 +155,33 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][6].'"></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][7].'" required></div>
         <div class="FAIRsepdown"></div>';
-        if($array_voranmeldung[0][9]==0) {
+        if($array_voranmeldung[0][9]==0 && $array_voranmeldung[0][10]==null) {
           echo '<div class="FAIRsepdown"></div>
           <div class="cb_drk">
           <input type="checkbox" id="cb_print_cert" name="cb_print_cert"/>
           <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label>
           </div>';
         }
-        if($val_cwa_connection==1) {
+        if($val_cwa_connection==1 && $array_voranmeldung[0][10]==null) {
           if($array_voranmeldung[0][8]==1) {
             echo '<div class="FAIRsepdown"></div>
           <div class="cb_drk">
           <input type="checkbox" id="cb_cwa" name="cb_cwa" checked style="display:none;"/>
           <input type="checkbox" id="cb_cwa_display" name="cb_cwa_display" checked disabled/>
-          <label for="cb_cwa">Corona-Warn-App (CWA)</label>
+          <label for="cb_cwa_display">Corona-Warn-App (CWA) - Namentlich</label>
+          </div>';
+          } elseif($array_voranmeldung[0][8]==2) {
+            echo '<div class="FAIRsepdown"></div>
+          <div class="cb_drk">
+          <input type="checkbox" id="cb_cwa_anonym" name="cb_cwa_anonym" checked style="display:none;"/>
+          <input type="checkbox" id="cb_cwa_anonym_display" name="cb_cwa_anonym_display" checked disabled/>
+          <label for="cb_cwa_anonym_display">Corona-Warn-App (CWA) - Nicht-namentlich</label>
           </div>';
           } elseif($val_cwa_connection_poc==1) {
             echo '<div class="FAIRsepdown"></div>
             <div class="cb_drk">
-            <input type="checkbox" id="cb_cwa" name="cb_cwa"/>
-            <label for="cb_cwa">Corona-Warn-App (CWA)</label>
+            <input type="checkbox" id="cb_cwa_anonym" name="cb_cwa_anonym"/>
+            <label for="cb_cwa_anonym">Corona-Warn-App (CWA) - Nicht-namentlich</label>
             </div>';
           } else {
             $cwa_selected='';
@@ -185,7 +192,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
           </div>';
           }
           
-        } else {
+        } elseif($val_cwa_connection==0) {
           echo '<div class="input-group"><span class="text-sm">Derzeit keine Corona-Warn-App (CWA) Verbindung möglich</span></div>';
         }
         if($array_voranmeldung[0][9]==1) {
@@ -193,6 +200,14 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
           <input type="checkbox" id="cb_zip" name="cb_zip" checked style="display:none;"/>
           <input type="checkbox" id="cb_zip_display" name="cb_zip_display" checked disabled/>
           <label for="cb_zip">Sammel-Zertifikat (Ergebnisse werden gesammelt vom Büro abgeholt)</label>
+          </div>';
+        }
+        if($array_voranmeldung[0][10]!=null) {
+          $pcr_grund_display=S_get_entry($Db,'SELECT Kurzbezeichnung FROM Kosten_PCR WHERE id='.$array_voranmeldung[0][10].';');
+          echo '<div class="FAIRsepdown"></div><div class="cb_drk">
+          <input type="text" name="pcr_grund" value="'.$array_voranmeldung[0][10].'" style="display:none;">
+          <input type="checkbox" id="cb_pcr_display" name="cb_pcr_display" checked disabled/>
+          <label for="cb_pcr_display">PCR-Testung - Grund: '.$pcr_grund_display.'</label>
           </div>';
         }
         echo '<div class="FAIRsepdown"></div>
@@ -230,8 +245,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         if($val_cwa_connection==1 && $val_cwa_connection_poc==1) {
           echo '<div class="FAIRsepdown"></div>
           <div class="cb_drk">
-          <input type="checkbox" id="cb_cwa" name="cb_cwa"/>
-          <label for="cb_cwa">Corona-Warn-App (CWA)</label>
+          <input type="checkbox" id="cb_cwa_anonym" name="cb_cwa_anonym"/>
+          <label for="cb_cwa_anonym">Corona-Warn-App (CWA) - Nicht namentlich</label>
           </div>';
           $display_cwa_question=' und kein CWA';
         } elseif($val_cwa_connection==1) {
@@ -532,7 +547,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
     $k_reg_type=$_POST['reg_type'];
 
     $k_cwa=$_POST['cb_cwa'];
-    if($k_cwa=='on') { $k_val_cwa=1; } else { $k_val_cwa=0; }
+    $k_cwa_anonym=$_POST['cb_cwa_anonym'];
+    if($k_cwa=='on') { $k_val_cwa=1; } elseif($k_cwa_anonym=='on') { $k_val_cwa=2; } else { $k_val_cwa=0; }
 
     $k_print_cert=$_POST['cb_print_cert'];
     if($k_print_cert=='on') { $k_val_print_cert=1; } else { $k_val_print_cert=0; }
@@ -556,13 +572,19 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       $now=date("Y-m-d H:i:s",time());
       $testtyp_default=S_get_entry($Db,'SELECT Testtyp_id FROM Station WHERE id='.$_SESSION['station_id'].';');
 
-      if($k_val_cwa==1) {
+      if($k_val_cwa>0) {
         $cwa_salt=A_generate_cwa_salt();
       } else {
         $cwa_salt=null;
       }
 
-      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,reg_type,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,salt,handout_request,privateMail_request,zip_request) VALUES ('.$_SESSION['station_id'].',
+      if( isset($_POST['pcr_grund']) ) {
+        $k_pcr_grund=', '.$_POST['pcr_grund'];
+      } else {
+        $k_pcr_grund=', null';
+      }
+
+      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,reg_type,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,salt,handout_request,privateMail_request,zip_request,PCR_Grund) VALUES ('.$_SESSION['station_id'].',
         \''.$k_token.'\',
         \''.$k_reg_type.'\',
         \''.$k_vname.'\',
@@ -577,7 +599,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         \''.$cwa_salt.'\',
         '.$k_val_print_cert.',
         '.$k_privatemail_req.',
-        '.$k_val_zip.'
+        '.$k_val_zip.$k_pcr_grund.'
         );');
       $k_id=S_get_entry($Db,'SELECT id FROM Vorgang WHERE Token=\''.$k_token.'\'');
       $array_written=S_get_multientry($Db,'SELECT id, Teststation, Token, Vorname, Nachname, Geburtsdatum, Adresse, Wohnort, Telefon, Mailadresse, CWA_request FROM Vorgang WHERE id='.$k_id.';');
@@ -610,7 +632,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
       echo '</div></div>';
       // SHOW QR CODE FOR CWA CONNECTION TO BE SCANNED BY CUSTOMER
-      if($array_written[0][10]==1) {
+      if($array_written[0][10]>0) {
         echo '<div class="FAIRsepdown"></div>
         <div class="col-sm-12 placeholders"><h3 class="imprint">CWA QR-Code für Kunde</h3>';
         $cwa_base64=S_get_cwa_qr_code ($Db,$array_written[0][0]);
@@ -657,7 +679,14 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
             echo '<div class="FAIRsepdown"></div>
             <div class="cb_drk">
             <input type="checkbox" id="cb_cwa" name="cb_cwa" checked/>
-            <label for="cb_cwa">Corona-Warn-App (CWA)</label>
+            <label for="cb_cwa">Corona-Warn-App (CWA) - Namentlich</label>
+            </div>';
+          } elseif($k_cwa_anonym=='on') {
+            // CWA anonymous was selected
+            echo '<div class="FAIRsepdown"></div>
+            <div class="cb_drk">
+            <input type="checkbox" id="cb_cwa_anonym" name="cb_cwa_anonym" checked/>
+            <label for="cb_cwa_anonym">Corona-Warn-App (CWA) - Nicht-namentlich</label>
             </div>';
           } else {
             // CWA was not selected
@@ -665,8 +694,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
               // but PoC CWA is allowed
               echo '<div class="FAIRsepdown"></div>
               <div class="cb_drk">
-              <input type="checkbox" id="cb_cwa" name="cb_cwa"/>
-              <label for="cb_cwa">Corona-Warn-App (CWA)</label>
+              <input type="checkbox" id="cb_cwa_anonym" name="cb_cwa_anonym"/>
+              <label for="cb_cwa_anonym">Corona-Warn-App (CWA) - Nicht-namentlich</label>
               </div>';
             } else {
               // PoC CWA is not allowed

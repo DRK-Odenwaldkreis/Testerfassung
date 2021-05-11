@@ -162,8 +162,8 @@ function S_set_entry_voranmeldung ($Db,$array_data) {
 	if($termin_slot>0) {
 		S_set_data($Db,'UPDATE Termine SET Used=1 WHERE id=CAST('.$termin_id.' as int);');
 	}
-	$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Geburtsdatum, Adresse, Wohnort, Telefon, Mailadresse, Termin_id, Tag, CWA_request) VALUES (?,?,?,?,?,?,?,?,?,?);");
-	mysqli_stmt_bind_param($stmt, "sssssssisi", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5], $array_data[6], $termin_id, $array_data[8],$array_data[9]);
+	$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Geburtsdatum, Adresse, Wohnort, Telefon, Mailadresse, Termin_id, Tag, CWA_request, PCR_Grund) VALUES (?,?,?,?,?,?,?,?,?,?,?);");
+	mysqli_stmt_bind_param($stmt, "sssssssisii", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5], $array_data[6], $termin_id, $array_data[8],$array_data[9],$array_data[10]);
 	mysqli_stmt_execute($stmt);
 	mysqli_stmt_bind_result($stmt, $result);
 	mysqli_stmt_fetch($stmt);

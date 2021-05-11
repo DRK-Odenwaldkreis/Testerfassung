@@ -75,7 +75,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         <h3>Änderung gespeichert</h3>
         </div>';
         echo '<div class="list-group">';
-        if($val_cwa_req==1) {
+        if($val_cwa_req>0) {
           echo '<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="cwa_qr.php?i='.$array_vorgang[0][0].'"><span class="icon-qrcode"></span>&nbsp;CWA QR-Code für Kunden anzeigen</a><div class="FAIRsepdown"></div>';
         }
         echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="testlist.php">Zurück zur Testliste</a>
@@ -101,7 +101,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         <p><span class="anweisung"><span class="icon-notification"></span> ANWEISUNG:</span> E-Mail nochmal ändern? <a href="?id='.$k_id.'">Dazu hier klicken</a>.</p>
         </div>';
         echo '<div class="list-group">';
-        if($val_cwa_req==1) {
+        if($val_cwa_req>0) {
           echo '<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="cwa_qr.php?i='.$array_vorgang[0][0].'"><span class="icon-qrcode"></span>&nbsp;CWA QR-Code für Kunden anzeigen</a><div class="FAIRsepdown"></div>';
         }
         echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="testlist.php">Zurück zur Testliste</a>
@@ -154,8 +154,8 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   // ///////////////
 
     // Get data
-    $array_vorgang=S_get_multientry($Db,'SELECT id,Teststation, Token, Registrierungszeitpunkt,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,CWA_request,handout_request,zip_request,Ergebnis FROM Vorgang WHERE id=CAST('.$_GET['id'].' AS int);');
-    if($array_vorgang[0][11]==1 && $array_vorgang[0][14]!=5) {
+    $array_vorgang=S_get_multientry($Db,'SELECT id,Teststation, Token, Registrierungszeitpunkt,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,CWA_request,handout_request,zip_request,Ergebnis,PCR_Grund FROM Vorgang WHERE id=CAST('.$_GET['id'].' AS int);');
+    if($array_vorgang[0][11]>0 && $array_vorgang[0][14]!=5) {
       // CWA aktiviert und Ergebnis bereits eingetragen
       // keine Änderung von Name, Geb-Dat. möglich
       $cwa_edit_lock=true;
@@ -191,8 +191,8 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][8].'" required></div>
     <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][9].'"></div>
     <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][10].'"></div>';
-    if($val_cwa_connection==1) {
-      if($array_vorgang[0][11]==1) {
+    if($val_cwa_connection==1 && $array_vorgang[0][15]==null) {
+      if($array_vorgang[0][11]>0) {
         $cwa_selected='checked';
       } else {
         $cwa_selected='';
@@ -212,49 +212,57 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       echo '<div class="FAIRsepdown"></div>
       <div class="cb_drk">
       <input type="checkbox" id="cb_cwa" name="cb_cwa" '.$cwa_selected.' disabled/>
-      <label for="cb_cwa">Corona-Warn-App (CWA) nutzen</label>
+      <label for="cb_cwa">Corona-Warn-App (CWA)</label>
       </div>';
       
       $display_cwa_question=' und kein CWA';
-    } else {
+    } elseif($val_cwa_connection==0) {
       echo '<div class="input-group"><span class="text-sm">Derzeit keine Corona-Warn-App (CWA) Verbindung möglich</span></div>';
       $display_cwa_question='';
     }
-    if($array_vorgang[0][12]==1) {
-      $print_cert_selected='checked';
-    } else {
-      $print_cert_selected='';
-    }
-    if($array_vorgang[0][13]==1) {
+    if($array_vorgang[0][15]==null) {
+      if($array_vorgang[0][12]==1) {
+        $print_cert_selected='checked';
+      } else {
+        $print_cert_selected='';
+      }
+      if($array_vorgang[0][13]==1) {
+        /* echo '<div class="FAIRsepdown"></div>
+        <div class="input-group">
+        <span class="input-group-addon">Sammel-Zertifikat:</span>
+        <span class="input-group-addon">
+        <input type="checkbox" id="cb_zip" name="cb_zip" checked disabled/>
+        <label for="cb_cwa">Ergebnisse werden gesammelt vom Büro abgeholt</label>
+        </span>
+        </div>'; */
+        echo '<div class="FAIRsepdown"></div>
+        <div class="cb_drk">
+        
+        <input type="checkbox" id="cb_zip" name="cb_zip" checked disabled/>
+        <label for="cb_zip">Sammel-Zertifikat (Ergebnisse werden gesammelt vom Büro abgeholt)</label>
+        
+        </div>';
+      }
+
       /* echo '<div class="FAIRsepdown"></div>
       <div class="input-group">
-      <span class="input-group-addon">Sammel-Zertifikat:</span>
+      <span class="input-group-addon">Zertifikat:</span>
       <span class="input-group-addon">
-      <input type="checkbox" id="cb_zip" name="cb_zip" checked disabled/>
-      <label for="cb_cwa">Ergebnisse werden gesammelt vom Büro abgeholt</label>
-      </span>
+      <input type="checkbox" id="cb_print_cert" name="cb_print_cert" '.$print_cert_selected.'/>
+      <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label></span>
       </div>'; */
       echo '<div class="FAIRsepdown"></div>
       <div class="cb_drk">
-      
-      <input type="checkbox" id="cb_zip" name="cb_zip" checked disabled/>
-      <label for="cb_cwa">Sammel-Zertifikat (Ergebnisse werden gesammelt vom Büro abgeholt)</label>
-      
+      <input type="checkbox" id="cb_print_cert" name="cb_print_cert" '.$print_cert_selected.'/>
+      <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label>
+      </div>';
+    } else {
+      $pcr_grund_display=S_get_entry($Db,'SELECT Kurzbezeichnung FROM Kosten_PCR WHERE id='.$array_vorgang[0][15].';');
+      echo '<div class="FAIRsepdown"></div><div class="cb_drk">
+      <input type="checkbox" id="cb_pcr_display" name="cb_pcr_display" checked disabled/>
+      <label for="cb_pcr_display">PCR-Testung - Grund: '.$pcr_grund_display.'</label>
       </div>';
     }
-
-    /* echo '<div class="FAIRsepdown"></div>
-    <div class="input-group">
-    <span class="input-group-addon">Zertifikat:</span>
-    <span class="input-group-addon">
-    <input type="checkbox" id="cb_print_cert" name="cb_print_cert" '.$print_cert_selected.'/>
-    <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label></span>
-    </div>'; */
-    echo '<div class="FAIRsepdown"></div>
-    <div class="cb_drk">
-    <input type="checkbox" id="cb_print_cert" name="cb_print_cert" '.$print_cert_selected.'/>
-    <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label>
-    </div>';
 
     echo '<div class="FAIRsepdown"></div>
     <span class="input-group-btn">
