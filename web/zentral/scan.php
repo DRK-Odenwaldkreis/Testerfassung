@@ -266,12 +266,20 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="cb_drk">
         <input type="checkbox" id="cb_print_cert" name="cb_print_cert"/>
         <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label>
-        </div>
-        <div class="FAIRsepdown"></div>
-        <div class="cb_drk">
-        <input type="checkbox" id="cb_zip_req" name="cb_zip_req"/>
-        <label for="cb_zip_req">Sammeltestung (Sammel-Zertifikat-Abruf)</label>
         </div>';
+        if($_SESSION['station_business']) {
+          echo '<div class="FAIRsepdown"></div>
+          <div class="cb_drk">
+          <input type="checkbox" id="cb_zip_req" name="cb_zip_req"/>
+          <label for="cb_zip_req">Sammeltestung (Sammel-Zertifikat-Abruf)</label>
+          </div>';
+        } else {
+          echo '<div class="FAIRsepdown"></div>
+          <div class="cb_drk">
+          <input type="checkbox" id="cb_zip_req" name="cb_zip_req" disabled/>
+          <label for="cb_zip_req">Sammeltestung (Sammel-Zertifikat-Abruf) nur für Firmen-Test-Stationen</label>
+          </div>';
+        }
         echo '<div class="FAIRsepdown"></div>
         <span class="input-group-btn">
           <input type="submit" class="btn btn-lg btn-danger" value="Registrieren" name="submit_person" />
@@ -745,11 +753,20 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <input type="checkbox" id="cb_print_cert" name="cb_print_cert" '.$print_cert_selected.'/>
         <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label>
         </div>
-        <div class="cb_drk">
-        <input type="checkbox" id="cb_zip_req" name="cb_zip_req"  '.$print_zip_selected.'/>
-        <label for="cb_zip_req">Sammeltestung (Sammel-Zertifikat-Abruf)</label>
-        </div>
         ';
+        if($_SESSION['station_business']) {
+          echo '<div class="FAIRsepdown"></div>
+          <div class="cb_drk">
+          <input type="checkbox" id="cb_zip_req" name="cb_zip_req" '.$print_zip_selected.'/>
+          <label for="cb_zip_req">Sammeltestung (Sammel-Zertifikat-Abruf)</label>
+          </div>';
+        } else {
+          echo '<div class="FAIRsepdown"></div>
+          <div class="cb_drk">
+          <input type="checkbox" id="cb_zip_req" name="cb_zip_req" disabled/>
+          <label for="cb_zip_req">Sammeltestung (Sammel-Zertifikat-Abruf) nur für Firmen-Test-Stationen</label>
+          </div>';
+        }
         echo '<div class="FAIRsepdown"></div>
         <span class="input-group-btn">
           <input type="submit" class="btn btn-danger" value="Registrieren" name="submit_person" />

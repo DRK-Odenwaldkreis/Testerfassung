@@ -188,8 +188,11 @@ function A_login($Db,$uid,$mode) {
 	$_SESSION['station_id'] = S_get_entry($Db,'SELECT Station FROM li_user WHERE id='.$uid.';');
 	if($_SESSION['station_id']>0) {
 		$_SESSION['station_name'] = S_get_entry($Db,'SELECT Ort FROM Station WHERE id='.$_SESSION['station_id'].';');
+		$business_code=S_get_entry($Db,'SELECT Firmencode FROM Station WHERE id='.$_SESSION['station_id'].';');
+		if($business_code!='') { $_SESSION['station_business']=true; } else { $_SESSION['station_business']=false; }
 	} else {
 		$_SESSION['station_name']="";
+		$_SESSION['station_business']=false;
 	}
 
 	/* Rollen
