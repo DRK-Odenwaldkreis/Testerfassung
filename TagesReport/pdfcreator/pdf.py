@@ -57,13 +57,17 @@ class PDFgenerator:
 		self.cycleTime = self.content[5]
 		self.gebDates = self.content[6]
 		self.numberChildren = self.content[7]
+		self.CWA_anonym = self.content[8]
+		self.CWA_named = self.content[9]
+		self.pre_reg = self.content[10]
+		self.poc_reg = self.content[11]
 
 		# Pie chart, where the slices will be ordered and plotted counter-clockwise:
 		self.labels = 'Positiv', 'Negativ', 'Unklar'
 		self.sizes = [self.positiv, self.negativ, self.unklar]
 		self.explode = (1, 0.1, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
-		self.fig, self.ax = plt.subplots(2,2)
-		plt.subplots_adjust(wspace=0.5,hspace=0.5,left=0.07)
+		self.fig, self.ax = plt.subplots(3,2)
+		plt.subplots_adjust(wspace=0.4,hspace=1.5,left=0.07)
 		self.fig.suptitle("Gesamtanzahl der Tests: %s" % (self.tests))
 		self.ax[0,0].pie(self.sizes, explode=self.explode, labels=self.labels, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),
                     shadow=False, startangle=90)
@@ -79,14 +83,28 @@ class PDFgenerator:
 		self.ageArray = np.array(self.gebDates)
 		self.ax[1,0].hist(self.ageArray, 10, color = "green")
 		self.ax[1,0].set_title("Altersschnitt: %s Jahre" %(int(self.ageArray.mean())))
-		self.ax[1,0].set_ylabel("Anzahl")
 		self.ax[1,0].set_xlabel("Alter")
+		self.ax[1,0].set_ylabel("Anzahl")
 		#Pi charts kids <-> Adults
-		self.labels = 'Kinder', 'Erwachsene'
-		self.sizes = [self.numberChildren, self.positiv+self.negativ+self.unklar-self.numberChildren]
-		self.ax[1,1].pie(self.sizes, labels=self.labels, shadow=False, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),startangle=90)
-		plt.savefig('tmp/' + str(self.date) + '.png', dpi=(170))
+		self.labels = ['Kinder:' + str(self.numberChildren), 'Erwachsene:' + str(self.positiv+self.negativ+self.unklar-self.numberChildren)]
+		self.sizes = np.array([self.numberChildren, self.positiv+self.negativ+self.unklar-self.numberChildren])
+		self.ax[1,1].bar(self.labels, self.sizes)
+		self.ax[1,1].set_title("Kinder/Erwachsense")
+		self.ax[1,1].set_ylabel("Anzahl")
+		#Pi charts CWA Tests
+		self.labels = ['Anonym:' + str(self.CWA_anonym), 'Personalisiert:' + str(self.CWA_named)]
+		self.sizes = np.array([self.CWA_anonym,self.CWA_named])
+		self.ax[2,0].bar(self.labels, self.sizes)
+		self.ax[2,0].set_title("CoronaWarn App")
+		self.ax[2,0].set_ylabel("Anzahl")
+		#Pi charts Preregistered <-> Vor Ort
 
+		self.labels = ['Selbstregistriert:' + str(self.pre_reg), 'Vor Ort:' + str(self.poc_reg)]
+		self.sizes = np.array([self.pre_reg,self.poc_reg])
+		self.ax[2,1].bar(self.labels, self.sizes,0.3)
+		self.ax[2,1].set_title("Registrierungsverhalten")
+		self.ax[2,1].set_ylabel("Anzahl")
+		plt.savefig('tmp/' + str(self.date) + '.png', dpi=(170))
 
 	def generate(self):
 

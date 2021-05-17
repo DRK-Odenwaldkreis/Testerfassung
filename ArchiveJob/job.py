@@ -24,13 +24,13 @@ if __name__ == "__main__":
                 'Input parameters are not correct, date needed')
             raise Exception
         DatabaseConnect = Database()
-        sql = "Select Vorgang.id, Teststation, Token, Registrierungszeitpunkt,Testtyp.id, Testtyp.IsPCR from Vorgang JOIN Testtyp ON Vorgang.Testtyp_id=Testtyp.id where (Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s' and Testtyp.IsPCR=0) or (Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s' and Testtyp.IsPCR=1) or (Ergebnis = 1 and DATE(Registrierungszeitpunkt) <= '%s') or (Ergebnis=5 and Testtyp.IsPCR=0);" % (requestedDate-datetime.timedelta(days=2),requestedDate-datetime.timedelta(days=4),requestedDate-datetime.timedelta(days=90))
+        sql = "Select Vorgang.id, Teststation, Token, Registrierungszeitpunkt,Testtyp.id, Testtyp.IsPCR from Vorgang JOIN Testtyp ON Vorgang.Testtyp_id=Testtyp.id where (Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s' and Testtyp.IsPCR=0) or (Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s' and Testtyp.IsPCR=1) or (Ergebnis = 1 and DATE(Registrierungszeitpunkt) <= '%s');" % (requestedDate-datetime.timedelta(days=2),requestedDate-datetime.timedelta(days=4),requestedDate-datetime.timedelta(days=90))
         logger.debug('Getting all Events for a date with the following query: %s' % (sql))
         deleteCanidate = DatabaseConnect.read_all(sql)
         for i in deleteCanidate:
             try:
                 sql = "INSERT INTO Archive (TestNr, Station, Token, Registrierungszeitpunkt) VALUES (%s,%s,%s,%s);"
-                tupel = (i)
+                tupel = (i[0],i[1],i[2],i[3])
                 if DatabaseConnect.insert(sql,tupel):
                     sql = "Delete from Vorgang where id=%s;"%(i[0])
                     DatabaseConnect.delete(sql)
