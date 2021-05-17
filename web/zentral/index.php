@@ -96,6 +96,7 @@ echo '</div></div>';
 echo '</div>';
 
 
+// ////////////////////////////
 // Test statistics
 
 // Open database connection
@@ -104,19 +105,30 @@ $stations_array=S_get_multientry($Db,'SELECT id, Ort FROM Station;');
 $today=date("Y-m-d",time());
 $yesterday=date("Y-m-d",time() - 60 * 60 * 24);
 $beforetwodays=date("Y-m-d",time() - 2 * 60 * 60 * 24);
+$tomorrow=date("Y-m-d",time() + 60 * 60 * 24);
+
+$stat_val_total_fday=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$tomorrow.'\';');
+$stat_val_total_cwanreg_fday=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$tomorrow.'\' AND CWA_request=1;');
+$stat_val_total_cwaareg_fday=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$tomorrow.'\' AND CWA_request=2;');
 
 $stat_val_total_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\';');
 $stat_val_total_pocreg_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND reg_type=\'POCREG\';');
+$stat_val_total_cwanreg_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND CWA_request=1;');
+$stat_val_total_cwaareg_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND CWA_request=2;');
 $stat_val_neg_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Ergebnis=2;');
 $stat_val_pos_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Ergebnis=1;');
 
 $stat_val_total_yday=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\';');
 $stat_val_total_pocreg_yday=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$yesterday.'\' AND reg_type=\'POCREG\';');
+$stat_val_total_cwanreg_yday=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$yesterday.'\' AND CWA_request=1;');
+$stat_val_total_cwaareg_yday=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$yesterday.'\' AND CWA_request=2;');
 $stat_val_neg_yday=S_get_entry($Db,'SELECT sum(Negativ) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\';');
 $stat_val_pos_yday=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\';');
 
 $stat_val_total_2day=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\';');
 $stat_val_total_pocreg_2day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$beforetwodays.'\' AND reg_type=\'POCREG\';');
+$stat_val_total_cwanreg_2day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$beforetwodays.'\' AND CWA_request=1;');
+$stat_val_total_cwaareg_2day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$beforetwodays.'\' AND CWA_request=2;');
 $stat_val_neg_2day=S_get_entry($Db,'SELECT sum(Negativ) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\';');
 $stat_val_pos_2day=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\';');
 
@@ -139,16 +151,103 @@ $stat_val_pos_2day_st=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE
 S_close_db($Db);
 
 echo '<div class="row">';
-echo '<div class="col-md-3">
+echo '<div class="col-md-2">
 <div class="alert alert-info" role="alert">
 <p>Getestete Personen</p>
-<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day.' <span class="FAIR-text-sm">(PoC Reg '.(number_format(($stat_val_total_pocreg_day/$stat_val_total_day*100),0,',','.')).' %)</span></h3>
-<h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_total_yday.' <span class="FAIR-text-sm">(PoC Reg '.(number_format(($stat_val_total_pocreg_yday/$stat_val_total_yday*100),0,',','.')).' %)</span></h3>
-<h3><span class="FAIR-text-sm">vorgestern</span> '.$stat_val_total_2day.'<span class="FAIR-text-sm">(PoC Reg '.(number_format(($stat_val_total_pocreg_2day/$stat_val_total_2day*100),0,',','.')).' %)</span></h3>
+<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day.'</h3>
+<h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_total_yday.'</h3>
+<h3><span class="FAIR-text-sm">vorgestern</span> '.$stat_val_total_2day.'</h3>
 </div>';
 
+$reg_cwan=(number_format(($stat_val_total_cwanreg_fday/$stat_val_total_fday*100),1,'.','.'));
+$reg_cwaa=(number_format(($stat_val_total_cwaareg_fday/$stat_val_total_fday*100),1,'.','.'));
+$poc_rate=($stat_val_total_pocreg_day+$stat_val_total_pocreg_yday+$stat_val_total_pocreg_2day)/($stat_val_total_day+$stat_val_total_yday+$stat_val_total_2day);
+$reg_fday_estimation=number_format(($stat_val_total_fday/(1-$poc_rate)),0,',','.');
+$reg_pre=(number_format((100-$reg_cwan-$reg_cwaa),1,'.','.'));
+
 echo '</div>';
-echo '<div class="col-md-3">
+echo '<div class="col-md-2">
+<div class="alert alert-info" role="alert">
+<p>Registrierungsart</p>
+<h3><span class="FAIR-text-sm">morgen registr.'.$stat_val_total_fday.' / erwartet '.$reg_fday_estimation.'</span></h3>
+<div class="progress">
+  <div title="CWA-namentlich '.$reg_cwan.' %" class="progress-bar progress-bar-success" style="width: '.$reg_cwan.'%">
+    <span>CWA-n</span>
+  </div>
+  <div title="CWA-anonym '.$reg_cwaa.' %" class="progress-bar progress-bar-info" style="width: '.$reg_cwaa.'%">
+    <span>CWA-a</span>
+  </div>
+  <div title="PreReg ohne CWA '.$reg_pre.' %" class="progress-bar progress-bar-danger" style="width: '.$reg_pre.'%">
+    <span>PreReg</span>
+  </div>
+</div>
+';
+$reg_poc=(number_format(($stat_val_total_pocreg_day/$stat_val_total_day*100),1,'.','.'));
+$reg_cwan=(number_format(($stat_val_total_cwanreg_day/$stat_val_total_day*100),1,'.','.'));
+$reg_cwaa=(number_format(($stat_val_total_cwaareg_day/$stat_val_total_day*100),1,'.','.'));
+$reg_pre=(number_format((100-$reg_poc-$reg_cwan-$reg_cwaa),1,'.','.'));
+echo '
+<h3><span class="FAIR-text-sm">heute</span></h3>
+<div class="progress">
+  <div title="PoC Reg '.$reg_poc.' %" class="progress-bar progress-bar-warning" style="width: '.$reg_poc.'%">
+    <span>PoC</span>
+  </div>
+  <div title="CWA-namentlich '.$reg_cwan.' %" class="progress-bar progress-bar-success" style="width: '.$reg_cwan.'%">
+    <span>CWA-n</span>
+  </div>
+  <div title="CWA-anonym '.$reg_cwaa.' %" class="progress-bar progress-bar-info" style="width: '.$reg_cwaa.'%">
+    <span>CWA-a</span>
+  </div>
+  <div title="PreReg ohne CWA '.$reg_pre.' %" class="progress-bar progress-bar-danger" style="width: '.$reg_pre.'%">
+    <span>PreReg</span>
+  </div>
+</div>
+';
+$reg_poc=(number_format(($stat_val_total_pocreg_yday/$stat_val_total_yday*100),1,'.','.'));
+$reg_cwan=(number_format(($stat_val_total_cwanreg_yday/$stat_val_total_yday*100),1,'.','.'));
+$reg_cwaa=(number_format(($stat_val_total_cwaareg_yday/$stat_val_total_yday*100),1,'.','.'));
+$reg_pre=(number_format((100-$reg_poc-$reg_cwan-$reg_cwaa),1,'.','.'));
+echo '
+<h3><span class="FAIR-text-sm">gestern</span></h3>
+<div class="progress">
+  <div title="PoC Reg '.$reg_poc.' %" class="progress-bar progress-bar-warning" style="width: '.$reg_poc.'%">
+    <span>PoC</span>
+  </div>
+  <div title="CWA-namentlich '.$reg_cwan.' %" class="progress-bar progress-bar-success" style="width: '.$reg_cwan.'%">
+    <span>CWA-n</span>
+  </div>
+  <div title="CWA-anonym '.$reg_cwaa.' %" class="progress-bar progress-bar-info" style="width: '.$reg_cwaa.'%">
+    <span>CWA-a</span>
+  </div>
+  <div title="PreReg ohne CWA '.$reg_pre.' %" class="progress-bar progress-bar-danger" style="width: '.$reg_pre.'%">
+    <span>PreReg</span>
+  </div>
+</div>
+';
+$reg_poc=(number_format(($stat_val_total_pocreg_2day/$stat_val_total_2day*100),1,'.','.'));
+$reg_cwan=(number_format(($stat_val_total_cwanreg_2day/$stat_val_total_2day*100),1,'.','.'));
+$reg_cwaa=(number_format(($stat_val_total_cwaareg_2day/$stat_val_total_2day*100),1,'.','.'));
+$reg_pre=(number_format((100-$reg_poc-$reg_cwan-$reg_cwaa),1,'.','.'));
+echo '
+<h3><span class="FAIR-text-sm">vorgestern</span></h3>
+<div class="progress">
+  <div title="PoC Reg '.$reg_poc.' %" class="progress-bar progress-bar-warning" style="width: '.$reg_poc.'%">
+    <span>PoC</span>
+  </div>
+  <div title="CWA-namentlich '.$reg_cwan.' %" class="progress-bar progress-bar-success" style="width: '.$reg_cwan.'%">
+    <span>CWA-n</span>
+  </div>
+  <div title="CWA-anonym '.$reg_cwaa.' %" class="progress-bar progress-bar-info" style="width: '.$reg_cwaa.'%">
+    <span>CWA-a</span>
+  </div>
+  <div title="PreReg ohne CWA '.$reg_pre.' %" class="progress-bar progress-bar-danger" style="width: '.$reg_pre.'%">
+    <span>PreReg</span>
+  </div>
+</div>
+';
+
+echo '</div></div>';
+echo '<div class="col-md-2">
 <div class="alert alert-success" role="alert">
 <p>Negative Fälle</p>
 <h3><span class="FAIR-text-sm">heute</span> '.$stat_val_neg_day.'</h3>
@@ -157,7 +256,7 @@ echo '<div class="col-md-3">
 </div>';
 
 echo '</div>';
-echo '<div class="col-md-3">
+echo '<div class="col-md-2">
 <div class="alert alert-danger" role="alert">
 <p>Positive Fälle</p>
 <h3><span class="FAIR-text-sm">heute</span> '.$stat_val_pos_day.' ('.(number_format(($stat_val_pos_day/$stat_val_total_day*100),1,',','.')).' %)</h3>
@@ -167,7 +266,7 @@ echo '<div class="col-md-3">
 
 echo '</div>';
 
-echo '<div class="col-md-3">
+echo '<div class="col-md-4">
     <div class="alert alert-warning" role="alert">';
 
 if($_SESSION['station_id']>0) {
@@ -211,6 +310,10 @@ if($stat_val_total_2day_st>0) {
 
 echo '</div>
 </div>';
+
+// Test statistics
+// ////////////////////////////
+
 
 echo '</div></div>';
 

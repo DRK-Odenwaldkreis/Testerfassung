@@ -93,7 +93,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
     // Print html header
      //echo $GLOBALS['G_html_header'];
      echo '<head>
-     <title>Positivmeldungen - DRK Covid-19 Testzentrum Odenwaldkreis</title>
+     <title>Positivmeldungen & PCR - DRK Covid-19 Testzentrum Odenwaldkreis</title>
      <!-- Required meta tags -->
      <meta charset="utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -125,10 +125,10 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
   $Db=S_open_db();
 
   // Get all test for today
-  $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung, Station.Ort FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id JOIN Station ON Station.id=Vorgang.Teststation WHERE Vorgang.Ergebnis = 1 AND Date(Vorgang.Registrierungszeitpunkt)="'.$today.'"  ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
+  $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung, Station.Ort FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id JOIN Station ON Station.id=Vorgang.Teststation WHERE (Vorgang.Ergebnis = 1 OR Testtyp.IsPCR=1) AND Date(Vorgang.Registrierungszeitpunkt)="'.$today.'"  ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
 
 
-  echo '<h1>Ansicht der Positivmeldungen</h1>';
+  echo '<h1>Ansicht der Positivmeldungen & PCR-Tests</h1>';
 
   echo '<div class="row">';
 
@@ -199,7 +199,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
       $text_ergebnis='ERR';
     } elseif($i[12]==5) {
       $class_ergebnis='';
-      $text_ergebnis='---';
+      $text_ergebnis='OFFEN';
     } else {
       $class_ergebnis='';
       $text_ergebnis='';

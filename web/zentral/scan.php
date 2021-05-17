@@ -152,7 +152,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][3].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][4].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][5].'" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][6].'"></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][6].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][7].'" required></div>
         <div class="FAIRsepdown"></div>';
         if($array_voranmeldung[0][9]==0 && $array_voranmeldung[0][10]==null) {
@@ -239,7 +239,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         </div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off"></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off"></div>
         ';
         if($val_cwa_connection==1 && $val_cwa_connection_poc==1) {
@@ -578,13 +578,9 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         $cwa_salt=null;
       }
 
-      if( isset($_POST['pcr_grund']) ) {
+      if( isset($_POST['pcr_grund']) && $_POST['pcr_grund']>0 ) {
         $k_pcr_grund=', '.$_POST['pcr_grund'];
-      } else {
-        $k_pcr_grund=', null';
-      }
-
-      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,reg_type,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,salt,handout_request,privateMail_request,zip_request,PCR_Grund) VALUES ('.$_SESSION['station_id'].',
+        S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,reg_type,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,salt,handout_request,privateMail_request,zip_request,PCR_Grund) VALUES ('.$_SESSION['station_id'].',
         \''.$k_token.'\',
         \''.$k_reg_type.'\',
         \''.$k_vname.'\',
@@ -601,6 +597,27 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         '.$k_privatemail_req.',
         '.$k_val_zip.$k_pcr_grund.'
         );');
+      } else {
+        S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,reg_type,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,salt,handout_request,privateMail_request,zip_request) VALUES ('.$_SESSION['station_id'].',
+        \''.$k_token.'\',
+        \''.$k_reg_type.'\',
+        \''.$k_vname.'\',
+        \''.$k_nname.'\',
+        \''.$k_geb.'\',
+        \''.$k_adresse.'\',
+        \''.$k_ort.'\',
+        \''.$k_tel.'\',
+        \''.$k_email.'\',
+        '.$testtyp_default.',
+        '.$k_val_cwa.',
+        \''.$cwa_salt.'\',
+        '.$k_val_print_cert.',
+        '.$k_privatemail_req.',
+        '.$k_val_zip.'
+        );');
+      }
+
+      
       $k_id=S_get_entry($Db,'SELECT id FROM Vorgang WHERE Token=\''.$k_token.'\'');
       $array_written=S_get_multientry($Db,'SELECT id, Teststation, Token, Vorname, Nachname, Geburtsdatum, Adresse, Wohnort, Telefon, Mailadresse, CWA_request FROM Vorgang WHERE id='.$k_id.';');
       echo '<div class="row">';
@@ -670,7 +687,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         </div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$k_adresse.'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$k_ort.'" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon *</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_tel.'" autocomplete="off"></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_tel.'" autocomplete="off" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_email.'" autocomplete="off"></div>';
         if($val_cwa_connection==1) {
           // CWA allowed
