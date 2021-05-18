@@ -42,7 +42,7 @@ if __name__ == "__main__":
         elif len(sys.argv) == 4:
             requestedDate = sys.argv[1]
             gesundheitsamt=True
-            sql = "Select Vorgang.id,Nachname,Vorname,Geburtsdatum,Wohnort,Adresse,Telefon,Mailadresse,Ergebnis,Ergebniszeitpunkt,Teststation,Testtyp.Name from Vorgang LEFT JOIN Testtyp ON Testtyp_id=Testtyp.id where Ergebnis = 1 and Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (
+            sql = "Select Vorgang.id,Vorgang.Nachname,Vorgang.Vorname,Vorgang.Geburtsdatum,Vorgang.Wohnort,Vorgang.Adresse,Vorgang.Telefon,Vorgang.Mailadresse,Vorgang.Ergebnis,Vorgang.Ergebniszeitpunkt,Vorgang.Teststation,Testtyp.Name from Vorgang LEFT JOIN Testtyp ON Testtyp_id=Testtyp.id where (Vorgang.Ergebnis = 1 or (Vorgang.Ergebnis != 5 and Testtyp.IsPCR=1)) and Vorgang.Ergebniszeitpunkt Between '%s 00:00:00' and '%s 23:59:59';" % (
                 requestedDate.replace('-', '.'), requestedDate.replace('-', '.'))
         else:
             logger.debug(
