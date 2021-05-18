@@ -67,12 +67,22 @@ class PDFgenerator:
 		self.sizes = [self.positiv, self.negativ, self.unklar]
 		self.explode = (1, 0.1, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
 		self.fig, self.ax = plt.subplots(3,2)
-		plt.subplots_adjust(wspace=0.4,hspace=1.5,left=0.07)
-		self.fig.suptitle("Gesamtanzahl der Tests: %s" % (self.tests))
-		self.ax[0,0].pie(self.sizes, explode=self.explode, labels=self.labels, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),
-                    shadow=False, startangle=90)
+		plt.subplots_adjust(wspace=0.4,hspace=1.5,left=0.11)
+		"""self.fig.suptitle("Gesamtanzahl der Tests: %s" % (self.tests))
+		self.ax[0,0].pie(self.sizes, explode=self.explode, labeldistance=2.0,pctdistance=3.5,labels=self.labels, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),
+                    shadow=False, startangle=90)"""
+		self.labels = ['Positiv', 'Negativ','Unklar']
+		self.sizes = np.array([self.positiv, self.negativ,self.unklar])
+		self.ax[0,0].barh(self.labels, self.sizes)
+		self.ax[0,0].set_title("Gesamtanzahl der Tests: %s" % (self.tests))
+		self.ax[0,0].set_xlabel("Anzahl")
+		self.ax[0,0].axis(xmin=0,xmax=np.max(self.sizes)*1.2)
+		for i, v in enumerate(self.sizes):
+			self.ax[0,0].text(v, i, " "+str(v), color='blue', va='center', fontweight='bold')
+		
+
 		# Equal aspect ratio ensures that pie is drawn as a circle.
-		self.ax[0,0].axis('equal')
+		#self.ax[0,0].axis('equal')
 		# Histogram of Durchlaufzeiten
 		self.cycleTimeArray = np.array(self.cycleTime)
 		self.ax[0,1].hist(self.cycleTimeArray, range(15,30),color = "green")
