@@ -155,6 +155,24 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][6].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][7].'" required></div>
         <div class="FAIRsepdown"></div>';
+
+        if(S_get_entry($Db,'SELECT Testtyp.IsPCR Name FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id WHERE Station.id='.$_SESSION['station_id'].';')==1) {
+          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR;');
+          echo '          
+            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für einen PCR-Test</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+            <option value="" selected>Bitte wählen...</option>
+                ';
+                foreach($pcr_grund_array as $i) {
+                    $display=$i[1];
+                    if($array_voranmeldung[0][10]==$i[0]) { $selected='selected'; } else { $selected=''; }
+                    echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
+                }
+                echo '
+            </select></div>
+            <div class="FAIRsepdown"></div>
+          ';
+        }
+
         if($array_voranmeldung[0][9]==0 && $array_voranmeldung[0][10]==null) {
           echo '<div class="FAIRsepdown"></div>
           <div class="cb_drk">
@@ -202,14 +220,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
           <label for="cb_zip">Sammel-Zertifikat (Ergebnisse werden gesammelt vom Büro abgeholt)</label>
           </div>';
         }
-        if($array_voranmeldung[0][10]!=null) {
-          $pcr_grund_display=S_get_entry($Db,'SELECT Kurzbezeichnung FROM Kosten_PCR WHERE id='.$array_voranmeldung[0][10].';');
-          echo '<div class="FAIRsepdown"></div><div class="cb_drk">
-          <input type="text" name="pcr_grund" value="'.$array_voranmeldung[0][10].'" style="display:none;">
-          <input type="checkbox" id="cb_pcr_display" name="cb_pcr_display" checked disabled/>
-          <label for="cb_pcr_display">PCR-Testung - Grund: '.$pcr_grund_display.'</label>
-          </div>';
-        }
+
         echo '<div class="FAIRsepdown"></div>
         <span class="input-group-btn">
           <input type="submit" class="btn btn-lg btn-danger" value="Registrieren" name="submit_person" />
@@ -242,6 +253,20 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off"></div>
         ';
+        if(S_get_entry($Db,'SELECT Testtyp.IsPCR Name FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id WHERE Station.id='.$_SESSION['station_id'].';')==1) {
+          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR;');
+          echo '          
+                  <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für einen PCR-Test</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+                  <option value="" selected>Bitte wählen...</option>
+                      ';
+                      foreach($pcr_grund_array as $i) {
+                          $display=$i[1];
+                          echo '<option value="'.$i[0].'">'.$display.'</option>';
+                      }
+                      echo '
+                  </select></div>
+          ';
+        }
         if($val_cwa_connection==1 && $val_cwa_connection_poc==1) {
           echo '<div class="FAIRsepdown"></div>
           <div class="cb_drk">
@@ -553,6 +578,12 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
     $k_tel=$_POST['telefon'];
     $k_email=$_POST['email'];
     $k_reg_type=$_POST['reg_type'];
+    
+    if( isset($_POST['pcr_grund']) && $_POST['pcr_grund']>0 ) {
+      $k_pcr_grund=$_POST['pcr_grund'];
+    } else {
+      $k_pcr_grund=null;
+    }
 
     $k_cwa=$_POST['cb_cwa'];
     $k_cwa_anonym=$_POST['cb_cwa_anonym'];
@@ -586,44 +617,26 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         $cwa_salt=null;
       }
 
-      if( isset($_POST['pcr_grund']) && $_POST['pcr_grund']>0 ) {
-        $k_pcr_grund=', '.$_POST['pcr_grund'];
-        S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,reg_type,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,salt,handout_request,privateMail_request,zip_request,PCR_Grund) VALUES ('.$_SESSION['station_id'].',
-        \''.$k_token.'\',
-        \''.$k_reg_type.'\',
-        \''.$k_vname.'\',
-        \''.$k_nname.'\',
-        \''.$k_geb.'\',
-        \''.$k_adresse.'\',
-        \''.$k_ort.'\',
-        \''.$k_tel.'\',
-        \''.$k_email.'\',
-        '.$testtyp_default.',
-        '.$k_val_cwa.',
-        \''.$cwa_salt.'\',
-        '.$k_val_print_cert.',
-        '.$k_privatemail_req.',
-        '.$k_val_zip.$k_pcr_grund.'
-        );');
-      } else {
-        S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,reg_type,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,salt,handout_request,privateMail_request,zip_request) VALUES ('.$_SESSION['station_id'].',
-        \''.$k_token.'\',
-        \''.$k_reg_type.'\',
-        \''.$k_vname.'\',
-        \''.$k_nname.'\',
-        \''.$k_geb.'\',
-        \''.$k_adresse.'\',
-        \''.$k_ort.'\',
-        \''.$k_tel.'\',
-        \''.$k_email.'\',
-        '.$testtyp_default.',
-        '.$k_val_cwa.',
-        \''.$cwa_salt.'\',
-        '.$k_val_print_cert.',
-        '.$k_privatemail_req.',
-        '.$k_val_zip.'
-        );');
-      }
+      
+      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,reg_type,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,salt,handout_request,privateMail_request,zip_request,PCR_Grund) VALUES ('.$_SESSION['station_id'].',
+      \''.$k_token.'\',
+      \''.$k_reg_type.'\',
+      \''.$k_vname.'\',
+      \''.$k_nname.'\',
+      \''.$k_geb.'\',
+      \''.$k_adresse.'\',
+      \''.$k_ort.'\',
+      \''.$k_tel.'\',
+      \''.$k_email.'\',
+      '.$testtyp_default.',
+      '.$k_val_cwa.',
+      \''.$cwa_salt.'\',
+      '.$k_val_print_cert.',
+      '.$k_privatemail_req.',
+      '.$k_val_zip.',
+      '.$k_pcr_grund.'
+      );');
+      
 
       
       $k_id=S_get_entry($Db,'SELECT id FROM Vorgang WHERE Token=\''.$k_token.'\'');
@@ -697,6 +710,20 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$k_ort.'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_tel.'" autocomplete="off" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_email.'" autocomplete="off"></div>';
+        if(S_get_entry($Db,'SELECT Testtyp.IsPCR Name FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id WHERE Station.id='.$_SESSION['station_id'].';')==1) {
+          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR;');
+          echo '          
+                  <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für einen PCR-Test</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+                  <option value="" selected>Bitte wählen...</option>
+                      ';
+                      foreach($pcr_grund_array as $i) {
+                          $display=$i[1];
+                          echo '<option value="'.$i[0].'">'.$display.'</option>';
+                      }
+                      echo '
+                  </select></div>
+          ';
+        }
         if($val_cwa_connection==1) {
           // CWA allowed
           if($k_cwa=='on') {

@@ -55,6 +55,11 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       $k_email=$_POST['email'];
       $k_print_cert=$_POST['cb_print_cert'];
       if($k_print_cert=='on') { $k_val_print_cert=1; } else { $k_val_print_cert=0; }
+      if( isset($_POST['pcr_grund']) && $_POST['pcr_grund']>0 ) {
+        $k_pcr_grund=$_POST['pcr_grund'];
+      } else {
+        $k_pcr_grund=null;
+      }
 
       if (filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
   
@@ -66,7 +71,8 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         Wohnort=\''.$k_ort.'\',
         Telefon=\''.$k_tel.'\',
         Mailadresse=\''.$k_email.'\',
-        handout_request='.$k_val_print_cert.'
+        handout_request='.$k_val_print_cert.',
+        PCR_Grund='.$k_pcr_grund.'
         WHERE id=CAST('.$k_id.' AS int);');
         $val_cwa_req=S_get_entry($Db,'SELECT CWA_request FROM Vorgang WHERE id=CAST('.$k_id.' AS int);');
         echo '<div class="row">';
@@ -90,7 +96,8 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         Adresse=\''.$k_adresse.'\',
         Wohnort=\''.$k_ort.'\',
         Telefon=\''.$k_tel.'\',
-        handout_request='.$k_val_print_cert.'
+        handout_request='.$k_val_print_cert.',
+        PCR_Grund='.$k_pcr_grund.'
         WHERE id=CAST('.$k_id.' AS int);');
         $val_cwa_req=S_get_entry($Db,'SELECT CWA_request FROM Vorgang WHERE id=CAST('.$k_id.' AS int);');
         echo '<div class="row">';
@@ -257,11 +264,22 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label>
       </div>';
     } else {
-      $pcr_grund_display=S_get_entry($Db,'SELECT Kurzbezeichnung FROM Kosten_PCR WHERE id='.$array_vorgang[0][15].';');
-      echo '<div class="FAIRsepdown"></div><div class="cb_drk">
-      <input type="checkbox" id="cb_pcr_display" name="cb_pcr_display" checked disabled/>
-      <label for="cb_pcr_display">PCR-Testung - Grund: '.$pcr_grund_display.'</label>
-      </div>';
+      
+      $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR;');
+      echo '          
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für einen PCR-Test</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+        <option value="" selected>Bitte wählen...</option>
+            ';
+            foreach($pcr_grund_array as $i) {
+                $display=$i[1];
+                if($array_vorgang[0][15]==$i[0]) { $selected='selected'; } else { $selected=''; }
+                echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
+            }
+            echo '
+        </select></div>
+        <div class="FAIRsepdown"></div>
+      ';
+
     }
 
     echo '<div class="FAIRsepdown"></div>

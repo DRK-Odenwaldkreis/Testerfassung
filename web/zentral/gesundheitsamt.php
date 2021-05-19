@@ -125,7 +125,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
   $Db=S_open_db();
 
   // Get all test for today
-  $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung, Station.Ort FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id JOIN Station ON Station.id=Vorgang.Teststation WHERE (Vorgang.Ergebnis = 1 OR Testtyp.IsPCR=1) AND Date(Vorgang.Registrierungszeitpunkt)="'.$today.'"  ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
+  $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung, Station.Ort, Kosten_PCR.Kurzbezeichnung FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id JOIN Station ON Station.id=Vorgang.Teststation LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund WHERE (Vorgang.Ergebnis = 1 OR (Testtyp.IsPCR=1 AND Kosten_PCR.id!=3) ) AND Date(Vorgang.Registrierungszeitpunkt)="'.$today.'" ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
 
 
   echo '<h1>Ansicht der Positivmeldungen & PCR-Tests</h1>';
@@ -276,7 +276,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'<br>'.$i[24].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">Erg '.$text_ergebnis.' / '.$i[4].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.'</td>';
     } else {
@@ -288,7 +288,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[7].'<br>'.$i[8].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[9].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[10].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'<br>'.$i[24].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">Erg '.$text_ergebnis.' / '.$i[4].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.'</td>';
     }
