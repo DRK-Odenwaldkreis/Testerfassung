@@ -57,9 +57,11 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       if($k_print_cert=='on') { $k_val_print_cert=1; } else { $k_val_print_cert=0; }
       if( isset($_POST['pcr_grund']) && $_POST['pcr_grund']>0 ) {
         $k_pcr_grund=$_POST['pcr_grund'];
+        $k_pcr_grund=', PCR_Grund='.$k_pcr_grund.'';
       } else {
-        $k_pcr_grund=null;
+        $k_pcr_grund='';
       }
+
 
       if (filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
   
@@ -71,8 +73,8 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         Wohnort=\''.$k_ort.'\',
         Telefon=\''.$k_tel.'\',
         Mailadresse=\''.$k_email.'\',
-        handout_request='.$k_val_print_cert.',
-        PCR_Grund='.$k_pcr_grund.'
+        handout_request='.$k_val_print_cert.'
+        '.$k_pcr_grund.'
         WHERE id=CAST('.$k_id.' AS int);');
         $val_cwa_req=S_get_entry($Db,'SELECT CWA_request FROM Vorgang WHERE id=CAST('.$k_id.' AS int);');
         echo '<div class="row">';
@@ -96,8 +98,8 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         Adresse=\''.$k_adresse.'\',
         Wohnort=\''.$k_ort.'\',
         Telefon=\''.$k_tel.'\',
-        handout_request='.$k_val_print_cert.',
-        PCR_Grund='.$k_pcr_grund.'
+        handout_request='.$k_val_print_cert.'
+        '.$k_pcr_grund.'
         WHERE id=CAST('.$k_id.' AS int);');
         $val_cwa_req=S_get_entry($Db,'SELECT CWA_request FROM Vorgang WHERE id=CAST('.$k_id.' AS int);');
         echo '<div class="row">';

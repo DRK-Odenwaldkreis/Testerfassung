@@ -582,7 +582,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
     if( isset($_POST['pcr_grund']) && $_POST['pcr_grund']>0 ) {
       $k_pcr_grund=$_POST['pcr_grund'];
     } else {
-      $k_pcr_grund=null;
+      $k_pcr_grund='\''.null.'\'';
     }
 
     $k_cwa=$_POST['cb_cwa'];
@@ -617,27 +617,45 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         $cwa_salt=null;
       }
 
-      
-      S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,reg_type,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,salt,handout_request,privateMail_request,zip_request,PCR_Grund) VALUES ('.$_SESSION['station_id'].',
-      \''.$k_token.'\',
-      \''.$k_reg_type.'\',
-      \''.$k_vname.'\',
-      \''.$k_nname.'\',
-      \''.$k_geb.'\',
-      \''.$k_adresse.'\',
-      \''.$k_ort.'\',
-      \''.$k_tel.'\',
-      \''.$k_email.'\',
-      '.$testtyp_default.',
-      '.$k_val_cwa.',
-      \''.$cwa_salt.'\',
-      '.$k_val_print_cert.',
-      '.$k_privatemail_req.',
-      '.$k_val_zip.',
-      '.$k_pcr_grund.'
-      );');
-      
-
+      if(isset($_POST['pcr_grund']) && $_POST['pcr_grund']>0) {
+        S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,reg_type,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,salt,handout_request,privateMail_request,zip_request,PCR_Grund) VALUES ('.$_SESSION['station_id'].',
+        \''.$k_token.'\',
+        \''.$k_reg_type.'\',
+        \''.$k_vname.'\',
+        \''.$k_nname.'\',
+        \''.$k_geb.'\',
+        \''.$k_adresse.'\',
+        \''.$k_ort.'\',
+        \''.$k_tel.'\',
+        \''.$k_email.'\',
+        '.$testtyp_default.',
+        '.$k_val_cwa.',
+        \''.$cwa_salt.'\',
+        '.$k_val_print_cert.',
+        '.$k_privatemail_req.',
+        '.$k_val_zip.',
+        '.$k_pcr_grund.'
+        );');
+      } else {
+        S_set_data($Db,'INSERT INTO Vorgang (Teststation,Token,reg_type,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,Testtyp_id,CWA_request,salt,handout_request,privateMail_request,zip_request) VALUES ('.$_SESSION['station_id'].',
+        \''.$k_token.'\',
+        \''.$k_reg_type.'\',
+        \''.$k_vname.'\',
+        \''.$k_nname.'\',
+        \''.$k_geb.'\',
+        \''.$k_adresse.'\',
+        \''.$k_ort.'\',
+        \''.$k_tel.'\',
+        \''.$k_email.'\',
+        '.$testtyp_default.',
+        '.$k_val_cwa.',
+        \''.$cwa_salt.'\',
+        '.$k_val_print_cert.',
+        '.$k_privatemail_req.',
+        '.$k_val_zip.'
+        );');
+        
+      }
       
       $k_id=S_get_entry($Db,'SELECT id FROM Vorgang WHERE Token=\''.$k_token.'\'');
       $array_written=S_get_multientry($Db,'SELECT id, Teststation, Token, Vorname, Nachname, Geburtsdatum, Adresse, Wohnort, Telefon, Mailadresse, CWA_request FROM Vorgang WHERE id='.$k_id.';');
