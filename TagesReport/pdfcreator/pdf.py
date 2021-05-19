@@ -67,12 +67,22 @@ class PDFgenerator:
 		self.sizes = [self.positiv, self.negativ, self.unklar]
 		self.explode = (1, 0.1, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
 		self.fig, self.ax = plt.subplots(3,2)
-		plt.subplots_adjust(wspace=0.4,hspace=1.5,left=0.07)
-		self.fig.suptitle("Gesamtanzahl der Tests: %s" % (self.tests))
-		self.ax[0,0].pie(self.sizes, explode=self.explode, labels=self.labels, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),
-                    shadow=False, startangle=90)
+		plt.subplots_adjust(wspace=0.4,hspace=1.5,left=0.11)
+		"""self.fig.suptitle("Gesamtanzahl der Tests: %s" % (self.tests))
+		self.ax[0,0].pie(self.sizes, explode=self.explode, labeldistance=2.0,pctdistance=3.5,labels=self.labels, autopct=lambda p: '{:.2f}%  ({:,.0f})'.format(p, p * sum(self.sizes)/100),
+                    shadow=False, startangle=90)"""
+		self.labels = ['Positiv', 'Negativ','Unklar']
+		self.sizes = np.array([self.positiv, self.negativ,self.unklar])
+		self.ax[0,0].barh(self.labels, self.sizes)
+		self.ax[0,0].set_title("Gesamtanzahl der Tests: %s" % (self.tests))
+		self.ax[0,0].set_xlabel("Anzahl")
+		self.ax[0,0].axis(xmin=0,xmax=np.max(self.sizes)*1.7)
+		for i, v in enumerate(self.sizes):
+			self.ax[0,0].text(v, i, f'{v} ({round(v/(self.positiv+self.negativ+self.unklar)*100,1)}%)', color='black', va='center')
+		
+
 		# Equal aspect ratio ensures that pie is drawn as a circle.
-		self.ax[0,0].axis('equal')
+		#self.ax[0,0].axis('equal')
 		# Histogram of Durchlaufzeiten
 		self.cycleTimeArray = np.array(self.cycleTime)
 		self.ax[0,1].hist(self.cycleTimeArray, range(15,30),color = "green")
@@ -85,25 +95,40 @@ class PDFgenerator:
 		self.ax[1,0].set_title("Altersschnitt: %s Jahre" %(int(self.ageArray.mean())))
 		self.ax[1,0].set_xlabel("Alter")
 		self.ax[1,0].set_ylabel("Anzahl")
-		#Pi charts kids <-> Adults
-		self.labels = ['Kinder:' + str(self.numberChildren), 'Erwachsene:' + str(self.positiv+self.negativ+self.unklar-self.numberChildren)]
+		#Bar charts kids <-> Adults
+		self.labels = ['Kinder', 'Erwachsene']
 		self.sizes = np.array([self.numberChildren, self.positiv+self.negativ+self.unklar-self.numberChildren])
-		self.ax[1,1].bar(self.labels, self.sizes)
+		self.bar = self.ax[1,1].bar(self.labels, self.sizes)
 		self.ax[1,1].set_title("Kinder/Erwachsense")
 		self.ax[1,1].set_ylabel("Anzahl")
-		#Pi charts CWA Tests
-		self.labels = ['Anonym:' + str(self.CWA_anonym), 'Personalisiert:' + str(self.CWA_named)]
+		self.ax[1,1].axis(ymin=0,ymax=np.max(self.sizes)*1.5)
+		for bar in self.bar:
+			height = bar.get_height()
+			label_x_pos = bar.get_x() + bar.get_width() / 2
+			self.ax[1,1].text(label_x_pos, height, s=f'{height} ({round(height/(self.numberChildren+self.positiv+self.negativ+self.unklar-self.numberChildren)*100,1)}%)', ha='center',va='bottom')
+		#Bar charts CWA Tests
+		self.labels = ['Anonym', 'Personalisiert']
 		self.sizes = np.array([self.CWA_anonym,self.CWA_named])
-		self.ax[2,0].bar(self.labels, self.sizes)
+		self.bar = self.ax[2,0].bar(self.labels, self.sizes)
 		self.ax[2,0].set_title("CoronaWarn App")
 		self.ax[2,0].set_ylabel("Anzahl")
+		self.ax[2,0].axis(ymin=0,ymax=np.max(self.sizes)*1.5)
+		for bar in self.bar:
+			height = bar.get_height()
+			label_x_pos = bar.get_x() + bar.get_width() / 2
+			self.ax[2,0].text(label_x_pos, height, s=f'{height} ({round(height/(self.CWA_anonym+self.CWA_named)*100,1)}%)', ha='center',va='bottom')
 		#Pi charts Preregistered <-> Vor Ort
 
-		self.labels = ['Selbstregistriert:' + str(self.pre_reg), 'Vor Ort:' + str(self.poc_reg)]
+		self.labels = ['Selbstregistriert', 'Vor Ort']
 		self.sizes = np.array([self.pre_reg,self.poc_reg])
-		self.ax[2,1].bar(self.labels, self.sizes,0.3)
+		self.bar = self.ax[2,1].bar(self.labels, self.sizes)
 		self.ax[2,1].set_title("Registrierungsverhalten")
 		self.ax[2,1].set_ylabel("Anzahl")
+		self.ax[2,1].axis(ymin=0,ymax=np.max(self.sizes)*1.5)
+		for bar in self.bar:
+			height = bar.get_height()
+			label_x_pos = bar.get_x() + bar.get_width() / 2
+			self.ax[2,1].text(label_x_pos, height, s=f'{height} ({round(height/(self.pre_reg+self.poc_reg)*100,1)}%)', ha='center',va='bottom')
 		plt.savefig('tmp/' + str(self.date) + '.png', dpi=(170))
 
 	def generate(self):

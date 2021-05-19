@@ -25,10 +25,10 @@ if __name__ == "__main__":
         if len(sys.argv) == 2:
             logger.debug('Input parameters are with station id')
             stationID = sys.argv[1]
-            sql = "Select id,gaMail_lock from Vorgang where Ergebnis = 1 and ((gaMail_lock < 10 and gaMail_lock != 0) or gaMail_lock is NULL) and Teststation = %s;" % (stationID)
+            sql = "Select Vorgang.id, Vorgang.gaMail_lock,Vorgang.Vorname,Testtyp.IsPCR from Vorgang Join Testtyp ON Testtyp.id=Vorgang.Testtyp_id where (Vorgang.Ergebnis = 1 or (Vorgang.Ergebnis != 5 and Testtyp.IsPCR=1)) and ((Vorgang.gaMail_lock < 10 and Vorgang.gaMail_lock != 0) or Vorgang.gaMail_lock is NULL) and Vorgang.Teststation = %s;" % (stationID)
         else:
             logger.debug('Checking all stations')
-            sql = "Select id, gaMail_lock from Vorgang where Ergebnis = 1 and ((gaMail_lock < 10 and gaMail_lock != 0) or gaMail_lock is NULL);"
+            sql = "Select Vorgang.id, Vorgang.gaMail_lock, Vorgang.Vorname,Testtyp.IsPCR from Vorgang Join Testtyp ON Testtyp.id=Vorgang.Testtyp_id where (Vorgang.Ergebnis = 1 or (Vorgang.Ergebnis != 5 and Testtyp.IsPCR=1)) and ((Vorgang.gaMail_lock < 10 and Vorgang.gaMail_lock != 0) or Vorgang.gaMail_lock is NULL);"
         DatabaseConnect = Database()
         logger.debug('Checking for new positive results, using the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)

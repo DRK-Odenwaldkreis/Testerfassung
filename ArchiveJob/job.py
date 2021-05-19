@@ -24,7 +24,7 @@ if __name__ == "__main__":
                 'Input parameters are not correct, date needed')
             raise Exception
         DatabaseConnect = Database()
-        sql = "Select Vorgang.id, Teststation, Token, Registrierungszeitpunkt,Testtyp.id, Testtyp.IsPCR from Vorgang JOIN Testtyp ON Vorgang.Testtyp_id=Testtyp.id where (Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s' and Testtyp.IsPCR=0) or (Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s' and Testtyp.IsPCR=1) or (Ergebnis = 1 and DATE(Registrierungszeitpunkt) <= '%s');" % (requestedDate-datetime.timedelta(days=2),requestedDate-datetime.timedelta(days=4),requestedDate-datetime.timedelta(days=90))
+        sql = "Select Vorgang.id, Teststation, Token, Registrierungszeitpunkt,Testtyp.id, Testtyp.IsPCR from Vorgang JOIN Testtyp ON Vorgang.Testtyp_id=Testtyp.id where (Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s' and Testtyp.IsPCR=0) or (Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s' and Testtyp.IsPCR=1) or (Ergebnis = 1 and DATE(Registrierungszeitpunkt) <= '%s');" % (requestedDate-datetime.timedelta(days=2),requestedDate-datetime.timedelta(days=7),requestedDate-datetime.timedelta(days=90))
         logger.debug('Getting all Events for a date with the following query: %s' % (sql))
         deleteCanidate = DatabaseConnect.read_all(sql)
         for i in deleteCanidate:
