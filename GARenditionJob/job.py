@@ -28,7 +28,7 @@ if __name__ == "__main__":
             sql = "Select Vorgang.id, Vorgang.gaMail_lock,Vorgang.Vorname,Testtyp.IsPCR from Vorgang Join Testtyp ON Testtyp.id=Vorgang.Testtyp_id where (Vorgang.Ergebnis = 1 or (Vorgang.Ergebnis != 5 and Testtyp.IsPCR=1)) and ((Vorgang.gaMail_lock < 10 and Vorgang.gaMail_lock != 0) or Vorgang.gaMail_lock is NULL) and Vorgang.Teststation = %s;" % (stationID)
         else:
             logger.debug('Checking all stations')
-            sql = "Select Vorgang.id, Vorgang.gaMail_lock, Vorgang.Vorname,Testtyp.IsPCR from Vorgang Join Testtyp ON Testtyp.id=Vorgang.Testtyp_id where (Vorgang.Ergebnis = 1 or (Vorgang.Ergebnis != 5 and Testtyp.IsPCR=1)) and ((Vorgang.gaMail_lock < 10 and Vorgang.gaMail_lock != 0) or Vorgang.gaMail_lock is NULL);"
+            sql = "Select Vorgang.id, Vorgang.gaMail_lock, Vorgang.Vorname,Testtyp.IsPCR from Vorgang Join Testtyp ON Testtyp.id=Vorgang.Testtyp_id where (Vorgang.Ergebnis = 1 or (Vorgang.Ergebnis != 5 and Testtyp.IsPCR=1 and Vorgang.PCR_Grund!=3)) and ((Vorgang.gaMail_lock < 10 and Vorgang.gaMail_lock != 0) or Vorgang.gaMail_lock is NULL);"
         DatabaseConnect = Database()
         logger.debug('Checking for new positive results, using the following query: %s' % (sql))
         content = DatabaseConnect.read_all(sql)
@@ -36,6 +36,7 @@ if __name__ == "__main__":
             'Received the following content: %s' % (content))
         if len(content) > 0:
             logger.debug('Content contains infos')
+            """
             try:
                 date = datetime.datetime.now().strftime("%d.%m.%Y um %H:%M Uhr")
                 transmission = send_new_entry(date)
@@ -60,7 +61,7 @@ if __name__ == "__main__":
                         sql = "Update Vorgang SET gaMail_lock = %s WHERE id = %s;" % (gaMail_lock,testID)
                         DatabaseConnect.update(sql)
             except Exception as e:
-                logging.error("The following error occured in loop of content: %s" % (e))
+                logging.error("The following error occured in loop of content: %s" % (e))"""
         else:
             logger.debug('Nothing to do')
         logger.info('Done')
