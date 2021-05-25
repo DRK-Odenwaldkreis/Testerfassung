@@ -113,7 +113,7 @@ class PDFgenerator:
 		self.labels = ['Anonym', 'Personalisiert']
 		self.sizes = np.array([self.CWA_anonym,self.CWA_named])
 		self.bar = self.ax[2,0].bar(self.labels, self.sizes)
-		self.ax[2,0].set_title(f'Corona Warn ({round((self.CWA_anonym+self.CWA_anonym)*100/(self.tests),1)}%)')
+		self.ax[2,0].set_title(f'Corona Warn ({round((self.CWA_anonym+self.CWA_named)*100/(self.tests),1)}%)')
 		self.ax[2,0].set_ylabel("Anzahl")
 		self.ax[2,0].axis(ymin=0,ymax=np.max(self.sizes)*1.5)
 		for bar in self.bar:
