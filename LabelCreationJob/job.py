@@ -29,7 +29,7 @@ if __name__ == "__main__":
             DatabaseConnect = Database()
             sql = "Select Vorname,Nachname,Registrierungszeitpunkt,Geburtsdatum,Adresse,Wohnort,Token from Vorgang where Token=%s;"%(requestedNumber)
             content = DatabaseConnect.read_single(sql)
-            #logger.debug('Received the following content: %s' % (content))
+            logger.debug('Received the following entries: %s' %(str(content)))
             filename = createLabel.createLabel(content)
             print(filename)
             logger.info('Done')
