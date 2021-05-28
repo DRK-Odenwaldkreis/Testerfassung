@@ -7,6 +7,8 @@
 # m h  dom mon dow   command
 59 23 * * 6 /home/webservice/Testerfassung/WeeklyJobs/clean.sh >> /home/webservice/Logs/clean.log 2>&1
 45 23 * * 6 /home/webservice/Testerfassung/WeeklyJobs/clean_testkarten.sh >> /home/webservice/Logs/clean.log 2>&1
+45 23 * * 6 /home/webservice/Testerfassung/WeeklyJobs/clean_labels.sh >> /home/webservice/Logs/clean.log 2>&1
+45 23 * * 6 /home/webservice/Testerfassung/WeeklyJobs/clean_tickets.sh >> /home/webservice/Logs/clean.log 2>&1
 
 ############# DAILY JOBS
 58 23 * * * /home/webservice/Testerfassung/DailyJobs/reporting.sh >> /home/webservice/Logs/TagesreportJob.log 2>&1
