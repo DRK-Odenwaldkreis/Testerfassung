@@ -237,6 +237,19 @@ function A_get_day_name_2($number_of_week) {
 	return $days[$number_of_week];
 }
 
+function A_sanitize_input($input) {
+	// strips any HTML and PHP tags
+	strip_tags($input);
+
+	// validate white listed chars in input (alphanumeric)
+	$validated = "";
+	if(preg_match("/^[a-zA-Z0-9\-]+$/", $input)) {
+		$validated = $input;
+	}
+	
+	return $validated;
+}
+
 
 /****************************************/
 /* HTML code snippets */
