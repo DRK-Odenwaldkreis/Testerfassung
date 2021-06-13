@@ -95,10 +95,10 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 			}
 
 			// Daten werde überprüft
-			$stmt=mysqli_prepare($Db,"SELECT id, Geburtsdatum, Customer_lock FROM Vorgang WHERE Token=? AND Customer_key=? AND (Customer_lock is null OR Customer_lock<10);");
+			$stmt=mysqli_prepare($Db,"SELECT id, Geburtsdatum, Customer_lock, Token FROM Vorgang WHERE Token=? AND Customer_key=? AND (Customer_lock is null OR Customer_lock<10);");
 			mysqli_stmt_bind_param($stmt, "ss", $token, $customer_key);
 			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $k_vorgang_id, $k_geb, $val_lock);
+			mysqli_stmt_bind_result($stmt, $k_vorgang_id, $k_geb, $val_lock, $k_token);
 			mysqli_stmt_fetch($stmt);
 			mysqli_stmt_close($stmt);
 
@@ -106,16 +106,16 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 				if($gebdatum==$k_geb) {
 					$dir="/home/webservice/Testerfassung/Certificate2PDF/";
 					chdir($dir);
-					$job="python3 job.py $token";
+					$job="python3 job.py $k_token";
 					exec($job,$script_output);
 					$file=$script_output[0];
 
-					if( file_exists("/home/webservice/Zertifikate/$token.pdf") ) {
+					if( file_exists("/home/webservice/Zertifikate/$k_token.pdf") ) {
 						header('Content-Type: application/octet-stream');
-						header('Content-Disposition: attachment; filename="'.basename("$token.pdf").'"');
+						header('Content-Disposition: attachment; filename="'.basename("$k_token.pdf").'"');
 						header('Pragma: no-cache');
 						header('Expires: 0');
-						readfile("/home/webservice/Zertifikate/$token.pdf");
+						readfile("/home/webservice/Zertifikate/$k_token.pdf");
 						exit;
 					}
 				}
