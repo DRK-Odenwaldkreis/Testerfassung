@@ -243,7 +243,7 @@ function A_sanitize_input($input) {
 
 	// validate white listed chars in input (alphanumeric)
 	$validated = "";
-	if(preg_match("/^[a-zA-Z0-9\-]+$/", $input)) {
+	if(preg_match("/^[a-zA-Z0-9\-\.@\,\+äöüÄÖÜßéèêóòôíìîáàâúùû&\/]+$/", $input)) {
 		$validated = $input;
 	}
 	

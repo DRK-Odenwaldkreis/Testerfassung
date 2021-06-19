@@ -52,22 +52,22 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
         // ///////////////
 
         // save data
-        $k_nname=$_POST['nname'];
-        $k_vname=$_POST['vname'];
-        $gebdatum_d = $_POST['gebdatum_d'];
-        $gebdatum_m = $_POST['gebdatum_m'];
-        $gebdatum_y = $_POST['gebdatum_y'];
+        $k_nname=A_sanitize_input($_POST['nname']);
+        $k_vname=A_sanitize_input($_POST['vname']);
+        $gebdatum_d = A_sanitize_input($_POST['gebdatum_d']);
+        $gebdatum_m = A_sanitize_input($_POST['gebdatum_m']);
+        $gebdatum_y = A_sanitize_input($_POST['gebdatum_y']);
         $k_geb=sprintf('%04d',$gebdatum_y).'-'.sprintf('%02d',$gebdatum_m).'-'.sprintf('%02d',$gebdatum_d);
-        $k_adresse=$_POST['adresse'];
-        $k_ort=$_POST['ort'];
-        $k_telefon=$_POST['telefon'];
-        $k_email=$_POST['email'];
-        $k_slot_id=$_POST['termin_id'];
-        $k_date=$_POST['date'];
-        $k_int_date=$_POST['int_date'];
-        $k_int_time1=$_POST['int_time1'];
-        $k_int_time2=$_POST['int_time1'];
-        $k_int_location=$_POST['int_location'];
+        $k_adresse=A_sanitize_input($_POST['adresse']);
+        $k_ort=A_sanitize_input($_POST['ort']);
+        $k_telefon=A_sanitize_input($_POST['telefon']);
+        $k_email=A_sanitize_input($_POST['email']);
+        $k_slot_id=A_sanitize_input($_POST['termin_id']);
+        $k_date=A_sanitize_input($_POST['date']);
+        $k_int_date=A_sanitize_input($_POST['int_date']);
+        $k_int_time1=A_sanitize_input($_POST['int_time1']);
+        $k_int_time2=A_sanitize_input($_POST['int_time1']);
+        $k_int_location=A_sanitize_input($_POST['int_location']);
         $k_cwa_req=$_POST['cb_cwa'];
         if($k_cwa_req=='on') { $k_cwa_req=1; } else { $k_cwa_req=0; }
         $k_cwa_anonym_req=$_POST['cb_cwa_anonym'];
@@ -290,8 +290,8 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
         // Registrierung abschließen mit E-Mail Code
         // ///////////////
 
-        $prereg_id=$_GET['i'];
-        $token_ver=$_GET['t'];
+        $prereg_id=A_sanitize_input($_GET['i']);
+        $token_ver=A_sanitize_input($_GET['t']);
         $id_check=S_get_entry_voranmeldung($Db,array($prereg_id,$token_ver));
 
         if($id_check>0) {
@@ -338,8 +338,8 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
         // ///////////////
 
         // check pre registration data
-        $k_prereg_id=$_GET['i'];
-        $k_token=$_GET['t'];
+        $k_prereg_id=A_sanitize_input($_GET['i']);
+        $k_token=A_sanitize_input($_GET['t']);
         $stmt=mysqli_prepare($Db,"SELECT Termin_id, Nachname, Vorname FROM Voranmeldung WHERE id=? AND Token=? AND Used!=1;");
         mysqli_stmt_bind_param($stmt, "is", $k_prereg_id, $k_token);
         mysqli_stmt_execute($stmt);
@@ -411,8 +411,8 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
         // ///////////////
 
         // check pre registration data
-        $k_prereg_id=$_POST['prereg_id'];
-        $k_termin_id=$_POST['termin_id'];
+        $k_prereg_id=A_sanitize_input($_POST['prereg_id']);
+        $k_termin_id=A_sanitize_input($_POST['termin_id']);
         $stmt=mysqli_prepare($Db,"SELECT id, Termin_id FROM Voranmeldung WHERE id=? AND Termin_id=? AND Used!=1;");
         mysqli_stmt_bind_param($stmt, "ii", $k_prereg_id, $k_termin_id);
         mysqli_stmt_execute($stmt);
@@ -450,7 +450,7 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
         }
 
         if( isset($_GET['appointment']) ) {
-            $val_termin_id=$_GET['appointment'];
+            $val_termin_id=A_sanitize_input($_GET['appointment']);
 
             $stmt=mysqli_prepare($Db,"SELECT id, Tag, Startzeit, Endzeit, Slot, opt_station, opt_station_adresse, id_station, Stunde FROM Termine WHERE id=?;");
             mysqli_stmt_bind_param($stmt, "i", $val_termin_id);
@@ -501,7 +501,7 @@ Das Team vom DRK Testzentrum Odenwaldkreis";
                 $location=$stations_array[0][1].', '.$stations_array[0][2];
             }
         } else {
-            $val_station_id=$_GET['appointment_more'];
+            $val_station_id=A_sanitize_input($_GET['appointment_more']);
         }
 
         if($b2b_check) {
