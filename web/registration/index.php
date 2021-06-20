@@ -52,22 +52,22 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
         // ///////////////
 
         // save data
-        $k_nname=A_sanitize_input($_POST['nname']);
-        $k_vname=A_sanitize_input($_POST['vname']);
-        $gebdatum_d = A_sanitize_input($_POST['gebdatum_d']);
-        $gebdatum_m = A_sanitize_input($_POST['gebdatum_m']);
-        $gebdatum_y = A_sanitize_input($_POST['gebdatum_y']);
+        $k_nname=A_sanitize_input_light($_POST['nname']);
+        $k_vname=A_sanitize_input_light($_POST['vname']);
+        $gebdatum_d = A_sanitize_input_light($_POST['gebdatum_d']);
+        $gebdatum_m = A_sanitize_input_light($_POST['gebdatum_m']);
+        $gebdatum_y = A_sanitize_input_light($_POST['gebdatum_y']);
         $k_geb=sprintf('%04d',$gebdatum_y).'-'.sprintf('%02d',$gebdatum_m).'-'.sprintf('%02d',$gebdatum_d);
-        $k_adresse=A_sanitize_input($_POST['adresse']);
-        $k_ort=A_sanitize_input($_POST['ort']);
-        $k_telefon=A_sanitize_input($_POST['telefon']);
-        $k_email=A_sanitize_input($_POST['email']);
-        $k_slot_id=A_sanitize_input($_POST['termin_id']);
-        $k_date=A_sanitize_input($_POST['date']);
-        $k_int_date=A_sanitize_input($_POST['int_date']);
-        $k_int_time1=A_sanitize_input($_POST['int_time1']);
-        $k_int_time2=A_sanitize_input($_POST['int_time1']);
-        $k_int_location=A_sanitize_input($_POST['int_location']);
+        $k_adresse=A_sanitize_input_light($_POST['adresse']);
+        $k_ort=A_sanitize_input_light($_POST['ort']);
+        $k_telefon=A_sanitize_input_light($_POST['telefon']);
+        $k_email=A_sanitize_input_light($_POST['email']);
+        $k_slot_id=A_sanitize_input_light($_POST['termin_id']);
+        $k_date=A_sanitize_input_light($_POST['date']);
+        $k_int_date=A_sanitize_input_light($_POST['int_date']);
+        $k_int_time1=A_sanitize_input_light($_POST['int_time1']);
+        $k_int_time2=A_sanitize_input_light($_POST['int_time1']);
+        $k_int_location=A_sanitize_input_light($_POST['int_location']);
         $k_cwa_req=$_POST['cb_cwa'];
         if($k_cwa_req=='on') { $k_cwa_req=1; } else { $k_cwa_req=0; }
         $k_cwa_anonym_req=$_POST['cb_cwa_anonym'];

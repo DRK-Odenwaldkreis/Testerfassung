@@ -250,6 +250,14 @@ function A_sanitize_input($input) {
 	return $validated;
 }
 
+function A_sanitize_input_light($input) {
+	// strips any HTML and PHP tags
+	strip_tags($input);
+	
+	return $input;
+}
+
+
 
 /****************************************/
 /* HTML code snippets */
