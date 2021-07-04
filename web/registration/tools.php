@@ -237,20 +237,49 @@ function A_get_day_name_2($number_of_week) {
 	return $days[$number_of_week];
 }
 
+function A_sanitize_input_light($input) {
+	// strips any HTML and PHP tags
+	strip_tags($input);
+
+	// validate white listed chars in input (alphanumeric)
+	$validated = "";
+	/* if(preg_match("/^[a-zA-Z0-9\-\.@\,\+äöüÄÖÜßéèêóòôíìîáàâúùû&\/]+$/", $input)) {
+		$validated = $input;
+	} */
+	$whitelist=array('/^[a-zA-Z0-9äöüÄÖÜßéèêóòôíìîáàâúùû&\ \-\.@\,\+\/]+$/');
+	// Check if each character of input is in white list
+	foreach($whitelist as $k => $v) {
+		if(preg_match($v, $input)) {
+			$validated=$input;
+			break;
+		}
+	}
+	
+	return $validated;
+}
+
 function A_sanitize_input($input) {
 	// strips any HTML and PHP tags
 	strip_tags($input);
 
 	// validate white listed chars in input (alphanumeric)
 	$validated = "";
-	if(preg_match("/^[a-zA-Z0-9\-\.@\,\+äöüÄÖÜßéèêóòôíìîáàâúùû&\/]+$/", $input)) {
+	/* if(preg_match("/^[a-zA-Z0-9\-\.@\,\+äöüÄÖÜßéèêóòôíìîáàâúùû&\/]+$/", $input)) {
 		$validated = $input;
+	} */
+	$whitelist=array('/^[a-zA-Z0-9äöüÄÖÜßéèêóòôíìîáàâúùû&\ \-\.@\,\+\/]+$/');
+	// Check if each character of input is in white list
+	foreach($whitelist as $k => $v) {
+		if(preg_match($v, $input)) {
+			$validated=$input;
+			break;
+		}
 	}
 	
 	return $validated;
 }
 
-function A_sanitize_input_light($input) {
+function A_sanitize_input_light2($input) {
 	// strips any HTML and PHP tags
 	strip_tags($input);
 	

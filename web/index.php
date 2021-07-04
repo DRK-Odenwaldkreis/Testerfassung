@@ -44,6 +44,12 @@ echo $GLOBALS['G_html_main_right_a'];
             <h3>Deutsches Rotes Kreuz - Kreisverband Odenwaldkreis e. V.</h3>
         </div>
     </div>
+    <div class="col-sm-12">
+        <div class="alert alert-warning" role="alert">
+        <h3>Sie haben Fragen?</h3>
+        <p>Schreiben Sie uns an <a href="mailto:testzentrum@drk-odenwaldkreis.de?subject=Fragen - Testzentrum">testzentrum@drk-odenwaldkreis.de</a></p>
+        </div>
+    </div>
 </div>
 
 <div class="alert alert-info" role="alert">
@@ -225,6 +231,37 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
     echo '<div class="alert alert-danger" role="alert">
     <h3>Wartungsarbeiten</h3>
     <p>Derzeit finden Arbeiten an dieser Seite statt, der Kalender und die Terminbuchung stehen momentan nicht zur Verfügung. Bald geht es wieder weiter...wir bitten um etwas Geduld.</p>
+    </div>
+    <div class="alert alert-info" role="alert">
+    <h2>Aktuelle Öffnungszeiten</h2>
+    <h3>ohne Terminanmeldung derzeit</h3>
+    <p></p>
+    <h3>Testzentrum Erbach</h3>
+    <p>Montag bis Freitag                                         6-20 Uhr
+    <br>
+    Samstag, Sonntag und Feiertag                 9-19 Uhr
+    </p>
+    <p></p>
+    <h3>Testzentrum Beerfelden </h3>
+    <p>Montag bis Freitag                                         16-20 Uhr 
+    <br>
+    Montag, Mittwoch, Freitag                         6-10 Uhr 
+    <br>
+    Samstag, Sonntag, Feiertag                         9-19 Uhr 
+    </p>
+    <p></p>
+    <h3>Testzentrum Reichelsheim </h3>
+    <p>Dienstag und Donnerstag                            6-10 Uhr und 16-20 Uhr 
+    <br>
+    Sonntag                                                              9-19 Uhr 
+    </p>
+    <p></p>
+    <h3>PCR Test im Testzentrum Erbach </h3>
+    <p>Montag bis Freitag                                         8:30 – 09:30 Uhr und
+    <br>
+    Montag bis Donnerstag                                18:30 – 19:30 Uhr 
+    </p>
+    <p></p>
     <div class="FAIRsepdown"></div>
     <div class="FAIRsep"></div>
 </div>';
