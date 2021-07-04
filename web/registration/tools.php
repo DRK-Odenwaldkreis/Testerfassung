@@ -237,6 +237,27 @@ function A_get_day_name_2($number_of_week) {
 	return $days[$number_of_week];
 }
 
+function A_sanitize_input($input) {
+	// strips any HTML and PHP tags
+	strip_tags($input);
+
+	// validate white listed chars in input (alphanumeric)
+	$validated = "";
+	if(preg_match("/^[a-zA-Z0-9\-\.@\,\+äöüÄÖÜßéèêóòôíìîáàâúùû&\/]+$/", $input)) {
+		$validated = $input;
+	}
+	
+	return $validated;
+}
+
+function A_sanitize_input_light($input) {
+	// strips any HTML and PHP tags
+	strip_tags($input);
+	
+	return $input;
+}
+
+
 
 /****************************************/
 /* HTML code snippets */
@@ -514,7 +535,13 @@ function H_build_table_testdates2( $mode ) {
 				$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-'.$cal_color.'2">'.$string_location.$display_location_thirdline.'</td>';
 				for($j=0;$j<$X;$j++) {
 					$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
-					$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'";');
+					if($j==0) {
+						// TODAY do not show past entries
+						$current_hour=date('G');
+						$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" AND Stunde>='.$current_hour.';');
+					} else {
+						$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'";');
+					}
 
 					$count_free=$array_termine_open[0][0]-$array_termine_open[0][1];
 					$display_termine='<div style="display: block; margin-top: 5px;"><span class="label label-success">'.($count_free).'</span></div><span class="text-sm"><div style="display: block; margin-top: 5px;">freie&nbsp;Termine</div></span>';

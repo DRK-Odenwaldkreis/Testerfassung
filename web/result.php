@@ -48,12 +48,12 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		if(isset($_POST['button'])) {
 			// Check birth date to show result
 			
-			$token = $_POST['token'];
-			$customer_key = $_POST['customer_key'];
+			$token = A_sanitize_input($_POST['token']);
+			$customer_key = A_sanitize_input($_POST['customer_key']);
 			//$gebdatum = $_POST['gebdatum'];
-			$gebdatum_d = $_POST['gebdatum_d'];
-			$gebdatum_m = $_POST['gebdatum_m'];
-			$gebdatum_y = $_POST['gebdatum_y'];
+			$gebdatum_d = A_sanitize_input($_POST['gebdatum_d']);
+			$gebdatum_m = A_sanitize_input($_POST['gebdatum_m']);
+			$gebdatum_y = A_sanitize_input($_POST['gebdatum_y']);
 			$gebdatum=sprintf('%04d',$gebdatum_y).'-'.sprintf('%02d',$gebdatum_m).'-'.sprintf('%02d',$gebdatum_d);
 
 			// Daten werde überprüft
@@ -85,20 +85,20 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 			
 		} elseif(isset($_POST['download_pdf']) || isset($_GET['internal_download'])) {
 			if(isset($_POST['download_pdf'])) {
-				$token=$_POST['token'];
-				$customer_key=$_POST['customer_key'];
-				$gebdatum=$_POST['gebdat'];
+				$token=A_sanitize_input($_POST['token']);
+				$customer_key=A_sanitize_input($_POST['customer_key']);
+				$gebdatum=A_sanitize_input($_POST['gebdat']);
 			} elseif(isset($_GET['internal_download'])) {
-				$token=$_GET['i'];
-				$customer_key=$_GET['t'];
-				$gebdatum=$_GET['g'];
+				$token=A_sanitize_input($_GET['i']);
+				$customer_key=A_sanitize_input($_GET['t']);
+				$gebdatum=A_sanitize_input($_GET['g']);
 			}
 
 			// Daten werde überprüft
-			$stmt=mysqli_prepare($Db,"SELECT id, Geburtsdatum, Customer_lock FROM Vorgang WHERE Token=? AND Customer_key=? AND (Customer_lock is null OR Customer_lock<10);");
+			$stmt=mysqli_prepare($Db,"SELECT id, Geburtsdatum, Customer_lock, Token FROM Vorgang WHERE Token=? AND Customer_key=? AND (Customer_lock is null OR Customer_lock<10);");
 			mysqli_stmt_bind_param($stmt, "ss", $token, $customer_key);
 			mysqli_stmt_execute($stmt);
-			mysqli_stmt_bind_result($stmt, $k_vorgang_id, $k_geb, $val_lock);
+			mysqli_stmt_bind_result($stmt, $k_vorgang_id, $k_geb, $val_lock, $k_token);
 			mysqli_stmt_fetch($stmt);
 			mysqli_stmt_close($stmt);
 
@@ -106,16 +106,16 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 				if($gebdatum==$k_geb) {
 					$dir="/home/webservice/Testerfassung/Certificate2PDF/";
 					chdir($dir);
-					$job="python3 job.py $token";
+					$job="python3 job.py $k_token";
 					exec($job,$script_output);
 					$file=$script_output[0];
 
-					if( file_exists("/home/webservice/Zertifikate/$token.pdf") ) {
+					if( file_exists("/home/webservice/Zertifikate/$k_token.pdf") ) {
 						header('Content-Type: application/octet-stream');
-						header('Content-Disposition: attachment; filename="'.basename("$token.pdf").'"');
+						header('Content-Disposition: attachment; filename="'.basename("$k_token.pdf").'"');
 						header('Pragma: no-cache');
 						header('Expires: 0');
-						readfile("/home/webservice/Zertifikate/$token.pdf");
+						readfile("/home/webservice/Zertifikate/$k_token.pdf");
 						exit;
 					}
 				}
@@ -224,7 +224,7 @@ border-color: #204d74;" value="PDF herunterladen" name="download_pdf" />
 
 		if ($FLAG_SHUTDOWN==0) {
 
-			if( !( isset($_GET['i']) && isset($_GET['t']) ) ) {
+			if( !( isset($_GET['i']) && A_sanitize_input($_GET['i'])!='' && isset($_GET['t']) && A_sanitize_input($_GET['t'])!='' ) ) {
 				$errorhtml1 =  H_build_boxinfo( 322, 'Falsche Dateneingabe.', 'red' );
 			}
 			
@@ -252,8 +252,8 @@ border-color: #204d74;" value="PDF herunterladen" name="download_pdf" />
 				<div class="row"><div class="col-sm-12">
 				<form action="'.$current_site.'.php" method="post">
 				
-				<input type="text" value="'.$_GET['i'].'" name="token" style="display:none;">
-				<input type="text" value="'.$_GET['t'].'" name="customer_key" style="display:none;">';
+				<input type="text" value="'.A_sanitize_input($_GET['i']).'" name="token" style="display:none;">
+				<input type="text" value="'.A_sanitize_input($_GET['t']).'" name="customer_key" style="display:none;">';
 				$html_box_login.='
 				<div class="input-group">
 				<span class="input-group-addon" id="basic-addon1">Geburtsdatum / <i>Date Of Birth</i></span>
