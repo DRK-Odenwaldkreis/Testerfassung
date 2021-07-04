@@ -57,7 +57,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 			// ----------------------------- //
 			// -- Begin: PASSWORD SIGN IN -- //
 			// ----------------------------- //
-			$firmencode = strtolower($_POST['firmencode']);
+			$firmencode = strtolower(A_sanitize_input_light($_POST['firmencode']));
 
 			// Passwort wird überprüft
 			if($firmencode!='') {
