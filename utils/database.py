@@ -44,8 +44,9 @@ class Database(object):
             self.__user = read_config("MariaDB", "user")
             self.__socket = '/var/run/mysqld/mysqld.sock'
             self.__dbName = read_config("MariaDB", "db")
+            self.__password = read_config("MariaDB", "password")
             self.connection = mysql.connector.connect(
-                host=self.__host, user=self.__user, unix_socket=self.__socket, db=self.__dbName)
+                host=self.__host, user=self_user, password=self.__password, db=self.__dbName)
             self.cursor = self.connection.cursor()
         except Exception as e:
             logger.error(
