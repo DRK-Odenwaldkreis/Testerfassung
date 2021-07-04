@@ -27,7 +27,7 @@ if __name__ == "__main__":
         else:
             requestedNumber = sys.argv[1]
             DatabaseConnect = Database()
-            sql = "Select Vorname,Nachname,Ergebnis,Registrierungszeitpunkt,Geburtsdatum,Testtyp.Name,Testtyp.IsPCR from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where Token=%s;"%(requestedNumber)
+            sql = "Select Vorname,Nachname,Ergebnis,Ergebniszeitpunkt,Geburtsdatum,Testtyp.Name,Testtyp.IsPCR from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where Token=%s;"%(requestedNumber)
             requester = DatabaseConnect.read_single(sql)
             vorname = requester[0]
             nachname = requester[1]
