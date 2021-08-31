@@ -246,7 +246,7 @@ function A_sanitize_input_light($input) {
 	/* if(preg_match("/^[a-zA-Z0-9\-\.@\,\+äöüÄÖÜßéèêóòôíìîáàâúùû&\/]+$/", $input)) {
 		$validated = $input;
 	} */
-	$whitelist=array('/^[a-zA-Z0-9äöüÄÖÜßéèêóòôíìîáàâúùû&\ \-\.@\,\+\/]+$/');
+	$whitelist=array('/^[a-zA-Z0-9äöüÄÖÜßéèêóòôíìîáàâúùû&\ \_\-\.@\,\+\/]+$/');
 	// Check if each character of input is in white list
 	foreach($whitelist as $k => $v) {
 		if(preg_match($v, $input)) {
@@ -267,7 +267,7 @@ function A_sanitize_input($input) {
 	/* if(preg_match("/^[a-zA-Z0-9\-\.@\,\+äöüÄÖÜßéèêóòôíìîáàâúùû&\/]+$/", $input)) {
 		$validated = $input;
 	} */
-	$whitelist=array('/^[a-zA-Z0-9äöüÄÖÜßéèêóòôíìîáàâúùû&\ \-\.@\,\+\/]+$/');
+	$whitelist=array('/^[a-zA-Z0-9äöüÄÖÜßéèêóòôíìîáàâúùû&\ \_\-\.@\,\+\/]+$/');
 	// Check if each character of input is in white list
 	foreach($whitelist as $k => $v) {
 		if(preg_match($v, $input)) {
@@ -428,7 +428,7 @@ function H_build_table_testdates( ) {
 
 function H_build_table_testdates2( $mode ) {
 	if($mode=='b2b') {
-		$query_b2b='id='.$_SESSION['b2b_id'];
+		$query_b2b='Station.id='.$_SESSION['b2b_id'];
 		$path_to_reg='';
 	} elseif($mode=='pcr') {
 		$query_b2b='(Firmencode is null OR Firmencode="") AND Testtyp.IsPCR=1';

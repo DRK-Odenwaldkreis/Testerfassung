@@ -57,7 +57,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 			// ----------------------------- //
 			// -- Begin: PASSWORD SIGN IN -- //
 			// ----------------------------- //
-			$firmencode = strtolower(A_sanitize_input_light($_POST['firmencode']));
+			$firmencode = A_sanitize_input_light($_POST['firmencode']);
 
 			// Passwort wird überprüft
 			if($firmencode!='') {
@@ -163,7 +163,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		echo '<div class="row">
 		
 		<div class="col-sm-12">
-		<h2 style="text-align: center;">Covid-19 Schnelltest - Termine und Orte für Ihr Unternehmen</h2>
+		<h2 style="text-align: center;">Covid-19 Schnelltest - Termine und Orte für Ihr Unternehmen ('.$_SESSION['b2b_username'].')</h2>
 		</div>
 		<div class="col-sm-12"><div class="card">
 		';

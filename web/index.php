@@ -57,7 +57,7 @@ echo $GLOBALS['G_html_main_right_a'];
     <h4>Wir bieten für Sie:</h4>
 
     <div class="row">
-    <div class="col-sm-3 col-xs-12 main-link-page" onclick="window.location='?s=ag#calendar'">
+    <div class="col-sm-4 col-xs-12 main-link-page" onclick="window.location='?s=ag#calendar'">
         <div class="header_icon">
         <img src="img/icon/rapid_test.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
         <div class="FAIRsep"></div>
@@ -66,7 +66,7 @@ echo $GLOBALS['G_html_main_right_a'];
         </div>
         </div>
     </div>
-    <div class="col-sm-3 col-xs-12 main-link-page" onclick="window.location='?s=pcr#calendar'">
+    <div class="col-sm-4 col-xs-12 main-link-page" onclick="window.location='?s=pcr#calendar'">
         <div class="header_icon">
         <img src="img/icon/certified_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
         <div class="FAIRsep"></div>
@@ -76,7 +76,7 @@ echo $GLOBALS['G_html_main_right_a'];
         </div>
         </div>
     </div>
-    <div class="col-sm-3 col-xs-12 main-link-page" onclick="window.location='registration/business.php'">
+    <div class="col-sm-4 col-xs-12 main-link-page" onclick="window.location='registration/business.php'">
         <div class="header_icon">
         <img src="img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
         <div class="FAIRsep"></div>
@@ -86,16 +86,7 @@ echo $GLOBALS['G_html_main_right_a'];
         </div>
         </div>
     </div>
-    <div class="col-sm-3 col-xs-12 main-link-page" onclick="window.location='https://www.impfpass-odw.de'">
-        <div class="header_icon">
-        <img src="img/icon/cov_digital.svg" style="display: block; margin-left: auto; margin-right: auto; width: 40%;"></img>
-        <div class="FAIRsep"></div>
-        <div class="caption center_text">
-        <h4><span class="label label-danger">Neu</span> Digitaler Impfnachweis</h4>
-        <h5>kein Service des DRK</h5>
-        </div>
-        </div>
-    </div>
+
     </div>
 
     <div class="FAIRsepdown"></div>
