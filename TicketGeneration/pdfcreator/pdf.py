@@ -20,7 +20,6 @@ from utils.slot import get_slot_time
 FreeSans = '../utils/Schriftart/FreeSans.ttf'
 FreeSansBold = '../utils/Schriftart/FreeSansBold.ttf'
 Logo = '../utils/logo.png'
-Logo2 = '../utils/logo2.png'
 
 class PDFgenerator(FPDF):
 
@@ -83,6 +82,5 @@ class PDFgenerator(FPDF):
 		self.set_font('GNU', '', 12)
 		self.multi_cell(195, 5, 'Ich habe mich soeben zu einer Teilnahme an einem SARS-CoV-2-Schnelltest(Corona-PoC-Test) bzw. einem RT-PCR Labortest angemeldet. Ich weiß, dass der Test durch unterwiesenes, ggf. nichtmedizinisches Hilfspersonal gemäß dem Drittem Gesetz zum Schutz der Bevölkerung bei einer epidemischen Lage von nationaler Tragweite vom 18.11.2020 durchgeführt wird. Mit der Verarbeitung meiner persönlichen Daten sowie dem Testergebnis durch das DRK bin ich einverstanden. Sofern der Test positiv ist, werden die Daten aufgrund einer gesetzlichen Meldepflicht an das Gesundheitsamt weitergegeben.',0)
 		self.ln(5)
-		self.image(Logo2,x=60,w=110, h=24)
 
 
