@@ -928,15 +928,6 @@ div.header_icon {
 	line-height: 1.42857143;
 }
 
-div.main-link-page_2:hover {
-	cursor:pointer;
-	background: #fff;
-	border-radius: 5px;
-	border-style: solid;
-	border-color: #555;
-	border-width: 2px;
-}
-
 /*
  * Placeholder dashboard ideas
  */

@@ -122,7 +122,11 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
 
   // Get all pre registrations for today or another day
   // for all stations
-  $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, Voranmeldung.Adresse, Voranmeldung.Wohnort, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token, Voranmeldung.Mailadresse, Voranmeldung.Telefon, Kosten_PCR.Kurzbezeichnung, Voranmeldung.CWA_request FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Voranmeldung.PCR_Grund WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Voranmeldung.Used=0 AND Token IS NOT NULL ORDER BY Voranmeldung.Anmeldezeitpunkt DESC;');
+  if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+    $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, Voranmeldung.Adresse, Voranmeldung.Wohnort, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token, Voranmeldung.Mailadresse, Voranmeldung.Telefon, Kosten_PCR.Kurzbezeichnung, Voranmeldung.CWA_request FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Voranmeldung.PCR_Grund WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Voranmeldung.Used=0 AND Token IS NOT NULL ORDER BY Voranmeldung.Anmeldezeitpunkt DESC;');
+  } else {
+    $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, 0, 0, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token, Voranmeldung.Mailadresse, Voranmeldung.Telefon FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Voranmeldung.Used=0 AND Token IS NOT NULL ORDER BY Voranmeldung.Anmeldezeitpunkt DESC;');
+  }
 
 
   echo '<h1>Ansicht der Voranmeldungen</h1>';
@@ -169,7 +173,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   <div class="col-sm-12">
   <table class="FAIR-data" id="maintable" data-order=\'[[ 7, "asc" ]]\' data-page-length=\'1000\'>';
   
-  
+  if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     echo '<thead>
     <tr>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Reg Transfer</h4></td>
@@ -183,7 +187,19 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"></td>
     </tr>
     </thead><tbody>';
-
+  } else {
+    echo '<thead>
+    <tr>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Reg Transfer</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Station</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Termin</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Name</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Kontakt</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">(Sortiert)</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"></td>
+    </tr>
+    </thead><tbody>';
+  }
   //Get list of times
   foreach($array_tests as $i) {
 
@@ -207,21 +223,32 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     ';
     if($_SESSION['display_sensitive']==0) {
       echo '
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>';
+      if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+        echo '
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>';
+      }
+      echo '
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
       ';
     } else {
       echo '
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[1].', '.$i[2].'</td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'<br>'.$i[4].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[1].', '.$i[2].'</td>';
+      if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+        echo '
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'<br>'.$i[4].'</td>';
+      }
+      echo '
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[11].'<br>'.$i[12].'</td>
       ';
     }
-    if($i[14]==1) {$display_CWA='CWA-n';} elseif($i[14]==1) {$display_CWA='CWA-a';} else {$display_CWA='';}
-    if($i[13]!=null) {$display_PCR='PCR: '.$i[13];} else {$display_PCR='';}
+    if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+      if($i[14]==1) {$display_CWA='CWA-n';} elseif($i[14]==1) {$display_CWA='CWA-a';} else {$display_CWA='';}
+      if($i[13]!=null) {$display_PCR='PCR: '.$i[13];} else {$display_PCR='';}
+      echo '
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$display_PCR.''.$display_CWA.'</td>';
+    }
     echo '
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$display_PCR.''.$display_CWA.'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="text-sm">'.sprintf('%02d', $i[7]).'-'.sprintf('%01d', $i[8]).'-'.sprintf('%06d', $i[0]).'</span></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">
     <a target="_blank" class="list-group-item list-group-item-action list-group-item-redtext" href="../registration/index.php?cancel=cancel&t='.$i[10].'&i='.$i[0].'" title="Registrierung löschen"><span class="icon-remove2"></span>&nbsp;Löschen</a></td>

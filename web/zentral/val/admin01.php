@@ -8,6 +8,8 @@ March 2021
 
 ** ************** */
 
+$FLAG_MODE_MAIN = 1; // 1 = Testzentrum, 2 = Impfzentrum
+
 $ADMINEMAIL = 'support@impfzentrum-odw.com';
 $HOSTNAME_WEB = 'impfzentrum-odw.de/';
 //$FLAG_SHUTDOWN_MAIN = false;

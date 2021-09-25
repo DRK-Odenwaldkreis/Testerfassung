@@ -28,137 +28,152 @@ echo $GLOBALS['G_html_menu2'];
 // Print html content part A
 echo $GLOBALS['G_html_main_right_a'];
 
-?>
 
+if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+    $name_facility='Testzentrum';
+    $doing_facility='Testungen';
+    $email_facility='testzentrum@drk-odenwaldkreis.de';
+    $logo_facility='logo.png';
+} else {
+    $name_facility='Impfzentrum';
+    $doing_facility='Impfungen';
+    $email_facility='testzentrum@drk-odenwaldkreis.de';
+    $logo_facility='impfzentrum.jpg';
 
+}
 
+echo '
 <div class="row">
 
-    <div class="col-sm-6">
-        <img src="img/logo.png" style="display: block; margin-left: auto; margin-right: auto; width: 65%;"></img>
+    <div class="col-sm-6" style="padding:10px;">
+        <img src="img/'.$logo_facility.'" style="display: block; margin-left: auto; margin-right: auto; width: 65%; border: solid 1px #5a482d;"></img>
     </div>
 
     <div class="col-sm-6">
         <div style="text-align: center;">
-            <h2>Covid-19 Testzentrum Odenwaldkreis</h2>
+            <h2>Covid-19 '.$name_facility.' Odenwaldkreis</h2>
             <h3>Deutsches Rotes Kreuz - Kreisverband Odenwaldkreis e. V.</h3>
         </div>
     </div>
     <div class="col-sm-12">
         <div class="alert alert-warning" role="alert">
         <h3>Sie haben Fragen?</h3>
-        <p>Schreiben Sie uns an <a href="mailto:testzentrum@drk-odenwaldkreis.de?subject=Fragen - Testzentrum">testzentrum@drk-odenwaldkreis.de</a></p>
+        <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
         </div>
     </div>
 </div>
+';
 
-<div class="alert alert-info" role="alert">
-    <h2>Coronavirus SARS-CoV-2 Testung</h2>
-    <h4>Wir bieten für Sie:</h4>
+if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+    echo '
+    <div class="alert alert-info" role="alert">
+        <h2>Coronavirus SARS-CoV-2 Testung</h2>
+        <h4>Wir bieten für Sie:</h4>
 
-    <div class="row">
-    <div class="col-sm-4 col-xs-12 main-link-page" onclick="window.location='?s=ag#calendar'">
-        <div class="header_icon">
-        <img src="img/icon/rapid_test.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+        <div class="row">
+        <div class="col-sm-4 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'?s=ag#calendar\'">
+            <div class="header_icon">
+            <img src="img/icon/rapid_test.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+            <div class="FAIRsep"></div>
+            <div class="caption center_text">
+            <h4>Kostenloser Bürgertest / Antigen-Schnelltest</h4>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-4 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'?s=pcr#calendar\'">
+            <div class="header_icon">
+            <img src="img/icon/certified_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+            <div class="FAIRsep"></div>
+            <div class="caption center_text">
+                <h4>PCR-Test *)</h4>
+                <h5>*) kostenfrei für angeordnete Tests, sonst kostenpflichtig für 70 €</h5>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-4 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'registration/business.php\'">
+            <div class="header_icon">
+            <img src="img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+            <div class="FAIRsep"></div>
+            <div class="caption center_text">
+            <h4>Kostenpflichtige Firmen-Testung **)</h4>
+            <h5>**) wenden Sie sich für ein Angebot an das '.$name_facility.' <a href="mailto:'.$email_facility.'">'.$email_facility.'</a></h5>
+            </div>
+            </div>
+        </div>
+
+        </div>
+
+        <div class="FAIRsepdown"></div>
+        <p>Bei Fragen können Sie sich an das Personal vor Ort wenden.</p>
+        
+        <p>Bitte erscheinen Sie nur, wenn Sie frei von den typischen Symptomen, wie Fieber, trockenem Husten oder plötzlichem Verlust des Geruchs- oder Geschmackssinnes sind.</p>
+        <div class="FAIRsepdown"></div>
         <div class="FAIRsep"></div>
-        <div class="caption center_text">
-        <h4>Kostenloser Bürgertest / Antigen-Schnelltest</h4>
-        </div>
-        </div>
     </div>
-    <div class="col-sm-4 col-xs-12 main-link-page" onclick="window.location='?s=pcr#calendar'">
-        <div class="header_icon">
-        <img src="img/icon/certified_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
-        <div class="FAIRsep"></div>
-        <div class="caption center_text">
-            <h4>PCR-Test *)</h4>
-            <h5>*) kostenfrei für angeordnete Tests, sonst kostenpflichtig für 70 €</h5>
-        </div>
-        </div>
-    </div>
-    <div class="col-sm-4 col-xs-12 main-link-page" onclick="window.location='registration/business.php'">
-        <div class="header_icon">
-        <img src="img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
-        <div class="FAIRsep"></div>
-        <div class="caption center_text">
-        <h4>Kostenpflichtige Firmen-Testung **)</h4>
-        <h5>**) wenden Sie sich für ein Angebot an das Testzentrum <a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></h5>
-        </div>
-        </div>
-    </div>
+    <div class="FAIRsepdown" id="calendar"></div><div class="FAIRsepdown"></div>
+    <div class="row header_icon_main">
 
-    </div>
-
-    <div class="FAIRsepdown"></div>
-    <p>Bei Fragen können Sie sich an das Personal vor Ort wenden.</p>
-    
-    <p>Bitte erscheinen Sie nur, wenn Sie frei von den typischen Symptomen, wie Fieber, trockenem Husten oder plötzlichem Verlust des Geruchs- oder Geschmackssinnes sind.</p>
-    <div class="FAIRsepdown"></div>
-    <div class="FAIRsep"></div>
-</div>
-<div class="FAIRsepdown" id="calendar"></div><div class="FAIRsepdown"></div>
-<div class="row header_icon_main">
-
-    <div class="col-sm-2 col-xs-6">
-        <div class="header_icon">
-        <img src="img/icon/cal_time.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
-            
-        <div class="caption center_text">
-        <h5>Termin finden</h5><h5><span class="text-sm">(nur bei Voranmeldung)</span></h5>
+        <div class="col-sm-2 col-xs-6">
+            <div class="header_icon">
+            <img src="img/icon/cal_time.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+                
+            <div class="caption center_text">
+            <h5>Termin finden</h5><h5><span class="text-sm">(nur bei Voranmeldung)</span></h5>
+            </div>
+            </div>
         </div>
+        <div class="col-sm-2 col-xs-6">
+            <div class="header_icon">
+            <img src="img/icon/mask.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+                
+            <div class="caption center_text">
+                <h5>Mit Maske erscheinen</h5>
+                <h5><span class="text-sm">&nbsp;</span></h5>
+            </div>
+            </div>
         </div>
-    </div>
-    <div class="col-sm-2 col-xs-6">
-        <div class="header_icon">
-        <img src="img/icon/mask.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
-            
-        <div class="caption center_text">
-            <h5>Mit Maske erscheinen</h5>
+        <div class="col-sm-2 col-xs-6">
+            <div class="header_icon">
+            <img src="img/icon/qr_1.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+                
+            <div class="caption center_text">
+            <h5>Ticket vorzeigen</h5><h5><span class="text-sm">(nur bei Voranmeldung)</span></h5>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-2 col-xs-6">
+            <div class="header_icon">
+            <img src="img/icon/swab_test.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+                
+            <div class="caption center_text">
+            <h5>Nasenabstrich</h5>
             <h5><span class="text-sm">&nbsp;</span></h5>
+            </div>
+            </div>
         </div>
+        <div class="col-sm-2 col-xs-6">
+            <div class="header_icon">
+            <img src="img/icon/wait_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+                
+            <div class="caption center_text">
+            <h5>Etwa 20-30 min. warten</h5><h5><span class="text-sm">(PCR-Test etwa 1-2 Tage)</span></h5>
+            </div>
+            </div>
         </div>
-    </div>
-    <div class="col-sm-2 col-xs-6">
-        <div class="header_icon">
-        <img src="img/icon/qr_1.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
-            
-        <div class="caption center_text">
-        <h5>Ticket vorzeigen</h5><h5><span class="text-sm">(nur bei Voranmeldung)</span></h5>
+        <div class="col-sm-2 col-xs-6">
+            <div class="header_icon">
+            <img src="img/icon/result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+                
+            <div class="caption center_text">
+            <h5>Ergebnis digital abrufen</h5><h5><span class="text-sm">Neu: Auch mit Ihrer Corona-Warn-App</span></h5>
+            </div>
+            </div>
         </div>
-        </div>
-    </div>
-    <div class="col-sm-2 col-xs-6">
-        <div class="header_icon">
-        <img src="img/icon/swab_test.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
-            
-        <div class="caption center_text">
-        <h5>Nasenabstrich</h5>
-        <h5><span class="text-sm">&nbsp;</span></h5>
-        </div>
-        </div>
-    </div>
-    <div class="col-sm-2 col-xs-6">
-        <div class="header_icon">
-        <img src="img/icon/wait_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
-            
-        <div class="caption center_text">
-        <h5>Etwa 20-30 min. warten</h5><h5><span class="text-sm">(PCR-Test etwa 1-2 Tage)</span></h5>
-        </div>
-        </div>
-    </div>
-    <div class="col-sm-2 col-xs-6">
-        <div class="header_icon">
-        <img src="img/icon/result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
-            
-        <div class="caption center_text">
-        <h5>Ergebnis digital abrufen</h5><h5><span class="text-sm">Neu: Auch mit Ihrer Corona-Warn-App</span></h5>
-        </div>
-        </div>
-    </div>
 
-</div>
+    </div>';
+}
 
-
+echo '
 <div class="FAIRsepdown"></div>
 <div class="FAIRsepdown"></div>
 
@@ -166,50 +181,69 @@ echo $GLOBALS['G_html_main_right_a'];
 <div class="row">
     
     <div class="col-sm-12">
-    <h2 style="text-align: center;">SARS-CoV-2 Testungen - Termine und Orte im Odenwaldkreis</h2>
+    <h2 style="text-align: center;">SARS-CoV-2 '.$doing_facility.' - Termine und Orte im Odenwaldkreis</h2>
     </div>
-    <div class="col-sm-12"><div class="card">
-<?php
-if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
+    <div class="col-sm-12"><div class="card">';
 
-    // Show table of available dates
-    if(isset($_GET['s']) && $_GET['s']=='pcr') {
-        echo '
-        <ul class="nav nav-pills" role="tablist">
-        <li role="presentation" class=""><a href="?s=ag#calendar">Antigen-Schnelltest</a></li>
-        <li role="presentation" class="active"><a href="?s=pcr#calendar">PCR-Test</a></li>
-        <li role="presentation" class=""><a href="registration/business.php">Firmenanmeldung</a></li>
-        </ul>
-        ';
-        $calendar=H_build_table_testdates2('pcr');
-    } elseif(isset($_GET['s']) && $_GET['s']=='ag') {
-        echo '
-        <ul class="nav nav-pills" role="tablist">
-        <li role="presentation" class="active"><a href="?s=ag#calendar">Antigen-Schnelltest</a></li>
-        <li role="presentation" class=""><a href="?s=pcr#calendar">PCR-Test</a></li>
-        <li role="presentation" class=""><a href="registration/business.php">Firmenanmeldung</a></li>
-        </ul>
-        ';
-        $calendar=H_build_table_testdates2('ag');
-    } else {
-        echo '<h4>Für die Kalenderansicht müssen Sie zuerst eine Test-Art wählen</h4>
-        <ul class="nav nav-pills" role="tablist">
-        <li role="presentation" class=""><a href="?s=ag#calendar">Antigen-Schnelltest</a></li>
-        <li role="presentation" class=""><a href="?s=pcr#calendar">PCR-Test</a></li>
-        <li role="presentation" class=""><a href="registration/business.php">Firmenanmeldung</a></li>
-        </ul>
-        ';
+
+
+
+if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
+    if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+        // Show table of available dates
+        if(isset($_GET['s']) && $_GET['s']=='pcr') {
+            echo '
+            <ul class="nav nav-pills" role="tablist">
+            <li role="presentation" class=""><a href="?s=ag#calendar">Antigen-Schnelltest</a></li>
+            <li role="presentation" class="active"><a href="?s=pcr#calendar">PCR-Test</a></li>
+            <li role="presentation" class=""><a href="registration/business.php">Firmenanmeldung</a></li>
+            </ul>
+            ';
+            $calendar=H_build_table_testdates2('pcr');
+        } elseif(isset($_GET['s']) && $_GET['s']=='ag') {
+            echo '
+            <ul class="nav nav-pills" role="tablist">
+            <li role="presentation" class="active"><a href="?s=ag#calendar">Antigen-Schnelltest</a></li>
+            <li role="presentation" class=""><a href="?s=pcr#calendar">PCR-Test</a></li>
+            <li role="presentation" class=""><a href="registration/business.php">Firmenanmeldung</a></li>
+            </ul>
+            ';
+            $calendar=H_build_table_testdates2('ag');
+        } else {
+            echo '<h4>Für die Kalenderansicht müssen Sie zuerst eine Test-Art wählen</h4>
+            <ul class="nav nav-pills" role="tablist">
+            <li role="presentation" class=""><a href="?s=ag#calendar">Antigen-Schnelltest</a></li>
+            <li role="presentation" class=""><a href="?s=pcr#calendar">PCR-Test</a></li>
+            <li role="presentation" class=""><a href="registration/business.php">Firmenanmeldung</a></li>
+            </ul>
+            ';
+        }
     }
-    if(isset($_GET['s']) && ($_GET['s']=='pcr' || $_GET['s']=='ag' ) ) {
+    if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+        if(isset($_GET['s']) && ($_GET['s']=='pcr' || $_GET['s']=='ag' ) ) {
+            //large display
+            echo '<div class="calendar-large">';
+            echo $calendar[0];
+            echo '</div>';
+            // small display
+            echo '<div class="calendar-small">
+            <div class="cal-day-head-yellow"><i>Für gelbe Teststationen ist eine Voranmeldung und Terminbuchung empfohlen - bitte einen Termin wählen</i></div>
+            <div class="cal-day-head-red"><i>Für rote Teststationen ist eine Voranmeldung und Terminbuchung erforderlich - bitte einen Termin wählen</i></div>
+            <div class="cal-day-head-blue"><i>Für blaue Teststationen ist keine Terminbuchung notwendig, eine Voranmeldung Ihrer Daten kann gerne gemacht werden, dann geht es vor Ort schneller - bitte dafür einen Termin wählen</i></div>
+            ';
+            foreach($calendar[1] as $i) {
+                echo $i[0].$i[1];
+            }
+            echo '</div>';
+        }
+    } else {
+        $calendar=H_build_table_testdates2('vaccinate');
         //large display
         echo '<div class="calendar-large">';
         echo $calendar[0];
         echo '</div>';
         // small display
         echo '<div class="calendar-small">
-        <div class="cal-day-head-yellow"><i>Für gelbe Teststationen ist eine Voranmeldung und Terminbuchung empfohlen - bitte einen Termin wählen</i></div>
-        <div class="cal-day-head-red"><i>Für rote Teststationen ist eine Voranmeldung und Terminbuchung erforderlich - bitte einen Termin wählen</i></div>
-        <div class="cal-day-head-blue"><i>Für blaue Teststationen ist keine Terminbuchung notwendig, eine Voranmeldung Ihrer Daten kann gerne gemacht werden, dann geht es vor Ort schneller - bitte dafür einen Termin wählen</i></div>
         ';
         foreach($calendar[1] as $i) {
             echo $i[0].$i[1];
@@ -226,6 +260,10 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
     <div class="alert alert-info" role="alert">
     <h2>Aktuelle Öffnungszeiten</h2>
     <h3>ohne Terminanmeldung derzeit</h3>
+    <p></p>
+    <h3>Impfzentrum Erbach</h3>
+    <p>derzeit keine Informationen zu Impfmöglichkeiten
+    </p>
     <p></p>
     <h3>Testzentrum Erbach</h3>
     <p>Montag bis Freitag                                         6-20 Uhr
@@ -258,54 +296,58 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 </div>';
 }
 
-?>
-    </div></div>
+if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+    echo '
+        </div></div>
 
+        </div>
     </div>
-</div>
-<div class="FAIRsepdown"></div>
-<div class="FAIRsepdown"></div>
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsepdown"></div>
 
-<div class="row">
-    
-    <div class="col-sm-12">
-    <h2 style="text-align: center;">Informationen zu Ihrem Testergebnis</h2>
-    </div>
-    <div class="col-sm-6">
-    <div class="thumbnail">
-      <img style="height:231px; object-fit: contain;" src="img/covid-19-5057462_640.jpg" alt="">
-      <div class="caption">
-        <h3>Allgemeine Info des Gesundheitsamtes Odenwaldkreis</h3>
-          <br>
-        <p><a href="download/2021-03-11Anhang_Gesundheitsamt.pdf" class="btn btn-primary" role="button">Download PDF</a></p>
-      </div>
-    </div>
-    </div>
-    <div class="col-sm-6">
-    <div class="thumbnail">
-      <img style="height:231px; object-fit: contain;" src="img/test-tube-5065426_1280.jpg" alt="">
-      <div class="caption">
-        <h3>Positiv getestet?</h3>
-        <p>Sie wurden positiv getestet, dann haben wir hier einige Informationen für Sie vom Hessischen Ministerium für Soziales und Integration:</p>
-        <p><a href="download/HMSI-Informationen.pdf" class="btn btn-primary" role="button">Download PDF</a></p>
-      </div>
-    </div>
-    </div>
+    <div class="row">
+        
+        <div class="col-sm-12">
+        <h2 style="text-align: center;">Informationen zu Ihrem Testergebnis</h2>
+        </div>
+        <div class="col-sm-6">
+        <div class="thumbnail">
+        <img style="height:231px; object-fit: contain;" src="img/covid-19-5057462_640.jpg" alt="">
+        <div class="caption">
+            <h3>Allgemeine Info des Gesundheitsamtes Odenwaldkreis</h3>
+            <br>
+            <p><a href="download/2021-03-11Anhang_Gesundheitsamt.pdf" class="btn btn-primary" role="button">Download PDF</a></p>
+        </div>
+        </div>
+        </div>
+        <div class="col-sm-6">
+        <div class="thumbnail">
+        <img style="height:231px; object-fit: contain;" src="img/test-tube-5065426_1280.jpg" alt="">
+        <div class="caption">
+            <h3>Positiv getestet?</h3>
+            <p>Sie wurden positiv getestet, dann haben wir hier einige Informationen für Sie vom Hessischen Ministerium für Soziales und Integration:</p>
+            <p><a href="download/HMSI-Informationen.pdf" class="btn btn-primary" role="button">Download PDF</a></p>
+        </div>
+        </div>
+        </div>
 
-    </div>
-</div>
+        </div>
+    </div>';
+}
+
+echo '
 <div class="FAIRsepdown"></div>
 <div class="FAIRsepdown"></div>
 <div class="row">
     <div class="col-sm-4">
         <div class="list-group">
             <h3>Für die Teams des DRK-Kreisverband Odenwaldkreis</h3>
-            <a class="list-group-item list-group-item-action list-group-item-FAIR" id="module-r1" href="zentral/index.php">Testerfassung (Intern)</a>
+            <a class="list-group-item list-group-item-action list-group-item-FAIR" id="module-r1" href="zentral/index.php">MA-Portal (Intern)</a>
         </div>
     </div>
-</div>
+</div>';
 
-<?php
+
 // Print html content part C
 echo $GLOBALS['G_html_main_right_c'];
 // Print html footer

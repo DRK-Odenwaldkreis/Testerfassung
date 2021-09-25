@@ -16,7 +16,17 @@ and some global used values
 // HTML header with complete <head> element
 $G_html_header='<html lang="en">
   <head>
-    <title>DRK Covid-19 Testzentrum Odenwaldkreis</title>
+    ';
+    if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+      $G_html_header.='
+      <title>DRK Covid-19 Testzentrum Odenwaldkreis</title>
+      ';
+    } else {
+      $G_html_header.='
+      <title>DRK Covid-19 Impfzentrum Odenwaldkreis</title>
+      ';
+    }
+    $G_html_header.='
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -37,24 +47,40 @@ $G_html_header='<html lang="en">
 
 
 // Menu
-$_module_array1=array(
-  0=>array("text"=>'<h4 class="list-group-item-heading">Kunden-Registrierung / Test-Auswertung</h4><p class="list-group-item-text">TESTKARTE QR Code scannen</p>',"text_s"=>'<span class="icon-qrcode"></span>&nbsp;Scannen',"link"=>"scan.php","role"=>array(1,0,0,4,0),"role-disabled"=>array(0,2,0,0,5)),
-  2=>array("text"=>'<h4 class="list-group-item-heading">Voranmeldungen</h4><p class="list-group-item-text">Liste der Voranmeldungen und Übernahme in Reg-Prozess</p>',"text_s"=>'<span class="icon-ticket"></span>&nbsp;Voranmeldungen',"link"=>"prereglist.php","role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
-  10=>array("text"=>'<h4 class="list-group-item-heading">Liste an Tests</h4><p class="list-group-item-text">Aktive Tests und Export CSV</p>',"link"=>"testlist.php","text_s"=>'<span class="icon-lab"></span>&nbsp;Testliste',"role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
-  15=>array("text"=>'<h4 class="list-group-item-heading">Liste für Gesundheitsamt</h4><p class="list-group-item-text">PCR-Tests & Positivmeldungen und Export CSV</p>',"text_s"=>'<span class="icon-lab"></span>&nbsp;Gesundheitsamt',"link"=>"gesundheitsamt.php","role"=>array(0,0,3,4,0),"role-disabled"=>array(0,0,0,0,0)),
-  99=>array("text"=>'<h4 class="list-group-item-heading">Öffentliche Startseite Testzentrum</h4><p class="list-group-item-text"></p>',"text_s"=>'',"link"=>"../index.php","role"=>array(1,2,3,4,5),"role-disabled"=>array(0,0,0,0,0))
-);
-$_module_array2=array(
-  20=>array("text"=>'<h4 class="list-group-item-heading">Stationen</h4><p class="list-group-item-text">Stations-Management</p>',"text_s"=>'<span class="icon-office"></span>&nbsp;Stationen',"link"=>"station_admin.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
-  22=>array("text"=>'<h4 class="list-group-item-heading">Testkarten</h4><p class="list-group-item-text">Erstellung von neuen Testkarten</p>',"text_s"=>'<span class="icon-print"></span>&nbsp;Testkarten',"link"=>"testkarten.php","role"=>array(0,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
-  25=>array("text"=>'<h4 class="list-group-item-heading">Termine</h4><p class="list-group-item-text">Übersicht der angelegten Termine</p>',"text_s"=>'<span class="icon-calendar2"></span>&nbsp;Terminübersicht',"link"=>"terminlist.php","role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
-  26=>array("text"=>'<h4 class="list-group-item-heading">Termine erstellen</h4><p class="list-group-item-text">Neue Termine für eine Teststation erstellen</p>',"text_s"=>'<span class="icon-cogs"></span>&nbsp;Termin-Verwaltung',"link"=>"terminerstellung.php","role"=>array(0,2,0,4,5),"role-disabled"=>array(1,0,0,0,0)),
-  28=>array("text"=>'<h4 class="list-group-item-heading">Sammel-Testung</h4><p class="list-group-item-text">Für Sammel-Testung Daten importieren und Ergebnis-Abruf</p>',"text_s"=>'<span class="icon-stack"></span>&nbsp;Sammel-Testung',"link"=>"sammeltestung.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
-  30=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"text_s"=>'<span class="icon-users"></span>&nbsp;User-Management',"link"=>"user_admin.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,2,0,0,0)),
-  33=>array("text"=>'<h4 class="list-group-item-heading">Admin: Files</h4><p class="list-group-item-text">Dateien</p>',"text_s"=>'',"link"=>"downloadlist.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
-  34=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Übersicht der Logs</p>',"text_s"=>'',"link"=>"log.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
-  98=>array("text"=>'<h4 class="list-group-item-heading">Support, Datenschutz, Impressum</h4><p class="list-group-item-text"></p>',"text_s"=>'',"link"=>"impressum.php","role"=>array(1,2,3,4,5),"role-disabled"=>array(0,0,0,0,0))
-);
+if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+  $_module_array1=array(
+    0=>array("text"=>'<h4 class="list-group-item-heading">Kunden-Registrierung / Test-Auswertung</h4><p class="list-group-item-text">TESTKARTE QR Code scannen</p>',"text_s"=>'<span class="icon-qrcode"></span>&nbsp;Scannen',"link"=>"scan.php","role"=>array(1,0,0,4,0),"role-disabled"=>array(0,2,0,0,5)),
+    2=>array("text"=>'<h4 class="list-group-item-heading">Voranmeldungen</h4><p class="list-group-item-text">Liste der Voranmeldungen und Übernahme in Reg-Prozess</p>',"text_s"=>'<span class="icon-ticket"></span>&nbsp;Voranmeldungen',"link"=>"prereglist.php","role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
+    10=>array("text"=>'<h4 class="list-group-item-heading">Liste an Tests</h4><p class="list-group-item-text">Aktive Tests und Export CSV</p>',"link"=>"testlist.php","text_s"=>'<span class="icon-lab"></span>&nbsp;Testliste',"role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
+    15=>array("text"=>'<h4 class="list-group-item-heading">Liste für Gesundheitsamt</h4><p class="list-group-item-text">PCR-Tests & Positivmeldungen und Export CSV</p>',"text_s"=>'<span class="icon-lab"></span>&nbsp;Gesundheitsamt',"link"=>"gesundheitsamt.php","role"=>array(0,0,3,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    99=>array("text"=>'<h4 class="list-group-item-heading">Öffentliche Startseite Testzentrum</h4><p class="list-group-item-text"></p>',"text_s"=>'',"link"=>"../index.php","role"=>array(1,2,3,4,5),"role-disabled"=>array(0,0,0,0,0))
+  );
+  $_module_array2=array(
+    20=>array("text"=>'<h4 class="list-group-item-heading">Stationen</h4><p class="list-group-item-text">Stations-Management</p>',"text_s"=>'<span class="icon-office"></span>&nbsp;Stationen',"link"=>"station_admin.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    22=>array("text"=>'<h4 class="list-group-item-heading">Testkarten</h4><p class="list-group-item-text">Erstellung von neuen Testkarten</p>',"text_s"=>'<span class="icon-print"></span>&nbsp;Testkarten',"link"=>"testkarten.php","role"=>array(0,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
+    25=>array("text"=>'<h4 class="list-group-item-heading">Termine</h4><p class="list-group-item-text">Übersicht der angelegten Termine</p>',"text_s"=>'<span class="icon-calendar2"></span>&nbsp;Terminübersicht',"link"=>"terminlist.php","role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
+    26=>array("text"=>'<h4 class="list-group-item-heading">Termine erstellen</h4><p class="list-group-item-text">Neue Termine für eine Teststation erstellen</p>',"text_s"=>'<span class="icon-cogs"></span>&nbsp;Termin-Verwaltung',"link"=>"terminerstellung.php","role"=>array(0,2,0,4,5),"role-disabled"=>array(1,0,0,0,0)),
+    28=>array("text"=>'<h4 class="list-group-item-heading">Sammel-Testung</h4><p class="list-group-item-text">Für Sammel-Testung Daten importieren und Ergebnis-Abruf</p>',"text_s"=>'<span class="icon-stack"></span>&nbsp;Sammel-Testung',"link"=>"sammeltestung.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    30=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"text_s"=>'<span class="icon-users"></span>&nbsp;User-Management',"link"=>"user_admin.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,2,0,0,0)),
+    33=>array("text"=>'<h4 class="list-group-item-heading">Admin: Files</h4><p class="list-group-item-text">Dateien</p>',"text_s"=>'',"link"=>"downloadlist.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    34=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Übersicht der Logs</p>',"text_s"=>'',"link"=>"log.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    98=>array("text"=>'<h4 class="list-group-item-heading">Support, Datenschutz, Impressum</h4><p class="list-group-item-text"></p>',"text_s"=>'',"link"=>"impressum.php","role"=>array(1,2,3,4,5),"role-disabled"=>array(0,0,0,0,0))
+  );
+} else {
+  $_module_array1=array(
+    2=>array("text"=>'<h4 class="list-group-item-heading">Voranmeldungen</h4><p class="list-group-item-text">Liste der Voranmeldungen</p>',"text_s"=>'<span class="icon-ticket"></span>&nbsp;Voranmeldungen',"link"=>"prereglist.php","role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
+    99=>array("text"=>'<h4 class="list-group-item-heading">Öffentliche Startseite Impfzentrum</h4><p class="list-group-item-text"></p>',"text_s"=>'',"link"=>"../index.php","role"=>array(1,2,3,4,5),"role-disabled"=>array(0,0,0,0,0))
+  );
+  $_module_array2=array(
+    20=>array("text"=>'<h4 class="list-group-item-heading">Stationen</h4><p class="list-group-item-text">Stations-Management</p>',"text_s"=>'<span class="icon-office"></span>&nbsp;Stationen',"link"=>"station_admin.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    25=>array("text"=>'<h4 class="list-group-item-heading">Termine</h4><p class="list-group-item-text">Übersicht der angelegten Termine</p>',"text_s"=>'<span class="icon-calendar2"></span>&nbsp;Terminübersicht',"link"=>"terminlist.php","role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
+    26=>array("text"=>'<h4 class="list-group-item-heading">Termine erstellen</h4><p class="list-group-item-text">Neue Termine für einen Impfstoff erstellen</p>',"text_s"=>'<span class="icon-cogs"></span>&nbsp;Termin-Verwaltung',"link"=>"terminerstellung.php","role"=>array(0,2,0,4,5),"role-disabled"=>array(1,0,0,0,0)),
+    30=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"text_s"=>'<span class="icon-users"></span>&nbsp;User-Management',"link"=>"user_admin.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,2,0,0,0)),
+    33=>array("text"=>'<h4 class="list-group-item-heading">Admin: Files</h4><p class="list-group-item-text">Dateien</p>',"text_s"=>'',"link"=>"downloadlist.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    34=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Übersicht der Logs</p>',"text_s"=>'',"link"=>"log.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    98=>array("text"=>'<h4 class="list-group-item-heading">Support, Datenschutz, Impressum</h4><p class="list-group-item-text"></p>',"text_s"=>'',"link"=>"impressum.php","role"=>array(1,2,3,4,5),"role-disabled"=>array(0,0,0,0,0))
+  );
+}
 
 
 
@@ -64,8 +90,15 @@ $G_html_menu='<body>';
 $G_html_menu_login='<body style="background-color:#ccc;">';
 $G_html_menu2='<nav class="navbar navbar-inverse navbar-fixed-top FAIR-navbar">
       <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="index.php"><span class="shorten">DRK Covid-19 Testzentrum Odenwaldkreis </span><span style="color:#eee;">Start</span></a>';
+        <div class="navbar-header">';
+
+if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+  $G_html_menu2.='<a class="navbar-brand" href="index.php"><span class="shorten">DRK Covid-19 Testzentrum Odenwaldkreis </span><span style="color:#eee;">Start</span></a>';
+} else {
+  $G_html_menu2.='<a class="navbar-brand" href="index.php"><span class="shorten">DRK Covid-19 Impfzentrum Odenwaldkreis </span><span style="color:#eee;">Start</span></a>';
+}
+
+
 if($_SESSION['uid']>0) {
 	$G_html_menu2.='<ul class="nav navbar-nav navbar-left">';
 

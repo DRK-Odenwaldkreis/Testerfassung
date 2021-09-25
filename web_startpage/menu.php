@@ -2,9 +2,9 @@
 
 /* **************
 
-Websystem für das Testzentrum DRK Odenwaldkreis
+Websystem für das Impf- und Testzentrum DRK Odenwaldkreis
 Author: Marc S. Duchene
-March 2021
+September 2021
 
 file with HTML elements
 to construct website frame
@@ -16,28 +16,18 @@ and some global used values
 // HTML header with complete <head> element
 $G_html_header='<html lang="en">
   <head>
-  ';
-  if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-    $G_html_header.='
-    <title>DRK Covid-19 Testzentrum Odenwaldkreis</title>
-    ';
-  } else {
-    $G_html_header.='
-    <title>DRK Covid-19 Impfzentrum Odenwaldkreis</title>
-    ';
-  }
-  $G_html_header.='
+    <title>DRK Covid-19 Impf- und Testzentrum Odenwaldkreis</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	
-<link rel="shortcut icon" href="../img/favicon.png" type="image/x-ico; charset=binary" />
-<link rel="icon" href="../img/favicon.png" type="image/x-ico; charset=binary" />
+<link rel="shortcut icon" href="img/favicon.png" type="image/x-ico; charset=binary" />
+<link rel="icon" href="img/favicon.png" type="image/x-ico; charset=binary" />
 
 
-<link href="../css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap.css" rel="stylesheet">
 <!-- Custom styles for this template -->
-<link href="../css/dashboard.css" rel="stylesheet">
+<link href="css/dashboard.css" rel="stylesheet">
     
   </head>';
 
@@ -49,19 +39,11 @@ $G_html_menu2='<nav class="navbar navbar-inverse navbar-fixed-top FAIR-navbar">
       <div class="container-fluid">
         <div class="navbar-header">
           ';
-if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-  $G_html_menu2.='<a class="navbar-brand" href="../index.php"><span style="color:#eee;">DRK</span><span class="shorten"> Covid-19 Testzentrum Odenwaldkreis</span></a>';
-} else {
-  $G_html_menu2.='<a class="navbar-brand" href="../index.php"><span style="color:#eee;">DRK</span><span class="shorten"> Covid-19 Impfzentrum Odenwaldkreis</span></a>';
-}
+
 $G_html_menu2.='</div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-			<li><a href="../impressum.php">Impressum / Datenschutz / Kontakt</a></li>';
-if($_SESSION['b2b_signedin']) {
-  $G_html_menu2.='<li><a href="logout.php" style="color: #fff; background-color: #9f0000;">Logout</a></li>';
-}
-
+			<li><a href="impressum.php">Impressum / Datenschutz / Kontakt</a></li>';
 
 $G_html_menu2.='</ul>
         

@@ -68,8 +68,12 @@ echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörd
 <p>&nbsp;</p>
 
 <h4>Personenbezogene Daten</h4>
+<h5><b>Bei Nutzung des Testzentrums</b></h5>
 <p>Mit der Anmeldung zu einem Corona-Schnelltest erfassen wir personenbezogene Daten von Ihnen. Wir erheben Ihren Namen, Anschrift, Geburtsdatum, Telefonnummer, Emailadresse und Testergebnis, um im Falle eines positiven Testergebnis das zuständige Gesundheitsamt nach §7,8 IfSG zu informieren. Im Falle eines negativen Testergebnis werden Ihre Daten nach einer Woche gelöscht. Im Fall eines positiven Testergebnis werden die Daten an das zuständige Gesundheitsamt weitergeleitet und von uns nach 3 Monaten gelöscht.</p>
 <p>Bitte beachten Sie, dass wir Ihnen Ihr Testergebnis per Email mitteilen. Im E-Mail-Verkehr sind Ihre Daten ohne weitere Vorkehrungen nicht sicher und können unter Umständen von Dritten erfasst werden.</p>
+
+<h5><b>Bei Nutzung des Impfzentrums</b></h5>
+<p>Mit der Anmeldung zu einer Impfung erfassen wir personenbezogene Daten von Ihnen. Wir erheben Ihren Namen, Telefonnummer, Emailadresse und Impfstoff. Ihre Daten werden nach einer Woche nach dem gewählten Impftermin gelöscht.</p>
 <p>&nbsp;</p>
 
 <h4>Auskunft, Löschung, Sperrung</h4>

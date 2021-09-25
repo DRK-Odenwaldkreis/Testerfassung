@@ -16,7 +16,17 @@ and some global used values
 // HTML header with complete <head> element
 $G_html_header='<html lang="en">
   <head>
-    <title>DRK Covid-19 Testzentrum Odenwaldkreis</title>
+    ';
+if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+  $G_html_header.='
+  <title>DRK Covid-19 Testzentrum Odenwaldkreis</title>
+  ';
+} else {
+  $G_html_header.='
+  <title>DRK Covid-19 Impfzentrum Odenwaldkreis</title>
+  ';
+}
+$G_html_header.='
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -37,8 +47,14 @@ $G_html_menu='<body>';
 $G_html_menu_login='<body style="background-color:#ccc;">';
 $G_html_menu2='<nav class="navbar navbar-inverse navbar-fixed-top FAIR-navbar">
       <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="index.php"><span style="color:#eee;">DRK</span><span class="shorten"> Covid-19 Testzentrum Odenwaldkreis</span></a>';
+        <div class="navbar-header">';
+
+if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+  $G_html_menu2.='<a class="navbar-brand" href="index.php"><span style="color:#eee;">DRK</span><span class="shorten"> Covid-19 Testzentrum Odenwaldkreis</span></a>';
+} else {
+  $G_html_menu2.='<a class="navbar-brand" href="index.php"><span style="color:#eee;">DRK</span><span class="shorten"> Covid-19 Impfzentrum Odenwaldkreis</span></a>';
+}
+          
 
 $G_html_menu2.='</div>
         <div id="navbar" class="navbar-collapse collapse">

@@ -180,6 +180,66 @@ function S_set_entry_voranmeldung ($Db,$array_data) {
 	return $result2; // need id as a return value
 	
 }
+function S_set_entry_voranmeldung_vaccinate ($Db,$array_data) {
+	// First, check if Termin_id is already used by same person (  to fix a bug found by N.B. <3  )
+	$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Mailadresse=? AND Tag=?;");
+	mysqli_stmt_bind_param($stmt, "ssssssss", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[5]);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $double_entry_id);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+
+	if($double_entry_id>0) {
+		return 'DOUBLE_ENTRY';
+	}
+
+	// Second, check if Termin_id is already used by other person
+	$stmt=mysqli_prepare($Db,"SELECT id, Slot, id_station, Tag, Stunde FROM Termine WHERE id=?;");
+	mysqli_stmt_bind_param($stmt, "i", $array_data[4]);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $termin_id, $termin_slot, $termin_station, $termin_tag, $termin_stunde);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+	if($termin_slot>0) {
+		$check_termin_id=S_get_entry($Db,'SELECT id FROM Voranmeldung WHERE Termin_id=CAST('.$termin_id.' as int);');
+	} else {
+		$check_termin_id=0;
+	}
+
+	if($check_termin_id>0) {
+		// Selected Termin is used, select another in same slot if available
+		$new_termin_id=S_get_entry($Db,'SELECT id FROM Termine WHERE id_station='.$termin_station.' AND Tag="'.$termin_tag.'" AND Stunde='.$termin_stunde.' AND Slot='.$termin_slot.' AND Used is null;');
+		if($new_termin_id>0) {
+			// is available - use new termin_id
+			$termin_id=$new_termin_id;
+		} else {
+			// is not available
+			return 0;
+		}
+	} 
+	
+	// Write data because Termin_id is not used or Termin_id has no slots
+	if($termin_slot>0) {
+		S_set_data($Db,'UPDATE Termine SET Used=1 WHERE id=CAST('.$termin_id.' as int);');
+	}
+	$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Telefon, Mailadresse, Termin_id, Tag) VALUES (?,?,?,?,?,?);");
+	mysqli_stmt_bind_param($stmt, "ssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $array_data[5]);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $result);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+
+
+
+	$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Mailadresse=? AND Termin_id=? AND Tag=? ORDER BY id DESC;");
+	mysqli_stmt_bind_param($stmt, "ssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $termin_id, $array_data[5]);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $result2);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+	return $result2; // need id as a return value
+	
+}
 
 function S_get_entry_voranmeldung ($Db,$array_data) {
 	$stmt=mysqli_prepare($Db,"SELECT id_preregistration FROM Voranmeldung_Verif WHERE id_preregistration=? AND Token=?;");
@@ -433,9 +493,11 @@ function H_build_table_testdates2( $mode ) {
 	} elseif($mode=='pcr') {
 		$query_b2b='(Firmencode is null OR Firmencode="") AND Testtyp.IsPCR=1';
 		$path_to_reg='registration/';
-		
 	} elseif($mode=='ag') {
 		$query_b2b='(Firmencode is null OR Firmencode="") AND Testtyp.IsPCR=0';
+		$path_to_reg='registration/';
+	} elseif($mode=='vaccinate') {
+		$query_b2b='(Firmencode is null OR Firmencode="")';
 		$path_to_reg='registration/';
 	} else {
 		$query_b2b='Firmencode is null OR Firmencode=""';
@@ -446,7 +508,11 @@ function H_build_table_testdates2( $mode ) {
 	$res_s_array=array(); // for small displays - array with one element per day
 	$Db=S_open_db();
 	$flag_prereg=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_Pre_registration";');
-	$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Testtyp.IsPCR FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id WHERE '.$query_b2b.';');
+	if($mode == 'vaccinate') {
+		$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, 1 FROM Station WHERE '.$query_b2b.';');
+	} else {
+		$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Testtyp.IsPCR FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id WHERE '.$query_b2b.';');
+	}
 	// X ist Anzahl an Tagen für Vorschau in Tabelle
 	$X=14;
 	// Ohne Terminbuchung für nächste X Tage
@@ -538,6 +604,10 @@ function H_build_table_testdates2( $mode ) {
 			if($mode=='pcr') {
 				$res.='<tr>
 				<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-red1" colspan="'.($X+2).'"><b>PCR-Testung: <i>Eine Terminbuchung ist notwendig</i></b></td>
+				</tr>';
+			} elseif($mode=='vaccinate') {
+				$res.='<tr>
+				<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-red1" colspan="'.($X+2).'"><b>Impfungen: <i>Eine Terminbuchung ist notwendig</i></b></td>
 				</tr>';
 			} else {
 				$res.='<tr>
