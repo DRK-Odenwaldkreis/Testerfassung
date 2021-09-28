@@ -34,10 +34,21 @@ $G_html_header.='
 <link rel="shortcut icon" href="img/favicon.png" type="image/x-ico; charset=binary" />
 <link rel="icon" href="img/favicon.png" type="image/x-ico; charset=binary" />
 
+';
 
-<link href="css/bootstrap.css" rel="stylesheet">
-<!-- Custom styles for this template -->
-<link href="css/dashboard.css" rel="stylesheet">
+if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+  echo'
+  <link href="css/bootstrap_red.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="css/dashboard_red.css" rel="stylesheet">';
+} else {
+  echo'
+  <link href="css/bootstrap.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="css/dashboard.css" rel="stylesheet">';
+}
+
+echo'
     
   </head>';
 

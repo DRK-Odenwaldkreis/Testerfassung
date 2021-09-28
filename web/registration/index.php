@@ -38,12 +38,13 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     $doing_facility='einen SARS-CoV-2 Test';
     $email_facility='testzentrum@drk-odenwaldkreis.de';
     $logo_facility='logo.png';
+    $color_cal_facility='calendarred';
 } else {
     $name_facility='Impfzentrum';
     $doing_facility='eine Covid-19 Schutz-Impfung';
     $email_facility='testzentrum@drk-odenwaldkreis.de';
     $logo_facility='impfzentrum.jpg';
-
+    $color_cal_facility='calendarblue';
 }
 
 
@@ -170,16 +171,21 @@ Das Team vom DRK $name_facility Odenwaldkreis";
             </div></div></div>';
 
             echo '<div class="row">
-            <div class="col-sm-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
+            <div class="col-sm-12">';
+            if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                echo '<div class="panel panel-danger">';
+            } else {
+                echo '<div class="panel panel-primary">';
+            }
+
+                echo '<div class="panel-heading">
                 <b>Gewählter Termin</b>
                 </div>
                 <div class="panel-body">
                 <div class="row">
-                <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="calendarblue">'.$k_int_date.'</span></div>
-                <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="calendarblue">'.$k_int_time1.' - '.$k_int_time2.' Uhr</span></div>
-                <div class="col-sm-4 calendar-col"><b>Ort</b> <span class="calendarblue">'.$k_int_location.'</span></div>
+                <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$k_int_date.'</span></div>
+                <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="'.$color_cal_facility.'">'.$k_int_time1.' - '.$k_int_time2.' Uhr</span></div>
+                <div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$k_int_location.'</span></div>
                 </div>
                 </div>
                 </div>';
@@ -424,16 +430,20 @@ Das Team vom DRK $name_facility Odenwaldkreis";
         }
 
         if($valid_appointment) {
-            echo '<div class="panel panel-primary">
-            <div class="panel-heading">
+            if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                echo '<div class="panel panel-danger">';
+            } else {
+                echo '<div class="panel panel-primary">';
+            }
+            echo '<div class="panel-heading">
             <b>Termin stornieren / Voranmeldung löschen</b>
             </div>
             <div class="panel-body">
             
             <div class="row calendar_selection">
-            <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
-            <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="calendarblue">'.$time1.' - '.$time2.' Uhr</span></div>
-            <div class="col-sm-4 calendar-col"><b>Name</b> <span class="calendarblue">'.$k_name.', '.$k_vorname.'</span></div>
+            <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$date.'</span></div>
+            <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="'.$color_cal_facility.'">'.$time1.' - '.$time2.' Uhr</span></div>
+            <div class="col-sm-4 calendar-col"><b>Name</b> <span class="'.$color_cal_facility.'">'.$k_name.', '.$k_vorname.'</span></div>
             </div>
 
             <p>Sie möchten Ihren Termin stornieren bzw. die Voranmeldung löschen?</p>
@@ -554,11 +564,21 @@ Das Team vom DRK $name_facility Odenwaldkreis";
             }
 
             // Adresse
-            $stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station WHERE id="'.$array_appointment[7].'";');
-            if($array_appointment[5]!='') {
-                $location=$stations_array[0][1].', '.$array_appointment[5].', '.$array_appointment[6];
+            if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                $stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station WHERE id="'.$array_appointment[7].'";');
+                if($array_appointment[5]!='') {
+                    $location=$stations_array[0][1].', '.$array_appointment[5].', '.$array_appointment[6];
+                } else {
+                    $location=$stations_array[0][1].', '.$stations_array[0][2];
+                }
             } else {
-                $location=$stations_array[0][1].', '.$stations_array[0][2];
+                $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.Kurzbezeichnung FROM Station 
+                JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id WHERE Station.id="'.$array_appointment[7].'";');
+                if($array_appointment[5]!='') {
+                    $location=$stations_array[0][3].' in '.$array_appointment[5].', '.$array_appointment[6];
+                } else {
+                    $location=$stations_array[0][3].' in '.$stations_array[0][1].', '.$stations_array[0][2];
+                }
             }
         } else {
             $val_station_id=A_sanitize_input($_GET['appointment_more']);
@@ -601,16 +621,25 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                 </div>';
             }
             if($display_single_termin) {
-                echo '<div class="panel panel-primary">
+                if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                    echo '<div class="panel panel-danger">';
+                } else {
+                    echo '<div class="panel panel-primary">';
+                }
+                echo '
                 <div class="panel-heading">
                 <b>Gewählter Termin</b>
                 </div>
                 <div class="panel-body">
                 <div class="row">
-                <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
-                <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="calendarblue">'.$time1.' - '.$time2.' Uhr</span></div>
-                <div class="col-sm-4 calendar-col"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
-                </div>
+                <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$date.'</span></div>
+                <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="'.$color_cal_facility.'">'.$time1.' - '.$time2.' Uhr</span></div>';
+                if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                    echo '<div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                } else {
+                    echo '<div class="col-sm-4 calendar-col"><b>Impfstoff</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                }
+                echo '</div>
                 </div>
                 </div>';
 
@@ -767,15 +796,24 @@ Das Team vom DRK $name_facility Odenwaldkreis";
             } elseif($display_slot_termin) {
                 // Show available slots
                 $current_time=time();
-                echo '<div class="panel panel-primary">
+                if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                    echo '<div class="panel panel-danger">';
+                } else {
+                    echo '<div class="panel panel-primary">';
+                }
+                echo '
                 <div class="panel-heading">
                 <b>Gewählte Station</b>
                 </div>
                 <div class="panel-body">
                 <div class="row">
-                <div class="col-sm-6 calendar-col"><b>Datum</b> <span class="calendarblue">'.$date.'</span></div>
-                <div class="col-sm-6 calendar-col"><b>Ort</b> <span class="calendarblue">'.$location.'</span></div>
-                </div>
+                <div class="col-sm-6 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$date.'</span></div>';
+                if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                    echo '<div class="col-sm-6 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                } else {
+                    echo '<div class="col-sm-6 calendar-col"><b>Impfstoff</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                }
+                echo '</div>
                 </div>
                 </div>';
                 echo '<h3>Termin auswählen</h3>

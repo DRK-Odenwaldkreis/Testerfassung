@@ -328,7 +328,12 @@ function H_build_table_testdates_all($mode) {
 	
 	$res='';
 	$Db=S_open_db();
-	$stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station;');
+	if($mode == 'vaccinate') {
+		$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.Kurzbezeichnung FROM Station
+		JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id;');
+	} else {
+		$stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station;');
+	}
 	// X ist Anzahl an Tagen für Vorschau in Tabelle
 	$X=14;
 	// Ohne Terminbuchung für nächste X Tage / free2come
@@ -359,7 +364,11 @@ function H_build_table_testdates_all($mode) {
 				$display_location_thirdline='';
 			}
 			$res.='<tr>';
-			$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
+			if($mode == 'vaccinate') {
+				$string_location='<b>'.$st[3].'</b><br>'.$st[1].', '.$st[2].'';
+			} else {
+				$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
+			}
 			$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue2">'.$string_location.$display_location_thirdline.'</td>';
 			for($j=0;$j<=$X;$j++) {
 				$in_j_days=date('Y-m-d', strtotime($yesterday. ' + '.$j.' days'));
@@ -420,7 +429,11 @@ function H_build_table_testdates_all($mode) {
 					$display_location_thirdline='';
 				}
 				$res.='<tr>';
-				$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
+				if($mode == 'vaccinate') {
+					$string_location='<b>'.$st[3].'</b><br>'.$st[1].', '.$st[2].'';
+				} else {
+					$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
+				}
 				$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-yellow2">'.$string_location.$display_location_thirdline.'</td>';
 				for($j=0;$j<=$X;$j++) {
 					$in_j_days=date('Y-m-d', strtotime($yesterday. ' + '.$j.' days'));

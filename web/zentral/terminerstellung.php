@@ -121,7 +121,11 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
 
         // Get available stations
         $Db=S_open_db();
-        $stations_array=S_get_multientry($Db,'SELECT id, Ort FROM Station;');
+        if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+            $stations_array=S_get_multientry($Db,'SELECT id, Ort FROM Station;');
+        } else {
+            $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Impfstoff.Kurzbezeichnung FROM Station JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id;');
+        }
         S_close_db($Db);
 
         echo '
@@ -135,8 +139,13 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
             <option value="" selected>Wähle Station...</option>
                 ';
                 foreach($stations_array as $i) {
-                    $display=$i[1].' / '.$i[0];
-                    echo '<option value="'.$i[0].'">'.$display.'</option>';
+                    if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                        $display=$i[1].' / S'.$i[0];
+                        echo '<option value="'.$i[0].'">'.$display.'</option>';
+                    } else {
+                        $display=$i[2].' ('.$i[1].' / S'.$i[0].')';
+                        echo '<option value="'.$i[0].'">'.$display.'</option>';
+                    }
                 }
                 echo '
             </select>
@@ -179,8 +188,13 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
             <option value="" selected>Wähle Station...</option>
                 ';
                 foreach($stations_array as $i) {
-                    $display=$i[1].' / '.$i[0];
-                    echo '<option value="'.$i[0].'">'.$display.'</option>';
+                    if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                        $display=$i[1].' / S'.$i[0];
+                        echo '<option value="'.$i[0].'">'.$display.'</option>';
+                    } else {
+                        $display=$i[2].' ('.$i[1].' / S'.$i[0].')';
+                        echo '<option value="'.$i[0].'">'.$display.'</option>';
+                    }
                 }
                 echo '
             </select>
