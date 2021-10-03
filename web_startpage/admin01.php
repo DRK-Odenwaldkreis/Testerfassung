@@ -9,5 +9,7 @@ March 2021
 ** ************** */
 
 $FLAG_SHUTDOWN_MAIN = false;
+$FLAG_SHUTDOWN_TESTING = false;
+$FLAG_SHUTDOWN_VACCINATE = false;
 
 ?>

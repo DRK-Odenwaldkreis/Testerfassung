@@ -50,21 +50,47 @@ echo $GLOBALS['G_html_main_right_a'];
     <div class="row">
     <div class="col-md-6 col-xs-12 main-link-page">
         <div class="header_icon">
-        <img src="img/impfzentrum.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 50%; border: solid 1px #5a482d; cursor: pointer;" onclick="window.location='https://www.impfzentrum-odw.de'"></img>
+<?php
+    if(!$GLOBALS['FLAG_SHUTDOWN_VACCINATE']) {
+        echo '<img src="img/impfzentrum.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 50%; border: solid 1px #5a482d; cursor: pointer;" onclick="window.location=\'https://www.impfzentrum-odw.de\'"></img>';
+    } else {
+        echo '<img src="img/impfzentrum.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 50%; border: solid 1px #5a482d;"></img>';
+    }
+?>
+        
         <div class="FAIRsep"></div>
         <div class="caption center_text">
             <h4><b>Impfungen</b></h4>
-            <p><a class="btn btn-primary btn-lg" href="https://www.impfzentrum-odw.de" role="button">Zur Terminvergabe</a></p>
+<?php
+    if(!$GLOBALS['FLAG_SHUTDOWN_VACCINATE']) {
+        echo '<p><a class="btn btn-primary btn-lg" href="https://www.impfzentrum-odw.de" role="button">Zur Terminvergabe</a></p>';
+    } else {
+        echo '<p>Derzeit keine Anmeldung möglich</p>';
+    }
+?>
+            
         </div>
         </div>
     </div>
     <div class="col-md-6 col-xs-12 main-link-page">
         <div class="header_icon">
-        <img src="img/testzentrum.png" style="display: block; margin-left: auto; margin-right: auto; width: 50%; border: solid 1px #5a482d; cursor: pointer;" onclick="window.location='https://www.testzentrum-odw.de'"></img>
+<?php
+    if(!$GLOBALS['FLAG_SHUTDOWN_TESTING']) {
+        echo '<img src="img/testzentrum.png" style="display: block; margin-left: auto; margin-right: auto; width: 50%; border: solid 1px #5a482d; cursor: pointer;" onclick="window.location=\'https://www.testzentrum-odw.de\'"></img>';
+    } else {
+        echo '<img src="img/testzentrum.png" style="display: block; margin-left: auto; margin-right: auto; width: 50%; border: solid 1px #5a482d;"></img>';
+    }
+?>
         <div class="FAIRsep"></div>
         <div class="caption center_text">
             <h4><b>Antigentest / PCR-Test</b></h4>
-            <p><a class="btn btn-primary btn-lg" href="https://www.testzentrum-odw.de" role="button">Zur Terminvergabe</a></p>
+<?php
+    if(!$GLOBALS['FLAG_SHUTDOWN_TESTING']) {
+        echo '<p><a class="btn btn-primary btn-lg" href="https://www.testzentrum-odw.de" role="button">Zur Terminvergabe</a></p>';
+    } else {
+        echo '<p>Derzeit keine Anmeldung möglich</p>';
+    }
+?>
         </div>
         </div>
     </div>

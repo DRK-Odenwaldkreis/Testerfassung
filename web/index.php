@@ -55,14 +55,75 @@ echo '
             <h3>Deutsches Rotes Kreuz - Kreisverband Odenwaldkreis e. V.</h3>
         </div>
     </div>
-    <div class="col-sm-12">
-        <div class="alert alert-warning" role="alert">
-        <h3>Sie haben Fragen?</h3>
-        <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
-        </div>
-    </div>
 </div>
 ';
+
+
+
+if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+    // Impfzentrum Infos
+    echo '
+        </div></div>
+
+        </div>
+    </div>
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsepdown"></div>
+
+    <div class="row">
+        
+        <div class="col-lg-12">
+        <h2 style="text-align: center;">Informationen für Ihre Impfung</h2>
+        </div>
+        <div class="col-lg-6">
+        <div class="thumbnail">
+        <div style="font-size: 45px; text-align: center; padding: 10px;">
+        <span class="icon-file3"></span>
+        </div>
+        <div class="caption">
+            <h3 style="text-align: center;">Dokumente für die Impfung</h3>
+            <p><ul>
+            <li><a href="https://www.rki.de/DE/Content/Infekt/Impfen/Materialien/COVID-19-Aufklaerungsbogen-Tab.html" target="_blank">Aufklärungs-, Anamnese- und Einwilligungsbogen zur Impfung mit mRNA-Impfstoff (Comirnaty von BioNTech/Pfizer und Spikevax von Moderna)</a></li>
+            <li><a href="https://www.rki.de/DE/Content/Infekt/Impfen/Materialien/COVID-19-Vektorimpfstoff-Tab.html" target="_blank">Aufklärungs-, Anamnese- und Einwilligungsbogen zur Impfung mit Vektorimpfstoff (Vaxzevria von AstraZeneca und Janssen von Johnson & Johnson)</a></li>
+            <li><a href="https://portal-civ-qs.ekom21.de/civ-qs.public/start.html?oe=00.00.LKOW&mode=cc&cc_key=CoronaImpfzentrumAstra" target="_blank">Impfstoffauswahl für die zweite Impfung (nur für Personen, die bei der ersten Impfung den Wirkstoff von AstraZeneca erhalten haben, aber noch unter 60 Jahre alt sind)</a></li>
+            <li><a href="https://corona.odenwaldkreis.de/wp-content/uploads/2021/05/Datenschutz-Info-Stand-15.03.2021.pdf" target="_blank">Information über die Verarbeitung personenbezogener Daten (Datenschutz) </a></li>
+            </ul></p>
+            <h3 style="text-align: center;">Videos mit Informationen in Gebärdensprache</h3>
+            <p><ul>
+            <li><a href="https://www.youtube.com/watch?v=tkidRQrbM5w&feature=youtu.be" target="_blank">Aufklärungsmerkblatt mRNA-Impfstoff</a></li>
+            <li><a href="https://www.youtube.com/watch?v=u0kGKOe5Xco&feature=youtu.be" target="_blank">Anamnese und Einwilligung mRNA-Impfstoff</a></li>
+            </ul></p>
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-6">
+        <div class="thumbnail">
+        <div style="font-size: 45px; text-align: center; padding: 10px;">
+        <span class="icon-chat"></span>
+        </div>
+        <div class="caption">
+            <h3 style="text-align: center;">Fragen und Antworten zum Thema Impfen</h3>
+            <p>Die Hessische Landesregierung hat auf ihrer Internetseite verschiedene Fragen und Antworten rund um die Impfzentren eingestellt</p>
+            <p style="text-align: center;"><a href="https://corona-impfung.hessen.de/" class="btn btn-primary" role="button" target="_blank">corona-impfung.hessen.de/</a></p>
+            <p></p>
+            <p>Auf der Seite des Bundesgesundheitsministeriums finden sich Informationen zu den Themen Impfreihenfolge, Impfstoff und Wirksamkeit/Sicherheit</p>
+            <p style="text-align: center;"><a href="https://www.zusammengegencorona.de/informieren/informationen-zum-impfen/" class="btn btn-primary" role="button" target="_blank">www.zusammengegencorona.de</a></p>
+            <p></p>
+            <h3 style="text-align: center;">Informationen in Gebärdensprache</h3>
+            <p><ul>
+            <li><a href="https://www.youtube.com/watch?v=wJkBJsz7cIM&feature=youtu.be" target="_blank">Informationen rund um die Schutzimpfung in Gebärdensprache</a></li>
+            <li><a href="https://www.youtube.com/watch?v=_1sKYE4r8K0&feature=youtu.be" target="_blank">Ablauf der Impfung im Impfzentrum in Gebärdensprache</a></li>
+            </ul></p>
+        </div>
+        </div>
+        </div>
+
+        </div>
+    </div>
+    <div class="FAIRsepdown"></div>';
+}
+
+
 
 if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     echo '
@@ -110,7 +171,19 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         <div class="FAIRsepdown"></div>
         <div class="FAIRsep"></div>
     </div>
-    <div class="FAIRsepdown" id="calendar"></div><div class="FAIRsepdown"></div>
+    <div class="FAIRsepdown" id="calendar"></div>
+
+    <div class="row">
+
+        <div class="col-sm-12">
+            <div class="alert alert-warning" role="alert">
+            <h3>Sie haben Fragen?</h3>
+            <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="FAIRsepdown"></div>
+
     <div class="row header_icon_main">
 
         <div class="col-sm-2 col-xs-6">
@@ -171,6 +244,50 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         </div>
 
     </div>';
+} else {
+    echo '
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="alert alert-warning" role="alert">
+            <h3>Sie haben Fragen?</h3>
+            <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="FAIRsepdown"></div>
+    <div class="row header_icon_main">
+
+    <div class="col-sm-4 col-xs-4">
+        <div class="header_icon">
+        <img src="img/icon/cal_time.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+            
+        <div class="caption center_text">
+        <h5>Termin finden</h5><h5><span class="text-sm">bis max. 2 Wochen im voraus</span></h5>
+        </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-xs-4">
+        <div class="header_icon">
+        <img src="img/icon/mask.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+            
+        <div class="caption center_text">
+            <h5>Mit Maske erscheinen</h5>
+            <h5><span class="text-sm">&nbsp;</span></h5>
+        </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-xs-4">
+        <div class="header_icon">
+        <img src="img/icon/qr_1.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+            
+        <div class="caption center_text">
+        <h5>Impfausweis mitbringen</h5>
+        </div>
+        </div>
+    </div>
+
+    </div>
+    ';
 }
 
 echo '
@@ -181,7 +298,14 @@ echo '
 <div class="row">
     
     <div class="col-sm-12">
-    <h2 style="text-align: center;">SARS-CoV-2 '.$doing_facility.' - Termine und Orte im Odenwaldkreis</h2>
+    <h2 style="text-align: center;">SARS-CoV-2 '.$doing_facility.' - Termine und Orte im Odenwaldkreis</h2>';
+    if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+        echo '<p style="text-align: center;">
+        Auch die niedergelassenen Ärztinnen und Ärzte bieten SARS-CoV-2 Schutzimpfungen an. Für eine dortige Impfung wenden Sie sich bitte an Ihre Ärztin oder Ihren Arzt.
+        </p>';
+    }
+
+    echo '
     </div>
     <div class="col-sm-12"><div class="card">';
 
@@ -249,6 +373,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             echo $i[0].$i[1];
         }
         echo '</div>';
+        echo '</div>';
     }
 
 
@@ -297,6 +422,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 }
 
 if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+    // Testzentrum Infos
     echo '
         </div></div>
 

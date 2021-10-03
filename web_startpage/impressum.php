@@ -34,8 +34,8 @@ echo '<h3 class="imprint">Impressum und Kontakt</h3>
 <a href="https://drk-odenwaldkreis.de/impressum/">Direkt beim DRK Kreisverband Odenwaldkreis e. V.</a>';
 
 echo '<h3 class="imprint">Rückfragen</h3>
-<p>Bei Fragen zum Testergebnis oder organisatorischen Anfragen bitte eine E-Mail schreiben an:</p>
-<p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
+<p>Bei Fragen zum Testergebnis, den Impfungmöglichkeiten oder organisatorischen Anfragen bitte eine E-Mail schreiben an:</p>
+<p><a href="mailto:corona-sb@drk-odenwaldkreis.de">corona-sb@drk-odenwaldkreis.de</a></p>
 <p>&nbsp;</p>';
 
 echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörden</h3>

@@ -49,7 +49,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
 }
 
 echo'
-    
+<link href="css/symbols-fair.css" rel="stylesheet">
   </head>';
 
 // HTML body with menu
@@ -70,11 +70,11 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
 $G_html_menu2.='</div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-			<li><a href="impressum.php">Impressum / Datenschutz / Kontakt</a></li>';
+          <li><a href="https://www.drk-coronazentrum.de/">DRK Cononazentrum<span class="shorten"> ODW</span></a></li>
+			    <li><a href="impressum.php">Impressum / Datenschutz<span class="shorten"> / Kontakt</span></a></li>';
 
 $G_html_menu2.='</ul>
         
-          </ul>
         </div>
       </div>
     </nav>
