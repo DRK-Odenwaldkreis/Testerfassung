@@ -89,7 +89,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
 
     echo '<div class="row">';
 
-    if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+    if($GLOBALS['FLAG_MODE_MAIN'] == 1 || $GLOBALS['FLAG_MODE_MAIN'] == 3) {
         $stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station;');
     } else {
         $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.Kurzbezeichnung FROM Station JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id;');
@@ -110,7 +110,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         <option value="">Wähle Station...</option>
             ';
             foreach($stations_array as $i) {
-                if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                if($GLOBALS['FLAG_MODE_MAIN'] == 1 || $GLOBALS['FLAG_MODE_MAIN'] == 3) {
                     $display=$i[1].' / S'.$i[0];
                 } else {
                     $display=$i[3].' ('.$i[1].' / S'.$i[0].')';
@@ -260,7 +260,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         echo '<div class="col-sm-12">
         <div class="card">
         <h3>Alle Stationen in den nächsten Tagen (inkl. Firmen)</h3>';
-        if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+        if($GLOBALS['FLAG_MODE_MAIN'] == 1 || $GLOBALS['FLAG_MODE_MAIN'] == 3) {
             echo H_build_table_testdates_all('');
         } else {
             echo H_build_table_testdates_all('vaccinate');

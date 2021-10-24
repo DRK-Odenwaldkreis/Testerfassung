@@ -499,6 +499,9 @@ function H_build_table_testdates2( $mode ) {
 	} elseif($mode=='vaccinate') {
 		$query_b2b='(Firmencode is null OR Firmencode="")';
 		$path_to_reg='registration/';
+	} elseif($mode=='antikoerper') {
+		$query_b2b='(Firmencode is null OR Firmencode="")';
+		$path_to_reg='registration/';
 	} else {
 		$query_b2b='Firmencode is null OR Firmencode=""';
 		$path_to_reg='registration/';
@@ -511,6 +514,8 @@ function H_build_table_testdates2( $mode ) {
 	if($mode == 'vaccinate') {
 		$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, 1, Impfstoff.Kurzbezeichnung FROM Station 
 		JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id WHERE '.$query_b2b.';');
+	} elseif($mode == 'antikoerper') {
+		$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse FROM Station WHERE '.$query_b2b.';');
 	} else {
 		$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Testtyp.IsPCR FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id WHERE '.$query_b2b.';');
 	}
@@ -547,6 +552,8 @@ function H_build_table_testdates2( $mode ) {
 	}
 	foreach($stations_array as $st) {
 		if($mode == 'vaccinate') {
+			$cal_color='blue';
+		}if($mode == 'antikoerper') {
 			$cal_color='blue';
 		} elseif($st[3]==1) {
 			$cal_color='blue';
@@ -621,6 +628,10 @@ function H_build_table_testdates2( $mode ) {
 				$res.='<tr>
 				<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue1" colspan="'.($X+2).'"><b>Impfungen: <i>Eine Terminbuchung ist notwendig</i></b></td>
 				</tr>';
+			} elseif($mode=='antikoerper') {
+				$res.='<tr>
+				<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue1" colspan="'.($X+2).'"><b>Antikörpertest: <i>Eine Terminbuchung ist notwendig</i></b></td>
+				</tr>';
 			} else {
 				$res.='<tr>
 				<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-red1" colspan="'.($X+2).'"><b><i>Bei folgenden Teststationen ist eine Voranmeldung und Terminbuchung empfohlen - bitte einen Termin wählen</i></b></td>
@@ -629,6 +640,8 @@ function H_build_table_testdates2( $mode ) {
 		}
 		foreach($stations_array as $st) {
 			if($mode == 'vaccinate') {
+				$cal_color='blue';
+			} elseif($mode == 'antikoerper') {
 				$cal_color='blue';
 			} elseif($st[3]==1) {
 				$cal_color='blue';

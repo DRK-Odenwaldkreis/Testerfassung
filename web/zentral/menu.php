@@ -21,9 +21,13 @@ $G_html_header='<html lang="en">
       $G_html_header.='
       <title>DRK Covid-19 Testzentrum Odenwaldkreis</title>
       ';
-    } else {
+    } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
       $G_html_header.='
       <title>DRK Covid-19 Impfzentrum Odenwaldkreis</title>
+      ';
+    } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+      $G_html_header.='
+      <title>DRK Covid-19 Antikörpertests Odenwaldkreis</title>
       ';
     }
     $G_html_header.='
@@ -105,8 +109,10 @@ $G_html_menu2='<nav class="navbar navbar-inverse navbar-fixed-top FAIR-navbar">
 
 if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
   $G_html_menu2.='<a class="navbar-brand" href="index.php"><span class="shorten">DRK Covid-19 Testzentrum Odenwaldkreis </span><span style="color:#eee;">Start</span></a>';
-} else {
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
   $G_html_menu2.='<a class="navbar-brand" href="index.php"><span class="shorten">DRK Covid-19 Impfzentrum Odenwaldkreis </span><span style="color:#eee;">Start</span></a>';
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+  $G_html_menu2.='<a class="navbar-brand" href="index.php"><span class="shorten">DRK Covid-19 Antikörpertests Odenwaldkreis </span><span style="color:#eee;">Start</span></a>';
 }
 
 

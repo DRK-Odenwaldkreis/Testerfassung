@@ -21,9 +21,13 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
   $G_html_header.='
   <title>DRK Covid-19 Testzentrum Odenwaldkreis</title>
   ';
-} else {
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
   $G_html_header.='
   <title>DRK Covid-19 Impfzentrum Odenwaldkreis</title>
+  ';
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+  $G_html_header.='
+  <title>DRK Covid-19 Antikörpertests Odenwaldkreis</title>
   ';
 }
 $G_html_header.='
@@ -62,16 +66,25 @@ $G_html_menu2='<nav class="navbar navbar-inverse navbar-fixed-top FAIR-navbar">
 
 if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
   $G_html_menu2.='<a class="navbar-brand" href="index.php"><span style="color:#eee;">DRK</span><span class="shorten"> Covid-19 Testzentrum Odenwaldkreis</span></a>';
-} else {
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
   $G_html_menu2.='<a class="navbar-brand" href="index.php"><span style="color:#eee;">DRK</span><span class="shorten"> Covid-19 Impfzentrum Odenwaldkreis</span></a>';
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+  $G_html_menu2.='<a class="navbar-brand" href="index.php"><span style="color:#eee;">DRK</span><span class="shorten"> Covid-19 Antikörpertests Odenwaldkreis</span></a>';
 }
           
 
 $G_html_menu2.='</div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-          <li><a href="https://www.drk-coronazentrum.de/">DRK Cononazentrum<span class="shorten"> ODW</span></a></li>
-			    <li><a href="impressum.php">Impressum / Datenschutz<span class="shorten"> / Kontakt</span></a></li>';
+          <li><a href="https://www.drk-coronazentrum.de/">DRK Cononazentrum<span class="shorten"> ODW</span></a></li>';
+
+if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+	$G_html_menu2.='<li><a href="impressum_test.php">Impressum / Datenschutz<span class="shorten"> / Kontakt</span></a></li>';
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+	$G_html_menu2.='<li><a href="impressum_impf.php">Impressum / Datenschutz<span class="shorten"> / Kontakt</span></a></li>';
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+	$G_html_menu2.='<li><a href="impressum_impf.php">Impressum / Datenschutz<span class="shorten"> / Kontakt</span></a></li>';
+}
 
 $G_html_menu2.='</ul>
         

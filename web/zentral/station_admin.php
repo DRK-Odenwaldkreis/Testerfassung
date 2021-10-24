@@ -71,13 +71,19 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
                         \''.$address.'\',
                         \''.$b2b_code.'\',
                         '.$testtyp.');');
-                } else {
+                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                     S_set_data($Db,'INSERT INTO Station (id, Ort, Adresse, Firmencode, Impfstoff_id) VALUES (
                         CAST('.$stationid_new.' AS int),
                         \''.$station_ort.'\',
                         \''.$address.'\',
                         \''.$b2b_code.'\',
                         '.$testtyp.');');
+                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+                    S_set_data($Db,'INSERT INTO Station (id, Ort, Adresse, Firmencode) VALUES (
+                        CAST('.$stationid_new.' AS int),
+                        \''.$station_ort.'\',
+                        \''.$address.'\',
+                        \''.$b2b_code.'\');');
                 }
                 // Create web user for new station
                 $new_pw=A_generate_token(14);
@@ -123,7 +129,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             $u_b2b=S_get_entry($Db,'SELECT Firmencode FROM Station WHERE id=CAST('.$user_id.' AS int);');
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                 $u_testtyp_id=S_get_entry($Db,'SELECT Testtyp_id FROM Station WHERE id=CAST('.$user_id.' AS int);');
-            } else {
+            } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                 $u_testtyp_id=S_get_entry($Db,'SELECT Impfstoff_id FROM Station WHERE id=CAST('.$user_id.' AS int);');
             }
         }
@@ -134,7 +140,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
     $array_staff=S_get_multientry($Db,'SELECT id, Ort, Adresse, Firmencode FROM Station;');
     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         $testtyp_array=S_get_multientry($Db,'SELECT id, Kurzbezeichnung FROM Testtyp;');
-    } else {
+    } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
         $testtyp_array=S_get_multientry($Db,'SELECT id, Kurzbezeichnung FROM Impfstoff;');
     }
 
@@ -209,8 +215,9 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
         <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_opening" autocomplete="off" value="'.$u_opening.'">
         <span class="input-group-addon" id="basic-addon1">Firmencode</span>
         <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_b2b" autocomplete="off" value="'.$u_b2b.'">
-        </div><div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Testtyp/Impfstoff</span>
+        </div><div class="input-group">';
+        if($GLOBALS['FLAG_MODE_MAIN'] == 1 || $GLOBALS['FLAG_MODE_MAIN'] == 2) {
+            echo '<span class="input-group-addon" id="basic-addon1">Testtyp/Impfstoff</span>
             <select id="select-state_typ" placeholder="Wähle einen Standard-Typ..." class="custom-select" style="margin-top:0px;" name="e_testtyp">
             <option value="" selected>Wähle...</option>
                 ';
@@ -221,8 +228,9 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
                 }
                 echo '
             </select>
-        </div>
-        <div class="FAIR-si-button">
+        </div>';
+        }
+        echo '<div class="FAIR-si-button">
         <input type="submit" class="btn btn-danger" value="Änderung speichern" name="edit_station" />
         </div></form>';
 
@@ -248,8 +256,10 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
       </tr>';
     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         $array_station=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Station.Firmencode, Testtyp.id, Testtyp.Kurzbezeichnung, Station.Oeffnungszeiten FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id ORDER BY Station.id ASC;');
-    } else {
+    } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
         $array_station=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Station.Firmencode, Impfstoff.id, Impfstoff.Kurzbezeichnung, Station.Oeffnungszeiten FROM Station JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id ORDER BY Station.id ASC;');
+    } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+        $array_station=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Station.Firmencode, 0,0, Station.Oeffnungszeiten FROM Station ORDER BY Station.id ASC;');
     }
     
     foreach($array_station as $i) {
@@ -288,8 +298,9 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
 
         <span class="input-group-addon" id="basic-addon1">Firmencode</span>
         <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_b2b" autocomplete="off">
-        </div><div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Testtyp/Impfstoff</span>
+        </div><div class="input-group">';
+        if($GLOBALS['FLAG_MODE_MAIN'] == 1 || $GLOBALS['FLAG_MODE_MAIN'] == 2) {
+        echo '<span class="input-group-addon" id="basic-addon1">Testtyp/Impfstoff</span>
             <select id="select-state_typnew" placeholder="Wähle einen Standard-Typ..." class="custom-select" style="margin-top:0px;" name="n_testtyp">
             <option value="" selected>Wähle...</option>
                 ';
@@ -299,8 +310,9 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
                 }
                 echo '
             </select>
-        </div>
-        <div class="FAIR-si-button">
+        </div>';
+        }   
+        echo '<div class="FAIR-si-button">
         <input type="submit" class="btn btn-danger" value="Erstellen" name="create_station" />
         </div></form>';
         echo $errorhtml2;

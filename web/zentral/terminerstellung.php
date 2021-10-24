@@ -123,8 +123,10 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
         $Db=S_open_db();
         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             $stations_array=S_get_multientry($Db,'SELECT id, Ort FROM Station;');
-        } else {
+        } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
             $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Impfstoff.Kurzbezeichnung FROM Station JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id;');
+        } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+            $stations_array=S_get_multientry($Db,'SELECT id, Ort FROM Station;');
         }
         S_close_db($Db);
 
@@ -139,7 +141,7 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
             <option value="" selected>Wähle Station...</option>
                 ';
                 foreach($stations_array as $i) {
-                    if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                    if($GLOBALS['FLAG_MODE_MAIN'] == 1 || $GLOBALS['FLAG_MODE_MAIN'] == 3) {
                         $display=$i[1].' / S'.$i[0];
                         echo '<option value="'.$i[0].'">'.$display.'</option>';
                     } else {
@@ -188,7 +190,7 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
             <option value="" selected>Wähle Station...</option>
                 ';
                 foreach($stations_array as $i) {
-                    if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                    if($GLOBALS['FLAG_MODE_MAIN'] == 1 || $GLOBALS['FLAG_MODE_MAIN'] == 3) {
                         $display=$i[1].' / S'.$i[0];
                         echo '<option value="'.$i[0].'">'.$display.'</option>';
                     } else {

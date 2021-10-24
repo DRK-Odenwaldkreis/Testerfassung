@@ -15,6 +15,7 @@ imprint site
 
 
 // Include functions
+include_once 'admin01.php';
 include_once 'menu.php';
 
 
@@ -31,19 +32,18 @@ echo $GLOBALS['G_html_main_right_a'];
 
 
 echo '<h3 class="imprint">Impressum und Kontakt</h3>
-<a href="https://drk-odenwaldkreis.de/impressum/">Direkt beim DRK Kreisverband Odenwaldkreis e. V.</a>';
+<a href="https://drk-odenwaldkreis.de/impressum/">Direkt beim DRK Kreisverband Odenwaldkreis e. V.</a>
+<div id="datenschutz" class="FAIRsepdown"></div>';
 
 echo '<h3 class="imprint">Rückfragen</h3>
-<p>Bei Fragen zum Testergebnis, den Impfmöglichkeiten oder organisatorischen Anfragen bitte eine E-Mail schreiben an:</p>
-<p><a href="mailto:corona-sb@drk-odenwaldkreis.de">corona-sb@drk-odenwaldkreis.de</a></p>
-<p>&nbsp;</p>';
+<p>Bei Fragen zum Testzentrum bitte eine E-Mail schreiben an:</p>
+<p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>';
 
 echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörden</h3>
 <p><a target="_blank" href="https://github.com/DRK-Odenwaldkreis/Testerfassung">Für die Dokumentation der Web-Anwendung hier klicken</a></p>
 <p>&nbsp;</p>
 <p>Bei technischen Fragen zum Erfassungssystem bitte eine E-Mail schreiben an den Support:</p>
 <p><a href="mailto:info@testzentrum-odenwald.de">info@testzentrum-odenwald.de</a></p>
-<p>&nbsp;</p>
 
 <div id="datenschutz_website" class="FAIRsepdown"></div>
 <div class="FAIRsepdown"></div>
@@ -146,24 +146,15 @@ echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörd
 <p>Der Nutzung von im Rahmen der Impressumspflicht ver&ouml;ffentlichten Kontaktdaten zur &Uuml;bersendung von nicht ausdr&uuml;cklich angeforderter Werbung und Informationsmaterialien wird hiermit widersprochen. Die Betreiber der Seiten behalten sich ausdr&uuml;cklich rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch Spam-E-Mails, vor.</p>
 <p><strong>&nbsp;</strong></p>
 <ol start="4">
-<li><strong>Datenverarbeitung bei Anmeldung zu einem Corona Schnelltest</strong></li>
+<li><strong> Datenverarbeitung bei Anmeldung zu einem Corona Schnelltest</strong></li>
 </ol>
 <p><strong>&nbsp;</strong></p>
-<p>Informationen zur Datenverarbeitung im Rahmen Ihrer Anmeldung / Durchführung eines Corona Schnelltests entnehmen Sie bitte der gesonderten Datenschutzinformation gemäß DSVGO Art.  13.</p>
+<p>Informationen zur Datenverarbeitung im Rahmen Ihrer Anmeldung / Durchf&uuml;hrung eines Corona Schnelltests entnehmen Sie bitte der gesonderten Datenschutzinformation gem&auml;&szlig; DSVGO Art.&nbsp; 13.</p>
 <p>
-<a href="https://www.testzentrum-odw.de/impressum.php#datenschutz_durchfuehrung">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rahmen der Durchführung von Corona Schnelltests</a></p>
+<a href="https://www.testzentrum-odw.de/impressum.php#datenschutz_durchfuehrung">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rhamen der Durchführung von Corona Schnelltests</a></p>
 
+<p><strong>&nbsp;</strong></p>
 <ol start="5">
-<li><strong>Datenverarbeitung bei Anmeldung zu einer Corona Impfung</strong></li>
-</ol>
-<p><strong>&nbsp;</strong></p>
-<p>Informationen zur Datenverarbeitung im Rahmen Ihrer Anmeldung / Durchführung einer Corona Impfung entnehmen Sie bitte der gesonderten Datenschutzinformation gemäß DSVGO Art.  13.</p>
-<p>
-<a href="https://www.impfzentrum-odw.de/impressum.php#datenschutz_durchfuehrung">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rhamen der im Rahmen der Anmeldung und Terminkoordination von Corona Impfungen</a></p>
-
-
-<p><strong>&nbsp;</strong></p>
-<ol start="6">
 <li><strong> Datenerfassung auf dieser Website</strong></li>
 </ol>
 <p><strong>&nbsp;</strong></p>
@@ -209,8 +200,138 @@ echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörd
 <p>Wenn Ihr Browser Web Fonts nicht unterst&uuml;tzt, wird eine Standardschrift von Ihrem Computer genutzt.</p>
 <p>Weitere Informationen zu Google Web Fonts finden Sie unter&nbsp;<a href="https://developers.google.com/fonts/faq">https://developers.google.com/fonts/faq</a>&nbsp;und in der Datenschutzerkl&auml;rung von Google:&nbsp;<a href="https://policies.google.com/privacy?hl=de">https://policies.google.com/privacy?hl=de</a>.</p>
 
+<div id="datenschutz_durchfuehrung" class="FAIRsepdown"></div>
 <div class="FAIRsepdown"></div>
+<div class="FAIRsepdown"></div>
+<h3 class="imprint">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rahmen der Durchführung von Corona Schnelltests</h3>
+<p>Gemäß den Vorgaben der Art. 13 ff der Datenschutz-Grundverordnung (DSGVO) informieren wir Sie hiermit über die Verarbeitung der über Sie erhobenen und verarbeiteten personenbezogenen Daten im Rahmen Ihrer Anmeldung und der Durchführung von Corona Schnelltests in den Einrichtungen des Deutschen Roten Kreuz Kreisverband e.V. </p>
+<p><strong>&nbsp;</strong></p>
+<p><strong>Verantwortlich im Sinne der DSGVO Art. 4 Nr. 7</strong></p>
+<p>Name: Frank Sauer</p>
+<p>Telefonnummer: 06062 6070</p>
+<p>E-Mail Adresse: info@drk-odenwaldkreis.de</p>
+<p>Website: http://www.drk-odenwaldkreis.de </p>
+<p>Unternehmensbezeichnung: Deutsches Rotes Kreuz Kreisverband Odenwaldkreis e.V.</p>
+<p>&nbsp;</p>
 
+<p><strong>&nbsp;</strong></p>
+<p><strong>Kontaktdaten unseres Datenschutzbeauftragten</strong></p>
+<p>Name: Kai Schwardte</p>
+<p>Telefonnummer: 06062 6070</p>
+<p>E-Mail Adresse: datenschutz@drk-odenwaldkreis.de</p>
+<p>Unternehmensbezeichnung: Extern benannter Datenschutzbeauftragter</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Zweck und Rechtsgrundlage der Verarbeitung</strong></p>
+<p>Wir verarbeiten Ihre personenbezogenen Daten im Einklang mit den Bestimmungen der europäischen Datenschutz-Grundverordnung (EU-DSGVO), soweit dies für die Anmeldung, Terminkoordination, Durchführung und Nachweisführung eines Corona-schnelltest in einer Einrichtung des Deutschen Roten Kreuz Kreisverband e.V. erforderlich ist. Rechtsgrundlage ist dabei Art. 6 lit. a DSGVO (Einwilligung) sowie ggf. Art. 6 lit. c DSGVO (rechtliche Verpflichtung) insofern eine rechtliche Verpflichtung zu einem Corona Test vorliegt. Weitere Rechtgrundlagen sind Infektionsschutzgesetz – IfSG sowie die Coronavirus-Testverordnung – TestV. </p>
+<p>Weiterhin können wir personenbezogene Daten von Ihnen verarbeiten, sofern dies zur Abwehr
+von geltend gemachten Rechtsansprüchen gegen uns erforderlich ist. Rechtsgrundlage ist dabei Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse ist beispielsweise eine Beweispflicht im Rahmen rechtlicher Verfahren. Erteilen Sie uns eine ausdrückliche Einwilligung zur Verarbeitung von personenbezogenen Daten, ist die Rechtmäßigkeit dieser Verarbeitung auf Basis Ihrer Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO gegeben. Eine erteilte Einwilligung kann jederzeit, mit Wirkung für die Zukunft, widerrufen werden (siehe Ziffer 9 dieser Datenschutzinformation).
+</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Kategorie personenbezogener Daten</strong></p>
+<p>Wir verarbeiten nur solche Daten, die im Zusammenhang mit der Anmeldung, Terminkoordination, Durchführung und Nachweisführung eines Corona-Schnelltest in einer Einrichtung des Deutschen Roten Kreuz Kreisverband e.V. stehen. Dies sind im Einzelnen:</p>
+<p>Vorname, Nachname, Namenszusätze, Kontaktdaten (etwa private Anschrift, (Mobil-)Telefonnummer, E-Mail-Adresse), Geburtsdatum, ggf. Geschlecht, ggf. Testgrund, Datum und Uhrzeit der Testdurchführung  sowie das Ergebnis des durchgeführten Covid19- Schnelltests (positiv/negativ).</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Quellen der Daten</strong></p>
+<p>Die Erhebung Ihrer Daten findet grundsätzlich bei Ihnen selbst in Form Ihrer Anmeldung auf unserer Webseite https://www.testzentrum-odw.de oder vor Ort in einer unserer Einrichtungen statt. Die Verarbeitung der von Ihnen überlassenen personenbezogenen Daten ist zur Durchführung der Anmeldung, Terminkoordination, Durchführung und Nachweisführung eines Corona-schnelltest notwendig. 
+</p>
+<p>Die Bereitstellung Ihrer personenbezogenen Daten ist notwendig. Sollten die erforderlichen personenbezogenen Daten nicht von Ihnen bereitgestellt werden, kann kein Test durchgeführt werden.
+</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Empfänger der Daten</strong></p>
+<p>Wir geben Ihre personenbezogenen Daten innerhalb unserer Organisation ausschließlich an
+die Personen weiter, die diese Daten zur Anmeldung, Terminkoordination, Durchführung und Nachweisführung eines Corona-Schnelltest benötigen.
+</p>
+<p>Im Falle eines positiven Testergebnisses, geben wir Ihre personenbezogenen Daten gemäß Infektions-schutzgesetz an das zuständige Gesundheitsamt weiter. Die Übermittlung der Daten an das Gesundheits-amt erfolgt auf Grundlage des Art. 9 Abs. 2 lit. i DS-GVO i.V.m. §§ 6 Abs. 1 Nr. 1 lit. t, 8 Abs. 1 IfSG.
+</p>
+<p>Falls Sie die Corona Warn App des Robert Koch Institutes zu Abruf Ihres Testergebnisses verwenden möchten, geben wir – nach erteilter Einwilligung – Ihre personenbezogenen Daten sowie das Testergebnis  (pseudonymisiert) an das Robert Koch Institut (RKI) weiter.
+</p>
+<p>Ihre personenbezogenen Daten werden in unserem Auftrag ggf. auf Basis von Auftragsverarbeitungs-verträgen nach Art. 28 DSGVO verarbeitet. In diesen Fällen stellen wir sicher, dass die Verarbeitung von personenbezogenen Daten im Einklang mit den Bestimmungen der DSGVO erfolgt. Die Kategorien von Empfängern sind in diesem Fall z.B. Anbieter von Internetdienstanbieter sowie Anbieter von Software zur Administration der Terminverwaltung.
+</p>
+<p>Eine Datenweitergabe an Empfänger außerhalb unserer Organisation erfolgt ansonsten nur, soweit gesetzliche Bestimmungen dies erlauben oder gebieten.
+</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Übermittlung in ein Drittland</strong></p>
+<p>Eine Übermittlung der Daten in ein Drittland erfolgt nicht. Jegliche Verarbeitung personenbezogener Daten erfolgt innerhalb der der Europäischen Union, oder des Europäischen Wirtschaftsraumes. </p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Dauer der Speicherung</strong></p>
+<p>Ihre personenbezogenen Daten werden nach dem Grundsatz der Speicherbegrenzung (Art. 5 Abs. 1 lit. e DS-GVO) nur so lange gespeichert, wie es die jeweiligen Zwecke der Datenverarbeitung erfordern. Ihre personenbezogenen Daten werden daher grundsätzlich frühestmöglich gelöscht bzw. vernichtet.
+</p>
+<p>Gemäß § 7 Abs. 5 S. 1 TestV sind wir verpflichtet die für den Nachweis der korrekten Durchführung und Abrechnung notwendige Auftrags- und Leistungsdokumentation bis zum 31. Dezember 2024 unverändert zu speichern / aufzubewahren.
+</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Ihre Rechte</strong></p>
+<p>Jede betroffene Person hat das Recht auf Auskunft nach Art. 15 DSGVO, das Recht auf
+Berichtigung nach Art. 16 DSGVO, das Recht auf Löschung nach Art. 17 DSGVO, das Recht auf
+Einschränkung der Verarbeitung nach Art. 18 DSGVO, das Recht auf Mitteilung nach
+Art. 19 DSGVO sowie das Recht auf Datenübertragbarkeit nach Art. 20 DSGVO.
+</p>
+<p>Darüber hinaus besteht ein Beschwerderecht bei einer Datenschutzaufsichtsbehörde nach
+Art. 77 DSGVO, wenn Sie der Ansicht sind, dass die Verarbeitung Ihrer personenbezogenen
+Daten nicht rechtmäßig erfolgt. Das Beschwerderecht besteht unbeschadet eines
+anderweitigen verwaltungsrechtlichen oder gerichtlichen Rechtsbehelfs.
+</p>
+<p>Die zuständige Datenschutzaufsichtsbehörde erreichen Sie unter folgenden Kontaktdaten:</p>
+<p>&nbsp;</p>
+<p>Der Hessische Beauftragte für Datenschutz und Informationsfreiheit</p>
+<p>Postfach 3163</p>
+<p>65021 Wiesbaden</p>
+<p>Telefon: +49 611 1408 – 0</p>
+<p>Telefax: +49 611 1408 – 900</p>
+<p>Mail: poststelle@datenschutz.hessen.de</p>
+<p>https://datenschutz.hessen.de</p>
+<p>&nbsp;</p>
+<p>Sofern die Verarbeitung von Daten auf Grundlage Ihrer Einwilligung erfolgt, sind Sie nach Art. 7 DSGVO berechtigt, die Einwilligung in die Verwendung Ihrer personenbezogenen Daten jederzeit zu widerrufen. Bitte beachten Sie, dass der Widerruf erst für die Zukunft wirkt. Verarbeitungen, die vor dem Widerruf erfolgt sind, sind davon nicht betroffen. Bitte beachten Sie zudem, dass wir bestimmte Daten für die Erfüllung gesetzlicher Vorgaben ggf. für einen bestimmten Zeitraum aufbewahren müssen (s. Ziffer 8 dieser Datenschutzinformation).</p>
+<p>&nbsp;</p>
+<p><strong>&nbsp;</strong></p>
+<p><strong>Widerspruchsrecht</strong></p>
+<p>Soweit die Verarbeitung Ihre personenbezogenen Daten nach Art. 6 Abs 1 lit. f DSGVO zur Wahrung berechtigter Interessen erfolgt, haben Sie gemäß Art. 21 DSGVO das Recht, aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit Widerspruch gegen die Verarbeitung dieser Daten einzulegen. Wir verarbeiten diese personenbezogenen Daten dann nicht mehr, es sei denn, wir können zwingende schutzwürdige Gründe für die Verarbeitung nachweisen. Diese müssen Ihre Interessen, Rechte und Freiheiten überwiegen, oder die Verarbeitung muss der Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen dienen.</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Automatisierte Entscheidungsfindung</strong></p>
+<p>Es findet keine automatisierte Entscheidung im Einzelfall im Sinne des Art. 22 DSGVO statt.
+</p>
+<p>&nbsp;</p>
+<p><strong>&nbsp;</strong></p>
+<p><strong>Sonstiges</strong></p>
+<p>Sie haben zudem das Recht, sich jederzeit an unseren Datenschutzbeauftragten zu wenden, der bezüglich Ihrer Anfrage zur Verschwiegenheit verpflichtet ist. Die Kontaktdaten finden Sie auf Seite 1 unter Punkt 2.
+</p>
+
+<div id="datenschutz_cwa" class="FAIRsepdown"></div>
+<div class="FAIRsepdown"></div>
+<div class="FAIRsepdown"></div>
+<h3 class="imprint">Datenschutzhinweis bei Verwendung der Corona-Warn-App (CWA)</h3>
+
+<p>
+„Hinweise zum Datenschutz: Sie* möchten die Corona Warn App („App“) des Robert Koch Instituts („RKI“) zum Abruf Ihres Testergebnisses eines Antigentests verwenden. Um Ihr Testergebnis über die App abrufen zu können ist es notwendig, dass Ihr Testergebnis von der Teststelle an das Serversystem des RKI übermittelt wird.
+</p><p>
+Verkürzt dargestellt erfolgt dies, indem die Teststelle Ihr Testergebnis, verknüpft mit einem maschinenlesbaren Code, auf einem hierfür bestimmten Server des RKI ablegt. Der Code ist Ihr Pseudonym, weitere Angaben zu Ihrer Person sind für die Anzeige des Testergebnisses in der App nicht erforderlich. Sie können die Anzeige des Testergebnisses jedoch für sich durch Angabe Ihres Namens, Vornamens und Geburtsdatums personalisieren lassen.
+</p><p>
+Der Code wird aus dem vorgesehenen Zeitpunkt des Tests und einer Zufallszahl gebildet. Die Bildung des Codes erfolgt, indem die vorgenannten Daten so miteinander verrechnet werden, dass ein Zurückrechnen der Daten aus dem Code nicht mehr möglich ist.
+</p><p>
+Sie erhalten eine Kopie des Codes in der Darstellung eines QR Codes, der durch die Kamerafunktion Ihres Smartphones in die App eingelesen werden kann. Alternativ können Sie den pseudonymen Code auch als Internetverweis erhalten („App Link“), der von der App geöffnet und verarbeitet werden kann. Nur hierdurch ist eine Verknüpfung des Testergebnisses mit Ihrer App möglich. Mit Ihrer Einwilligung können Sie dann Ihr Testergebnis mit Hilfe der App abrufen. Ihr Testergebnis wird automatisch nach 21 Tagen auf dem Server gelöscht.
+</p><p>
+Wenn Sie mit der Übermittlung Ihres pseudonymen Testergebnisses mittels des Codes an die App Infrastruktur zum Zweck des Testabrufs einverstanden sind, bestätigen Sie dies bitte gegenüber den Mitarbeitern der Teststelle. Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen. Bitte beachten Sie jedoch, dass aufgrund der vorhandenen Pseudonymisierung eine Zuordnung zu Ihrer Person nicht erfolgen kann und daher eine Löschung Ihrer Daten erst mit Ablauf der 21 tägigen Speicherfrist automatisiert erfolgt.
+</p><p>
+Einzelheiten hierzu finden Sie zudem in den »Datenschutzhinweisen« der Corona Warn App des RKI.“
+</p><p>
+*Wenn Sie jünger als 16 Jahre alt sind, besprechen Sie die Nutzung der App bitte mit Ihren Eltern oder Ihrer sorgeberechtigten Person.
+</p>
+
+<div class="FAIRsepdown"></div>
 ';
 
 

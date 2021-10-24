@@ -99,9 +99,9 @@ echo $GLOBALS['G_html_main_right_a'];
         <div class="header_icon">
 <?php
     if(!$GLOBALS['FLAG_SHUTDOWN_TESTING_ANTIKOERPER']) {
-        echo '<img src="img/testzentrum.png" style="display: block; margin-left: auto; margin-right: auto; width: 50%; border: solid 1px #5a482d; cursor: pointer;" onclick="window.location=\'https://www.testzentrum-odw.de/antikoerper\'"></img>';
+        echo '<img src="img/impfzentrum.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 50%; border: solid 1px #5a482d; cursor: pointer;" onclick="window.location=\'https://www.impfzentrum-odw.de/antikoerper\'"></img>';
     } else {
-        echo '<img src="img/testzentrum.png" style="display: block; margin-left: auto; margin-right: auto; width: 50%; border: solid 1px #5a482d;"></img>';
+        echo '<img src="img/impfzentrum.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 50%; border: solid 1px #5a482d;"></img>';
     }
 ?>
         <div class="FAIRsep"></div>
@@ -109,7 +109,7 @@ echo $GLOBALS['G_html_main_right_a'];
             <h4><b>Antikörpertest</b></h4>
 <?php
     if(!$GLOBALS['FLAG_SHUTDOWN_TESTING_ANTIKOERPER']) {
-        echo '<p><a class="btn btn-primary btn-lg" href="https://www.testzentrum-odw.de/antikoerper" role="button">Zur Terminvergabe</a></p>';
+        echo '<p><a class="btn btn-primary btn-lg" href="https://www.impfzentrum-odw.de/antikoerper" role="button">Zur Terminvergabe</a></p>';
     } else {
         echo '<p>Derzeit keine Anmeldung möglich, geöffnet zu den Impfterminzeiten</p>';
     }

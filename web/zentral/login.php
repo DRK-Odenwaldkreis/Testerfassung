@@ -28,8 +28,12 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     $name_facility='Testzentrum';
     $email_reset_facility='info@testzentrum-odenwald.de';
     $logo_facility='logo.png';
-} else {
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
     $name_facility='Impfzentrum';
+    $email_reset_facility='info@testzentrum-odenwald.de';
+    $logo_facility='impfzentrum.jpg';
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+    $name_facility='Antikörpertest';
     $email_reset_facility='info@testzentrum-odenwald.de';
     $logo_facility='impfzentrum.jpg';
 }

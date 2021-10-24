@@ -34,9 +34,15 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     $doing_facility='Testungen';
     $email_facility='testzentrum@drk-odenwaldkreis.de';
     $logo_facility='logo.png';
-} else {
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
     $name_facility='Impfzentrum';
     $doing_facility='Impfungen';
+    $email_facility='impfzentrum@drk-odenwaldkreis.de';
+    $logo_facility='impfzentrum.jpg';
+
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+    $name_facility='Impfzentrum';
+    $doing_facility='Antikörper-Testungen';
     $email_facility='impfzentrum@drk-odenwaldkreis.de';
     $logo_facility='impfzentrum.jpg';
 
@@ -269,7 +275,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         </div>
 
     </div>';
-} else {
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
     echo '
     <div class="row">
         <div class="col-sm-12">
@@ -307,6 +313,52 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             
         <div class="caption center_text">
         <h5>Impfausweis mitbringen</h5>
+        </div>
+        </div>
+    </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-12">
+            <div class="alert alert-warning" role="alert">
+            <h3>Parkmöglichkeiten</h3>
+            <p>Am Wiesenmarktgelände gibt es ausreichend Parkmöglichkeiten, die Sie bitte nutzen können.</p>
+            </div>
+        </div>
+    </div>
+    <div class="FAIRsepdown"></div>
+    ';
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+    echo '
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="alert alert-warning" role="alert">
+            <h3>Sie haben Fragen?</h3>
+            <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="FAIRsepdown"></div>
+    <div class="row header_icon_main">
+
+    <div class="col-sm-4 col-xs-4">
+        <div class="header_icon">
+        <img src="img/icon/cal_time.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+            
+        <div class="caption center_text">
+        <h5>Termin finden</h5>
+        </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-xs-4">
+        <div class="header_icon">
+        <img src="img/icon/mask.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+            
+        <div class="caption center_text">
+            <h5>Mit Maske erscheinen</h5>
+            <h5><span class="text-sm">&nbsp;</span></h5>
         </div>
         </div>
     </div>
@@ -397,7 +449,11 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             echo '</div>';
         }
     } else {
-        $calendar=H_build_table_testdates2('vaccinate');
+        if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+            $calendar=H_build_table_testdates2('vaccinate');
+        } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+            $calendar=H_build_table_testdates2('antikoerper');
+        }
         //large display
         echo '<div class="calendar-large">';
         echo $calendar[0];

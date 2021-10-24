@@ -39,9 +39,15 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     $email_facility='testzentrum@drk-odenwaldkreis.de';
     $logo_facility='logo.png';
     $color_cal_facility='calendarred';
-} else {
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
     $name_facility='Impfzentrum';
     $doing_facility='eine Covid-19 Schutz-Impfung';
+    $email_facility='impfzentrum@drk-odenwaldkreis.de';
+    $logo_facility='impfzentrum.jpg';
+    $color_cal_facility='calendarblue';
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+    $name_facility='Impfzentrum';
+    $doing_facility='einen SARS-CoV-2 Antikörpertest';
     $email_facility='impfzentrum@drk-odenwaldkreis.de';
     $logo_facility='impfzentrum.jpg';
     $color_cal_facility='calendarblue';
@@ -135,10 +141,16 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                     <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse einen QR-Code, den Sie bei dem Testzentrum vorzeigen müssen (gedruckt oder auf dem Display). Bitte halten Sie im Testzentrum auch einen Lichtbildausweis bereit.</p>
                     <p>Das Ergebnis Ihres Tests wird Ihnen nach dem Abstrich per E-Mail zugeschickt.</p>
                     </div>';
-                } else {
+                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                     echo '<div class="alert alert-info" role="alert">
                     <h3>Ablauf</h3>
                     <p>Bitte wählen Sie einen freien Termin für jede Person, die geimpft werden soll.</p>
+                    <p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
+                    </div>';
+                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+                    echo '<div class="alert alert-info" role="alert">
+                    <h3>Ablauf</h3>
+                    <p>Bitte wählen Sie einen freien Termin für jede Person, die getestet werden soll.</p>
                     <p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
                     </div>';
                 }
@@ -243,7 +255,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                             <br><span class="text-sm">
                             Hiermit erkläre ich mein Einverständnis zum Übermitteln meines Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Das Testergebnis in der App kann hierbei nicht als namentlicher Testnachweis verwendet werden. Mir wurden Hinweise zum Datenschutz ausgehändigt.
                             </span><br>
-                            (<a href="../impressum.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
+                            (<a href="../impressum_test.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
                             </div>
                             <div class="FAIRsepdown"></div>
                             <div class="cb_drk">
@@ -252,7 +264,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                             <br><span class="text-sm">
                             Hiermit erkläre ich mein Einverständnis zum Übermitteln des Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Ich willige außerdem in die Übermittlung meines Namens und Geburtsdatums an die App ein, damit mein Testergebnis in der App als namentlicher Testnachweis angezeigt werden kann. Mir wurden Hinweise zum Datenschutz ausgehändigt.
                             </span><br>
-                            (<a href="../impressum.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
+                            (<a href="../impressum_test.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
                             </div>
                             </div><div class="FAIRsepdown"></div>';
 
@@ -346,7 +358,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                         <div class="FAIRsepdown"></div><div class="cb_drk">
                         <input type="checkbox" id="cb3" name="cb3" required/>
                         <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
-                        (<a href="../impressum.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
+                        (<a href="../impressum_test.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
                         </div>
                         <div class="FAIRsepdown"></div>
                         <span class="input-group-btn">
@@ -363,7 +375,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                         <div class="FAIRsepdown"></div><div class="cb_drk">
                         <input type="checkbox" id="cb3" name="cb3" required/>
                         <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
-                        (<a href="../impressum.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
+                        (<a href="../impressum_impf.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
                         </div>
                         <div class="FAIRsepdown"></div>
                         <span class="input-group-btn">
@@ -604,13 +616,20 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                 } else {
                     $location=$stations_array[0][1].', '.$stations_array[0][2];
                 }
-            } else {
+            } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                 $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.Kurzbezeichnung FROM Station 
                 JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id WHERE Station.id="'.$array_appointment[7].'";');
                 if($array_appointment[5]!='') {
                     $location=$stations_array[0][3].' in '.$array_appointment[5].', '.$array_appointment[6];
                 } else {
                     $location=$stations_array[0][3].' in '.$stations_array[0][1].', '.$stations_array[0][2];
+                }
+            } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+                $stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station WHERE id="'.$array_appointment[7].'";');
+                if($array_appointment[5]!='') {
+                    $location=$stations_array[0][1].', '.$array_appointment[5].', '.$array_appointment[6];
+                } else {
+                    $location=$stations_array[0][1].', '.$stations_array[0][2];
                 }
             }
         } else {
@@ -643,11 +662,20 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                 <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse einen QR-Code, den Sie bei dem Testzentrum vorzeigen müssen (gedruckt oder auf dem Display). Bitte halten Sie im Testzentrum auch einen Lichtbildausweis bereit.</p>
                 <p>Das Ergebnis Ihres Tests wird Ihnen nach dem Abstrich per E-Mail zugeschickt.</p>
                 </div>';
-            } else {
+            } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                 echo '<div class="alert alert-info" role="alert">
                 <h3>Ablauf</h3>';
                 if(!$display_single_termin){
                     echo '<p>Bitte wählen Sie einen freien Termin für jede Person, die geimpft werden soll.</p>';
+                }
+                echo '<p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
+                <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse eine Terminbestätigung.</p>
+                </div>';
+            } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+                echo '<div class="alert alert-info" role="alert">
+                <h3>Ablauf</h3>';
+                if(!$display_single_termin){
+                    echo '<p>Bitte wählen Sie einen freien Termin für jede Person, die getestet werden soll.</p>';
                 }
                 echo '<p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
                 <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse eine Terminbestätigung.</p>
@@ -669,8 +697,10 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                 <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="'.$color_cal_facility.'">'.$time1.' - '.$time2.' Uhr</span></div>';
                 if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                     echo '<div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
-                } else {
+                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                     echo '<div class="col-sm-4 calendar-col"><b>Impfstoff</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+                    echo '<div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
                 }
                 echo '</div>
                 </div>
@@ -726,7 +756,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                             <br><span class="text-sm">
                             Hiermit erkläre ich mein Einverständnis zum Übermitteln meines Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Das Testergebnis in der App kann hierbei nicht als namentlicher Testnachweis verwendet werden. Mir wurden Hinweise zum Datenschutz ausgehändigt.
                             </span><br>
-                            (<a href="../impressum.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
+                            (<a href="../impressum_test.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
                             </div>
                             <div class="FAIRsepdown"></div>
                             <div class="cb_drk">
@@ -735,7 +765,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                             <br><span class="text-sm">
                             Hiermit erkläre ich mein Einverständnis zum Übermitteln des Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Ich willige außerdem in die Übermittlung meines Namens und Geburtsdatums an die App ein, damit mein Testergebnis in der App als namentlicher Testnachweis angezeigt werden kann. Mir wurden Hinweise zum Datenschutz ausgehändigt.
                             </span><br>
-                            (<a href="../impressum.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
+                            (<a href="../impressum_test.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
                             </div>
                             </div><div class="FAIRsepdown"></div>';
                         
@@ -830,7 +860,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                         <div class="FAIRsepdown"></div><div class="cb_drk">
                         <input type="checkbox" id="cb3" name="cb3" required/>
                         <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
-                        (<a href="../impressum.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
+                        (<a href="../impressum_test.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
                         </div>
                         <div class="FAIRsepdown"></div>
                         <span class="input-group-btn">
@@ -847,7 +877,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                         <div class="FAIRsepdown"></div><div class="cb_drk">
                         <input type="checkbox" id="cb3" name="cb3" required/>
                         <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
-                        (<a href="../impressum.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
+                        (<a href="../impressum_impf.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
                         </div>
                         <div class="FAIRsepdown"></div>
                         <span class="input-group-btn">
@@ -876,8 +906,10 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                 <div class="col-sm-6 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$date.'</span></div>';
                 if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                     echo '<div class="col-sm-6 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
-                } else {
+                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                     echo '<div class="col-sm-6 calendar-col"><b>Impfstoff</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+                    echo '<div class="col-sm-6 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
                 }
                 echo '</div>
                 </div>
