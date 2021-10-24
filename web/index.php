@@ -2,9 +2,9 @@
 
 /* **************
 
-Websystem für das Testzentrum DRK Odenwaldkreis
+Websystem für das Impf- und Testzentrum DRK Odenwaldkreis
 Author: Marc S. Duchene
-March 2021
+October 2021
 
 ** ************** */
 
@@ -37,7 +37,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
 } else {
     $name_facility='Impfzentrum';
     $doing_facility='Impfungen';
-    $email_facility='testzentrum@drk-odenwaldkreis.de';
+    $email_facility='impfzentrum@drk-odenwaldkreis.de';
     $logo_facility='impfzentrum.jpg';
 
 }
@@ -137,7 +137,8 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <img src="img/icon/rapid_test.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             <div class="FAIRsep"></div>
             <div class="caption center_text">
-            <h4>Kostenloser Bürgertest / Antigen-Schnelltest</h4>
+            <h4>Antigen-Schnelltest *1)</h4>
+            <h5>*1) kostenfrei für Bürgertest-Berechtigte, sonst kostenpflichtig für 20 €</h5>
             </div>
             </div>
         </div>
@@ -146,8 +147,8 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <img src="img/icon/certified_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             <div class="FAIRsep"></div>
             <div class="caption center_text">
-                <h4>PCR-Test *)</h4>
-                <h5>*) kostenfrei für angeordnete Tests, sonst kostenpflichtig für 70 €</h5>
+                <h4>PCR-Test *2)</h4>
+                <h5>*2) kostenfrei für angeordnete Tests, sonst kostenpflichtig für 70 €</h5>
             </div>
             </div>
         </div>
@@ -156,12 +157,36 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <img src="img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             <div class="FAIRsep"></div>
             <div class="caption center_text">
-            <h4>Kostenpflichtige Firmen-Testung **)</h4>
-            <h5>**) wenden Sie sich für ein Angebot an das '.$name_facility.' <a href="mailto:'.$email_facility.'">'.$email_facility.'</a></h5>
+            <h4>Kostenpflichtige Firmen-Testung *3)</h4>
+            <h5>*3) wenden Sie sich für ein Angebot an das '.$name_facility.' <a href="mailto:'.$email_facility.'">'.$email_facility.'</a></h5>
             </div>
             </div>
         </div>
 
+        </div>
+
+        <div class="FAIRsepdown"></div>
+        <div class="header_icon">
+            <div class="caption">
+            <h3>Informationen zum Antigen-Schnelltest</h3>
+            <p>&nbsp;</p>
+            <h4><b>Dieser Test ist für Sie kostenfrei, wenn Sie zu einer der folgenden Personengruppen gehören:</b></h4>
+            <h4>A) Personen vor Vollendung des zwölften Lebensjahres bzw. solche die das zwölfte Lebensjahr erst in den letzten drei Monaten vollendet haben</h4>
+            <h4>B) Schülerinnen und Schüler mit gültigem Schülerausweis</h4>
+            <h4>C) Personen, die aufgrund einer medizinischen Kontraindikation (insbesondere Schwangerschaft im ersten Schwangerschaftsdrittel) nicht bzw. in den letzten drei Monaten vor der Testung nicht geimpft werden konnten</h4>
+            <h4>D) Personen, die zum Zeitpunkt der Testung an klinischen Studien zur Wirksamkeit von Impfstoffen teilnehmen bzw. in den letzten drei Monaten vor der Testung teilgenommen haben</h4>
+            <h4>E) Personen, die sich zum Zeitpunkt der Testung aufgrund einer nachgewiesenen Infektion mit dem Coronavirus SARS-CoV-2 in Absonderung befinden, wenn die Testung zur Beendigung der Absonderung erforderlich ist</h4>
+            <p>&nbsp;</p>
+            <h4><b>Dieser Test ist für Sie auch kostenfrei, wenn folgende Bedingungen erfüllt sind (Übergangsregelung bis zum 31. Dezember 2021):</b></h4>
+            <h4>Bisher nicht vollständig geimpft mit einem vom PEI zugelassenen Impfstoff</h4>
+            <h4><b>und</b> zu einer der folgenden Personengruppen zugehörig</h4>
+            <h4>F) Schwangere oder Stillende</h4>
+            <h4>G) Studierende mit gültigem Studienausweis</h4>
+            <h4>H) Kinder und Jugendliche im Alter von 12 bis 17 Jahren</h4>
+            <p>&nbsp;</p>
+            <p>Personen der Gruppen C bis F benötigen für einen kostenfreien Test ein ärztliches Attest. Nach §1 Abs. 1 der aktuell gültigen Testverordnung des Bundes sind die Ärzte verpflichtet ein solches Attest auszustellen. Die Kosten hierfür trägt der Bund.</p>
+            <p>Weitere Einzelfälle müssen aktuell im jeweiligen Fall bewertet werden. Rückfragen hierzu frühzeitig an <a href="mailto:'.$email_facility.'">'.$email_facility.'</a>.</p>
+            </div>
         </div>
 
         <div class="FAIRsepdown"></div>
@@ -287,6 +312,17 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     </div>
 
     </div>
+
+    <div class="row">
+
+        <div class="col-sm-12">
+            <div class="alert alert-warning" role="alert">
+            <h3>Parkmöglichkeiten</h3>
+            <p>Am Wiesenmarktgelände gibt es ausreichend Parkmöglichkeiten, die Sie bitte nutzen können.</p>
+            </div>
+        </div>
+    </div>
+    <div class="FAIRsepdown"></div>
     ';
 }
 

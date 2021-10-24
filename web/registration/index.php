@@ -42,7 +42,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
 } else {
     $name_facility='Impfzentrum';
     $doing_facility='eine Covid-19 Schutz-Impfung';
-    $email_facility='testzentrum@drk-odenwaldkreis.de';
+    $email_facility='impfzentrum@drk-odenwaldkreis.de';
     $logo_facility='impfzentrum.jpg';
     $color_cal_facility='calendarblue';
 }
@@ -299,6 +299,39 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                             </div>
                             <div class="FAIRsepdown"></div>';
                         }
+                    }
+
+                    if($GLOBALS['FLAG_MODE_MAIN'] == 1 && $pcr_test!=1) {
+                        echo '<div class="FAIRsepdown"></div>
+                        <div class="alert alert-warning" role="alert">
+                                <div class="header_icon">
+                                    <img src="../img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
+                                    <div class="caption">
+                                    <h3>Sie haben einen Antigen-Schnelltest ausgewählt.</h3>
+                                    <p>&nbsp;</p>
+                                    <h4><b>Dieser Test ist für Sie kostenfrei, wenn Sie zu einer der folgenden Personengruppen gehören:</b></h4>
+                                    <h4>A) Personen vor Vollendung des zwölften Lebensjahres bzw. solche die das zwölfte Lebensjahr erst in den letzten drei Monaten vollendet haben</h4>
+                                    <h4>B) Schülerinnen und Schüler mit gültigem Schülerausweis</h4>
+                                    <h4>C) Personen, die aufgrund einer medizinischen Kontraindikation (insbesondere Schwangerschaft im ersten Schwangerschaftsdrittel) nicht bzw. in den letzten drei Monaten vor der Testung nicht geimpft werden konnten</h4>
+                                    <h4>D) Personen, die zum Zeitpunkt der Testung an klinischen Studien zur Wirksamkeit von Impfstoffen teilnehmen bzw. in den letzten drei Monaten vor der Testung teilgenommen haben</h4>
+                                    <h4>E) Personen, die sich zum Zeitpunkt der Testung aufgrund einer nachgewiesenen Infektion mit dem Coronavirus SARS-CoV-2 in Absonderung befinden, wenn die Testung zur Beendigung der Absonderung erforderlich ist</h4>
+                                    <p>&nbsp;</p>
+                                    <h4><b>Dieser Test ist für Sie auch kostenfrei, wenn folgende Bedingungen erfüllt sind (Übergangsregelung bis zum 31. Dezember 2021):</b></h4>
+                                    <h4>Bisher nicht vollständig geimpft mit einem vom PEI zugelassenen Impfstoff</h4>
+                                    <h4><b>und</b> zu einer der folgenden Personengruppen zugehörig</h4>
+                                    <h4>F) Schwangere oder Stillende</h4>
+                                    <h4>G) Studierende mit gültigem Studienausweis</h4>
+                                    <h4>H) Kinder und Jugendliche im Alter von 12 bis 17 Jahren</h4>
+                                    <p>&nbsp;</p>
+                                    <p>Personen der Gruppen C bis F benötigen für einen kostenfreien Test ein ärztliches Attest. Nach §1 Abs. 1 der aktuell gültigen Testverordnung des Bundes sind die Ärzte verpflichtet ein solches Attest auszustellen. Die Kosten hierfür trägt der Bund.</p>
+                                    <p>&nbsp;</p>
+                                    <h4>Andernfalls fallen für den Schnelltest Gebühren in Höhe von <b>20 €</b> an, die Sie im Testzentrum entrichten müssen.</h4>
+                                    <p>&nbsp;</p>
+                                    <p>Weitere Einzelfälle müssen aktuell im jeweiligen Fall bewertet werden. Rückfragen hierzu frühzeitig an <a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a>.</p>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="FAIRsepdown"></div>';
                     }
 
                     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
@@ -750,6 +783,39 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                             </div>
                             <div class="FAIRsepdown"></div>';
                         }
+                    }
+
+                    if($GLOBALS['FLAG_MODE_MAIN'] == 1 && $pcr_test!=1) {
+                        echo '<div class="FAIRsepdown"></div>
+                        <div class="alert alert-warning" role="alert">
+                                <div class="header_icon">
+                                    <img src="../img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
+                                    <div class="caption">
+                                    <h3>Sie haben einen Antigen-Schnelltest ausgewählt.</h3>
+                                    <p>&nbsp;</p>
+                                    <h4><b>Dieser Test ist für Sie kostenfrei, wenn Sie zu einer der folgenden Personengruppen gehören:</b></h4>
+                                    <h4>A) Personen vor Vollendung des zwölften Lebensjahres bzw. solche die das zwölfte Lebensjahr erst in den letzten drei Monaten vollendet haben</h4>
+                                    <h4>B) Schülerinnen und Schüler mit gültigem Schülerausweis</h4>
+                                    <h4>C) Personen, die aufgrund einer medizinischen Kontraindikation (insbesondere Schwangerschaft im ersten Schwangerschaftsdrittel) nicht bzw. in den letzten drei Monaten vor der Testung nicht geimpft werden konnten</h4>
+                                    <h4>D) Personen, die zum Zeitpunkt der Testung an klinischen Studien zur Wirksamkeit von Impfstoffen teilnehmen bzw. in den letzten drei Monaten vor der Testung teilgenommen haben</h4>
+                                    <h4>E) Personen, die sich zum Zeitpunkt der Testung aufgrund einer nachgewiesenen Infektion mit dem Coronavirus SARS-CoV-2 in Absonderung befinden, wenn die Testung zur Beendigung der Absonderung erforderlich ist</h4>
+                                    <p>&nbsp;</p>
+                                    <h4><b>Dieser Test ist für Sie auch kostenfrei, wenn folgende Bedingungen erfüllt sind (Übergangsregelung bis zum 31. Dezember 2021):</b></h4>
+                                    <h4>Bisher nicht vollständig geimpft mit einem vom PEI zugelassenen Impfstoff</h4>
+                                    <h4><b>und</b> zu einer der folgenden Personengruppen zugehörig</h4>
+                                    <h4>F) Schwangere oder Stillende</h4>
+                                    <h4>G) Studierende mit gültigem Studienausweis</h4>
+                                    <h4>H) Kinder und Jugendliche im Alter von 12 bis 17 Jahren</h4>
+                                    <p>&nbsp;</p>
+                                    <p>Personen der Gruppen C bis F benötigen für einen kostenfreien Test ein ärztliches Attest. Nach §1 Abs. 1 der aktuell gültigen Testverordnung des Bundes sind die Ärzte verpflichtet ein solches Attest auszustellen. Die Kosten hierfür trägt der Bund.</p>
+                                    <p>&nbsp;</p>
+                                    <h4>Andernfalls fallen für den Schnelltest Gebühren in Höhe von <b>20 €</b> an, die Sie im Testzentrum entrichten müssen.</h4>
+                                    <p>&nbsp;</p>
+                                    <p>Weitere Einzelfälle müssen aktuell im jeweiligen Fall bewertet werden. Rückfragen hierzu frühzeitig an <a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a>.</p>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="FAIRsepdown"></div>';
                     }
 
                     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {

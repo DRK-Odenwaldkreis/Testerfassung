@@ -48,7 +48,7 @@ echo $GLOBALS['G_html_main_right_a'];
     <h4>Wir bieten für Sie:</h4>
 
     <div class="row">
-    <div class="col-md-6 col-xs-12 main-link-page">
+    <div class="col-md-4 col-xs-12 main-link-page">
         <div class="header_icon">
 <?php
     if(!$GLOBALS['FLAG_SHUTDOWN_VACCINATE']) {
@@ -72,7 +72,7 @@ echo $GLOBALS['G_html_main_right_a'];
         </div>
         </div>
     </div>
-    <div class="col-md-6 col-xs-12 main-link-page">
+    <div class="col-md-4 col-xs-12 main-link-page">
         <div class="header_icon">
 <?php
     if(!$GLOBALS['FLAG_SHUTDOWN_TESTING']) {
@@ -83,12 +83,35 @@ echo $GLOBALS['G_html_main_right_a'];
 ?>
         <div class="FAIRsep"></div>
         <div class="caption center_text">
-            <h4><b>Antigentest / PCR-Test</b></h4>
+            <h4><b>Antigentest (Schnelltest) / PCR-Test</b></h4>
 <?php
     if(!$GLOBALS['FLAG_SHUTDOWN_TESTING']) {
         echo '<p><a class="btn btn-primary btn-lg" href="https://www.testzentrum-odw.de" role="button">Zur Terminvergabe</a></p>';
     } else {
         echo '<p>Derzeit keine Anmeldung möglich</p>';
+    }
+?>
+        </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-xs-12 main-link-page">
+        <div class="header_icon">
+<?php
+    if(!$GLOBALS['FLAG_SHUTDOWN_TESTING_ANTIKOERPER']) {
+        echo '<img src="img/testzentrum.png" style="display: block; margin-left: auto; margin-right: auto; width: 50%; border: solid 1px #5a482d; cursor: pointer;" onclick="window.location=\'https://www.testzentrum-odw.de/antikoerper\'"></img>';
+    } else {
+        echo '<img src="img/testzentrum.png" style="display: block; margin-left: auto; margin-right: auto; width: 50%; border: solid 1px #5a482d;"></img>';
+    }
+?>
+        <div class="FAIRsep"></div>
+        <div class="caption center_text">
+            <h4><b>Antikörpertest</b></h4>
+<?php
+    if(!$GLOBALS['FLAG_SHUTDOWN_TESTING_ANTIKOERPER']) {
+        echo '<p><a class="btn btn-primary btn-lg" href="https://www.testzentrum-odw.de/antikoerper" role="button">Zur Terminvergabe</a></p>';
+    } else {
+        echo '<p>Derzeit keine Anmeldung möglich, geöffnet zu den Impfterminzeiten</p>';
     }
 ?>
         </div>

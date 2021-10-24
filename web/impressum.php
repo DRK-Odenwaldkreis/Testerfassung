@@ -32,19 +32,23 @@ echo $GLOBALS['G_html_main_right_a'];
 
 
 echo '<h3 class="imprint">Impressum und Kontakt</h3>
-<a href="https://drk-odenwaldkreis.de/impressum/">Direkt beim DRK Kreisverband Odenwaldkreis e. V.</a>';
+<a href="https://drk-odenwaldkreis.de/impressum/">Direkt beim DRK Kreisverband Odenwaldkreis e. V.</a>
+<div id="datenschutz" class="FAIRsepdown"></div>';
 
 echo '<h3 class="imprint">Rückfragen</h3>
-<p>Bei Fragen zum Testergebnis oder organisatorischen Anfragen bitte eine E-Mail schreiben an:</p>
+<p>Bei Fragen zum Testzentrum bitte eine E-Mail schreiben an:</p>
 <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
-<p>&nbsp;</p>';
+<p>&nbsp;</p>
+<p>Bei Fragen zum Impfzentrum  bitte eine E-Mail schreiben an:</p>
+<p><a href="mailto:impfzentrum@drk-odenwaldkreis.de">impfzentrum@drk-odenwaldkreis.de</a></p>
+<div id="datenschutz" class="FAIRsepdown"></div>';
 
 echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörden</h3>
 <p><a target="_blank" href="https://github.com/DRK-Odenwaldkreis/Testerfassung">Für die Dokumentation der Web-Anwendung hier klicken</a></p>
 <p>&nbsp;</p>
 <p>Bei technischen Fragen zum Erfassungssystem bitte eine E-Mail schreiben an den Support:</p>
 <p><a href="mailto:info@testzentrum-odenwald.de">info@testzentrum-odenwald.de</a></p>
-<p>&nbsp;</p>
+
 
 <div id="datenschutz" class="FAIRsepdown"></div>
 <div class="FAIRsepdown"></div>
