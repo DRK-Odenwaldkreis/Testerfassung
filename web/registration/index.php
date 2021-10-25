@@ -152,6 +152,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                     <h3>Ablauf</h3>
                     <p>Bitte wählen Sie einen freien Termin für jede Person, die getestet werden soll.</p>
                     <p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
+                    <p>Bitte bezahlen Sie vor Ort für die Testung <b>30 €</b>.</p>
                     </div>';
                 }
                 
@@ -679,6 +680,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                 }
                 echo '<p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
                 <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse eine Terminbestätigung.</p>
+                <p>Bitte bezahlen Sie vor Ort für die Testung <b>30 €</b>.</p>
                 </div>';
             }
             if($display_single_termin) {

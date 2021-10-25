@@ -630,7 +630,7 @@ function H_build_table_testdates2( $mode ) {
 				</tr>';
 			} elseif($mode=='antikoerper') {
 				$res.='<tr>
-				<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue1" colspan="'.($X+2).'"><b>Antikörpertest: <i>Eine Terminbuchung ist notwendig</i></b></td>
+				<td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-blue1" colspan="'.($X+2).'"><b>Antikörpertest 30 €: <i>Eine Terminbuchung ist notwendig</i></b></td>
 				</tr>';
 			} else {
 				$res.='<tr>

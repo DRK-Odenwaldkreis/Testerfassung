@@ -362,6 +362,16 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         </div>
         </div>
     </div>
+    <div class="col-sm-4 col-xs-4">
+        <div class="header_icon">
+        <img src="img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+            
+        <div class="caption center_text">
+            <h5>Kosten: 30 €</h5>
+            <h5><span class="text-sm">Bezahlung vor Ort</span></h5>
+        </div>
+        </div>
+    </div>
 
     </div>
 
