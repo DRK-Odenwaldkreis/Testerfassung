@@ -12,7 +12,7 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
   padding-top: 40px;
-  background-color: #f7f7f7;
+  background-color: #fcfcfc;
 }
 
 
@@ -39,6 +39,7 @@ body {
 .navbar-nav {
 	margin-top: 0px;
 	margin-bottom: 0px;
+	float: left;
 }
 
 @media screen and (max-width: 768px) {
@@ -151,7 +152,7 @@ h2.FAIR-redgrey {
 h3.imprint {
 	padding: 10px;
 	background-clip: content-box,border-box;
-	background-image: linear-gradient(0deg,#2c95c9 30%,transparent 0);
+	background-image: linear-gradient(0deg,#b8d3ff 30%,transparent 0);
 }
 
 .main {
@@ -161,16 +162,6 @@ h3.imprint {
 .main .page-header {
   margin-top: 0;
 }
-
-
-/* div.main-link-page:hover {
-	cursor:pointer;
-	background: #fff;
-	border-radius: 5px;
-	border-style: solid;
-	border-color: #555;
-	border-width: 2px;
-} */
 
 div.FAIRsep {
 	margin-bottom:10px;
@@ -242,8 +233,14 @@ a.badge-white-text:hover {
 	color: #111;;
 	background-color: red;
 }
+.anweisung {
+	color: red;
+	padding: 3px;
+	background-clip: content-box,border-box;
+	background-image: linear-gradient(0deg,#f2acac 30%,transparent 0);
+}
 a.list-group-item-redtext {
-	color: #2c95c9;;
+	color: #c9302c;;
 }
 a.list-group-item-redtext:hover {
 	color: #333;
@@ -254,7 +251,7 @@ a.list-group-item-redtext:hover {
 /* ********** */
 
 div.FAIR-box-sq-outer {
-	background-color:#2c95c9;
+	background-color:#c9302c;
 	color:#fff;
 	padding:2px;
 	width:200px;
@@ -262,7 +259,7 @@ div.FAIR-box-sq-outer {
 	font-family: "Overpass","Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,"sans-serif";
 }
 div.FAIR-box-rc-outer {
-	background-color:#2c95c9;
+	background-color:#c9302c;
 	color:#fff;
 	padding:2px;
 	width:400px;
@@ -273,7 +270,7 @@ div.FAIR-box-rc-outer {
 div.FAIR-box-head {
 background-color: #fff;
 font-size: 110%;
-color: #2c95c9;
+color: #c9302c;
 /*border-left: 1px none #bbb;
 border-right: 1px none #bbb;
 border-top: 1px none #bbb;
@@ -527,16 +524,6 @@ td.FAIR-data-yellow3 {
 	background-color: #e7bd3228;
 	font-size: 18px;
 }
-td.FAIR-data-red1 {
-	color: #111;
-	background-color: #e63617;
-	font-size: 18px;
-}
-td.FAIR-data-red2 {
-	color: #111;
-	background-color: #e257457a;
-	font-size: 18px;
-}
 td.FAIR-data-black1 {
 	color: #181818;
 }
@@ -572,41 +559,13 @@ border: 0px none;
 transition: all 0s ease 0s;
 }
 a.FAIR-editmenu-td:hover {
-color: #2c95c9;
+color: #c9302c;
 transition: all 0s ease 0s;
 }
 
-td.calendar {
-	color:#333;
-}
-td.calendarblue:hover {
-	color:#fff;
-	cursor: pointer;
-	background-color: #06447a;
-}
-td.calendaryellow:hover {
-	color:#fff;
-	cursor: pointer;
-	background-color: #c29605;
-}
-td.calendarred:hover {
-	color:#fff;
-	cursor: pointer;
-	background-color: #c24105;
-}
-
-div.calendar_selection {
-	line-height: 3.5em;
-}
 span.calendarblue {
 	color:#111;
 	background-color: #d9edf7;
-	margin-right:5px;
-	padding:8px;
-}
-span.calendarred {
-	color:#111;
-	background-color: #ffb4b4;
 	margin-right:5px;
 	padding:8px;
 }
@@ -614,133 +573,6 @@ div.calendar-col {
 	padding-top:8px;
 	padding-bottom:8px;
 	line-height: 36px;
-}
-a.calendaryellow {
-	color:#111;
-	background-color: #d6cdad;
-	margin-right:5px;
-	padding:8px;
-}
-a.calendaryellow:hover {
-	color:#fff;
-	background-color: #c29605;
-	text-decoration: none;
-}
-a.calendaryellow-dis {
-	color:#ddd;
-	background-color: #5e522e;
-	margin-right:5px;
-	padding:8px;
-}
-a.calendaryellow-dis:hover {
-	color:#ddd;
-	background-color: #473e23;
-	text-decoration: none;
-}
-
-@media (min-width: 1249px) {
-	div.calendar-large {
-		display: block;
-	}
-	div.calendar-small {
-		display: none;
-	}
-}
-@media (max-width: 1250px) {
-	div.calendar-large {
-		display: none;
-	}
-	div.calendar-small {
-		display: block;
-	}
-}
-div.cal-day-head {
-    display: block;
-    padding: 8px;
-    margin-bottom: 2px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-top: 10px;
-	font-size: 120%;
-	text-align: center;
-	background-color: #333;
-	color: #fff;
-}
-div.cal-day-head-blue {
-    display: block;
-    padding: 8px;
-    margin-bottom: 2px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-top: 10px;
-	font-size: 120%;
-	text-align: center;
-	background-color: #337ab7;
-	color: #fff;
-}
-div.cal-day-head-yellow {
-    display: block;
-    padding: 8px;
-    margin-bottom: 2px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-top: 10px;
-	font-size: 120%;
-	text-align: center;
-	background-color: #e7bd32;
-	color: #111;
-}
-div.cal-day-head-red {
-    display: block;
-    padding: 8px;
-    margin-bottom: 2px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-top: 10px;
-	font-size: 120%;
-	text-align: center;
-	background-color: #e63617;
-	color: #111;
-}
-
-div.cal-element {
-	display: block;
-    padding: 8px;
-    margin-bottom: 1px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-top: 1px;
-	text-align: center;
-}
-
-div.calendaryellow {
-	background-color: #e7bd327a;
-	color:#111;
-}
-div.calendaryellow:hover {
-	color:#fff;
-	cursor: pointer;
-	background-color: #c29605;
-}
-
-div.calendarblue {
-	background-color: #3379b77a;
-	color:#111;
-}
-div.calendarblue:hover {
-	color:#fff;
-	cursor: pointer;
-	background-color: #06447a;
-}
-
-div.calendarred {
-	background-color: #e257457a;
-	color:#111;
-}
-div.calendarred:hover {
-	color:#fff;
-	cursor: pointer;
-	background-color: #c24105;
 }
 
 
@@ -781,7 +613,7 @@ margin: 3px 20px 5px 5px;
 }
 
 button.FAIR-default {
-background-color: #2c95c9;
+background-color: #c9302c;
 color: #fff;
 padding: 3px 12px 5px;
 border: 0px none;
@@ -797,7 +629,7 @@ box-shadow: 0 2px 0 rgba(0,0,0,0.40);
 }
 a.FAIR-default {
 text-decoration: none;
-background-color: #2c95c9;
+background-color: #c9302c;
 color: #fff;
 padding: 7px 10px 7px 10px;
 margin: 3px 20px 5px 5px;
@@ -812,7 +644,7 @@ background-color: #444;
 box-shadow: 0 2px 0 rgba(0,0,0,0.20);
 }
 input.FAIR-default {
-background-color: #2c95c9;
+background-color: #c9302c;
 color: #fff;
 padding: 3px 12px 5px;
 border: 0px none;
@@ -846,11 +678,11 @@ background-color: rgba(255,255,255,1);
 transition:.7s;
 }
 input.FAIR-textbox-large:focus {
-border-bottom: 2px solid #2c95c9;
-border-left: 2px solid #2c95c9;
-border-top: 2px solid #2c95c9;
-border-right: 2px solid #2c95c9;
-color: #2c95c9;
+border-bottom: 2px solid #c9302c;
+border-left: 2px solid #c9302c;
+border-top: 2px solid #c9302c;
+border-right: 2px solid #c9302c;
+color: #c9302c;
 -o-transition:.2s;
 -ms-transition:.2s;
 -moz-transition:.2s;
@@ -858,11 +690,11 @@ color: #2c95c9;
 transition:.2s;
 }
 input.FAIR-textbox-large:hover {
-border-bottom: 2px solid #2c95c9;
-border-left: 2px solid #2c95c9;
-border-top: 2px solid #2c95c9;
-border-right: 2px solid #2c95c9;
-color: #2c95c9;
+border-bottom: 2px solid #c9302c;
+border-left: 2px solid #c9302c;
+border-top: 2px solid #c9302c;
+border-right: 2px solid #c9302c;
+color: #c9302c;
 -o-transition:.2s;
 -ms-transition:.2s;
 -moz-transition:.2s;
@@ -906,41 +738,13 @@ background: repeating-linear-gradient(
 
 a.list-group-item-FAIR:hover, a.list-group-item-FAIR:active, a.list-group-item-FAIR:focus, a.list-group-item-FAIR.active, a.list-group-item-FAIR.active:hover {
 	color: #fff;
-	background-color: #2c95c9;
+	background-color: #c9302c;
 	border-color: #1d698f;
 	cursor: pointer;
 }
 
 div.input-group {
 margin-bottom:7px;
-}
-
-div.center_text {
-	text-align: center;
-	font-size: 120%;
-}
-div.header_icon_main {
-	background-color: #fff;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	margin-left: 0px;
-	margin-right: 0px;
-}
-div.header_icon {
-	display: block;
-	padding: 4px;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	line-height: 1.42857143;
-}
-
-div.main-link-page_2:hover {
-	cursor:pointer;
-	background: #fff;
-	border-radius: 5px;
-	border-style: solid;
-	border-color: #555;
-	border-width: 2px;
 }
 
 /*
@@ -967,6 +771,10 @@ div.main-link-page_2:hover {
 }
 .FAIR-sep-l {
 	padding-right: 20px;
+}
+.FAIR-sep-l-black {
+	padding-right: 80px;
+	background-color: #333;
 }
 
 
@@ -1028,10 +836,10 @@ input.ui-widget {
     transition: .7s;
 }
 input.ui-widget:hover {
-    border-bottom: 2px solid #2c95c9;
-	border-left: 2px solid #2c95c9;
-	border-right: 2px solid #2c95c9;
-	border-top: 2px solid #2c95c9;
+    border-bottom: 2px solid #c9302c;
+	border-left: 2px solid #c9302c;
+	border-right: 2px solid #c9302c;
+	border-top: 2px solid #c9302c;
     background-color: #ffffff;
     color: #444;
     -o-transition: .2s;
@@ -1041,10 +849,10 @@ input.ui-widget:hover {
     transition: .2s;
 }
 input.ui-widget:focus {
-    border-bottom: 2px solid #2c95c9;
-	border-left: 2px solid #2c95c9;
-	border-right: 2px solid #2c95c9;
-	border-top: 2px solid #2c95c9;
+    border-bottom: 2px solid #c9302c;
+	border-left: 2px solid #c9302c;
+	border-right: 2px solid #c9302c;
+	border-top: 2px solid #c9302c;
     background-color: #ffffff;
     color: #444;
     -o-transition: .2s;
@@ -1077,7 +885,7 @@ li.ui-menu-item {
     z-index: 9999;
 }
 div.ui-menu-item-wrapper:hover {
-    color: #2c95c9;
+    color: #c9302c;
 	cursor: pointer;
 }
 .ui-widget-content {
@@ -1088,6 +896,11 @@ div.ui-menu-item-wrapper:hover {
 .ui-helper-hidden-accessible {
 	display: none;
 }
+
+div.dataTables_filter {
+	float: left !important;
+}
+
 /* ************** */
 /*   Check Box    */
 /* ************** */
@@ -1104,15 +917,22 @@ div.cb_drk {
 	z-index: 0;
 	-webkit-appearance: none;
   }
-  [type="checkbox"][disabled]:checked + label:before {
-	background-color: #2e5327;
+  [type="checkbox"]:checked + label:before {
+	background-color: #2b8718;
   }
-  [type="checkbox"][disabled] + label:before {
+  [type="checkbox"]:disabled:checked + label:before {
+	background-color: #1c5810;
+  }
+  [type="checkbox"]:disabled + label {
+	opacity: .5;
+  }
+  [type="checkbox"]:disabled + label:before {
 	background-color: #ffbebe;
   }
-  [type="checkbox"][disabled] + label {
+  [type="checkbox"]:disabled + label {
 	cursor: not-allowed;
   }
+
   [type="checkbox"] + label {
 	position: relative;
 	display: block;
@@ -1149,9 +969,6 @@ div.cb_drk {
 	left: 2px;
 	top: 2px;
 	z-index: 10;
-  }
-  [type="checkbox"]:checked + label:before {
-	background-color: #2b8718;
   }
   [type="checkbox"]:checked + label:after {
 	margin: 0 0 0 30px;

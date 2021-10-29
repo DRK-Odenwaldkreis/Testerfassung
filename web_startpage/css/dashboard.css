@@ -151,7 +151,7 @@ h2.FAIR-redgrey {
 h3.imprint {
 	padding: 10px;
 	background-clip: content-box,border-box;
-	background-image: linear-gradient(0deg,#2c95c9 30%,transparent 0);
+	background-image: linear-gradient(0deg,#8E8D8A 30%,transparent 0);
 }
 
 .main {
@@ -604,12 +604,6 @@ span.calendarblue {
 	margin-right:5px;
 	padding:8px;
 }
-span.calendarred {
-	color:#111;
-	background-color: #ffb4b4;
-	margin-right:5px;
-	padding:8px;
-}
 div.calendar-col {
 	padding-top:8px;
 	padding-bottom:8px;
@@ -932,15 +926,6 @@ div.header_icon {
 	margin-top: 5px;
 	margin-bottom: 5px;
 	line-height: 1.42857143;
-}
-
-div.main-link-page_2:hover {
-	cursor:pointer;
-	background: #fff;
-	border-radius: 5px;
-	border-style: solid;
-	border-color: #555;
-	border-width: 2px;
 }
 
 /*

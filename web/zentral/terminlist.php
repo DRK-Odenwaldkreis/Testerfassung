@@ -89,11 +89,14 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
 
     echo '<div class="row">';
 
-    
-    $stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station;');
+    if($GLOBALS['FLAG_MODE_MAIN'] == 1 || $GLOBALS['FLAG_MODE_MAIN'] == 3) {
+        $stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station;');
+    } else {
+        $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.Kurzbezeichnung FROM Station JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id;');
+    }
     $today=date("Y-m-d",time());
     
-    echo '<div class="col-sm-3">
+    echo '<div class="col-sm-5">
       <div class="card">';
     if( A_checkpermission(array(1,0,0,0,5)) && !A_checkpermission(array(0,2,0,4,0)) ) {
         echo '<p>Eigene Station S'.$_SESSION['station_id'].'/'.$_SESSION['station_name'].'</p>';
@@ -107,7 +110,11 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         <option value="">Wähle Station...</option>
             ';
             foreach($stations_array as $i) {
-                $display=$i[1].' / S'.$i[0];
+                if($GLOBALS['FLAG_MODE_MAIN'] == 1 || $GLOBALS['FLAG_MODE_MAIN'] == 3) {
+                    $display=$i[1].' / S'.$i[0];
+                } else {
+                    $display=$i[3].' ('.$i[1].' / S'.$i[0].')';
+                }
                 if($i[0]==$station) {$selected="selected";} else {$selected="";}
                 echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
             }
@@ -253,7 +260,11 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         echo '<div class="col-sm-12">
         <div class="card">
         <h3>Alle Stationen in den nächsten Tagen (inkl. Firmen)</h3>';
-        echo H_build_table_testdates_all('');
+        if($GLOBALS['FLAG_MODE_MAIN'] == 1 || $GLOBALS['FLAG_MODE_MAIN'] == 3) {
+            echo H_build_table_testdates_all('');
+        } else {
+            echo H_build_table_testdates_all('vaccinate');
+        }
         echo '</div></div>';
     }
 

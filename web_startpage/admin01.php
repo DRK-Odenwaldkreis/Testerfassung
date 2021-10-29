@@ -9,7 +9,8 @@ March 2021
 ** ************** */
 
 $FLAG_SHUTDOWN_MAIN = false;
-
-$FLAG_MODE_MAIN = 1; // 1 = Testzentrum, 2 = Impfzentrum, 3 = Antikörpertestung
+$FLAG_SHUTDOWN_TESTING = false;
+$FLAG_SHUTDOWN_TESTING_ANTIKOERPER = false;
+$FLAG_SHUTDOWN_VACCINATE = false;
 
 ?>

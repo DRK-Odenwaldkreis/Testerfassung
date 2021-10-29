@@ -101,9 +101,21 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
      <link rel="shortcut icon" href="img/favicon.png" type="image/x-ico; charset=binary" />
      <link rel="icon" href="img/favicon.png" type="image/x-ico; charset=binary" />
      
-     <link href="css/bootstrap.css" rel="stylesheet">
-     <!-- Custom styles for this template -->
-     <link href="css/dashboard.css" rel="stylesheet">
+     ';
+
+     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+       echo'
+       <link href="css/bootstrap_red.css" rel="stylesheet">
+       <!-- Custom styles for this template -->
+       <link href="css/dashboard_red.css" rel="stylesheet">';
+     } else {
+       echo'
+       <link href="css/bootstrap.css" rel="stylesheet">
+       <!-- Custom styles for this template -->
+       <link href="css/dashboard.css" rel="stylesheet">';
+     }
+     
+     echo'
      <link href="css/symbols-fair.css" rel="stylesheet">
 
      <script type="text/javascript" src="lib/datatables/jQuery-3.3.1/jquery-3.3.1.min.js"></script>

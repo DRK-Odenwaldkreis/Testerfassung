@@ -151,7 +151,7 @@ h2.FAIR-redgrey {
 h3.imprint {
 	padding: 10px;
 	background-clip: content-box,border-box;
-	background-image: linear-gradient(0deg,#2c95c9 30%,transparent 0);
+	background-image: linear-gradient(0deg,#c9302c 30%,transparent 0);
 }
 
 .main {
@@ -243,7 +243,7 @@ a.badge-white-text:hover {
 	background-color: red;
 }
 a.list-group-item-redtext {
-	color: #2c95c9;;
+	color: #c9302c;;
 }
 a.list-group-item-redtext:hover {
 	color: #333;
@@ -254,7 +254,7 @@ a.list-group-item-redtext:hover {
 /* ********** */
 
 div.FAIR-box-sq-outer {
-	background-color:#2c95c9;
+	background-color:#c9302c;
 	color:#fff;
 	padding:2px;
 	width:200px;
@@ -262,7 +262,7 @@ div.FAIR-box-sq-outer {
 	font-family: "Overpass","Segoe UI","Segoe UI Web Regular","Segoe UI Symbol","Helvetica Neue","BBAlpha Sans","S60 Sans",Arial,"sans-serif";
 }
 div.FAIR-box-rc-outer {
-	background-color:#2c95c9;
+	background-color:#c9302c;
 	color:#fff;
 	padding:2px;
 	width:400px;
@@ -273,7 +273,7 @@ div.FAIR-box-rc-outer {
 div.FAIR-box-head {
 background-color: #fff;
 font-size: 110%;
-color: #2c95c9;
+color: #c9302c;
 /*border-left: 1px none #bbb;
 border-right: 1px none #bbb;
 border-top: 1px none #bbb;
@@ -572,7 +572,7 @@ border: 0px none;
 transition: all 0s ease 0s;
 }
 a.FAIR-editmenu-td:hover {
-color: #2c95c9;
+color: #c9302c;
 transition: all 0s ease 0s;
 }
 
@@ -781,7 +781,7 @@ margin: 3px 20px 5px 5px;
 }
 
 button.FAIR-default {
-background-color: #2c95c9;
+background-color: #c9302c;
 color: #fff;
 padding: 3px 12px 5px;
 border: 0px none;
@@ -797,7 +797,7 @@ box-shadow: 0 2px 0 rgba(0,0,0,0.40);
 }
 a.FAIR-default {
 text-decoration: none;
-background-color: #2c95c9;
+background-color: #c9302c;
 color: #fff;
 padding: 7px 10px 7px 10px;
 margin: 3px 20px 5px 5px;
@@ -812,7 +812,7 @@ background-color: #444;
 box-shadow: 0 2px 0 rgba(0,0,0,0.20);
 }
 input.FAIR-default {
-background-color: #2c95c9;
+background-color: #c9302c;
 color: #fff;
 padding: 3px 12px 5px;
 border: 0px none;
@@ -846,11 +846,11 @@ background-color: rgba(255,255,255,1);
 transition:.7s;
 }
 input.FAIR-textbox-large:focus {
-border-bottom: 2px solid #2c95c9;
-border-left: 2px solid #2c95c9;
-border-top: 2px solid #2c95c9;
-border-right: 2px solid #2c95c9;
-color: #2c95c9;
+border-bottom: 2px solid #c9302c;
+border-left: 2px solid #c9302c;
+border-top: 2px solid #c9302c;
+border-right: 2px solid #c9302c;
+color: #c9302c;
 -o-transition:.2s;
 -ms-transition:.2s;
 -moz-transition:.2s;
@@ -858,11 +858,11 @@ color: #2c95c9;
 transition:.2s;
 }
 input.FAIR-textbox-large:hover {
-border-bottom: 2px solid #2c95c9;
-border-left: 2px solid #2c95c9;
-border-top: 2px solid #2c95c9;
-border-right: 2px solid #2c95c9;
-color: #2c95c9;
+border-bottom: 2px solid #c9302c;
+border-left: 2px solid #c9302c;
+border-top: 2px solid #c9302c;
+border-right: 2px solid #c9302c;
+color: #c9302c;
 -o-transition:.2s;
 -ms-transition:.2s;
 -moz-transition:.2s;
@@ -906,7 +906,7 @@ background: repeating-linear-gradient(
 
 a.list-group-item-FAIR:hover, a.list-group-item-FAIR:active, a.list-group-item-FAIR:focus, a.list-group-item-FAIR.active, a.list-group-item-FAIR.active:hover {
 	color: #fff;
-	background-color: #2c95c9;
+	background-color: #c9302c;
 	border-color: #1d698f;
 	cursor: pointer;
 }
@@ -1028,10 +1028,10 @@ input.ui-widget {
     transition: .7s;
 }
 input.ui-widget:hover {
-    border-bottom: 2px solid #2c95c9;
-	border-left: 2px solid #2c95c9;
-	border-right: 2px solid #2c95c9;
-	border-top: 2px solid #2c95c9;
+    border-bottom: 2px solid #c9302c;
+	border-left: 2px solid #c9302c;
+	border-right: 2px solid #c9302c;
+	border-top: 2px solid #c9302c;
     background-color: #ffffff;
     color: #444;
     -o-transition: .2s;
@@ -1041,10 +1041,10 @@ input.ui-widget:hover {
     transition: .2s;
 }
 input.ui-widget:focus {
-    border-bottom: 2px solid #2c95c9;
-	border-left: 2px solid #2c95c9;
-	border-right: 2px solid #2c95c9;
-	border-top: 2px solid #2c95c9;
+    border-bottom: 2px solid #c9302c;
+	border-left: 2px solid #c9302c;
+	border-right: 2px solid #c9302c;
+	border-top: 2px solid #c9302c;
     background-color: #ffffff;
     color: #444;
     -o-transition: .2s;
@@ -1077,7 +1077,7 @@ li.ui-menu-item {
     z-index: 9999;
 }
 div.ui-menu-item-wrapper:hover {
-    color: #2c95c9;
+    color: #c9302c;
 	cursor: pointer;
 }
 .ui-widget-content {
