@@ -127,6 +127,63 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
         </div>
     </div>
     <div class="FAIRsepdown"></div>';
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+    // Antikörpertest Infos
+    echo '
+        </div></div>
+
+        </div>
+    </div>
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsepdown"></div>
+
+    <div class="row">
+        
+        <div class="col-lg-12">
+        <h2 style="text-align: center;">Informationen zum Antikörpertest SARS-CoV-2 / Covid-19</h2>
+        </div>
+        <div class="col-lg-6">
+        <div class="thumbnail">
+        <div style="font-size: 45px; text-align: center; padding: 10px;">
+        <span class="icon-lab"></span>
+        </div>
+        <div class="caption">
+            <h3 style="text-align: center;">Was ist ein Antikörpertest?</h3>
+            <p>Der Antikörpertest gibt einen Anhaltspunkt über die Anwesenheit und Menge der Antikörper im Blut. Die Antikörperbildung ist Nachweis einer durchgemachten SARS-CoV-2 Infektion oder einer durch Impfung erworbenen Immunität gegen SARS-CoV-2.</p>
+            <p>Der Körper bildet bei einer Infektion Abwehrstoffe, sogenannte Antikörper. Ein Antikörpertest untersucht im Blut des Patienten, ob er Antikörper gegen das Virus gebildet hat. Dies sind Eiweiß-, Zucker- oder Fett-Moleküle, die außen auf der Hülle von Viren oder Bakterien sitzen. </p>
+            <p>Antikörper (Immunglobuline) werden grundsätzlich gegen alle körperfremden Stoffe gebildet, auf die unsere Immunzellen stoßen. Für eine möglichst genaue Aussage eines Antikörpertests konzentriert man sich auf hoch spezifische Antikörper, die gegen die erregertypischen Proteine gerichtet sind.</p>
+        </div>
+        </div>
+        </div>
+        <div class="col-lg-6">
+        <div class="thumbnail">
+        <div style="font-size: 45px; text-align: center; padding: 10px;">
+        <span class="icon-chat"></span>
+        </div>
+        <div class="caption">
+            <h3 style="text-align: center;">Fragen und Antworten zum Antikörper-Test</h3>
+            <h4>1. Ab wann kann ich meinen Antikörper-Status bestimmen lassen?</h4>
+            <p>Wir empfehlen eine Bestimmung der Antikörper frühestens 14 Tage nach der Infektion bzw. erfolgter letzter Impfung.</p>
+            <h4>2. Wie wird das Testmaterial entnommen?</h4>
+            <p>Grundsätzlich wird der Antikörpertest mittels Kapillarblut ausgewertet. Hierfür wird eine Lanzette an die Fingerkuppe gesetzt. Nach der Punktion der Haut wird ein Tropfen Blut mit einer Pipette entfernt und in die vorgesehene Testkartusche pipettiert. Das Ergebnis wird durch einen Farbumschlag angezeigt.</p>
+            <h4>3. Wann erhalte ich mein Ergebnis?</h4>
+            <p>Innerhalb von etwa 15-20 Minuten steht das Ergebnis fest. Sie erhalten das Ergebnis über Anwesenheit und Menge der neutralisierenden Antikörper vor Ort.</p>
+            <h4>4. Was bedeutet das Ergebnis für mich? </h4>
+            <p>Der sogenannte BAU/ml-Wert (BAU = binding antibody units) ist die Konzentration der neutralisierenden Antikörper im Blut. Hinweis von der Verpackung: Achtung das Ergebnis ist nur ein Hinweis, keine Garantie, zu den Abwehrkräften spielen weitere Fakrtoren eine Rolle</p>
+            <p><b>Zur Orientierung:</b></p>
+            <p>< 25 BAU/ml: negativer SARS-CoV2-NAb-Titer</p>
+            <p>≥ 25 BAU/ml < 250 BAU/ml: geringer SARS-CoV2-NAb-Titer</p>
+            <p>≥ 250 BAU/ml < 500 BAU/ml: mittlerer SARS-CoV2-NAb-Titer</p>
+            <p>≥ 500 BAU/ml: hoher SARS-CoV2-NAb-Titer</p>
+            <p>> 2982 BAU/ml: maximal anzuzeigender Wert</p>
+            
+        </div>
+        </div>
+        </div>
+
+        </div>
+    </div>
+    <div class="FAIRsepdown"></div>';
 }
 
 

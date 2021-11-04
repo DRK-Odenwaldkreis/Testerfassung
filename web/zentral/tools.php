@@ -335,7 +335,11 @@ function H_build_table_testdates_all($mode) {
 		$stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station;');
 	}
 	// X ist Anzahl an Tagen für Vorschau in Tabelle
-	$X=14;
+	if($mode == 'vaccinate') {
+		$X=28;
+	} else {
+		$X=14;
+	}
 	// Ohne Terminbuchung für nächste X Tage / free2come
 	$today=date('Y-m-d');
 	$in_x_days=date('Y-m-d', strtotime($today. ' + '.$X.' days'));
@@ -459,6 +463,20 @@ function H_build_table_testdates_all($mode) {
 						<span class="text-sm"><div style="display: block; margin-top: 5px;">no-show</div></span>';
 					}
 					if($count_free>0) {
+						$string_times='';
+						// opt location
+						$array_location_opt=S_get_multientry($Db,'SELECT opt_station, opt_station_adresse FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
+						if($array_location_opt[0][0]!='') {
+							$string_times.='<span class="text-sm">'.$array_location_opt[0][0].',<br>'.$array_location_opt[0][1].'</span><br>';
+						}
+						// get times
+						$value_termine_times1=S_get_entry($Db,'SELECT Stunde FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
+						$value_termine_times2=S_get_entry($Db,'SELECT Stunde FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde DESC;');
+						//$value_termine_id=S_get_entry($Db,'SELECT id FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
+						$string_times.='<span class="text-sm"><div style="display: block; margin-top: 5px;">'.sprintf('%02d', $value_termine_times1).':00 - '.sprintf('%02d', $value_termine_times2 + 1).':00</div></span>';
+
+						$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-yellow2 calendaryellow">'.$string_times.$display_termine.'</td>';
+					} elseif($array_termine_open[0][0]>0) {
 						$string_times='';
 						// opt location
 						$array_location_opt=S_get_multientry($Db,'SELECT opt_station, opt_station_adresse FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');

@@ -520,7 +520,11 @@ function H_build_table_testdates2( $mode ) {
 		$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Testtyp.IsPCR FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id WHERE '.$query_b2b.';');
 	}
 	// X ist Anzahl an Tagen für Vorschau in Tabelle
-	$X=14;
+	if($mode == 'vaccinate') {
+		$X=28;
+	} else {
+		$X=14;
+	}
 	// Ohne Terminbuchung für nächste X Tage
 	$today=date('Y-m-d');
 	$in_x_days=date('Y-m-d', strtotime($today. ' + '.$X.' days'));
@@ -666,9 +670,23 @@ function H_build_table_testdates2( $mode ) {
 				for($j=0;$j<$X;$j++) {
 					$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
 					if($j==0) {
-						// TODAY do not show past entries
-						$current_hour=date('G');
-						$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" AND Stunde>='.$current_hour.';');
+						if($mode == 'vaccinate') {
+							// TODAY do not show past entries AND do not show entries after certain hour of day has reached
+							$hour_limit_monfri=11;
+							$hour_limit_satsun=8;
+							$current_hour=date('G');
+							$current_dateinweek=date('w');
+							if( ( ($current_dateinweek==0 OR $current_dateinweek==6) AND $current_hour<$hour_limit_satsun ) 
+							OR ( ($current_dateinweek>0 AND $current_dateinweek<6) AND $current_hour<$hour_limit_monfri ) ) {
+								$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" AND Stunde>='.$current_hour.';');
+							} else {
+								$array_termine_open=array(0,0);
+							}
+						} else {
+							// TODAY do not show past entries
+							$current_hour=date('G');
+							$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" AND Stunde>='.$current_hour.';');
+						}
 					} else {
 						$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'";');
 					}
@@ -692,6 +710,9 @@ function H_build_table_testdates2( $mode ) {
 						$res_s_array[$j][1].='<div class="cal-element calendar'.$cal_color.'" onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'">'.$string_location.$display_location_thirdline.'<br>'.$string_times.$display_termine.'</div>';
 
 						$bool_valid_appointments_found=true;
+					} elseif($array_termine_open[0][0]>0) {
+						$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-'.$cal_color.'2"><div style="display: block; margin-top: 5px;"><span class="label label-default">'.($array_termine_open[0][0]).'</span></div><span class="text-sm"><div style="display: block; margin-top: 5px;">ausgebuchte Termine</div></span></td>';
+						$res_s_array[$j][1].='<div class="cal-element"><div style="display: block; margin-top: 5px;">'.$string_location.'<br><span class="label label-default">'.($array_termine_open[0][0]).'</span></div><span class="text-sm"><div style="display: block; margin-top: 5px;">ausgebuchte Termine</div></span></div>';
 					} else {
 						$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1 FAIR-data-red3"></td>';
 					}
