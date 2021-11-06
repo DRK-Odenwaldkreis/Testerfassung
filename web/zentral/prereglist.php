@@ -67,6 +67,27 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   }
 
 
+  // Create XLSX export file
+  $val_report_display=0;
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      if(isset($_POST['create_export_csv'])) {
+          $date=($_POST['date']);
+          $dir="/home/webservice/Impfterminerfassung/CSVExport/";
+          chdir($dir);
+          $job="python3 job.py $date";
+          exec($job,$script_output);
+          $file=$script_output[0];
+          if( file_exists("/home/webservice/Reports/Impfzentrum/$file") ) {
+              header('Content-Type: application/octet-stream');
+              header('Content-Disposition: attachment; filename="'.basename($file).'"');
+              header('Pragma: no-cache');
+              header('Expires: 0');
+              readfile("/home/webservice/Reports/Impfzentrum/$file");
+              exit;
+          }
+          
+      }
+    }
 
 
     // pre settings for DataTables
@@ -100,18 +121,18 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     ';
 
     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-      echo'
+      echo '
       <link href="css/bootstrap_red.css" rel="stylesheet">
       <!-- Custom styles for this template -->
       <link href="css/dashboard_red.css" rel="stylesheet">';
     } else {
-      echo'
+      echo '
       <link href="css/bootstrap.css" rel="stylesheet">
       <!-- Custom styles for this template -->
       <link href="css/dashboard.css" rel="stylesheet">';
     }
     
-    echo'
+    echo '
     <link href="css/symbols-fair.css" rel="stylesheet">
         
     <script type="text/javascript" src="lib/datatables/jQuery-3.3.1/jquery-3.3.1.min.js"></script>
@@ -298,6 +319,29 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   </script>
   ";
 
+
+
+if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+  // Get XLSX file
+  echo '<div class="card">
+      <div class="col-sm-4">
+      <h3>Export</h3>
+      <p></p>';
+      echo '<form action="'.$current_site.'.php" method="post">
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-addonA2">Tag auswählen</span>
+        <input type="date" class="form-control" placeholder="Tag wählen" aria-describedby="basic-addonA2" value="'.$today.'" name="date">
+        </div>
+          <input type="submit" class="btn btn-danger" value="Export Excel-Datei" name="create_export_csv" />
+          </span>
+          </div>
+          </form>';
+      echo $errorhtml0;
+    
+      echo '</div></div>';
+
+  echo '</div>';
+}
 
 
   // Close connection to database
