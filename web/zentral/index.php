@@ -385,7 +385,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
   // Open database connection
   $Db=S_open_db();
-  $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort,Impfstoff.Kurzbezeichnung FROM Station JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id;');
+  $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort FROM Station;');
   $today=date("Y-m-d",time());
   $tomorrow=date("Y-m-d",time() + 60 * 60 * 24);
 
@@ -426,7 +426,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
       <option value="">Wähle Station...</option>
           ';
           foreach($stations_array as $i) {
-              $display=$i[1].' - '.$i[2];
+              $display=$i[1].'';
               if($i[0]==$station) {$selected="selected";} else {$selected="";}
               echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
           }
