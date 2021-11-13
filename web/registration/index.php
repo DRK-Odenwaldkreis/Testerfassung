@@ -95,8 +95,20 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
         $k_cwa_anonym_req=$_POST['cb_cwa_anonym'];
         if($k_cwa_anonym_req=='on') { $k_cwa_req=2; }
         if(isset($_POST['pcr_grund'])) { $k_pcr_grund=intval($_POST['pcr_grund']); } else { $k_pcr_grund=null; }
-        
-        if (filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
+
+        // Check if Termin date is in past
+        if( ( strtotime($k_date)+60*60*23 ) < time() ) {
+            $display_termin_past=true;
+        } else {
+            $display_termin_past=false;
+        }
+        if($display_termin_past) {
+            echo '<div class="alert alert-warning" role="alert">
+            <h3>Fehler</h3>';
+            echo '<p>Ihr gewählter Termin liegt in der Vergangenheit.</p>
+            <p>Bitte wählen Sie neu auf der <a href="../index.php">Startseite</a>.</p>
+            </div>';
+        } elseif (filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                 $prereg_id=S_set_entry_voranmeldung($Db,array($k_vname,$k_nname,$k_geb,$k_adresse,$k_ort,$k_telefon,$k_email,$k_slot_id,$k_date,$k_cwa_req,$k_pcr_grund));
             } else {
@@ -609,6 +621,17 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                 $time2=date("H:i",strtotime($array_appointment[3]));
             }
 
+            // Check if Termin date is in past
+            if( ( $display_slot_termin ) && ( strtotime($array_appointment[1])+60*60*23 ) < time() ) {
+                $display_termin_past=true;
+            } elseif( isset($_GET['slot']) && ( ( strtotime($array_appointment[1])+60*60*($array_appointment[8]+1) ) < time() ) ) {
+                $display_termin_past=true;
+            } elseif( ( $display_single_termin ) && ( strtotime($array_appointment[1])+60*60*23 ) < time() ) {
+                $display_termin_past=true;
+            } else {
+                $display_termin_past=false;
+            }
+
             // Adresse
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                 $stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station WHERE id="'.$array_appointment[7].'";');
@@ -637,342 +660,353 @@ Das Team vom DRK $name_facility Odenwaldkreis";
             $val_station_id=A_sanitize_input($_GET['appointment_more']);
         }
 
-        if($b2b_check) {
-            // ///////////////
-            // Registrierungsformular
-            // ///////////////
+        if($display_termin_past) {
 
-            $val_cwa_connection=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_CWA_prereg";');
-            
-            if($b2b_termin) {
-                echo '<div class="alert alert-info" role="alert">
-                <h3>Ablauf und Information</h3><p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
-                <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse einen QR-Code, den Sie bei dem Test vorzeigen müssen (gedruckt oder auf dem Display). Bitte halten Sie beim Test auch einen Lichtbildausweis oder Mitarbeiterausweis bereit.</p>
-                <p>Das Ergebnis Ihres Tests wird Ihnen nach dem Abstrich per E-Mail zugeschickt.</p>
-                </div>';
-                echo '<div class="alert alert-danger" role="alert">
-                <p>Ihr Arbeitgeber hat keinen Zugriff auf Ihre eingegebenen Daten und auch nicht auf Ihr Testergebnis.</p>
-                </div>';
-            } elseif($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                echo '<div class="alert alert-info" role="alert">
-                <h3>Ablauf</h3>';
-                if(!$display_single_termin){
-                    echo '<p>Bitte wählen Sie einen freien Termin für jede Person, die getestet werden soll.</p>';
-                }
-                echo '<p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
-                <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse einen QR-Code, den Sie bei dem Testzentrum vorzeigen müssen (gedruckt oder auf dem Display). Bitte halten Sie im Testzentrum auch einen Lichtbildausweis bereit.</p>
-                <p>Das Ergebnis Ihres Tests wird Ihnen nach dem Abstrich per E-Mail zugeschickt.</p>
-                </div>';
-            } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-                echo '<div class="alert alert-info" role="alert">
-                <h3>Ablauf</h3>';
-                if(!$display_single_termin){
-                    echo '<p>Bitte wählen Sie einen freien Termin für jede Person, die geimpft werden soll.</p>';
-                }
-                echo '<p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
-                <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse eine Terminbestätigung.</p>
-                </div>';
-            } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
-                echo '<div class="alert alert-info" role="alert">
-                <h3>Ablauf</h3>';
-                if(!$display_single_termin){
-                    echo '<p>Bitte wählen Sie einen freien Termin für jede Person, die getestet werden soll.</p>';
-                }
-                echo '<p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
-                <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse eine Terminbestätigung.</p>
-                <p>Bitte bezahlen Sie vor Ort für die Testung <b>30 €</b>.</p>
-                </div>';
-            }
-            if($display_single_termin) {
-                if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                    echo '<div class="panel panel-danger">';
-                } else {
-                    echo '<div class="panel panel-primary">';
-                }
-                echo '
-                <div class="panel-heading">
-                <b>Gewählter Termin</b>
-                </div>
-                <div class="panel-body">
-                <div class="row">
-                <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$date.'</span></div>
-                <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="'.$color_cal_facility.'">'.$time1.' - '.$time2.' Uhr</span></div>';
-                if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                    echo '<div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
-                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-                    echo '<div class="col-sm-4 calendar-col"><b>Impfstoff</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
-                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
-                    echo '<div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
-                }
-                echo '</div>
-                </div>
-                </div>';
+            echo '<div class="alert alert-warning" role="alert">
+            <h3>Fehler</h3>';
+            echo '<p>Ihr gewählter Termin liegt in der Vergangenheit.</p>
+            <p>Bitte wählen Sie neu auf der <a href="../index.php">Startseite</a>.</p>
+            </div>';
 
-                echo '<h3>Registrierung</h3>
-                <form action="'.$current_site.'.php" method="post">
-                    <input type="text" value="'.$date_sql.'" name="date" style="display:none;">
-                    <input type="text" value="'.$val_termin_id.'" name="termin_id" style="display:none;">
-                    <input type="text" value="'.$date.'" name="int_date" style="display:none;">
-                    <input type="text" value="'.$time1.'" name="int_time1" style="display:none;">
-                    <input type="text" value="'.$time2.'" name="int_time2" style="display:none;">
-                    <input type="text" value="'.$location.'" name="int_location" style="display:none;">
+        } else {
 
-                    <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-                    <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>';
+            if($b2b_check) {
+                // ///////////////
+                // Registrierungsformular
+                // ///////////////
 
-                    if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                        echo '
-                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span>
-                        <input type="number" min="1" max="31" placeholder="TT" class="form-control" name="gebdatum_d" required>
-                        <input type="number" min="1" max="12" placeholder="MM" class="form-control" name="gebdatum_m" required>
-                        <input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" required>
-                        </div>
-
-                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>';
+                $val_cwa_connection=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_CWA_prereg";');
+                
+                if($b2b_termin) {
+                    echo '<div class="alert alert-info" role="alert">
+                    <h3>Ablauf und Information</h3><p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
+                    <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse einen QR-Code, den Sie bei dem Test vorzeigen müssen (gedruckt oder auf dem Display). Bitte halten Sie beim Test auch einen Lichtbildausweis oder Mitarbeiterausweis bereit.</p>
+                    <p>Das Ergebnis Ihres Tests wird Ihnen nach dem Abstrich per E-Mail zugeschickt.</p>
+                    </div>';
+                    echo '<div class="alert alert-danger" role="alert">
+                    <p>Ihr Arbeitgeber hat keinen Zugriff auf Ihre eingegebenen Daten und auch nicht auf Ihr Testergebnis.</p>
+                    </div>';
+                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                    echo '<div class="alert alert-info" role="alert">
+                    <h3>Ablauf</h3>';
+                    if(!$display_single_termin){
+                        echo '<p>Bitte wählen Sie einen freien Termin für jede Person, die getestet werden soll.</p>';
                     }
-
-                    echo '
-                    <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-                    <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-                    ';
+                    echo '<p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
+                    <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse einen QR-Code, den Sie bei dem Testzentrum vorzeigen müssen (gedruckt oder auf dem Display). Bitte halten Sie im Testzentrum auch einen Lichtbildausweis bereit.</p>
+                    <p>Das Ergebnis Ihres Tests wird Ihnen nach dem Abstrich per E-Mail zugeschickt.</p>
+                    </div>';
+                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+                    echo '<div class="alert alert-info" role="alert">
+                    <h3>Ablauf</h3>';
+                    if(!$display_single_termin){
+                        echo '<p>Bitte wählen Sie einen freien Termin für jede Person, die geimpft werden soll.</p>';
+                    }
+                    echo '<p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
+                    <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse eine Terminbestätigung.</p>
+                    </div>';
+                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+                    echo '<div class="alert alert-info" role="alert">
+                    <h3>Ablauf</h3>';
+                    if(!$display_single_termin){
+                        echo '<p>Bitte wählen Sie einen freien Termin für jede Person, die getestet werden soll.</p>';
+                    }
+                    echo '<p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
+                    <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse eine Terminbestätigung.</p>
+                    <p>Bitte bezahlen Sie vor Ort für die Testung <b>30 €</b>.</p>
+                    </div>';
+                }
+                if($display_single_termin) {
                     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                        if($val_cwa_connection==1 && $pcr_test==0) {
-                            echo '<div class="FAIRsepdown"></div>
-                            <div class="header_icon_main">
-                            <div class="row ">
-                                <div class="col-sm-12">
-                                    <div class="header_icon">
-                                        <img src="../img/BPA_Corona-Warn-App_Wortbildmarke_B_RGB_RZ01.png" style="display: block; margin-left: auto; margin-right: auto; width: 200px;"></img>
-                                        <div class="caption center_text">
-                                        <h5>Sie erhalten das Testergebnis unabhängig von der Corona-Warn-App auch per E-Mail zum Abruf. Den QR-Code für die App bekommen Sie bei der Testung vor Ort.</h5>
+                        echo '<div class="panel panel-danger">';
+                    } else {
+                        echo '<div class="panel panel-primary">';
+                    }
+                    echo '
+                    <div class="panel-heading">
+                    <b>Gewählter Termin</b>
+                    </div>
+                    <div class="panel-body">
+                    <div class="row">
+                    <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$date.'</span></div>
+                    <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="'.$color_cal_facility.'">'.$time1.' - '.$time2.' Uhr</span></div>';
+                    if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                        echo '<div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                    } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+                        echo '<div class="col-sm-4 calendar-col"><b>Impfstoff</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                    } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+                        echo '<div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                    }
+                    echo '</div>
+                    </div>
+                    </div>';
+
+                    echo '<h3>Registrierung</h3>
+                    <form action="'.$current_site.'.php" method="post">
+                        <input type="text" value="'.$date_sql.'" name="date" style="display:none;">
+                        <input type="text" value="'.$val_termin_id.'" name="termin_id" style="display:none;">
+                        <input type="text" value="'.$date.'" name="int_date" style="display:none;">
+                        <input type="text" value="'.$time1.'" name="int_time1" style="display:none;">
+                        <input type="text" value="'.$time2.'" name="int_time2" style="display:none;">
+                        <input type="text" value="'.$location.'" name="int_location" style="display:none;">
+
+                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>';
+
+                        if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                            echo '
+                            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span>
+                            <input type="number" min="1" max="31" placeholder="TT" class="form-control" name="gebdatum_d" required>
+                            <input type="number" min="1" max="12" placeholder="MM" class="form-control" name="gebdatum_m" required>
+                            <input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" required>
+                            </div>
+
+                            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+                            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>';
+                        }
+
+                        echo '
+                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+                        ';
+                        if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                            if($val_cwa_connection==1 && $pcr_test==0) {
+                                echo '<div class="FAIRsepdown"></div>
+                                <div class="header_icon_main">
+                                <div class="row ">
+                                    <div class="col-sm-12">
+                                        <div class="header_icon">
+                                            <img src="../img/BPA_Corona-Warn-App_Wortbildmarke_B_RGB_RZ01.png" style="display: block; margin-left: auto; margin-right: auto; width: 200px;"></img>
+                                            <div class="caption center_text">
+                                            <h5>Sie erhalten das Testergebnis unabhängig von der Corona-Warn-App auch per E-Mail zum Abruf. Den QR-Code für die App bekommen Sie bei der Testung vor Ort.</h5>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="FAIRsepdown"></div>
-                            <div class="cb_drk">
-                            <input type="checkbox" id="cb_cwa_anonym" name="cb_cwa_anonym"/>
-                            <label for="cb_cwa_anonym">Einwilligung zur pseudonymisierten Übermittlung (Nicht-namentliche Anzeige) über die Corona-Warn-App (CWA) <span class="text-sm">*optional</span>
-                            <br><span class="text-sm">
-                            Hiermit erkläre ich mein Einverständnis zum Übermitteln meines Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Das Testergebnis in der App kann hierbei nicht als namentlicher Testnachweis verwendet werden. Mir wurden Hinweise zum Datenschutz ausgehändigt.
-                            </span><br>
-                            (<a href="../impressum_test.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
-                            </div>
-                            <div class="FAIRsepdown"></div>
-                            <div class="cb_drk">
-                            <input type="checkbox" id="cb_cwa" name="cb_cwa"/>
-                            <label for="cb_cwa">Einwilligung zur personalisierten Übermittlung (Namentlicher Testnachweis) über die Corona-Warn-App (CWA) <span class="text-sm">*optional</span>
-                            <br><span class="text-sm">
-                            Hiermit erkläre ich mein Einverständnis zum Übermitteln des Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Ich willige außerdem in die Übermittlung meines Namens und Geburtsdatums an die App ein, damit mein Testergebnis in der App als namentlicher Testnachweis angezeigt werden kann. Mir wurden Hinweise zum Datenschutz ausgehändigt.
-                            </span><br>
-                            (<a href="../impressum_test.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
-                            </div>
-                            </div><div class="FAIRsepdown"></div>';
-                        
-
-                            echo "
-
-                            <script>
-                                var input_anonym = document.getElementById('cb_cwa_anonym');
-                                var input_pers = document.getElementById('cb_cwa');
+                                <div class="FAIRsepdown"></div>
+                                <div class="cb_drk">
+                                <input type="checkbox" id="cb_cwa_anonym" name="cb_cwa_anonym"/>
+                                <label for="cb_cwa_anonym">Einwilligung zur pseudonymisierten Übermittlung (Nicht-namentliche Anzeige) über die Corona-Warn-App (CWA) <span class="text-sm">*optional</span>
+                                <br><span class="text-sm">
+                                Hiermit erkläre ich mein Einverständnis zum Übermitteln meines Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Das Testergebnis in der App kann hierbei nicht als namentlicher Testnachweis verwendet werden. Mir wurden Hinweise zum Datenschutz ausgehändigt.
+                                </span><br>
+                                (<a href="../impressum_test.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
+                                </div>
+                                <div class="FAIRsepdown"></div>
+                                <div class="cb_drk">
+                                <input type="checkbox" id="cb_cwa" name="cb_cwa"/>
+                                <label for="cb_cwa">Einwilligung zur personalisierten Übermittlung (Namentlicher Testnachweis) über die Corona-Warn-App (CWA) <span class="text-sm">*optional</span>
+                                <br><span class="text-sm">
+                                Hiermit erkläre ich mein Einverständnis zum Übermitteln des Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Ich willige außerdem in die Übermittlung meines Namens und Geburtsdatums an die App ein, damit mein Testergebnis in der App als namentlicher Testnachweis angezeigt werden kann. Mir wurden Hinweise zum Datenschutz ausgehändigt.
+                                </span><br>
+                                (<a href="../impressum_test.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
+                                </div>
+                                </div><div class="FAIRsepdown"></div>';
                             
-                                input_anonym.addEventListener('change',function(){
-                                    if(this.checked) {
-                                        input_pers.checked = false;
-                                    }
-                                });
-                                input_pers.addEventListener('change',function(){
-                                    if(this.checked) {
-                                        input_anonym.checked = false;
-                                    }
-                                });
-                            </script>
-                            ";
-                        
-                        } elseif($pcr_test==1) {
-                            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR;');
+
+                                echo "
+
+                                <script>
+                                    var input_anonym = document.getElementById('cb_cwa_anonym');
+                                    var input_pers = document.getElementById('cb_cwa');
+                                
+                                    input_anonym.addEventListener('change',function(){
+                                        if(this.checked) {
+                                            input_pers.checked = false;
+                                        }
+                                    });
+                                    input_pers.addEventListener('change',function(){
+                                        if(this.checked) {
+                                            input_anonym.checked = false;
+                                        }
+                                    });
+                                </script>
+                                ";
+                            
+                            } elseif($pcr_test==1) {
+                                $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR;');
+                                echo '<div class="FAIRsepdown"></div>
+                                <div class="alert alert-warning" role="alert">
+                                        <div class="header_icon">
+                                            <img src="../img/icon/certified_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
+                                            <div class="caption center_text">
+                                            <h3>Sie haben einen PCR-Test ausgewählt.</h3>
+                                            <h4>Wurde dieser Test angeordnet nach positivem Schnelltest oder aufgrund Kontakt zu einer positiv getesteten Person, so ist die Testung kostenfrei. Bitte bringen Sie dafür eine Bestätigung zum Testzentrum mit (z. B. ein Schnelltest-Zertifikat mit positivem Ergebnis).</h4>
+                                            <h4>Andernfalls fallen für den PCR-Test Gebühren an, die Sie im Testzentrum entrichten müssen.</h4>
+                                            </div>
+                                        </div>
+                                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für einen PCR-Test</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+                                        <option value="" selected>Bitte wählen...</option>
+                                            ';
+                                            foreach($pcr_grund_array as $i) {
+                                                $display=$i[1];
+                                                echo '<option value="'.$i[0].'">'.$display.'</option>';
+                                            }
+                                            echo '
+                                        </select></div>
+                                </div>
+                                <div class="FAIRsepdown"></div>';
+                            }
+                        }
+
+                        if($GLOBALS['FLAG_MODE_MAIN'] == 1 && $pcr_test!=1) {
                             echo '<div class="FAIRsepdown"></div>
                             <div class="alert alert-warning" role="alert">
                                     <div class="header_icon">
-                                        <img src="../img/icon/certified_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
-                                        <div class="caption center_text">
-                                        <h3>Sie haben einen PCR-Test ausgewählt.</h3>
-                                        <h4>Wurde dieser Test angeordnet nach positivem Schnelltest oder aufgrund Kontakt zu einer positiv getesteten Person, so ist die Testung kostenfrei. Bitte bringen Sie dafür eine Bestätigung zum Testzentrum mit (z. B. ein Schnelltest-Zertifikat mit positivem Ergebnis).</h4>
-                                        <h4>Andernfalls fallen für den PCR-Test Gebühren an, die Sie im Testzentrum entrichten müssen.</h4>
+                                        <img src="../img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
+                                        <div class="caption">
+                                        <h3>Sie haben einen Antigen-Schnelltest ausgewählt.</h3>
+                                        <p>&nbsp;</p>
+                                        <h4><b>Dieser Test ist für Sie kostenfrei, wenn Sie zu einer der folgenden Personengruppen gehören:</b></h4>
+                                        <h4>A) Im Rahmen der kostenfreien Bürger-Testung hat jede*r Bürger*in einmal pro Woche Anspruch (ab 13.11.2021)</h4>
+                                        <h4>B) Personen vor Vollendung des zwölften Lebensjahres bzw. solche die das zwölfte Lebensjahr erst in den letzten drei Monaten vollendet haben</h4>
+                                        <h4>C) Schülerinnen und Schüler mit gültigem Schülerausweis</h4>
+                                        <h4>D) Personen, die aufgrund einer medizinischen Kontraindikation (insbesondere Schwangerschaft im ersten Schwangerschaftsdrittel) nicht bzw. in den letzten drei Monaten vor der Testung nicht geimpft werden konnten</h4>
+                                        <h4>E) Personen, die zum Zeitpunkt der Testung an klinischen Studien zur Wirksamkeit von Impfstoffen teilnehmen bzw. in den letzten drei Monaten vor der Testung teilgenommen haben</h4>
+                                        <h4>F) Personen, die sich zum Zeitpunkt der Testung aufgrund einer nachgewiesenen Infektion mit dem Coronavirus SARS-CoV-2 in Absonderung befinden, wenn die Testung zur Beendigung der Absonderung erforderlich ist</h4>
+                                        <p>&nbsp;</p>
+                                        <h4><b>Dieser Test ist für Sie auch kostenfrei, wenn folgende Bedingungen erfüllt sind (Übergangsregelung bis zum 31. Dezember 2021):</b></h4>
+                                        <h4>Bisher nicht vollständig geimpft mit einem vom PEI zugelassenen Impfstoff</h4>
+                                        <h4><b>und</b> zu einer der folgenden Personengruppen zugehörig</h4>
+                                        <h4>G) Schwangere oder Stillende</h4>
+                                        <h4>H) Studierende mit gültigem Studienausweis</h4>
+                                        <h4>I) Kinder und Jugendliche im Alter von 12 bis 17 Jahren</h4>
+                                        <p>&nbsp;</p>
+                                        <p>Personen der Gruppen D bis G benötigen für einen kostenfreien Test ein ärztliches Attest. Nach §1 Abs. 1 der aktuell gültigen Testverordnung des Bundes sind die Ärzte verpflichtet ein solches Attest auszustellen. Die Kosten hierfür trägt der Bund.</p>
+                                        <p>&nbsp;</p>
+                                        <h4>Andernfalls fallen für den Schnelltest Gebühren in Höhe von <b>20 €</b> an, die Sie im Testzentrum entrichten müssen.</h4>
+                                        <p>&nbsp;</p>
+                                        <p>Weitere Einzelfälle müssen aktuell im jeweiligen Fall bewertet werden. Rückfragen hierzu frühzeitig an <a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a>.</p>
                                         </div>
                                     </div>
-                                    <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für einen PCR-Test</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
-                                    <option value="" selected>Bitte wählen...</option>
-                                        ';
-                                        foreach($pcr_grund_array as $i) {
-                                            $display=$i[1];
-                                            echo '<option value="'.$i[0].'">'.$display.'</option>';
-                                        }
-                                        echo '
-                                    </select></div>
                             </div>
                             <div class="FAIRsepdown"></div>';
                         }
-                    }
 
-                    if($GLOBALS['FLAG_MODE_MAIN'] == 1 && $pcr_test!=1) {
-                        echo '<div class="FAIRsepdown"></div>
-                        <div class="alert alert-warning" role="alert">
-                                <div class="header_icon">
-                                    <img src="../img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
-                                    <div class="caption">
-                                    <h3>Sie haben einen Antigen-Schnelltest ausgewählt.</h3>
-                                    <p>&nbsp;</p>
-                                    <h4><b>Dieser Test ist für Sie kostenfrei, wenn Sie zu einer der folgenden Personengruppen gehören:</b></h4>
-                                    <h4>A) Im Rahmen der kostenfreien Bürger-Testung hat jede*r Bürger*in einmal pro Woche Anspruch (ab 13.11.2021)</h4>
-                                    <h4>B) Personen vor Vollendung des zwölften Lebensjahres bzw. solche die das zwölfte Lebensjahr erst in den letzten drei Monaten vollendet haben</h4>
-                                    <h4>C) Schülerinnen und Schüler mit gültigem Schülerausweis</h4>
-                                    <h4>D) Personen, die aufgrund einer medizinischen Kontraindikation (insbesondere Schwangerschaft im ersten Schwangerschaftsdrittel) nicht bzw. in den letzten drei Monaten vor der Testung nicht geimpft werden konnten</h4>
-                                    <h4>E) Personen, die zum Zeitpunkt der Testung an klinischen Studien zur Wirksamkeit von Impfstoffen teilnehmen bzw. in den letzten drei Monaten vor der Testung teilgenommen haben</h4>
-                                    <h4>F) Personen, die sich zum Zeitpunkt der Testung aufgrund einer nachgewiesenen Infektion mit dem Coronavirus SARS-CoV-2 in Absonderung befinden, wenn die Testung zur Beendigung der Absonderung erforderlich ist</h4>
-                                    <p>&nbsp;</p>
-                                    <h4><b>Dieser Test ist für Sie auch kostenfrei, wenn folgende Bedingungen erfüllt sind (Übergangsregelung bis zum 31. Dezember 2021):</b></h4>
-                                    <h4>Bisher nicht vollständig geimpft mit einem vom PEI zugelassenen Impfstoff</h4>
-                                    <h4><b>und</b> zu einer der folgenden Personengruppen zugehörig</h4>
-                                    <h4>G) Schwangere oder Stillende</h4>
-                                    <h4>H) Studierende mit gültigem Studienausweis</h4>
-                                    <h4>I) Kinder und Jugendliche im Alter von 12 bis 17 Jahren</h4>
-                                    <p>&nbsp;</p>
-                                    <p>Personen der Gruppen D bis G benötigen für einen kostenfreien Test ein ärztliches Attest. Nach §1 Abs. 1 der aktuell gültigen Testverordnung des Bundes sind die Ärzte verpflichtet ein solches Attest auszustellen. Die Kosten hierfür trägt der Bund.</p>
-                                    <p>&nbsp;</p>
-                                    <h4>Andernfalls fallen für den Schnelltest Gebühren in Höhe von <b>20 €</b> an, die Sie im Testzentrum entrichten müssen.</h4>
-                                    <p>&nbsp;</p>
-                                    <p>Weitere Einzelfälle müssen aktuell im jeweiligen Fall bewertet werden. Rückfragen hierzu frühzeitig an <a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a>.</p>
-                                    </div>
-                                </div>
-                        </div>
-                        <div class="FAIRsepdown"></div>';
-                    }
-
+                        if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                            echo '<div class="FAIRsepdown"></div><div class="cb_drk">
+                            <input type="checkbox" id="cb1" name="cb1" required/>
+                            <label for="cb1">Ich habe derzeit <b>keine</b> grippeähnlichen Symptome wie Husten, Fieber oder plötzlichen Verlust des Geruchs- oder Geschmackssinnes.</label>
+                            </div>
+                            <div class="FAIRsepdown"></div><div class="cb_drk">
+                            <input type="checkbox" id="cb2" name="cb2" required/>
+                            <label for="cb2">Ich bestätige die wahrheitsgemäße Angabe der Selbsteinschätzung und der angegebenen Daten. Falls sich an den obigen Antworten bis zum Testzeitpunkt etwas ändert, verpflichte ich mich, dies dem Testzentrum vor dem Abstrich mitzuteilen.</label>
+                            </div>
+                            <div class="FAIRsepdown"></div><div class="cb_drk">
+                            <input type="checkbox" id="cb3" name="cb3" required/>
+                            <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
+                            (<a href="../impressum_test.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
+                            </div>
+                            <div class="FAIRsepdown"></div>
+                            <span class="input-group-btn">
+                            <input type="submit" class="btn btn-lg btn-primary" value="Jetzt Registrieren" name="submit_person" />
+                            </span>
+                            </form>
+                            <div class="FAIRsepdown"></div>
+                            ';
+                        } else {
+                            echo '<div class="FAIRsepdown"></div><div class="cb_drk">
+                            <input type="checkbox" id="cb1" name="cb1" required/>
+                            <label for="cb1">Ich habe derzeit <b>keine</b> grippeähnlichen Symptome wie Husten, Fieber oder plötzlichen Verlust des Geruchs- oder Geschmackssinnes.</label>
+                            </div>
+                            <div class="FAIRsepdown"></div><div class="cb_drk">
+                            <input type="checkbox" id="cb3" name="cb3" required/>
+                            <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
+                            (<a href="../impressum_impf.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
+                            </div>
+                            <div class="FAIRsepdown"></div>
+                            <span class="input-group-btn">
+                            <input type="submit" class="btn btn-lg btn-primary" value="Jetzt Registrieren" name="submit_person" />
+                            </span>
+                            </form>
+                            <div class="FAIRsepdown"></div>
+                            ';
+                        }
+                    echo '</div>';
+                    echo '</div>';
+                } elseif($display_slot_termin) {
+                    // Show available slots
+                    $current_time=time();
                     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                        echo '<div class="FAIRsepdown"></div><div class="cb_drk">
-                        <input type="checkbox" id="cb1" name="cb1" required/>
-                        <label for="cb1">Ich habe derzeit <b>keine</b> grippeähnlichen Symptome wie Husten, Fieber oder plötzlichen Verlust des Geruchs- oder Geschmackssinnes.</label>
-                        </div>
-                        <div class="FAIRsepdown"></div><div class="cb_drk">
-                        <input type="checkbox" id="cb2" name="cb2" required/>
-                        <label for="cb2">Ich bestätige die wahrheitsgemäße Angabe der Selbsteinschätzung und der angegebenen Daten. Falls sich an den obigen Antworten bis zum Testzeitpunkt etwas ändert, verpflichte ich mich, dies dem Testzentrum vor dem Abstrich mitzuteilen.</label>
-                        </div>
-                        <div class="FAIRsepdown"></div><div class="cb_drk">
-                        <input type="checkbox" id="cb3" name="cb3" required/>
-                        <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
-                        (<a href="../impressum_test.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
-                        </div>
-                        <div class="FAIRsepdown"></div>
-                        <span class="input-group-btn">
-                        <input type="submit" class="btn btn-lg btn-primary" value="Jetzt Registrieren" name="submit_person" />
-                        </span>
-                        </form>
-                        <div class="FAIRsepdown"></div>
-                        ';
+                        echo '<div class="panel panel-danger">';
                     } else {
-                        echo '<div class="FAIRsepdown"></div><div class="cb_drk">
-                        <input type="checkbox" id="cb1" name="cb1" required/>
-                        <label for="cb1">Ich habe derzeit <b>keine</b> grippeähnlichen Symptome wie Husten, Fieber oder plötzlichen Verlust des Geruchs- oder Geschmackssinnes.</label>
-                        </div>
-                        <div class="FAIRsepdown"></div><div class="cb_drk">
-                        <input type="checkbox" id="cb3" name="cb3" required/>
-                        <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
-                        (<a href="../impressum_impf.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
-                        </div>
-                        <div class="FAIRsepdown"></div>
-                        <span class="input-group-btn">
-                        <input type="submit" class="btn btn-lg btn-primary" value="Jetzt Registrieren" name="submit_person" />
-                        </span>
-                        </form>
-                        <div class="FAIRsepdown"></div>
-                        ';
+                        echo '<div class="panel panel-primary">';
                     }
-                echo '</div>';
-                echo '</div>';
-            } elseif($display_slot_termin) {
-                // Show available slots
-                $current_time=time();
-                if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                    echo '<div class="panel panel-danger">';
+                    echo '
+                    <div class="panel-heading">
+                    <b>Gewählte Station</b>
+                    </div>
+                    <div class="panel-body">
+                    <div class="row">
+                    <div class="col-sm-6 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$date.'</span></div>';
+                    if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                        echo '<div class="col-sm-6 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                    } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+                        echo '<div class="col-sm-6 calendar-col"><b>Impfstoff</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                    } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+                        echo '<div class="col-sm-6 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                    }
+                    echo '</div>
+                    </div>
+                    </div>';
+                    echo '<h3>Termin auswählen</h3>
+                    <div class="row"><div class="col-sm-12 calendar_selection">';
+                    $at_least_one=false;
+                    foreach($array_termine_slot as $k) {
+                        if( $date==date('d.m.Y') && $current_time > strtotime(sprintf('%02d', $k[1]).':'.sprintf('%02d', ( $k[2]*15-15 )).':00') ) {
+                            // time over
+                            
+                        } elseif(($k[3]<=$k[4])) {
+                            $display_slot=sprintf('%02d', $k[1]).':'.sprintf('%02d', ( $k[2]*15-15 ) );
+                            $display_slot.='&nbsp;-&nbsp;'.(date("H:i",strtotime($display_slot) + 60 * 15));
+                            if(($k[3]-$k[4])>2) {
+                                $display_free='<span class="label label-success">'.($k[3]-$k[4]).'</span>';
+                            } else {
+                                $display_free='<span class="label label-warning">'.($k[3]-$k[4]).'</span>';
+                            }
+                            echo '<div style="float: left;"><a class="calendaryellow-dis">'.$display_slot.' ausgebucht</a></div>';
+                            $at_least_one=true;
+                        } else {
+                            $display_slot=sprintf('%02d', $k[1]).':'.sprintf('%02d', ( $k[2]*15-15 ) );
+                            $display_slot.='&nbsp;-&nbsp;'.(date("H:i",strtotime($display_slot) + 60 * 15));
+                            if(($k[3]-$k[4])>2) {
+                                $display_free='<span class="label label-success">'.($k[3]-$k[4]).'</span>';
+                            } else {
+                                $display_free='<span class="label label-warning">'.($k[3]-$k[4]).'</span>';
+                            }
+                            echo '<div style="float: left;"><a class="calendaryellow" href="?appointment='.($k[0]).'&slot=100">'.$display_slot.'
+                            '.$display_free.'</a></div>';
+                            $at_least_one=true;
+                        }
+                    }
+                    if(!$at_least_one) {
+                        echo '<div class="alert alert-warning" role="alert">
+                    <p>Die Station hat heute keine Termine mehr</p>
+                    </div>';
+                    }
+                    echo '</div>';
+                    echo '</div>';
                 } else {
-                    echo '<div class="panel panel-primary">';
-                }
-                echo '
-                <div class="panel-heading">
-                <b>Gewählte Station</b>
-                </div>
-                <div class="panel-body">
-                <div class="row">
-                <div class="col-sm-6 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$date.'</span></div>';
-                if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                    echo '<div class="col-sm-6 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
-                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-                    echo '<div class="col-sm-6 calendar-col"><b>Impfstoff</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
-                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
-                    echo '<div class="col-sm-6 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
-                }
-                echo '</div>
-                </div>
-                </div>';
-                echo '<h3>Termin auswählen</h3>
-                <div class="row"><div class="col-sm-12 calendar_selection">';
-                $at_least_one=false;
-                foreach($array_termine_slot as $k) {
-                    if( $date==date('d.m.Y') && $current_time > strtotime(sprintf('%02d', $k[1]).':'.sprintf('%02d', ( $k[2]*15-15 )).':00') ) {
-                        // time over
-                        
-                    } elseif(($k[3]<=$k[4])) {
-                        $display_slot=sprintf('%02d', $k[1]).':'.sprintf('%02d', ( $k[2]*15-15 ) );
-                        $display_slot.='&nbsp;-&nbsp;'.(date("H:i",strtotime($display_slot) + 60 * 15));
-                        if(($k[3]-$k[4])>2) {
-                            $display_free='<span class="label label-success">'.($k[3]-$k[4]).'</span>';
-                        } else {
-                            $display_free='<span class="label label-warning">'.($k[3]-$k[4]).'</span>';
-                        }
-                        echo '<div style="float: left;"><a class="calendaryellow-dis">'.$display_slot.' ausgebucht</a></div>';
-                        $at_least_one=true;
-                    } else {
-                        $display_slot=sprintf('%02d', $k[1]).':'.sprintf('%02d', ( $k[2]*15-15 ) );
-                        $display_slot.='&nbsp;-&nbsp;'.(date("H:i",strtotime($display_slot) + 60 * 15));
-                        if(($k[3]-$k[4])>2) {
-                            $display_free='<span class="label label-success">'.($k[3]-$k[4]).'</span>';
-                        } else {
-                            $display_free='<span class="label label-warning">'.($k[3]-$k[4]).'</span>';
-                        }
-                        echo '<div style="float: left;"><a class="calendaryellow" href="?appointment='.($k[0]).'&slot=100">'.$display_slot.'
-                        '.$display_free.'</a></div>';
-                        $at_least_one=true;
-                    }
-                }
-                if(!$at_least_one) {
+                    // ///////////////
+                    // Kein Ort/Termin ausgewählt
+                    // ///////////////
                     echo '<div class="alert alert-warning" role="alert">
-                <p>Die Station hat heute keine Termine mehr</p>
-                </div>';
-                }
-                echo '</div>';
-                echo '</div>';
-            } else {
-                // ///////////////
-                // Kein Ort/Termin ausgewählt
-                // ///////////////
-                echo '<div class="alert alert-warning" role="alert">
-                <h3>Warnung</h3>
-                <p>Sie haben keinen Ort/Termin ausgewählt!</p>
-                <p>Bitte wählen Sie im <a href="../index.php">Kalender</a> einen Tag und eine Teststation aus.</p>
-                </div>';
+                    <h3>Warnung</h3>
+                    <p>Sie haben keinen Ort/Termin ausgewählt!</p>
+                    <p>Bitte wählen Sie im <a href="../index.php">Kalender</a> einen Tag und eine Teststation aus.</p>
+                    </div>';
 
-                echo '</div>';
-                echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+            } else {
+                echo '<div class="alert alert-warning" role="alert">
+                <h3>Fehler</h3>';
+                echo '<p>Sie haben einen Termin ohne Berechtigung gewählt.</p>
+                <p>Bitte nutzen Sie die <a href="business.php">Firmenanmeldung</a>.</p>
+                </div>';
             }
-        } else {
-            echo '<div class="alert alert-warning" role="alert">
-            <h3>Fehler</h3>';
-            echo '<p>Sie haben einen Termin ohne Berechtigung gewählt.</p>
-            <p>Bitte nutzen Sie die <a href="business.php">Firmenanmeldung</a>.</p>
-            </div>';
         }
     } else {
         // ///////////////
