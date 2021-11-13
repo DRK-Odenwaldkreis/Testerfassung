@@ -311,7 +311,155 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
 
   echo '</div>
   </div>';
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+  // Open database connection
+  $Db=S_open_db();
+  $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort,Impfstoff.Kurzbezeichnung FROM Station JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id;');
+  $today=date("Y-m-d",time());
+  $tomorrow=date("Y-m-d",time() + 60 * 60 * 24);
+
+  $stat_val_total_fday=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$tomorrow.'\';');
+  $stat_val_total_day=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$today.'\';');
+
+  $stat_val_total_day_used=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$today.'\' and Used=1;');
+
+  $stat_val_total_day_st=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$today.'\' AND Termine.id_station='.$station.';');
+  $stat_val_total_fday_st=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$tomorrow.'\' AND Termine.id_station='.$station.';');
+
+  $stat_val_total_day__st_used=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$today.'\' AND Termine.id_station='.$station.' and Voranmeldung.Used=1;');
+
+
+  // Close connection to database
+  S_close_db($Db);
+
+  echo '<div class="row">';
+  echo '<div class="col-md-4">
+  <div class="alert alert-info" role="alert">
+  <p>Vorgemeldete Personen</p>
+  <h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day.' / Erledigt: '.$stat_val_total_day_used.'</h3>
+  <h3><span class="FAIR-text-sm">morgen</span> '.$stat_val_total_fday.'</h3>
+  </div>';
+
+  echo '</div>';
+
+  echo '<div class="col-md-4">
+      <div class="alert alert-warning" role="alert">';
+
+  if($_SESSION['station_id']>0) {
+      echo '<p>Eigene Station S'.$_SESSION['station_id'].'/'.$_SESSION['station_name'].'</p>';
+  } else {
+      echo '<form action="'.$current_site.'.php" method="post">
+      <div class="input-group">
+      <span class="input-group-addon" id="basic-addon1">Station</span>
+      <select id="select-state" placeholder="Wähle eine Station..." class="custom-select" style="margin-top:0px;" name="station_id">
+      <option value="">Wähle Station...</option>
+          ';
+          foreach($stations_array as $i) {
+              $display=$i[1].' - '.$i[2];
+              if($i[0]==$station) {$selected="selected";} else {$selected="";}
+              echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
+          }
+          echo '
+      </select>
+      <span class="input-group-btn">
+      <input type="submit" class="btn btn-danger" value="Anzeigen" name="select_station" />
+      </span>
+      </div>
+      </form>';
+  }
+
+  if($stat_val_total_day_st>0) {
+      echo '<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day_st.' / Erledigt: '.$stat_val_total_day__st_used.'</h3>';
+  } else {
+      echo '<h3><span class="FAIR-text-sm">(heute keine Impfungen geplant)</span></h3>';
+  }
+
+  if($stat_val_total_fday_st>0) {
+      echo '<h3><span class="FAIR-text-sm">morgen</span> '.$stat_val_total_fday_st.'</h3>';
+  } else {
+      echo '<h3><span class="FAIR-text-sm">(Morgen keine Impfungen geplant)</span></h3>';
+  }
+
+  echo '</div>
+  </div>';
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+  // Open database connection
+  $Db=S_open_db();
+  $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort FROM Station;');
+  $today=date("Y-m-d",time());
+  $tomorrow=date("Y-m-d",time() + 60 * 60 * 24);
+
+  $stat_val_total_fday=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$tomorrow.'\';');
+  $stat_val_total_day=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$today.'\';');
+
+  $stat_val_total_day_used=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$today.'\' and Used=1;');
+
+  $stat_val_total_day_st=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$today.'\' AND Termine.id_station='.$station.';');
+  $stat_val_total_fday_st=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$tomorrow.'\' AND Termine.id_station='.$station.';');
+
+  $stat_val_total_day__st_used=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$today.'\' AND Termine.id_station='.$station.' and Voranmeldung.Used=1;');
+
+
+  // Close connection to database
+  S_close_db($Db);
+
+  echo '<div class="row">';
+  echo '<div class="col-md-4">
+  <div class="alert alert-info" role="alert">
+  <p>Vorgemeldete Personen</p>
+  <h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day.' / Erledigt: '.$stat_val_total_day_used.'</h3>
+  <h3><span class="FAIR-text-sm">morgen</span> '.$stat_val_total_fday.'</h3>
+  </div>';
+
+  echo '</div>';
+
+  echo '<div class="col-md-4">
+      <div class="alert alert-warning" role="alert">';
+
+  if($_SESSION['station_id']>0) {
+      echo '<p>Eigene Station S'.$_SESSION['station_id'].'/'.$_SESSION['station_name'].'</p>';
+  } else {
+      echo '<form action="'.$current_site.'.php" method="post">
+      <div class="input-group">
+      <span class="input-group-addon" id="basic-addon1">Station</span>
+      <select id="select-state" placeholder="Wähle eine Station..." class="custom-select" style="margin-top:0px;" name="station_id">
+      <option value="">Wähle Station...</option>
+          ';
+          foreach($stations_array as $i) {
+              $display=$i[1].'';
+              if($i[0]==$station) {$selected="selected";} else {$selected="";}
+              echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
+          }
+          echo '
+      </select>
+      <span class="input-group-btn">
+      <input type="submit" class="btn btn-danger" value="Anzeigen" name="select_station" />
+      </span>
+      </div>
+      </form>';
+  }
+
+  if($stat_val_total_day_st>0) {
+      echo '<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day_st.' / Erledigt: '.$stat_val_total_day__st_used.'</h3>';
+  } else {
+      echo '<h3><span class="FAIR-text-sm">(heute keine Antikoerpertests geplant)</span></h3>';
+  }
+
+  if($stat_val_total_fday_st>0) {
+      echo '<h3><span class="FAIR-text-sm">morgen</span> '.$stat_val_total_fday_st.'</h3>';
+  } else {
+      echo '<h3><span class="FAIR-text-sm">(Morgen keine Antikoerpertests geplant)</span></h3>';
+  }
+
+  echo '</div>
+  </div>';
 }
+
+
+
+
+
+
 
 // Test statistics
 // ////////////////////////////

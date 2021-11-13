@@ -158,9 +158,9 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, Voranmeldung.Adresse, Voranmeldung.Wohnort, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token, Voranmeldung.Mailadresse, Voranmeldung.Telefon, Kosten_PCR.Kurzbezeichnung, Voranmeldung.CWA_request FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Voranmeldung.PCR_Grund WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Voranmeldung.Used=0 AND Token IS NOT NULL ORDER BY Voranmeldung.Anmeldezeitpunkt DESC;');
   } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-    $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, 0, 0, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token, Voranmeldung.Mailadresse, Voranmeldung.Telefon, Voranmeldung.Used, Impfstoff.Kurzbezeichnung FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Token IS NOT NULL ORDER BY Voranmeldung.Anmeldezeitpunkt DESC;');
+    $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, 0, 0, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token, Voranmeldung.Mailadresse, Voranmeldung.Telefon, Voranmeldung.Used, Impfstoff.Kurzbezeichnung, ROW_NUMBER() OVER() FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Token IS NOT NULL ORDER BY Termine.Stunde,Termine.Slot ASC;');
   } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
-    $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, 0, 0, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token, Voranmeldung.Mailadresse, Voranmeldung.Telefon, Voranmeldung.Used, 0 FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Token IS NOT NULL ORDER BY Voranmeldung.Anmeldezeitpunkt DESC;');
+    $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, 0, 0, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token, Voranmeldung.Mailadresse, Voranmeldung.Telefon, Voranmeldung.Used, 0, ROW_NUMBER() OVER() FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Token IS NOT NULL ORDER BY Termine.Stunde,Termine.Slot ASC;');
   }
 
 
@@ -231,6 +231,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Name</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Kontakt</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">(Sortiert)</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Nummer</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"></td>
     </tr>
     </thead><tbody>';
@@ -302,6 +303,9 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">
     <a target="_blank" class="list-group-item list-group-item-action list-group-item-redtext" href="../registration/index.php?cancel=cancel&t='.$i[10].'&i='.$i[0].'" title="Registrierung löschen"><span class="icon-remove2"></span>&nbsp;Löschen</a></td>
     ';
+    echo '
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[15].'</td>
+      ';
     echo '</tr>';
   }
   echo '</tbody></table></div></div>';

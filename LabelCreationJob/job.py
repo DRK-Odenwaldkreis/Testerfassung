@@ -14,7 +14,7 @@ from utils.database import Database
 import createLabel
 
 logFile = '../../Logs/labelJob.log'
-logging.basicConfig(filename=logFile,level=logging.Info,
+logging.basicConfig(filename=logFile,level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Label Job startet on: %s' %(datetime.datetime.now()))
 logger.info('Starting Label Job')
