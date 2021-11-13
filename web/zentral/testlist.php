@@ -281,6 +281,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       $text_result_download='';
     }
 
+
     // //////////////////
     // Result delivered
     $text_result_delivered='';
@@ -389,6 +390,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     } else {
       if($i[25]==1 && $i[12]==5) {
         // is PCR and no result - button to set a result
+        $text_result_download.='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="edit_person.php?label=download&id='.$i[2].'"><span class="icon-print"></span>&nbsp;Label</a>';
         $pcr_button='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="scan.php?scan=K'.$i[2].'&scan_send=Senden"><span class="icon-lab"></span>&nbsp;Erg&nbsp;setzen</a>';
       } else { $pcr_button=''; }
       echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top" style="background-color:rgb('.$color_st_code.');"><abbr title="'.$i[24].'">S'.$i[1].'/'.substr($i[24],0,10).'</abbr></td>
