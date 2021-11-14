@@ -859,7 +859,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                                         <h3>Sie haben einen Antigen-Schnelltest ausgewählt.</h3>
                                         <p>&nbsp;</p>
                                         <h4><b>Dieser Test ist für Sie kostenfrei, wenn Sie zu einer der folgenden Personengruppen gehören:</b></h4>
-                                        <h4>A) Im Rahmen der kostenfreien Bürger-Testung hat jede*r Bürger*in einmal pro Woche Anspruch (ab 13.11.2021)</h4>
+                                        <h4>A) Im Rahmen der kostenfreien Bürger-Testung hat jede*r Bürger*in mindestens einmal pro Woche Anspruch (ab 13.11.2021)</h4>
                                         <h4>B) Personen vor Vollendung des zwölften Lebensjahres bzw. solche die das zwölfte Lebensjahr erst in den letzten drei Monaten vollendet haben</h4>
                                         <h4>C) Schülerinnen und Schüler mit gültigem Schülerausweis</h4>
                                         <h4>D) Personen, die aufgrund einer medizinischen Kontraindikation (insbesondere Schwangerschaft im ersten Schwangerschaftsdrittel) nicht bzw. in den letzten drei Monaten vor der Testung nicht geimpft werden konnten</h4>
