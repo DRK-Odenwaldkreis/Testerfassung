@@ -1,11 +1,11 @@
 from blabel import LabelWriter
-
+import datetime
 
 def createLabel(content):
     vorname = content[0]
     nachname = content[1]
     date = content[2].strftime("%d.%m.%Y")
-    geburtsdatum = content[3]
+    geburtsdatum = datetime.datetime.strptime(content[3], '%Y-%m-%d').strftime("%d.%m.%Y")
     adresse = content[4]
     ort = content[5]
     token = content[6]
