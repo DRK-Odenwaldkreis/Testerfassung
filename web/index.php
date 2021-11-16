@@ -200,9 +200,10 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <img src="img/icon/rapid_test.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             <div class="FAIRsep"></div>
             <div class="caption center_text">
-            <h4>Antigen-Schnelltest *1)</h4>
-            <h5>*1) kostenfrei für Bürgertest-Berechtigte, sonst kostenpflichtig für 20 €</h5>
-            </div>
+            <h4>Antigen-Schnelltest *1)</h4>';
+            echo '<h5>*1) aktuell kostenfrei</h5>';
+            //echo '<h5>*1) kostenfrei für Bürgertest-Berechtigte, sonst kostenpflichtig für 20 €</h5>';
+            echo '</div>
             </div>
         </div>
         <div class="col-sm-4 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'?s=pcr#calendar\'">
@@ -233,8 +234,9 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <div class="caption">
             <h3>Informationen zum Antigen-Schnelltest</h3>
             <p>&nbsp;</p>
-            <h4><b>Dieser Test ist für Sie kostenfrei, wenn Sie zu einer der folgenden Personengruppen gehören:</b></h4>
-            <h4>A) Im Rahmen der kostenfreien Bürger-Testung hat jede*r Bürger*in mindestens einmal pro Woche Anspruch (ab 13.11.2021)</h4>
+            <h4><b>Dieser Test ist für Sie kostenfrei, wenn Sie zu einer der folgenden Personengruppen gehören:</b></h4>';
+            echo '<h4>Im Rahmen der kostenfreien Bürger-Testung hat jede*r Bürger*in mindestens einmal pro Woche Anspruch auf einen Antigen-Schnelltest (seit 13.11.2021)</h4>';
+            /* echo '<h4>A) Im Rahmen der kostenfreien Bürger-Testung hat jede*r Bürger*in mindestens einmal pro Woche Anspruch (ab 13.11.2021)</h4>
             <h4>B) Personen vor Vollendung des zwölften Lebensjahres bzw. solche die das zwölfte Lebensjahr erst in den letzten drei Monaten vollendet haben</h4>
             <h4>C) Schülerinnen und Schüler mit gültigem Schülerausweis</h4>
             <h4>D) Personen, die aufgrund einer medizinischen Kontraindikation (insbesondere Schwangerschaft im ersten Schwangerschaftsdrittel) nicht bzw. in den letzten drei Monaten vor der Testung nicht geimpft werden konnten</h4>
@@ -249,8 +251,9 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <h4>I) Kinder und Jugendliche im Alter von 12 bis 17 Jahren</h4>
             <p>&nbsp;</p>
             <p>Personen der Gruppen D bis G benötigen für einen kostenfreien Test ein ärztliches Attest. Nach §1 Abs. 1 der aktuell gültigen Testverordnung des Bundes sind die Ärzte verpflichtet ein solches Attest auszustellen. Die Kosten hierfür trägt der Bund.</p>
-            <p>Weitere Einzelfälle müssen aktuell im jeweiligen Fall bewertet werden. Rückfragen hierzu frühzeitig an <a href="mailto:'.$email_facility.'">'.$email_facility.'</a>.</p>
-            </div>
+            <p>Weitere Einzelfälle müssen aktuell im jeweiligen Fall bewertet werden. Rückfragen hierzu frühzeitig an <a href="mailto:'.$email_facility.'">'.$email_facility.'</a>.</p>'; */
+
+            echo '</div>
         </div>
 
         <div class="FAIRsepdown"></div>

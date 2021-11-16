@@ -851,7 +851,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                         }
 
                         if($GLOBALS['FLAG_MODE_MAIN'] == 1 && $pcr_test!=1) {
-                            echo '<div class="FAIRsepdown"></div>
+                            /* echo '<div class="FAIRsepdown"></div>
                             <div class="alert alert-warning" role="alert">
                                     <div class="header_icon">
                                         <img src="../img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
@@ -881,7 +881,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                                         </div>
                                     </div>
                             </div>
-                            <div class="FAIRsepdown"></div>';
+                            <div class="FAIRsepdown"></div>'; */
                         }
 
                         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
