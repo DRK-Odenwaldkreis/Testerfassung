@@ -127,7 +127,11 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		
 		
 		$html_box_login.='<div class="FAIR-foldbox-static-part">';
-		$html_box_login.='<p>Bitte geben Sie Ihren Firmencode ein, den Sie von Ihrer Organisation erhalten haben. Mit diesem können Sie sich für einen Covid-19 Schnelltest registrieren. Bei Fragen hierzu kontaktieren Sie bitte Ihre/n Vorgesetzte/n.</p>';
+		if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+			$html_box_login.='<p>Bitte geben Sie Ihren Firmencode ein, den Sie von Ihrer Organisation erhalten haben. Mit diesem können Sie sich für eine Impfung registrieren. Bei Fragen hierzu kontaktieren Sie bitte Ihre/n Vorgesetzte/n.</p>';
+		} else {
+			$html_box_login.='<p>Bitte geben Sie Ihren Firmencode ein, den Sie von Ihrer Organisation erhalten haben. Mit diesem können Sie sich für einen Covid-19 Schnelltest registrieren. Bei Fragen hierzu kontaktieren Sie bitte Ihre/n Vorgesetzte/n.</p>';
+		}
 		$html_box_login.='
 		<form action="'.$current_site.'.php" method="post">
 		<div class="FAIR-si-box">';
@@ -162,23 +166,38 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 
 		echo '<div class="row">
 		
-		<div class="col-sm-12">
-		<h2 style="text-align: center;">Covid-19 Schnelltest - Termine und Orte für Ihr Unternehmen ('.$_SESSION['b2b_username'].')</h2>
-		</div>
+		<div class="col-sm-12">';
+		if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+			echo '<h2 style="text-align: center;">Interner Impfterminservice - Termine und Orte für Ihr Unternehmen ('.$_SESSION['b2b_username'].')</h2>';
+		} else {
+			echo '<h2 style="text-align: center;">Covid-19 Schnelltest - Termine und Orte für Ihr Unternehmen ('.$_SESSION['b2b_username'].')</h2>';
+		}
+		echo '</div>
 		<div class="col-sm-12"><div class="card">
 		';
 
 		// Show table of available dates
-		$calendar=H_build_table_testdates2('b2b');
+		if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+			$calendar=H_build_table_testdates2('b2b-vaccinate');
+		} else {
+			$calendar=H_build_table_testdates2('b2b');
+		}
 		//large display
 		echo '<div class="calendar-large">';
 		echo $calendar[0];
 		echo '</div>';
 		// small display
-		echo '<div class="calendar-small">
-		<div class="cal-day-head-yellow"><i>Für gelbe Teststationen ist eine Voranmeldung und Terminbuchung erforderlich - bitte einen Termin wählen</i></div>
-		<div class="cal-day-head-blue"><i>Für blaue Teststationen ist keine Terminbuchung notwendig, eine Voranmeldung Ihrer Daten kann gerne gemacht werden, dann geht es vor Ort schneller - bitte dafür einen Termin wählen</i></div>
-		';
+		if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+			echo '<div class="calendar-small">
+			<div class="cal-day-head-yellow"><i>Für gelbe Stationen ist eine Voranmeldung und Terminbuchung erforderlich - bitte einen Termin wählen</i></div>
+			<div class="cal-day-head-blue"><i>Für blaue Stationen ist keine Terminbuchung notwendig, eine Voranmeldung Ihrer Daten kann gerne gemacht werden, dann geht es vor Ort schneller - bitte dafür einen Termin wählen</i></div>
+			';
+		} else {
+			echo '<div class="calendar-small">
+			<div class="cal-day-head-yellow"><i>Für gelbe Teststationen ist eine Voranmeldung und Terminbuchung erforderlich - bitte einen Termin wählen</i></div>
+			<div class="cal-day-head-blue"><i>Für blaue Teststationen ist keine Terminbuchung notwendig, eine Voranmeldung Ihrer Daten kann gerne gemacht werden, dann geht es vor Ort schneller - bitte dafür einen Termin wählen</i></div>
+			';
+		}
 		foreach($calendar[1] as $i) {
 			echo $i[0].$i[1];
 		}
@@ -201,7 +220,10 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 	echo $html_box_login;
 	echo '</div>';
 
-	echo '<div><img style="display: block; margin-left: auto; margin-right: auto; width: 40%;" src="../img/logo.png"></img></div>';
+
+	if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+		echo '<div><img style="display: block; margin-left: auto; margin-right: auto; width: 40%;" src="../img/logo.png"></img></div>';
+	}
 
 	echo '</div>';
 	echo '</div>';

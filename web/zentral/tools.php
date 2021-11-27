@@ -336,7 +336,7 @@ function H_build_table_testdates_all($mode) {
 	}
 	// X ist Anzahl an Tagen für Vorschau in Tabelle
 	if($mode == 'vaccinate') {
-		$X=28;
+		$X=35;
 	} else {
 		$X=14;
 	}

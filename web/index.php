@@ -48,22 +48,41 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
 
 }
 
-echo '
-<div class="row">
+if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+    echo '
+    <div class="row">
 
-    <div class="col-sm-6" style="padding:10px;">
-        <img src="img/'.$logo_facility.'" style="display: block; margin-left: auto; margin-right: auto; width: 65%; border: solid 1px #5a482d;"></img>
-    </div>
+        <div class="col-sm-6" style="padding:10px;">
+            <img src="img/'.$logo_facility.'" style="display: block; margin-left: auto; margin-right: auto; width: 65%; border: solid 1px #5a482d;">
+        </div>
 
-    <div class="col-sm-6">
-        <div style="text-align: center;">
-            <h2>Covid-19 '.$name_facility.' Odenwaldkreis</h2>
-            <h3>Deutsches Rotes Kreuz - Kreisverband Odenwaldkreis e. V.</h3>
+        <div class="col-sm-6" style="padding:10px;">
+        <img src="https://corona.odenwaldkreis.de/wp-content/uploads/2020/04/odenwaldkreislogo.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 40%; border: solid 1px #5a482d;">
+            <div style="text-align: center;">
+                <h2>Covid-19 '.$name_facility.'</h2>
+                <h3>im Auftrag des Landkreis Odenwaldkreis</h3>
+                
+            </div>
         </div>
     </div>
-</div>
-';
+    ';
+} else {
+    echo '
+    <div class="row">
 
+        <div class="col-sm-6" style="padding:10px;">
+            <img src="img/'.$logo_facility.'" style="display: block; margin-left: auto; margin-right: auto; width: 65%; border: solid 1px #5a482d;">
+        </div>
+
+        <div class="col-sm-6">
+            <div style="text-align: center;">
+                <h2>Covid-19 '.$name_facility.' Odenwaldkreis</h2>
+                <h3>Deutsches Rotes Kreuz - Kreisverband Odenwaldkreis e. V.</h3>
+            </div>
+        </div>
+    </div>
+    ';
+}
 
 
 if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
@@ -337,7 +356,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
 
     </div>';
 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-    echo '
+    /* echo '
     <div class="row">
         <div class="col-sm-12">
             <div class="alert alert-warning" role="alert">
@@ -346,7 +365,8 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             </div>
         </div>
     </div>
-    <div class="FAIRsepdown"></div>
+    <div class="FAIRsepdown"></div>'; */
+    echo '
     <div class="row header_icon_main">
 
     <div class="col-sm-4 col-xs-4">
@@ -354,7 +374,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         <img src="img/icon/cal_time.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             
         <div class="caption center_text">
-        <h5>Termin finden</h5><h5><span class="text-sm">bis max. 2 Wochen im voraus</span></h5>
+        <h5>Termin finden</h5><h5><span class="text-sm">bis max. 4 Wochen im voraus</span></h5>
         </div>
         </div>
     </div>
@@ -384,7 +404,9 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
 
         <div class="col-sm-12">
             <div class="alert alert-warning" role="alert">
-            <h3>Parkmöglichkeiten</h3>
+            <h3>Auffrischungsimpfung / Booster</h3>
+            <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens sechs Monate nach vollständiger Impfung möglich!</p>
+            <h3>Parkmöglichkeiten für Erbach</h3>
             <p>Am Wiesenmarktgelände gibt es ausreichend Parkmöglichkeiten, die Sie bitte nutzen können.</p>
             </div>
         </div>
@@ -628,13 +650,24 @@ echo '
 <div class="FAIRsepdown"></div>
 <div class="FAIRsepdown"></div>
 <div class="row">
+    <div class="col-sm-12">
+    <h3>Für die Teams des DRK-Kreisverband Odenwaldkreis</h3>
+    </div>
     <div class="col-sm-4">
         <div class="list-group">
-            <h3>Für die Teams des DRK-Kreisverband Odenwaldkreis</h3>
             <a class="list-group-item list-group-item-action list-group-item-FAIR" id="module-r1" href="zentral/index.php">MA-Portal (Intern)</a>
         </div>
-    </div>
-</div>';
+    </div>';
+    if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+        echo '<div class="col-sm-4">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action list-group-item-FAIR" id="module-r1" href="registration/business.php">Firmenanmeldung (Intern)</a>
+            </div>
+        </div>';
+    }
+
+
+echo '</div>';
 
 
 // Print html content part C

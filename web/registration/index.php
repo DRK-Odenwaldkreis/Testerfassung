@@ -167,11 +167,18 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                     <p>Bitte bezahlen Sie vor Ort für die Testung <b>30 €</b>.</p>
                     </div>';
                 }
+
+                if($_SESSION['b2b_signedin']) {
+                    echo '<div class="FAIRsepdown"></div>
+                    <div class="list-group">';
+                    echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="business.php">Neue Registrierung starten</a>';
+                    echo '</div>';
+                }
                 
             } else {
                 echo '<div class="alert alert-danger" role="alert">
-                <h3>Termin bereits gebucht</h3>
-                <p>Ihr gewählter Termin ist in der Zwischenzeit vergeben worden. Bitte wählen Sie einen neuen Termin aus.</p>
+                <h3>Termin bereits ausgebucht</h3>
+                <p>Ihr gewählter Termin ist in der Zwischenzeit ausgebucht und nicht mehr verfügbar. Bitte wählen Sie einen neuen Termin aus.</p>
                 </div>';
                 echo '<div class="list-group">';
                 echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="../index.php">Neue Registrierung starten</a>';
@@ -586,7 +593,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
             // Check if Termin is b2b
             $b2b_code=S_get_multientry($Db,'SELECT Station.id, Station.Firmencode FROM Station JOIN Termine ON Termine.id_station=Station.id WHERE Termine.id=CAST('.$array_appointment[0].' as int);');
             if($b2b_code[0][1]!='') {
-                if(isset($_SESSION) && $_SESSION['b2b_signedin'] && $_SESSION['b2b_id']==$b2b_code[0][0]) {
+                if(isset($_SESSION) && $_SESSION['b2b_signedin'] && ( $_SESSION['b2b_id']==$b2b_code[0][0] || $_SESSION['b2b_code']==$b2b_code[0][1] ) ) {
                     $b2b_check=true;
                     $b2b_termin=true;
                 } else {
@@ -678,14 +685,21 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                 $val_cwa_connection=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_CWA_prereg";');
                 
                 if($b2b_termin) {
-                    echo '<div class="alert alert-info" role="alert">
-                    <h3>Ablauf und Information</h3><p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
-                    <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse einen QR-Code, den Sie bei dem Test vorzeigen müssen (gedruckt oder auf dem Display). Bitte halten Sie beim Test auch einen Lichtbildausweis oder Mitarbeiterausweis bereit.</p>
-                    <p>Das Ergebnis Ihres Tests wird Ihnen nach dem Abstrich per E-Mail zugeschickt.</p>
-                    </div>';
-                    echo '<div class="alert alert-danger" role="alert">
-                    <p>Ihr Arbeitgeber hat keinen Zugriff auf Ihre eingegebenen Daten und auch nicht auf Ihr Testergebnis.</p>
-                    </div>';
+                    if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+                        echo '<div class="alert alert-info" role="alert">
+                        <h3>Ablauf und Information</h3><p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
+                        <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse eine Terminbestätigung.</p>
+                        </div>';
+                    } else {
+                        echo '<div class="alert alert-info" role="alert">
+                        <h3>Ablauf und Information</h3><p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
+                        <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse einen QR-Code, den Sie bei dem Test vorzeigen müssen (gedruckt oder auf dem Display). Bitte halten Sie beim Test auch einen Lichtbildausweis oder Mitarbeiterausweis bereit.</p>
+                        <p>Das Ergebnis Ihres Tests wird Ihnen nach dem Abstrich per E-Mail zugeschickt.</p>
+                        </div>';
+                        echo '<div class="alert alert-danger" role="alert">
+                        <p>Ihr Arbeitgeber hat keinen Zugriff auf Ihre eingegebenen Daten und auch nicht auf Ihr Testergebnis.</p>
+                        </div>';
+                    }
                 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                     echo '<div class="alert alert-info" role="alert">
                     <h3>Ablauf</h3>';
