@@ -126,7 +126,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 	}
 		
 	if($ALLOWANCE_RESULT>0) {
-		$result_array=S_get_multientry($Db,'SELECT Vorgang.Teststation, Vorgang.Ergebniszeitpunkt, Vorgang.Vorname, Vorgang.Nachname, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Testtyp.Name, Testtyp.IsPCR FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id WHERE Vorgang.id=CAST('.$ALLOWANCE_RESULT.' as int);');
+		$result_array=S_get_multientry($Db,'SELECT Vorgang.Teststation, Vorgang.Registrierungszeitpunkt, Vorgang.Vorname, Vorgang.Nachname, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Testtyp.Name, Testtyp.IsPCR FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id WHERE Vorgang.id=CAST('.$ALLOWANCE_RESULT.' as int);');
 
 
 
