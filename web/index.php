@@ -110,13 +110,11 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
             <p><ul>
             <li><a href="https://www.rki.de/DE/Content/Infekt/Impfen/Materialien/COVID-19-Aufklaerungsbogen-Tab.html" target="_blank">Aufklärungs-, Anamnese- und Einwilligungsbogen zur Impfung mit mRNA-Impfstoff (Comirnaty von BioNTech/Pfizer und Spikevax von Moderna)</a></li>
             <li><a href="https://www.rki.de/DE/Content/Infekt/Impfen/Materialien/COVID-19-Vektorimpfstoff-Tab.html" target="_blank">Aufklärungs-, Anamnese- und Einwilligungsbogen zur Impfung mit Vektorimpfstoff (Vaxzevria von AstraZeneca und Janssen von Johnson & Johnson)</a></li>
-            <li><a href="https://portal-civ-qs.ekom21.de/civ-qs.public/start.html?oe=00.00.LKOW&mode=cc&cc_key=CoronaImpfzentrumAstra" target="_blank">Impfstoffauswahl für die zweite Impfung (nur für Personen, die bei der ersten Impfung den Wirkstoff von AstraZeneca erhalten haben, aber noch unter 60 Jahre alt sind)</a></li>
             <li><a href="https://corona.odenwaldkreis.de/wp-content/uploads/2021/05/Datenschutz-Info-Stand-15.03.2021.pdf" target="_blank">Information über die Verarbeitung personenbezogener Daten (Datenschutz) </a></li>
             </ul></p>
             <h3 style="text-align: center;">Videos mit Informationen in Gebärdensprache</h3>
             <p><ul>
             <li><a href="https://www.youtube.com/watch?v=tkidRQrbM5w&feature=youtu.be" target="_blank">Aufklärungsmerkblatt mRNA-Impfstoff</a></li>
-            <li><a href="https://www.youtube.com/watch?v=u0kGKOe5Xco&feature=youtu.be" target="_blank">Anamnese und Einwilligung mRNA-Impfstoff</a></li>
             </ul></p>
         </div>
         </div>
@@ -284,16 +282,6 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     </div>
     <div class="FAIRsepdown" id="calendar"></div>
 
-    <div class="row">
-
-        <div class="col-sm-12">
-            <div class="alert alert-warning" role="alert">
-            <h3>Sie haben Fragen?</h3>
-            <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
-            </div>
-        </div>
-    </div>
-    <div class="FAIRsepdown"></div>
 
     <div class="row header_icon_main">
 
@@ -340,7 +328,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <img src="img/icon/wait_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
                 
             <div class="caption center_text">
-            <h5>Etwa 20-30 min. warten</h5><h5><span class="text-sm">(PCR-Test etwa 1-2 Tage)</span></h5>
+            <h5>Etwa 20-30 min. warten</h5><h5><span class="text-sm">(PCR-Test etwa 48 h ohne Rechtsanspruch)</span></h5>
             </div>
             </div>
         </div>
@@ -354,7 +342,18 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             </div>
         </div>
 
-    </div>';
+    </div>
+    
+    <div class="FAIRsepdown"></div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="alert alert-info" role="alert">
+            <h3>Sie haben Fragen?</h3>
+            <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
+            </div>
+        </div>
+    </div>
+    ';
 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
     /* echo '
     <div class="row">
@@ -374,7 +373,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         <img src="img/icon/cal_time.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             
         <div class="caption center_text">
-        <h5>Termin finden</h5><h5><span class="text-sm">bis max. 4 Wochen im voraus</span></h5>
+        <h5>Termin finden</h5>
         </div>
         </div>
     </div>
@@ -393,21 +392,29 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         <img src="img/icon/qr_1.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             
         <div class="caption center_text">
-        <h5>Impfausweis mitbringen</h5>
+        <h5>Impfunterlagen mitbringen</h5>
         </div>
         </div>
     </div>
 
     </div>
-
+    <div class="FAIRsepdown"></div>
     <div class="row">
 
-        <div class="col-sm-12">
-            <div class="alert alert-warning" role="alert">
+        <div class="col-sm-6">
+            <div class="alert alert-info" role="alert">
+            <div class="caption center_text">
             <h3>Auffrischungsimpfung / Booster</h3>
             <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens sechs Monate nach vollständiger Impfung möglich!</p>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="alert alert-warning" role="alert">
+            <div class="caption center_text">
             <h3>Parkmöglichkeiten für Erbach</h3>
             <p>Am Wiesenmarktgelände gibt es ausreichend Parkmöglichkeiten, die Sie bitte nutzen können.</p>
+            </div>
             </div>
         </div>
     </div>
@@ -415,14 +422,6 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     ';
 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
     echo '
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="alert alert-warning" role="alert">
-            <h3>Sie haben Fragen?</h3>
-            <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
-            </div>
-        </div>
-    </div>
     <div class="FAIRsepdown"></div>
     <div class="row header_icon_main">
 
@@ -457,10 +456,15 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     </div>
 
     </div>
-
+    <div class="FAIRsepdown"></div>
     <div class="row">
-
-        <div class="col-sm-12">
+        <div class="col-sm-6">
+            <div class="alert alert-info" role="alert">
+            <h3>Sie haben Fragen?</h3>
+            <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
+            </div>
+        </div>
+        <div class="col-sm-6">
             <div class="alert alert-warning" role="alert">
             <h3>Parkmöglichkeiten</h3>
             <p>Am Wiesenmarktgelände gibt es ausreichend Parkmöglichkeiten, die Sie bitte nutzen können.</p>

@@ -158,6 +158,10 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                     <h3>Ablauf</h3>
                     <p>Bitte wählen Sie einen freien Termin für jede Person, die geimpft werden soll.</p>
                     <p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
+                    </div>
+                    <div class="alert alert-info" role="alert">
+                    <h3>Auffrischungsimpfung / Booster</h3>
+                    <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens sechs Monate nach vollständiger Impfung möglich!</p>
                     </div>';
                 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
                     echo '<div class="alert alert-info" role="alert">
@@ -315,6 +319,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                                         <img src="../img/icon/certified_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
                                         <div class="caption center_text">
                                         <h3>Sie haben einen PCR-Test ausgewählt.</h3>
+                                        <h4>Das Ergebnis erhalten Sie nach ca. 48 Stunden (ohne Rechtsanspruch, falls es mal länger dauert).</h4>
                                         <h4>Wurde dieser Test angeordnet nach positivem Schnelltest oder aufgrund Kontakt zu einer positiv getesteten Person, so ist die Testung kostenfrei. Bitte bringen Sie dafür eine Bestätigung zum Testzentrum mit (z. B. ein Schnelltest-Zertifikat mit positivem Ergebnis).</h4>
                                         <h4>Andernfalls fallen für den PCR-Test Gebühren an, die Sie im Testzentrum entrichten müssen.</h4>
                                         </div>
@@ -718,6 +723,10 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                     }
                     echo '<p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
                     <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse eine Terminbestätigung.</p>
+                    </div>
+                    <div class="alert alert-info" role="alert">
+                    <h3>Auffrischungsimpfung / Booster</h3>
+                    <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens sechs Monate nach vollständiger Impfung möglich!</p>
                     </div>';
                 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
                     echo '<div class="alert alert-info" role="alert">
@@ -846,6 +855,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                                             <img src="../img/icon/certified_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
                                             <div class="caption center_text">
                                             <h3>Sie haben einen PCR-Test ausgewählt.</h3>
+                                            <h4>Das Ergebnis erhalten Sie nach ca. 48 Stunden (ohne Rechtsanspruch, falls es mal länger dauert).</h4>
                                             <h4>Wurde dieser Test angeordnet nach positivem Schnelltest oder aufgrund Kontakt zu einer positiv getesteten Person, so ist die Testung kostenfrei. Bitte bringen Sie dafür eine Bestätigung zum Testzentrum mit (z. B. ein Schnelltest-Zertifikat mit positivem Ergebnis).</h4>
                                             <h4>Andernfalls fallen für den PCR-Test Gebühren an, die Sie im Testzentrum entrichten müssen.</h4>
                                             </div>
