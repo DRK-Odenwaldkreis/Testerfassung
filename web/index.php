@@ -84,6 +84,47 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
     ';
 }
 
+if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+    // Wechsel Impfzentrum
+    if( date("Y-m-d") > "2021-12-03") {
+        echo '
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+                <div class="alert alert-danger" role="alert">
+                    <div style="text-align: center;">
+                        <h3><b>Das Impfzentrum Erbach ist umgezogen</b></h3>
+                        <p>Ab 06.12. finden Sie das Erbacher Impfzentrum in der</p>
+                        <p><b>Neue Lustgartenstraße 1-3</b></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="FAIRsepdown"></div>
+        ';
+    }
+} else {
+    // Wechsel Impfzentrum
+    if( date("Y-m-d") > "2021-12-03") {
+        echo '
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+                <div class="alert alert-danger" role="alert">
+                    <div style="text-align: center;">
+                        <h3><b>Das Impfzentrum Erbach ist umgezogen</b></h3>
+                        <p>Ab 06.12. finden Sie das Erbacher Impfzentrum in der</p>
+                        <p><b>Neue Lustgartenstraße 1-3</b></p>
+                        <p>&nbsp;</p>
+                        <p><b>Das Testzentrum Erbach ist weiterhin in der Martin-Luther-Str. 18-20</b></p>
+                        <p>dort bieten wir weiterhin die Antigentests, PCR-Tests und Antikörpertests an</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="FAIRsepdown"></div>
+        ';
+    }
+}
+
 
 if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
     // Impfzentrum Infos
