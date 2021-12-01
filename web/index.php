@@ -348,23 +348,19 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     <div class="row">
         <div class="col-sm-12">
             <div class="alert alert-info" role="alert">
-            <h3>Sie haben Fragen?</h3>
-            <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
+            <div style="text-align: center;">
+                <h3><b>Sie haben Fragen?</b></h3>
+                <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
+                
+                <h3><b>Zentrale Service-Hotline</b></h3>
+                <h4><b><a href="tel:+496062703346">06062 70 33 46</a></b></h4>
+                <p><b>Montag bis Freitag von 8:00 bis 16:00 Uhr</b></p>
             </div>
         </div>
     </div>
     ';
 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-    /* echo '
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="alert alert-warning" role="alert">
-            <h3>Sie haben Fragen?</h3>
-            <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
-            </div>
-        </div>
-    </div>
-    <div class="FAIRsepdown"></div>'; */
+    
     echo '
     <div class="row header_icon_main">
 
@@ -397,11 +393,25 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         </div>
     </div>
 
-    </div>
+    </div>';
+    echo '
     <div class="FAIRsepdown"></div>
     <div class="row">
+        <div class="col-lg-4 col-sm-12">
+            <div class="alert alert-info" role="alert">
+                <div style="text-align: center;">
+                    <h3><b>Sie haben Fragen?</b></h3>
+                    <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
+                    
+                    <h3><b>Zentrale Service-Hotline</b></h3>
+                    <h4><b><a href="tel:+496062703346">06062 70 33 46</a></b></h4>
+                    <p><b>Montag bis Freitag von 8:00 bis 16:00 Uhr</b></p>
+                </div>
+            </div>
+        </div>';
+    echo '
 
-        <div class="col-sm-6">
+        <div class="col-lg-4 col-sm-6">
             <div class="alert alert-info" role="alert">
             <div class="caption center_text">
             <h3>Auffrischungsimpfung / Booster</h3>
@@ -409,7 +419,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             </div>
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-lg-4 col-sm-6">
             <div class="alert alert-warning" role="alert">
             <div class="caption center_text">
             <h3>Parkmöglichkeiten für Erbach</h3>
@@ -460,8 +470,14 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     <div class="row">
         <div class="col-sm-6">
             <div class="alert alert-info" role="alert">
-            <h3>Sie haben Fragen?</h3>
-            <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
+                <div style="text-align: center;">
+                    <h3><b>Sie haben Fragen?</b></h3>
+                    <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
+                    
+                    <h3><b>Zentrale Service-Hotline</b></h3>
+                    <h4><b><a href="tel:+496062703346">06062 70 33 46</a></b></h4>
+                    <p><b>Montag bis Freitag von 8:00 bis 16:00 Uhr</b></p>
+                </div>
             </div>
         </div>
         <div class="col-sm-6">

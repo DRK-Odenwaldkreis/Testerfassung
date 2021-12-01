@@ -15,7 +15,6 @@ imprint site
 
 
 // Include functions
-include_once 'admin01.php';
 include_once 'menu.php';
 
 
@@ -32,23 +31,27 @@ echo $GLOBALS['G_html_main_right_a'];
 
 
 echo '<h3 class="imprint">Impressum und Kontakt</h3>
-<a href="https://drk-odenwaldkreis.de/impressum/">Direkt beim DRK Kreisverband Odenwaldkreis e. V.</a>
-<div id="datenschutz" class="FAIRsepdown"></div>';
+<a href="https://drk-odenwaldkreis.de/impressum/">Direkt beim DRK Kreisverband Odenwaldkreis e. V.</a>';
 
 echo '<h3 class="imprint">Rückfragen</h3>
-<p>Bei Fragen zum Testzentrum bitte eine E-Mail schreiben an:</p>
-<p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>';
+<p>Bei Fragen zum Testergebnis, den Impfmöglichkeiten oder organisatorischen Anfragen bitte eine E-Mail schreiben an:</p>
+<p><a href="mailto:corona-sb@drk-odenwaldkreis.de">corona-sb@drk-odenwaldkreis.de</a></p>
+<p>Service-Hotline <a href="tel:+496062703346">06062 70 33 46</a></p>
+<p>&nbsp;</p>';
 
 echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörden</h3>
 <p><a target="_blank" href="https://github.com/DRK-Odenwaldkreis/Testerfassung">Für die Dokumentation der Web-Anwendung hier klicken</a></p>
 <p>&nbsp;</p>
 <p>Bei technischen Fragen zum Erfassungssystem bitte eine E-Mail schreiben an den Support:</p>
 <p><a href="mailto:info@testzentrum-odenwald.de">info@testzentrum-odenwald.de</a></p>
+<p>&nbsp;</p>
 
 <div id="datenschutz_website" class="FAIRsepdown"></div>
 <div class="FAIRsepdown"></div>
 <div class="FAIRsepdown"></div>
 <h3 class="imprint">Datenschutzhinweis bei der Verwendung der Website</h3>
+
+
 <ol>
 <li><strong> Datenschutz auf einen Blick</strong></li>
 </ol>
@@ -72,6 +75,8 @@ echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörd
 <p>Sie haben jederzeit das Recht, unentgeltlich Auskunft &uuml;ber Herkunft, Empf&auml;nger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben au&szlig;erdem ein Recht, die Berichtigung oder L&ouml;schung dieser Daten zu verlangen. Wenn Sie eine Einwilligung zur Datenverarbeitung erteilt haben, k&ouml;nnen Sie diese Einwilligung jederzeit f&uuml;r die Zukunft widerrufen. Au&szlig;erdem haben Sie das Recht, unter bestimmten Umst&auml;nden die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen. Des Weiteren steht Ihnen ein Beschwerderecht bei der zust&auml;ndigen Aufsichtsbeh&ouml;rde zu.</p>
 <p>Hierzu sowie zu weiteren Fragen zum Thema Datenschutz k&ouml;nnen Sie sich jederzeit an uns wenden.</p>
 <p>&nbsp;</p>
+
+
 <ol start="2">
 <li><strong> Hosting</strong></li>
 </ol>
@@ -84,6 +89,8 @@ echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörd
 <p>Wir setzen folgenden Hoster ein:</p>
 <p>&nbsp;</p>
 <p>Contabo GmbH<br />Aschauer Stra&szlig;e 32a<br />81549 M&uuml;nchen<br />Deutschland</p>
+
+
 <p><strong>&nbsp;</strong></p>
 <ol start="3">
 <li><strong> Allgemeine Hinweise und Pflicht&shy;informationen</strong></li>
@@ -144,17 +151,40 @@ echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörd
 <p><strong>&nbsp;</strong></p>
 <p><strong>Widerspruch gegen Werbe-E-Mails</strong></p>
 <p>Der Nutzung von im Rahmen der Impressumspflicht ver&ouml;ffentlichten Kontaktdaten zur &Uuml;bersendung von nicht ausdr&uuml;cklich angeforderter Werbung und Informationsmaterialien wird hiermit widersprochen. Die Betreiber der Seiten behalten sich ausdr&uuml;cklich rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch Spam-E-Mails, vor.</p>
+
+
+
 <p><strong>&nbsp;</strong></p>
 <ol start="4">
-<li><strong> Datenverarbeitung bei Anmeldung zu einem Corona Schnelltest</strong></li>
+<li><strong>Datenverarbeitung bei Anmeldung zu einem Corona-Schnelltest / PCR-Test</strong></li>
 </ol>
 <p><strong>&nbsp;</strong></p>
-<p>Informationen zur Datenverarbeitung im Rahmen Ihrer Anmeldung / Durchf&uuml;hrung eines Corona Schnelltests entnehmen Sie bitte der gesonderten Datenschutzinformation gem&auml;&szlig; DSVGO Art.&nbsp; 13.</p>
+<p>Informationen zur Datenverarbeitung im Rahmen Ihrer Anmeldung / Durchführung eines Corona Schnelltests entnehmen Sie bitte der gesonderten Datenschutzinformation gemäß DSVGO Art.  13.</p>
 <p>
-<a href="https://www.testzentrum-odw.de/impressum.php#datenschutz_durchfuehrung">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rhamen der Durchführung von Corona Schnelltests</a></p>
+<a href="impressum.php#datenschutz_durchfuehrung_impf">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rahmen der Durchführung von Corona Schnelltests/PCR-Test</a></p>
 
 <p><strong>&nbsp;</strong></p>
 <ol start="5">
+<li><strong>Datenverarbeitung bei Anmeldung zu einer Corona-Impfung</strong></li>
+</ol>
+<p><strong>&nbsp;</strong></p>
+<p>Informationen zur Datenverarbeitung im Rahmen Ihrer Anmeldung / Durchführung einer Corona Impfung entnehmen Sie bitte der gesonderten Datenschutzinformation gemäß DSVGO Art. 13.</p>
+<p>
+<a href="impressum.php#datenschutz_durchfuehrung_agtest">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rahmen der im Rahmen der Anmeldung und Terminkoordination von Corona-Impfungen</a></p>
+
+<p><strong>&nbsp;</strong></p>
+<ol start="6">
+<li><strong>Datenverarbeitung bei Anmeldung zu einem Antikörpertest</strong></li>
+</ol>
+<p><strong>&nbsp;</strong></p>
+<p>Informationen zur Datenverarbeitung im Rahmen Ihrer Anmeldung / Durchführung einer Corona Impfung entnehmen Sie bitte der gesonderten Datenschutzinformation gemäß DSVGO Art.  13.</p>
+<p>
+<a href="impressum.php#datenschutz_durchfuehrung_antikoerpertest">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rahmen der im Rahmen der Anmeldung und Terminkoordination von Corona Antikörpertests</a></p>
+
+
+
+<p><strong>&nbsp;</strong></p>
+<ol start="7">
 <li><strong> Datenerfassung auf dieser Website</strong></li>
 </ol>
 <p><strong>&nbsp;</strong></p>
@@ -189,8 +219,10 @@ echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörd
 <p>F&uuml;r wichtige &Auml;nderungen etwa beim Angebotsumfang oder bei technisch notwendigen &Auml;nderungen nutzen wir die bei der Registrierung angegebene E-Mail-Adresse, um Sie auf diesem Wege zu informieren.</p>
 <p>Die Verarbeitung der bei der Registrierung eingegebenen Daten erfolgt zum Zwecke der Durchf&uuml;hrung des durch die Registrierung begr&uuml;ndeten Nutzungsverh&auml;ltnisses und ggf. zur Anbahnung weiterer Vertr&auml;ge (Art. 6 Abs. 1 lit. b DSGVO).</p>
 <p>Die bei der Registrierung erfassten Daten werden von uns gespeichert, solange Sie auf dieser Website registriert sind und werden anschlie&szlig;end gel&ouml;scht. Gesetzliche Aufbewahrungsfristen bleiben unber&uuml;hrt.</p>
+
+
 <p><strong>&nbsp;</strong></p>
-<ol start="7">
+<ol start="8">
 <li><strong> Plugins und Tools</strong></li>
 </ol>
 <p><strong>&nbsp;</strong></p>
@@ -200,11 +232,22 @@ echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörd
 <p>Wenn Ihr Browser Web Fonts nicht unterst&uuml;tzt, wird eine Standardschrift von Ihrem Computer genutzt.</p>
 <p>Weitere Informationen zu Google Web Fonts finden Sie unter&nbsp;<a href="https://developers.google.com/fonts/faq">https://developers.google.com/fonts/faq</a>&nbsp;und in der Datenschutzerkl&auml;rung von Google:&nbsp;<a href="https://policies.google.com/privacy?hl=de">https://policies.google.com/privacy?hl=de</a>.</p>
 
-<div id="datenschutz_durchfuehrung" class="FAIRsepdown"></div>
+<div class="FAIRsepdown"></div>
+
+
+
+
+
+
+
+<div id="datenschutz_durchfuehrung_impf" class="FAIRsepdown"></div>
 <div class="FAIRsepdown"></div>
 <div class="FAIRsepdown"></div>
-<h3 class="imprint">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rahmen der Durchführung von Corona Schnelltests</h3>
+<h3 class="imprint">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rahmen der Anmeldung und Terminkoordination von <b>Corona Impfungen</b></h3>
 <p>Gemäß den Vorgaben der Art. 13 ff der Datenschutz-Grundverordnung (DSGVO) informieren wir Sie hiermit über die Verarbeitung der über Sie erhobenen und verarbeiteten personenbezogenen Daten im Rahmen Ihrer Anmeldung und der Durchführung von Corona Schnelltests in den Einrichtungen des Deutschen Roten Kreuz Kreisverband e.V. </p>
+<p>Die datenschutzrechtliche Verantwortlichkeit im Rahmen der Durchführung der Impfungen liegt bei den Landkreisen und kreisfreien Städten. Diese sind gem. § 2 Abs. 1 Hessisches Gesetz über den öffentlichen Gesundheitsdienst (HGöGD) Träger des öffentlichen Gesundheitsdienstes und haben im Rahmen dieser Aufgabe über Mittel und Zwecke der Verarbeitung personenbezogener Daten im Sinne des Art. 4 Nr. 7 Datenschutz-Grundverordnung (DS-GVO) bei Maßnahmen im Rahmen der Impfmaßnahmen zu entscheiden. Die entsprechende Datenschutzinformation des Odenwaldkreises finden Sie auf folgendem Link: <a href="https://corona.odenwaldkreis.de/wp-content/uploads/2021/10/Datenschutz-Info-Stand-15.10.2021.pdf">https://corona.odenwaldkreis.de/wp-content/uploads/2021/10/Datenschutz-Info-Stand-15.10.2021.pdf</a> Dieser Link kann sich ggf. in der Zukunft ändern.</p>
+<p>Das Deutsche Rote Kreuz Kreisverband Odenwaldkreis e.V. ist ausschließlich für die Verarbeitung personenbezogener Daten im Rahmen der Anmeldung und der Terminkoordination verantwortlich.
+Nur diese Verarbeitung personenbezogener Daten wird in der vorliegenden Datenschutzinformation beschrieben.</p>
 <p><strong>&nbsp;</strong></p>
 <p><strong>Verantwortlich im Sinne der DSGVO Art. 4 Nr. 7</strong></p>
 <p>Name: Frank Sauer</p>
@@ -216,7 +259,7 @@ echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörd
 
 <p><strong>&nbsp;</strong></p>
 <p><strong>Kontaktdaten unseres Datenschutzbeauftragten</strong></p>
-<p>Name: Kai Schwardte</p>
+<p>Name: Herr Kai Schwardt</p>
 <p>Telefonnummer: 06062 6070</p>
 <p>E-Mail Adresse: datenschutz@drk-odenwaldkreis.de</p>
 <p>Unternehmensbezeichnung: Extern benannter Datenschutzbeauftragter</p>
@@ -224,7 +267,118 @@ echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörd
 
 <p><strong>&nbsp;</strong></p>
 <p><strong>Zweck und Rechtsgrundlage der Verarbeitung</strong></p>
-<p>Wir verarbeiten Ihre personenbezogenen Daten im Einklang mit den Bestimmungen der europäischen Datenschutz-Grundverordnung (EU-DSGVO), soweit dies für die Anmeldung, Terminkoordination, Durchführung und Nachweisführung eines Corona-schnelltest in einer Einrichtung des Deutschen Roten Kreuz Kreisverband e.V. erforderlich ist. Rechtsgrundlage ist dabei Art. 6 lit. a DSGVO (Einwilligung) sowie ggf. Art. 6 lit. c DSGVO (rechtliche Verpflichtung) insofern eine rechtliche Verpflichtung zu einem Corona Test vorliegt. Weitere Rechtgrundlagen sind Infektionsschutzgesetz – IfSG sowie die Coronavirus-Testverordnung – TestV. </p>
+<p>Wir verarbeiten Ihre personenbezogenen Daten im Einklang mit den Bestimmungen der europäischen Datenschutz-Grundverordnung (EU-DSGVO), soweit dies für die Anmeldung und Terminkoordination in einer Einrichtung des Deutschen Roten Kreuz Kreisverband e.V. erforderlich ist. Rechtsgrundlage ist dabei Art. 6 lit. a DSGVO (Ihre Einwilligung).</p>
+<p>Weiterhin können wir personenbezogene Daten von Ihnen verarbeiten, sofern dies zur Abwehr
+von geltend gemachten Rechtsansprüchen gegen uns erforderlich ist. Rechtsgrundlage ist dabei Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse ist beispielsweise eine Beweispflicht im Rahmen rechtlicher Verfahren. Erteilen Sie uns eine ausdrückliche Einwilligung zur Verarbeitung von personenbezogenen Daten, ist die Rechtmäßigkeit dieser Verarbeitung auf Basis Ihrer Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO gegeben. Eine erteilte Einwilligung kann jederzeit, mit Wirkung für die Zukunft, widerrufen werden (siehe Ziffer 9 dieser Datenschutzinformation).
+</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Kategorie personenbezogener Daten</strong></p>
+<p>Wir verarbeiten nur solche Daten, die im Zusammenhang mit der Anmeldung und der Terminkoordination bei der Durchführung von Corona Impfungen in einer Einrichtung des Deutschen Roten Kreuz Kreisverband e.V. stehen. Dies sind im Einzelnen:</p>
+<p>Vorname, Nachname, Namenszusätze, Kontaktdaten (etwa private Anschrift, (Mobil-)Telefonnummer, E-Mail-Adresse), gewählter Impfstoff, Status grippeähnliche Symptome.</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Quellen der Daten</strong></p>
+<p>Die Erhebung Ihrer Daten findet grundsätzlich bei Ihnen selbst in Form Ihrer Anmeldung auf unserer Webseite https://www.impfzentrum-odw.de oder vor Ort in einer unserer Einrichtungen statt. Die Verarbeitung der von Ihnen überlassenen personenbezogenen Daten ist zur Durchführung der Anmeldung und der Terminkoordination notwendig. 
+</p>
+<p>Die Bereitstellung Ihrer personenbezogenen Daten ist notwendig. Sollten die erforderlichen personen-bezogenen Daten nicht von Ihnen bereitgestellt werden, kann keine Anmeldung zur Impfung durchgeführt werden.</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Empfänger der Daten</strong></p>
+<p>Wir geben Ihre personenbezogenen Daten innerhalb unserer Organisation ausschließlich an die Personen weiter, die diese Daten zur Anmeldung und der Terminkoordination der Corona Impfungen benötigen.</p>
+<p>Ihre personenbezogenen Daten werden in unserem Auftrag ggf. auf Basis von Auftragsverarbeitungs-verträgen nach Art. 28 DSGVO verarbeitet. In diesen Fällen stellen wir sicher, dass die Verarbeitung von personenbezogenen Daten im Einklang mit den Bestimmungen der DSGVO erfolgt. Die Kategorien von Empfängern sind in diesem Fall z.B. Anbieter von Internetdienstanbieter sowie Anbieter von Software zur Administration der Terminverwaltung.</p>
+<p>Eine Datenweitergabe an Empfänger außerhalb unserer Organisation erfolgt ansonsten nur, soweit gesetzliche Bestimmungen dies erlauben oder gebieten.</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Übermittlung in ein Drittland</strong></p>
+<p>Eine Übermittlung der Daten in ein Drittland erfolgt nicht. Jegliche Verarbeitung personenbezogener Daten erfolgt innerhalb der der Europäischen Union, oder des Europäischen Wirtschaftsraumes. </p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Dauer der Speicherung</strong></p>
+<p>Ihre personenbezogenen Daten werden nach dem Grundsatz der Speicherbegrenzung (Art. 5 Abs. 1 lit. e DS-GVO) nur so lange gespeichert, wie es die jeweiligen Zwecke der Datenverarbeitung erfordern. Ihre personenbezogenen Daten werden daher grundsätzlich frühestmöglich gelöscht bzw. vernichtet. Gemäß aktueller Erforderlichkeit erfolgt die Löschung Ihrer personenbezogenen Daten am Folgetag des Impftermins. 
+</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Ihre Rechte</strong></p>
+<p>Jede betroffene Person hat das Recht auf Auskunft nach Art. 15 DSGVO, das Recht auf
+Berichtigung nach Art. 16 DSGVO, das Recht auf Löschung nach Art. 17 DSGVO, das Recht auf
+Einschränkung der Verarbeitung nach Art. 18 DSGVO, das Recht auf Mitteilung nach
+Art. 19 DSGVO sowie das Recht auf Datenübertragbarkeit nach Art. 20 DSGVO.
+</p>
+<p>Darüber hinaus besteht ein Beschwerderecht bei einer Datenschutzaufsichtsbehörde nach
+Art. 77 DSGVO, wenn Sie der Ansicht sind, dass die Verarbeitung Ihrer personenbezogenen
+Daten nicht rechtmäßig erfolgt. Das Beschwerderecht besteht unbeschadet eines
+anderweitigen verwaltungsrechtlichen oder gerichtlichen Rechtsbehelfs.
+</p>
+<p>Die zuständige Datenschutzaufsichtsbehörde erreichen Sie unter folgenden Kontaktdaten:</p>
+<p>&nbsp;</p>
+<p>Der Hessische Beauftragte für Datenschutz und Informationsfreiheit</p>
+<p>Postfach 3163</p>
+<p>65021 Wiesbaden</p>
+<p>Telefon: +49 611 1408 – 0</p>
+<p>Telefax: +49 611 1408 – 900</p>
+<p>Mail: poststelle@datenschutz.hessen.de</p>
+<p>https://datenschutz.hessen.de</p>
+<p>&nbsp;</p>
+<p>Sofern die Verarbeitung von Daten auf Grundlage Ihrer Einwilligung erfolgt, sind Sie nach Art. 7 DSGVO berechtigt, die Einwilligung in die Verwendung Ihrer personenbezogenen Daten jederzeit zu widerrufen. Bitte beachten Sie, dass der Widerruf erst für die Zukunft wirkt. Verarbeitungen, die vor dem Widerruf erfolgt sind, sind davon nicht betroffen. Bitte beachten Sie zudem, dass wir bestimmte Daten für die Erfüllung gesetzlicher Vorgaben ggf. für einen bestimmten Zeitraum aufbewahren müssen (s. Ziffer 8 dieser Datenschutzinformation).</p>
+<p>&nbsp;</p>
+<p><strong>&nbsp;</strong></p>
+<p><strong>Widerspruchsrecht</strong></p>
+<p>Soweit die Verarbeitung Ihre personenbezogenen Daten nach Art. 6 Abs 1 lit. f DSGVO zur Wahrung berechtigter Interessen erfolgt, haben Sie gemäß Art. 21 DSGVO das Recht, aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit Widerspruch gegen die Verarbeitung dieser Daten einzulegen. Wir verarbeiten diese personenbezogenen Daten dann nicht mehr, es sei denn, wir können zwingende schutzwürdige Gründe für die Verarbeitung nachweisen. Diese müssen Ihre Interessen, Rechte und Freiheiten überwiegen, oder die Verarbeitung muss der Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen dienen.</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Automatisierte Entscheidungsfindung</strong></p>
+<p>Es findet keine automatisierte Entscheidung im Einzelfall im Sinne des Art. 22 DSGVO statt.
+</p>
+<p>&nbsp;</p>
+<p><strong>&nbsp;</strong></p>
+<p><strong>Sonstiges</strong></p>
+<p>Sie haben zudem das Recht, sich jederzeit an unseren Datenschutzbeauftragten zu wenden, der bezüglich Ihrer Anfrage zur Verschwiegenheit verpflichtet ist. Die Kontaktdaten finden Sie auf Seite 1 unter Punkt 2.
+</p>
+<div class="FAIRsepdown"></div>
+
+
+
+
+
+
+
+
+
+<div id="datenschutz_durchfuehrung_agtest" class="FAIRsepdown"></div>
+<div class="FAIRsepdown"></div>
+<div class="FAIRsepdown"></div>
+<h3 class="imprint">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rahmen der Durchführung von <b>Corona SARS-COV-2 Schnelltests / PCR-Tests</b></h3>
+<p>Gemäß den Vorgaben der Art. 13 ff der Datenschutz-Grundverordnung (DSGVO) informieren wir Sie hiermit über die Verarbeitung der über Sie erhobenen und verarbeiteten personenbezogenen Daten im Rahmen Ihrer Anmeldung und der Durchführung von Corona SARS-CoV-2 Schnelltests / PCR-Tests in den Einrichtungen des Deutschen Roten Kreuz Kreisverband e.V. </p>
+<p>Die datenschutzrechtliche Verantwortlichkeit bei der Nutzung der Corona Warn App (CWA) liegt beim Robert-Koch-Institut (RKI). Die entsprechende Datenschutzinformation des Robert-Koch-Instituts (RKI) finden Sie auf folgendem Link: <a href="https://www.coronawarn.app/assets/documents/cwa-privacy-notice-de.pdf">https://www.coronawarn.app/assets/documents/cwa-privacy-notice-de.pdf</a>.
+Dieser Link kann sich ggf. in der Zukunft ändern.</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Verantwortlich im Sinne der DSGVO Art. 4 Nr. 7</strong></p>
+<p>Name: Frank Sauer</p>
+<p>Telefonnummer: 06062 6070</p>
+<p>E-Mail Adresse: info@drk-odenwaldkreis.de</p>
+<p>Website: http://www.drk-odenwaldkreis.de </p>
+<p>Unternehmensbezeichnung: Deutsches Rotes Kreuz Kreisverband Odenwaldkreis e.V.</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Kontaktdaten unseres Datenschutzbeauftragten</strong></p>
+<p>Name:Herr Kai Schwardt</p>
+<p>Telefonnummer: 06062 6070</p>
+<p>E-Mail Adresse: datenschutz@drk-odenwaldkreis.de</p>
+<p>Unternehmensbezeichnung: Extern benannter Datenschutzbeauftragter</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Zweck und Rechtsgrundlage der Verarbeitung</strong></p>
+<p>Wir verarbeiten Ihre personenbezogenen Daten im Einklang mit den Bestimmungen der europäischen Datenschutz-Grundverordnung (EU-DSGVO), soweit dies für die Anmeldung, Terminkoordination, Durchführung und Nachweisführung eines Corona-schnelltest in einer Einrichtung des Deutschen Roten Kreuz Kreisverband e.V. erforderlich ist. Rechtsgrundlage ist dabei Art. 6 lit. a DSGVO (Einwilligung), Art. 6 lit. b DSGVO (Vertragserfüllung – nur bei Selbstzahlern), Art 9 Abs. 2 lit.i DSGVO  sowie ggf. Art. 6 lit. c DSGVO (rechtliche Verpflichtung). Weitere Rechtgrundlagen sind Infektionsschutzgesetz – IfSG sowie die Coronavirus-Testverordnung – TestV.</p>
 <p>Weiterhin können wir personenbezogene Daten von Ihnen verarbeiten, sofern dies zur Abwehr
 von geltend gemachten Rechtsansprüchen gegen uns erforderlich ist. Rechtsgrundlage ist dabei Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse ist beispielsweise eine Beweispflicht im Rahmen rechtlicher Verfahren. Erteilen Sie uns eine ausdrückliche Einwilligung zur Verarbeitung von personenbezogenen Daten, ist die Rechtmäßigkeit dieser Verarbeitung auf Basis Ihrer Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO gegeben. Eine erteilte Einwilligung kann jederzeit, mit Wirkung für die Zukunft, widerrufen werden (siehe Ziffer 9 dieser Datenschutzinformation).
 </p>
@@ -233,7 +387,7 @@ von geltend gemachten Rechtsansprüchen gegen uns erforderlich ist. Rechtsgrundl
 <p><strong>&nbsp;</strong></p>
 <p><strong>Kategorie personenbezogener Daten</strong></p>
 <p>Wir verarbeiten nur solche Daten, die im Zusammenhang mit der Anmeldung, Terminkoordination, Durchführung und Nachweisführung eines Corona-Schnelltest in einer Einrichtung des Deutschen Roten Kreuz Kreisverband e.V. stehen. Dies sind im Einzelnen:</p>
-<p>Vorname, Nachname, Namenszusätze, Kontaktdaten (etwa private Anschrift, (Mobil-)Telefonnummer, E-Mail-Adresse), Geburtsdatum, ggf. Geschlecht, ggf. Testgrund, Datum und Uhrzeit der Testdurchführung  sowie das Ergebnis des durchgeführten Covid19- Schnelltests (positiv/negativ).</p>
+<p>Vorname, Nachname, Namenszusätze, Kontaktdaten (etwa private Anschrift, (Mobil-)Telefonnummer, E-Mail-Adresse), Geburtsdatum, ggf. Geschlecht, ggf. Testgrund, Datum und Uhrzeit der Testdurchführung  sowie das Ergebnis des durchgeführten Covid19- Schnelltests (positiv/negativ), Status grippeähnliche Symptome, Selbstzahler (ja/nein), Zahlungsbeleg (nur bei Selbstzahlern).</p>
 <p>&nbsp;</p>
 
 <p><strong>&nbsp;</strong></p>
@@ -270,6 +424,7 @@ die Personen weiter, die diese Daten zur Anmeldung, Terminkoordination, Durchfü
 </p>
 <p>Gemäß § 7 Abs. 5 S. 1 TestV sind wir verpflichtet die für den Nachweis der korrekten Durchführung und Abrechnung notwendige Auftrags- und Leistungsdokumentation bis zum 31. Dezember 2024 unverändert zu speichern / aufzubewahren.
 </p>
+<p>Bei Selbstzahlern speichern wir die Quittungsbelege gemäß § 147 Abgabenordnung für 10 Jahre.</p>
 <p>&nbsp;</p>
 
 <p><strong>&nbsp;</strong></p>
@@ -332,6 +487,130 @@ Einzelheiten hierzu finden Sie zudem in den »Datenschutzhinweisen« der Corona 
 </p>
 
 <div class="FAIRsepdown"></div>
+
+
+
+
+
+
+
+
+<div id="datenschutz_durchfuehrung_antikoerpertest" class="FAIRsepdown"></div>
+<div class="FAIRsepdown"></div>
+<div class="FAIRsepdown"></div>
+<h3 class="imprint">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rahmen der Durchführung von <b>Corona-Antikörper-Tests</b></h3>
+<p>Gemäß den Vorgaben der Art. 13 ff der Datenschutz-Grundverordnung (DSGVO) informieren wir Sie hiermit über die Verarbeitung der über Sie erhobenen und verarbeiteten personenbezogenen Daten im Rahmen Ihrer Anmeldung und der Durchführung von Corona-Antikörper-Schnelltests in den Einrichtungen des Deutschen Roten Kreuz Kreisverband e.V. </p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Verantwortlich im Sinne der DSGVO Art. 4 Nr. 7</strong></p>
+<p>Name: Frank Sauer</p>
+<p>Telefonnummer: 06062 6070</p>
+<p>E-Mail Adresse: info@drk-odenwaldkreis.de</p>
+<p>Website: http://www.drk-odenwaldkreis.de </p>
+<p>Unternehmensbezeichnung: Deutsches Rotes Kreuz Kreisverband Odenwaldkreis e.V.</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Kontaktdaten unseres Datenschutzbeauftragten</strong></p>
+<p>Name: Herr Kai Schwardt</p>
+<p>Telefonnummer: 06062 6070</p>
+<p>E-Mail Adresse: datenschutz@drk-odenwaldkreis.de</p>
+<p>Unternehmensbezeichnung: Extern benannter Datenschutzbeauftragter</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Zweck und Rechtsgrundlage der Verarbeitung</strong></p>
+<p>Wir verarbeiten Ihre personenbezogenen Daten im Einklang mit den Bestimmungen der europäischen Datenschutz-Grundverordnung (EU-DSGVO), soweit dies für die Anmeldung, Terminkoordination, Durchführung und Abrechnung eines Corona Antikörper Schnelltest in einer Einrichtung des Deutschen Roten Kreuz Kreisverband e.V. erforderlich ist. Rechtsgrundlage ist dabei Art. 6 lit. a DSGVO (Einwilligung) sowie Art. 6 lit. b DSGVO (Vertragserfüllung).</p>
+<p>Weiterhin können wir personenbezogene Daten von Ihnen verarbeiten, sofern dies zur Abwehr
+von geltend gemachten Rechtsansprüchen gegen uns erforderlich ist. Rechtsgrundlage ist dabei Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse ist beispielsweise eine Beweispflicht im Rahmen rechtlicher Verfahren. Erteilen Sie uns eine ausdrückliche Einwilligung zur Verarbeitung von personenbezogenen Daten, ist die Rechtmäßigkeit dieser Verarbeitung auf Basis Ihrer Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO gegeben. Eine erteilte Einwilligung kann jederzeit, mit Wirkung für die Zukunft, widerrufen werden (siehe Ziffer 9 dieser Datenschutzinformation).
+</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Kategorie personenbezogener Daten</strong></p>
+<p>Wir verarbeiten nur solche Daten, die im Zusammenhang mit der Anmeldung, Terminkoordination, Durchführung und Abrechnung eines Corona-Antikörper Schnelltest in einer Einrichtung des Deutschen Roten Kreuz Kreisverband e.V. stehen. Dies sind im Einzelnen:</p>
+<p>Vorname, Nachname, Namenszusätze, ggf. Kontaktdaten (etwa private Anschrift, (Mobil-)Telefonnummer, E-Mail-Adresse), Geburtsdatum, ggf. Geschlecht, Datum und Uhrzeit der Testdurchführung  sowie das Ergebnis des durchgeführten Antikörper Schnelltests, Status „grippeähnliche Symptome“, Zahlungsbeleg.</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Quellen der Daten</strong></p>
+<p>Die Erhebung Ihrer Daten findet grundsätzlich bei Ihnen selbst in Form Ihrer Anmeldung auf unserer Webseite https://www.impfzentrum-odw.de/antikoerper oder vor Ort in einer unserer Einrichtungen statt. Die Verarbeitung der von Ihnen überlassenen personenbezogenen Daten ist zur Durchführung der Anmeldung, Terminkoordination, Durchführung und Nachweisführung eines Corona-Antikörper-Schnelltests notwendig. 
+</p>
+<p>Die Bereitstellung Ihrer personenbezogenen Daten ist notwendig. Sollten die erforderlichen personenbezogenen Daten nicht von Ihnen bereitgestellt werden, kann kein Test durchgeführt werden.
+</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Empfänger der Daten</strong></p>
+<p>Wir geben Ihre personenbezogenen Daten innerhalb unserer Organisation ausschließlich an
+die Personen weiter, die diese Daten zur Anmeldung, Terminkoordination, Durchführung und Nachweisführung eines Corona-Antikörper-Schnelltest benötigen.
+</p>
+<p>Ihre personenbezogenen Daten werden in unserem Auftrag ggf. auf Basis von Auftragsverarbeitungs-verträgen nach Art. 28 DSGVO verarbeitet. In diesen Fällen stellen wir sicher, dass die Verarbeitung von personenbezogenen Daten im Einklang mit den Bestimmungen der DSGVO erfolgt. Die Kategorien von Empfängern sind in diesem Fall z.B. Anbieter von Internetdienstanbieter sowie Anbieter von Software zur Administration der Terminverwaltung.
+</p>
+<p>Eine Datenweitergabe an Empfänger außerhalb unserer Organisation erfolgt ansonsten nur, soweit gesetzliche Bestimmungen dies erlauben oder gebieten.
+</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Übermittlung in ein Drittland</strong></p>
+<p>Eine Übermittlung der Daten in ein Drittland erfolgt nicht. Jegliche Verarbeitung personenbezogener Daten erfolgt innerhalb der der Europäischen Union, oder des Europäischen Wirtschaftsraumes. </p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Dauer der Speicherung</strong></p>
+<p>Ihre personenbezogenen Daten werden nach dem Grundsatz der Speicherbegrenzung (Art. 5 Abs. 1 lit. e DS-GVO) nur so lange gespeichert, wie es die jeweiligen Zwecke der Datenverarbeitung erfordern. Ihre personenbezogenen Daten werden daher grundsätzlich frühestmöglich gelöscht bzw. vernichtet.</p>
+<p>Das Testergebnis des Corona Antikörper Schnelltests selbst, wird nicht gespeichert. Ihre im Rahmen der Erstellung von Quittungen speichern wir gemäß § 147 Abgabenordnung für 10 Jahre. Alle weiteren Daten werden am Folgetag des Corona antikörper-Schnelltests gelöscht.</p>
+<p>&nbsp;</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Ihre Rechte</strong></p>
+<p>Jede betroffene Person hat das Recht auf Auskunft nach Art. 15 DSGVO, das Recht auf
+Berichtigung nach Art. 16 DSGVO, das Recht auf Löschung nach Art. 17 DSGVO, das Recht auf
+Einschränkung der Verarbeitung nach Art. 18 DSGVO, das Recht auf Mitteilung nach
+Art. 19 DSGVO sowie das Recht auf Datenübertragbarkeit nach Art. 20 DSGVO.
+</p>
+<p>Darüber hinaus besteht ein Beschwerderecht bei einer Datenschutzaufsichtsbehörde nach
+Art. 77 DSGVO, wenn Sie der Ansicht sind, dass die Verarbeitung Ihrer personenbezogenen
+Daten nicht rechtmäßig erfolgt. Das Beschwerderecht besteht unbeschadet eines
+anderweitigen verwaltungsrechtlichen oder gerichtlichen Rechtsbehelfs.
+</p>
+<p>Die zuständige Datenschutzaufsichtsbehörde erreichen Sie unter folgenden Kontaktdaten:</p>
+<p>&nbsp;</p>
+<p>Der Hessische Beauftragte für Datenschutz und Informationsfreiheit</p>
+<p>Postfach 3163</p>
+<p>65021 Wiesbaden</p>
+<p>Telefon: +49 611 1408 – 0</p>
+<p>Telefax: +49 611 1408 – 900</p>
+<p>Mail: poststelle@datenschutz.hessen.de</p>
+<p>https://datenschutz.hessen.de</p>
+<p>&nbsp;</p>
+<p>Sofern die Verarbeitung von Daten auf Grundlage Ihrer Einwilligung erfolgt, sind Sie nach Art. 7 DSGVO berechtigt, die Einwilligung in die Verwendung Ihrer personenbezogenen Daten jederzeit zu widerrufen. Bitte beachten Sie, dass der Widerruf erst für die Zukunft wirkt. Verarbeitungen, die vor dem Widerruf erfolgt sind, sind davon nicht betroffen. Bitte beachten Sie zudem, dass wir bestimmte Daten für die Erfüllung gesetzlicher Vorgaben ggf. für einen bestimmten Zeitraum aufbewahren müssen (s. Ziffer 8 dieser Datenschutzinformation).</p>
+<p>&nbsp;</p>
+<p><strong>&nbsp;</strong></p>
+<p><strong>Widerspruchsrecht</strong></p>
+<p>Soweit die Verarbeitung Ihre personenbezogenen Daten nach Art. 6 Abs 1 lit. f DSGVO zur Wahrung berechtigter Interessen erfolgt, haben Sie gemäß Art. 21 DSGVO das Recht, aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit Widerspruch gegen die Verarbeitung dieser Daten einzulegen. Wir verarbeiten diese personenbezogenen Daten dann nicht mehr, es sei denn, wir können zwingende schutzwürdige Gründe für die Verarbeitung nachweisen. Diese müssen Ihre Interessen, Rechte und Freiheiten überwiegen, oder die Verarbeitung muss der Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen dienen.</p>
+
+<p><strong>&nbsp;</strong></p>
+<p><strong>Automatisierte Entscheidungsfindung</strong></p>
+<p>Es findet keine automatisierte Entscheidung im Einzelfall im Sinne des Art. 22 DSGVO statt.
+</p>
+<p>&nbsp;</p>
+<p><strong>&nbsp;</strong></p>
+<p><strong>Sonstiges</strong></p>
+<p>Sie haben zudem das Recht, sich jederzeit an unseren Datenschutzbeauftragten zu wenden, der bezüglich Ihrer Anfrage zur Verschwiegenheit verpflichtet ist. Die Kontaktdaten finden Sie auf Seite 1 unter Punkt 2.
+</p>
+<div class="FAIRsepdown"></div>
+<div class="FAIRsepdown"></div>
+<div class="FAIRsepdown"></div>
+Erbach, Im Oktober 2021
+<p></p>
+Deutsches Rotes Kreuz Kreisverband Odenwaldkreis e.V.
+<div class="FAIRsepdown"></div>
+<div class="FAIRsepdown"></div>
+
+
+
+
 ';
 
 

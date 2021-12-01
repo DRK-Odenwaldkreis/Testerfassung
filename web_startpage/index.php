@@ -82,7 +82,7 @@ echo $GLOBALS['G_html_main_right_a'];
     }
 ?>
         <p>
-            in Erbach und Reichelsheim
+            in Erbach<br>(teilweise auch in Reichelsheim und Lützelbach)
         </p>
 
         </div>
@@ -108,7 +108,7 @@ echo $GLOBALS['G_html_main_right_a'];
     }
 ?>
         <p>
-            in Erbach, Reichelsheim, Beerfelden, Lützelbach, Vielbrunn, Würzberg und Bad König
+            in Erbach, Reichelsheim und Beerfelden<br>(teilweise auch in Lützelbach, Vielbrunn, Würzberg und Bad König)
         </p>
         </div>
         </div>
@@ -143,9 +143,25 @@ echo $GLOBALS['G_html_main_right_a'];
     </div>
 
     <div class="FAIRsepdown"></div>
-    <p>Bei Fragen können Sie sich an das Personal vor Ort wenden.</p>
+    <div class="col-sm-12">
+        <div style="text-align: center;">
+            <h2><b>Zentrale Service-Hotline</b></h2>
+            <h3><b><a href="tel:+496062703346">06062 70 33 46</a></b></h3>
+            <p><b>Montag bis Freitag von 8:00 bis 16:00 Uhr</b></p>
+
+            <p>Bei Fragen können Sie sich auch an das Personal vor Ort wenden.</p>
+            <p>Bitte erscheinen Sie nur, wenn Sie frei von den typischen Symptomen, wie Fieber, trockenem Husten oder plötzlichem Verlust des Geruchs- oder Geschmackssinnes sind.</p>
+        </div>
+    </div>
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsepdown"></div>
     
-    <p>Bitte erscheinen Sie nur, wenn Sie frei von den typischen Symptomen, wie Fieber, trockenem Husten oder plötzlichem Verlust des Geruchs- oder Geschmackssinnes sind.</p>
     <div class="FAIRsepdown"></div>
     <div class="FAIRsep"></div>
 </div>
