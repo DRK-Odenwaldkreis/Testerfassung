@@ -1,5 +1,4 @@
 <?php
-
 /* **************
 
 Websystem für das Testzentrum DRK Odenwaldkreis
@@ -72,23 +71,33 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       if(isset($_POST['create_export_csv'])) {
           $date=($_POST['date']);
-          $dir="/home/webservice/Impfterminerfassung/CSVExport/";
+          if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+            $dir="/home/webservice/Impfterminerfassung/CSVExport/";
+          } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+            $dir="/home/webservice/Antikoerpererfassung/CSVExport/";
+          }
           chdir($dir);
           $job="python3 job.py $date";
           exec($job,$script_output);
           $file=$script_output[0];
-          if( file_exists("/home/webservice/Reports/Impfzentrum/$file") ) {
+          if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+            $filename="/home/webservice/Reports/Impfzentrum/$file";
+          } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+            $filename="/home/webservice/Reports/Antikoerper/$file";
+          }
+          if( file_exists($filename) ) {
               header('Content-Type: application/octet-stream');
               header('Content-Disposition: attachment; filename="'.basename($file).'"');
               header('Pragma: no-cache');
               header('Expires: 0');
-              readfile("/home/webservice/Reports/Impfzentrum/$file");
+              readfile($filename);
               exit;
           }
           
       }
     }
 
+  
 
     // pre settings for DataTables
     $local_dt_language="'language': {
@@ -325,7 +334,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
 
 
 
-if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+if($GLOBALS['FLAG_MODE_MAIN'] == 2 or $GLOBALS['FLAG_MODE_MAIN'] == 3) {
   // Get XLSX file
   echo '<div class="card">
       <div class="col-sm-4">

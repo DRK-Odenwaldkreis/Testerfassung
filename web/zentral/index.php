@@ -317,16 +317,19 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
   $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort,Impfstoff.Kurzbezeichnung FROM Station JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id;');
   $today=date("Y-m-d",time());
   $tomorrow=date("Y-m-d",time() + 60 * 60 * 24);
+  $hourNow=date('H',time());
 
   $stat_val_total_fday=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$tomorrow.'\';');
   $stat_val_total_day=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$today.'\';');
 
   $stat_val_total_day_used=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$today.'\' and Used=1;');
+  $stat_val_total_day_unused=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termin_id=Termine.id WHERE Date(Voranmeldung.Tag)=\''.$today.'\' AND Voranmeldung.Used=0 AND Termine.Stunde < '.$hourNow.';');
 
   $stat_val_total_day_st=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$today.'\' AND Termine.id_station='.$station.';');
   $stat_val_total_fday_st=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$tomorrow.'\' AND Termine.id_station='.$station.';');
 
-  $stat_val_total_day__st_used=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$today.'\' AND Termine.id_station='.$station.' and Voranmeldung.Used=1;');
+  $stat_val_total_day_st_used=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$today.'\' AND Termine.id_station='.$station.' and Voranmeldung.Used=1;');
+  $stat_val_total_day_st_unused=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$today.'\' AND Termine.id_station='.$station.' AND Voranmeldung.Used=0 AND Termine.Stunde < '.$hourNow.';');
 
 
   // Close connection to database
@@ -335,8 +338,9 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
   echo '<div class="row">';
   echo '<div class="col-md-4">
   <div class="alert alert-info" role="alert">
-  <p>Vorgemeldete Personen</p>
+  <p>Vorgemeldete Personen Insgesamt</p>
   <h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day.' / Erledigt: '.$stat_val_total_day_used.'</h3>
+  <h3><span class="FAIR-text-sm">Nicht erschienen bis '.$hourNow.' Uhr: </span> '.$stat_val_total_day_unused.'</h3>
   <h3><span class="FAIR-text-sm">morgen</span> '.$stat_val_total_fday.'</h3>
   </div>';
 
@@ -369,7 +373,8 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
   }
 
   if($stat_val_total_day_st>0) {
-      echo '<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day_st.' / Erledigt: '.$stat_val_total_day__st_used.'</h3>';
+      echo '<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day_st.' / Erledigt: '.$stat_val_total_day_st_used.'</h3>';
+      echo '<h3><span class="FAIR-text-sm">Nicht erschienen bis '.$hourNow.' Uhr: </span> '.$stat_val_total_day_st_unused.'</h3>';
   } else {
       echo '<h3><span class="FAIR-text-sm">(heute keine Impfungen geplant)</span></h3>';
   }
@@ -388,16 +393,19 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
   $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort FROM Station;');
   $today=date("Y-m-d",time());
   $tomorrow=date("Y-m-d",time() + 60 * 60 * 24);
+  $hourNow=date('H',time());
 
   $stat_val_total_fday=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$tomorrow.'\';');
   $stat_val_total_day=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$today.'\';');
 
   $stat_val_total_day_used=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$today.'\' and Used=1;');
+  $stat_val_total_day_unused=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termin_id=Termine.id WHERE Date(Voranmeldung.Tag)=\''.$today.'\' AND Voranmeldung.Used=0 AND Termine.Stunde < '.$hourNow.';');
 
   $stat_val_total_day_st=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$today.'\' AND Termine.id_station='.$station.';');
   $stat_val_total_fday_st=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$tomorrow.'\' AND Termine.id_station='.$station.';');
 
-  $stat_val_total_day__st_used=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$today.'\' AND Termine.id_station='.$station.' and Voranmeldung.Used=1;');
+  $stat_val_total_day_st_used=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$today.'\' AND Termine.id_station='.$station.' and Voranmeldung.Used=1;');
+  $stat_val_total_day_st_unused=S_get_entry($Db,'SELECT count(Voranmeldung.id) From Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Date(Voranmeldung.Tag)=\''.$today.'\' AND Termine.id_station='.$station.' AND Voranmeldung.Used=0 AND Termine.Stunde < '.$hourNow.';');
 
 
   // Close connection to database
@@ -408,6 +416,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
   <div class="alert alert-info" role="alert">
   <p>Vorgemeldete Personen</p>
   <h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day.' / Erledigt: '.$stat_val_total_day_used.'</h3>
+  <h3><span class="FAIR-text-sm">Nicht erschienen bis '.$hourNow.' Uhr: </span> '.$stat_val_total_day_unused.'</h3>
   <h3><span class="FAIR-text-sm">morgen</span> '.$stat_val_total_fday.'</h3>
   </div>';
 
@@ -440,7 +449,8 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
   }
 
   if($stat_val_total_day_st>0) {
-      echo '<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day_st.' / Erledigt: '.$stat_val_total_day__st_used.'</h3>';
+      echo '<h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day_st.' / Erledigt: '.$stat_val_total_day_st_used.'</h3>';
+      echo '<h3><span class="FAIR-text-sm">Nicht erschienen bis '.$hourNow.' Uhr: </span> '.$stat_val_total_day_st_unused.'</h3>';
   } else {
       echo '<h3><span class="FAIR-text-sm">(heute keine Antikoerpertests geplant)</span></h3>';
   }
