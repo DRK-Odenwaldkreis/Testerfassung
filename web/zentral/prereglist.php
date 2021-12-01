@@ -90,7 +90,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
               header('Content-Disposition: attachment; filename="'.basename($file).'"');
               header('Pragma: no-cache');
               header('Expires: 0');
-              readfile($filenam);
+              readfile($filename);
               exit;
           }
           
