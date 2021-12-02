@@ -438,7 +438,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <div class="alert alert-info" role="alert">
                 <div style="text-align: center;">
                     <h3><b>Sie haben Fragen?</b></h3>
-                    <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
+                    <p>Schreiben Sie uns an <p><a href="https://portal-civ.ekom21.de/civ.public/start.html?oe=00.00.LKOW&mode=cc&cc_key=Impfhotline">Kontaktformular</a></p>
                     
                     <h3><b>Zentrale Service-Hotline</b></h3>
                     <h4><b><a href="tel:+496062703346">06062 70 33 46</a></b></h4>
