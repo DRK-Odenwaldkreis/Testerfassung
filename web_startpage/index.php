@@ -52,7 +52,7 @@ echo $GLOBALS['G_html_main_right_a'];
     <div class="col-md-4 col-xs-12 main-link-page">
         <div class="header_icon" style="border: 1px solid transparent;border-radius: 4px;border-color: #776346;padding-top:12px;">
         <div class="row">
-        <div class="col-xs-6">
+        <div class="col-lg-5 col-xs-4">
 <?php
     if(!$GLOBALS['FLAG_SHUTDOWN_VACCINATE']) {
         echo '<img src="img/impfzentrum.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 100%; border: solid 1px #5a482d; cursor: pointer;" onclick="window.location=\'https://www.impfzentrum-odw.de\'"></img>';
@@ -61,10 +61,10 @@ echo $GLOBALS['G_html_main_right_a'];
     }
 ?>
         </div>
-        <div class="col-xs-3">
+        <div class="col-lg-3 col-xs-3">
         <img src="https://corona.odenwaldkreis.de/wp-content/uploads/2020/04/odenwaldkreislogo.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 100%; border: solid 1px #5a482d;">
         </div>
-        <div class="col-xs-3">
+        <div class="col-lg-4 col-xs-5">
         <div class="caption">
         <h5>im Auftrag des<br>Landkreis<br>Odenwaldkreis</h5>
         </div>
@@ -87,6 +87,13 @@ echo $GLOBALS['G_html_main_right_a'];
 
         </div>
         </div>
+        <div class="FAIRsepdown"></div>
+        <div style="text-align: center;">
+            <p>Bei Fragen zu den Impfmöglichkeiten: <a href="https://portal-civ.ekom21.de/civ.public/start.html?oe=00.00.LKOW&mode=cc&cc_key=Impfhotline">Kontaktformular</a></p>
+            <p><b>Montag bis Freitag von 8:00 bis 16:00 Uhr: <a href="tel:+496062703346">06062 70 33 46</a></b></p>
+
+        </div>
+        <div class="FAIRsepdown"></div>
     </div>
     <div class="col-md-4 col-xs-12 main-link-page">
         <div class="header_icon" style="border: 1px solid transparent;border-radius: 4px;border-color: #776346;padding-top:12px;">
@@ -112,6 +119,12 @@ echo $GLOBALS['G_html_main_right_a'];
         </p>
         </div>
         </div>
+        <div class="FAIRsepdown"></div>
+        <div style="text-align: center;">
+            <p>Bei Fragen zu den Testmöglichkeiten:</p>
+            <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
+        </div>
+        <div class="FAIRsepdown"></div>
     </div>
 
     <div class="col-md-4 col-xs-12 main-link-page">
@@ -138,47 +151,24 @@ echo $GLOBALS['G_html_main_right_a'];
         </p>
         </div>
         </div>
+        <div class="FAIRsepdown"></div>
+        <div style="text-align: center;">
+            <p>Bei Fragen zu den Testmöglichkeiten:</p>
+            <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
+        </div>
+        <div class="FAIRsepdown"></div>
     </div>
 
     </div>
 
     <div class="FAIRsepdown"></div>
-    <div class="row">
-        <div class="col-lg-4 col-sm-12">
-            <div style="text-align: center;">
-                <p>Bei Fragen zu den Impfmöglichkeiten:</p>
-                <p><a href="https://portal-civ.ekom21.de/civ.public/start.html?oe=00.00.LKOW&mode=cc&cc_key=Impfhotline">Kontaktformular</a></p>
-                <p><b>Montag bis Freitag von 8:00 bis 16:00 Uhr:  </b><b><a href="tel:+496062703346">06062 70 33 46</a></b></p>
-
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-12">
-            <div style="text-align: center;">
-                <p>Bei Fragen zu den Testmöglichkeiten:</p>
-                <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-12">
-            <div style="text-align: center;">
-                <p>Bei Fragen zu den Testmöglichkeiten:</p>
-                <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
-            </div>
-        </div>
-    </div>
-    <br> <br>
-    <center>
+    <div style="text-align: center;">
     <p>Bei Fragen können Sie sich auch an das Personal vor Ort wenden.</p>
     <p>Bitte erscheinen Sie nur, wenn Sie frei von den typischen Symptomen, wie Fieber, trockenem Husten oder plötzlichem Verlust des Geruchs- oder Geschmackssinnes sind.</p>
-    </center>
-    <div class="FAIRsepdown"></div>
-    <div class="FAIRsepdown"></div>
-    <div class="FAIRsepdown"></div>
-    <div class="FAIRsepdown"></div>
-    <div class="FAIRsepdown"></div>
-    <div class="FAIRsepdown"></div>
-    <div class="FAIRsepdown"></div>
-    <div class="FAIRsepdown"></div>
+    </div>
     
+    <div class="FAIRsepdown"></div>
+    <div class="FAIRsepdown"></div>    
     <div class="FAIRsepdown"></div>
     <div class="FAIRsep"></div>
 </div>

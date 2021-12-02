@@ -43,7 +43,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
     $name_facility='Impfzentrum';
     $doing_facility='Antikörper-Testungen';
-    $email_facility='impfzentrum@drk-odenwaldkreis.de';
+    $email_facility='testzentrum@drk-odenwaldkreis.de';
     $logo_facility='impfzentrum.jpg';
 
 }
