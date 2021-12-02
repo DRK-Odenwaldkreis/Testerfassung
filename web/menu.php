@@ -78,13 +78,8 @@ $G_html_menu2.='</div>
           <ul class="nav navbar-nav navbar-right">
           <li><a href="https://www.drk-coronazentrum.de/">DRK Cononazentrum<span class="shorten"> ODW</span></a></li>';
 
-if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-	$G_html_menu2.='<li><a href="impressum_test.php">Impressum / Datenschutz<span class="shorten"> / Kontakt</span></a></li>';
-} elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-	$G_html_menu2.='<li><a href="impressum_impf.php">Impressum / Datenschutz<span class="shorten"> / Kontakt</span></a></li>';
-} elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
-	$G_html_menu2.='<li><a href="impressum_impf.php">Impressum / Datenschutz<span class="shorten"> / Kontakt</span></a></li>';
-}
+$G_html_menu2.='<li><a href="impressum.php">Impressum / Datenschutz<span class="shorten"> / Kontakt</span></a></li>';
+
 
 $G_html_menu2.='</ul>
         

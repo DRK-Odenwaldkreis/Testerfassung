@@ -676,7 +676,7 @@ function H_build_table_testdates2( $mode ) {
 				for($j=0;$j<$X;$j++) {
 					$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
 					if($j==0) {
-						if($mode == 'vaccinate' || $mode == 'b2b-vaccinate') {
+						/* if($mode == 'vaccinate' || $mode == 'b2b-vaccinate') {
 							// TODAY do not show past entries AND do not show entries after certain hour of day has reached
 							$hour_limit_monfri=11;
 							$hour_limit_satsun=8;
@@ -688,11 +688,11 @@ function H_build_table_testdates2( $mode ) {
 							} else {
 								$array_termine_open=array(0,0);
 							}
-						} else {
+						} else { */
 							// TODAY do not show past entries
 							$current_hour=date('G');
 							$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" AND Stunde>='.$current_hour.';');
-						}
+						/* } */
 					} else {
 						$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'";');
 					}
