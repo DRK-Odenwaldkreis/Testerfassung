@@ -176,7 +176,7 @@ def send_positive_result(vorname, nachname, mail, date, geburtsdatum):
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
         message['Reply-To'] = FROM_EMAIL
         message['To'] = mail
-        files = ['../utils/Share/2021-03-11Anhang_Gesundheitsamt.pdf',
+        files = ['../utils/Share/Informationen_Gesundheitsamt.pdf',
                  '../utils/Share/HMSI-Informationen.pdf']
         for item in files:
             attachment = open(item, 'rb')
