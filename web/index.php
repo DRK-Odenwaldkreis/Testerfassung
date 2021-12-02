@@ -392,10 +392,6 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <div style="text-align: center;">
                 <h3><b>Sie haben Fragen?</b></h3>
                 <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
-                
-                <h3><b>Zentrale Service-Hotline</b></h3>
-                <h4><b><a href="tel:+496062703346">06062 70 33 46</a></b></h4>
-                <p><b>Montag bis Freitag von 8:00 bis 16:00 Uhr</b></p>
             </div>
         </div>
     </div>
@@ -451,7 +447,6 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             </div>
         </div>';
     echo '
-
         <div class="col-lg-4 col-sm-6">
             <div class="alert alert-info" role="alert">
             <div class="caption center_text">
@@ -514,10 +509,6 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                 <div style="text-align: center;">
                     <h3><b>Sie haben Fragen?</b></h3>
                     <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
-                    
-                    <h3><b>Zentrale Service-Hotline</b></h3>
-                    <h4><b><a href="tel:+496062703346">06062 70 33 46</a></b></h4>
-                    <p><b>Montag bis Freitag von 8:00 bis 16:00 Uhr</b></p>
                 </div>
             </div>
         </div>

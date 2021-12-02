@@ -143,16 +143,33 @@ echo $GLOBALS['G_html_main_right_a'];
     </div>
 
     <div class="FAIRsepdown"></div>
-    <div class="col-sm-12">
-        <div style="text-align: center;">
-            <h2><b>Zentrale Service-Hotline</b></h2>
-            <h3><b><a href="tel:+496062703346">06062 70 33 46</a></b></h3>
-            <p><b>Montag bis Freitag von 8:00 bis 16:00 Uhr</b></p>
+    <div class="row">
+        <div class="col-lg-4 col-sm-12">
+            <div style="text-align: center;">
+                <p>Bei Fragen zu den Impfmöglichkeiten:</p>
+                <p><a href="https://portal-civ.ekom21.de/civ.public/start.html?oe=00.00.LKOW&mode=cc&cc_key=Impfhotline">Kontaktformular</a></p>
+                <p><b>Montag bis Freitag von 8:00 bis 16:00 Uhr:  </b><b><a href="tel:+496062703346">06062 70 33 46</a></b></p>
 
-            <p>Bei Fragen können Sie sich auch an das Personal vor Ort wenden.</p>
-            <p>Bitte erscheinen Sie nur, wenn Sie frei von den typischen Symptomen, wie Fieber, trockenem Husten oder plötzlichem Verlust des Geruchs- oder Geschmackssinnes sind.</p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-12">
+            <div style="text-align: center;">
+                <p>Bei Fragen zu den Testmöglichkeiten:</p>
+                <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-12">
+            <div style="text-align: center;">
+                <p>Bei Fragen zu den Testmöglichkeiten:</p>
+                <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
+            </div>
         </div>
     </div>
+    <br> <br>
+    <center>
+    <p>Bei Fragen können Sie sich auch an das Personal vor Ort wenden.</p>
+    <p>Bitte erscheinen Sie nur, wenn Sie frei von den typischen Symptomen, wie Fieber, trockenem Husten oder plötzlichem Verlust des Geruchs- oder Geschmackssinnes sind.</p>
+    </center>
     <div class="FAIRsepdown"></div>
     <div class="FAIRsepdown"></div>
     <div class="FAIRsepdown"></div>

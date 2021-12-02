@@ -33,11 +33,18 @@ echo $GLOBALS['G_html_main_right_a'];
 echo '<h3 class="imprint">Impressum und Kontakt</h3>
 <a href="https://drk-odenwaldkreis.de/impressum/">Direkt beim DRK Kreisverband Odenwaldkreis e. V.</a>';
 
-echo '<h3 class="imprint">Rückfragen</h3>
-<p>Bei Fragen zum Testergebnis, den Impfmöglichkeiten oder organisatorischen Anfragen bitte eine E-Mail schreiben an:</p>
-<p><a href="mailto:corona-sb@drk-odenwaldkreis.de">corona-sb@drk-odenwaldkreis.de</a></p>
-<p>Service-Hotline <a href="tel:+496062703346">06062 70 33 46</a></p>
-<p>&nbsp;</p>';
+
+    echo '<h3 class="imprint">Rückfragen Impfen</h3>
+    <p>Bei Fragen zu den Impfmöglichkeiten oder organisatorischen Anfragen:</p>
+    <p><a href="https://portal-civ.ekom21.de/civ.public/start.html?oe=00.00.LKOW&mode=cc&cc_key=Impfhotline">Kontaktformular</a></p>
+    <p>Service-Hotline <a href="tel:+496062703346">06062 70 33 46</a></p>
+    <p>&nbsp;</p>';
+
+    echo '<h3 class="imprint">Rückfragen Testen</h3>
+    <p>Bei Fragen zum Testen oder organisatorischen Anfragen:</p>
+    <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
+    <p>&nbsp;</p>';
+
 
 echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörden</h3>
 <p><a target="_blank" href="https://github.com/DRK-Odenwaldkreis/Testerfassung">Für die Dokumentation der Web-Anwendung hier klicken</a></p>
