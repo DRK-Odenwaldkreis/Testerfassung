@@ -627,7 +627,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         <div class="caption">
             <h3>Allgemeine Info des Gesundheitsamtes Odenwaldkreis</h3>
             <br>
-            <p><a href="download/2021-03-11Anhang_Gesundheitsamt.pdf" class="btn btn-primary" role="button">Download PDF</a></p>
+            <p><a href="download/Informationen_Gesundheitsamt.pdf" class="btn btn-primary" role="button">Download PDF</a></p>
         </div>
         </div>
         </div>
