@@ -3,5 +3,5 @@
 # This file is part of DRK Testerfassung.
 
 echo "Starting Cleanup"
-rm -rf /home/webservice/Reports/*
+rm -fv /home/webservice/Reports/*
 echo "Cleanup complete"
