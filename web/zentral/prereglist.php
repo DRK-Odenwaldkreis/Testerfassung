@@ -213,11 +213,12 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
 
   echo '</div>';
 
-  echo '
-  <div class="col-sm-12">
-  <table class="FAIR-data" id="maintable" data-order=\'[[ 7, "asc" ]]\' data-page-length=\'1000\'>';
+  
   
   if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+    echo '
+    <div class="col-sm-12">
+    <table class="FAIR-data" id="maintable" data-order=\'[[ 7, "asc" ]]\' data-page-length=\'1000\'>';
     echo '<thead>
     <tr>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Reg Transfer</h4></td>
@@ -232,6 +233,9 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     </tr>
     </thead><tbody>';
   } else {
+    echo '
+    <div class="col-sm-12">
+    <table class="FAIR-data" id="maintable" data-order=\'[[ 5, "asc" ]]\' data-page-length=\'1000\'>';
     echo '<thead>
     <tr>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Person bestätigen</h4></td>
@@ -240,7 +244,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Name</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Kontakt</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">(Sortiert)</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Nummer</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"></td>
     </tr>
     </thead><tbody>';
@@ -312,9 +316,15 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">
     <a target="_blank" class="list-group-item list-group-item-action list-group-item-redtext" href="../registration/index.php?cancel=cancel&t='.$i[10].'&i='.$i[0].'" title="Registrierung löschen"><span class="icon-remove2"></span>&nbsp;Löschen</a></td>
     ';
+    if($GLOBALS['FLAG_MODE_MAIN'] == 2 || $GLOBALS['FLAG_MODE_MAIN'] == 3) {
     echo '
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[15].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><a class="list-group-item list-group-item-action list-group-item-redtext" href="edit_person.php?id='.$i[0].'"><span class="icon-pencil"></span>&nbsp;Ändern</a></td>
       ';
+    } else {
+      echo '
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"></td>
+      ';
+    }
     echo '</tr>';
   }
   echo '</tbody></table></div></div>';

@@ -602,7 +602,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             $calendar=H_build_table_testdates2('antikoerper');
         }
         //large display
-        echo '<div class="calendar-large">';
+        echo '<div class="calendar-large" style="overflow-x: scroll;">';
         echo $calendar[0];
         echo '</div>';
         // small display
