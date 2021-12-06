@@ -451,7 +451,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <div class="alert alert-info" role="alert">
             <div class="caption center_text">
             <h3>Auffrischungsimpfung / Booster</h3>
-            <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens sechs Monate nach vollständiger Impfung möglich!</p>
+            <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens fünf Monate nach vollständiger Impfung möglich!</p>
             </div>
             </div>
         </div>
@@ -459,7 +459,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <div class="alert alert-warning" role="alert">
             <div class="caption center_text">
             <h3>Parkmöglichkeiten für Erbach</h3>
-            <p>Am Wiesenmarktgelände gibt es ausreichend Parkmöglichkeiten, die Sie bitte nutzen können.</p>
+            <p>AAuf dem Parkdeck am Lustgarten sind Parkmöglichkeiten, die Sie bitte nutzen können.</p>
             </div>
             </div>
         </div>

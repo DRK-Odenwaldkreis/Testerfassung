@@ -161,7 +161,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                     </div>
                     <div class="alert alert-info" role="alert">
                     <h3>Auffrischungsimpfung / Booster</h3>
-                    <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens sechs Monate nach vollständiger Impfung möglich!</p>
+                    <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens fünf Monate nach vollständiger Impfung möglich!</p>
                     </div>';
                 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
                     echo '<div class="alert alert-info" role="alert">
@@ -726,7 +726,7 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                     </div>
                     <div class="alert alert-info" role="alert">
                     <h3>Auffrischungsimpfung / Booster</h3>
-                    <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens sechs Monate nach vollständiger Impfung möglich!</p>
+                    <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens fünf Monate nach vollständiger Impfung möglich!</p>
                     </div>';
                 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
                     echo '<div class="alert alert-info" role="alert">
