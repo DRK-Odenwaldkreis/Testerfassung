@@ -182,8 +182,13 @@ function S_set_entry_voranmeldung ($Db,$array_data) {
 }
 function S_set_entry_voranmeldung_vaccinate ($Db,$array_data) {
 	// First, check if Termin_id is already used by same person (  to fix a bug found by N.B. <3  )
-	$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Mailadresse=? AND Tag=?;");
-	mysqli_stmt_bind_param($stmt, "ssssssss", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[5]);
+	if($array_data[3]=='') {
+		$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Tag=?;");
+		mysqli_stmt_bind_param($stmt, "sssssss", $array_data[0], $array_data[1], $array_data[2], $array_data[5]);
+	} else {
+		$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Mailadresse=? AND Tag=?;");
+		mysqli_stmt_bind_param($stmt, "ssssssss", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[5]);
+	}
 	mysqli_stmt_execute($stmt);
 	mysqli_stmt_bind_result($stmt, $double_entry_id);
 	mysqli_stmt_fetch($stmt);
@@ -222,17 +227,20 @@ function S_set_entry_voranmeldung_vaccinate ($Db,$array_data) {
 	if($termin_slot>0) {
 		S_set_data($Db,'UPDATE Termine SET Used=1 WHERE id=CAST('.$termin_id.' as int);');
 	}
-	$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Telefon, Mailadresse, Termin_id, Tag) VALUES (?,?,?,?,?,?);");
-	mysqli_stmt_bind_param($stmt, "ssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $termin_id, $array_data[5]);
+	if($array_data[3]=='') {
+		$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Telefon, Termin_id, Tag) VALUES (?,?,?,?,?);");
+		mysqli_stmt_bind_param($stmt, "sssis", $array_data[0], $array_data[1], $array_data[2], $termin_id, $array_data[5]);
+	} else {
+		$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Telefon, Mailadresse, Termin_id, Tag) VALUES (?,?,?,?,?,?);");
+		mysqli_stmt_bind_param($stmt, "ssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $termin_id, $array_data[5]);
+	}
 	mysqli_stmt_execute($stmt);
 	mysqli_stmt_bind_result($stmt, $result);
 	mysqli_stmt_fetch($stmt);
 	mysqli_stmt_close($stmt);
 
-
-
-	$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Mailadresse=? AND Termin_id=? AND Tag=? ORDER BY id DESC;");
-	mysqli_stmt_bind_param($stmt, "ssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $termin_id, $array_data[5]);
+	$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Termin_id=? AND Tag=? ORDER BY id DESC;");
+	mysqli_stmt_bind_param($stmt, "sssis", $array_data[0], $array_data[1], $array_data[2], $termin_id, $array_data[5]);
 	mysqli_stmt_execute($stmt);
 	mysqli_stmt_bind_result($stmt, $result2);
 	mysqli_stmt_fetch($stmt);
@@ -691,7 +699,8 @@ function H_build_table_testdates2( $mode ) {
 						} else { */
 							// TODAY do not show past entries
 							$current_hour=date('G');
-							$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" AND Stunde>='.$current_hour.';');
+							$current_slot=intval(date('i')/15);
+							$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" AND Stunde>='.$current_hour.' AND Slot>'.$current_slot.';');
 						/* } */
 					} else {
 						$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'";');

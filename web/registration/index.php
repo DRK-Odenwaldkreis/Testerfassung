@@ -108,7 +108,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             echo '<p>Ihr gewählter Termin liegt in der Vergangenheit.</p>
             <p>Bitte wählen Sie neu auf der <a href="../index.php">Startseite</a>.</p>
             </div>';
-        } elseif (filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
+        } elseif ( ($k_email=='' && $GLOBALS['FLAG_MODE_MAIN'] == 2 && $_SESSION['b2b_signedin']) || filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                 $prereg_id=S_set_entry_voranmeldung($Db,array($k_vname,$k_nname,$k_geb,$k_adresse,$k_ort,$k_telefon,$k_email,$k_slot_id,$k_date,$k_cwa_req,$k_pcr_grund));
             } else {
@@ -123,27 +123,43 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                 echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="../index.php">Zur Startseite</a>';
                 echo '</div>';
             } elseif($prereg_id>0) {
-                // Generate verification via email
-                $token_ver=A_generate_token(16);
-                S_set_data($Db,'INSERT INTO Voranmeldung_Verif (Token,id_preregistration) VALUES (\''.$token_ver.'\','.$prereg_id.');');
-                // Send email for verification
-                $header = "From: no-reply@testzentrum-odenwald.de\r\n";
-                $header .= "Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit";
-                $content="Guten Tag,\n
-Sie wurden soeben für einen Termin im DRK $name_facility Odenwaldkreis eingetragen. Falls diese Anfrage von Ihnen nicht initiiert wurde, können Sie diese Nachricht ignorieren.\n
-Bitte mit diesem Link den Termin bestätigen:\n";
-                $content.=$FLAG_http.'://'.$hostname.($path == '/' ? '' : $path)."/index.php?confirm=confirm&t=$token_ver&i=$prereg_id";
-                $content.="\n\n
-Mit freundlichen Grüßen\n
-Das Team vom DRK $name_facility Odenwaldkreis";
-                $title='DRK Covid-19 '.$name_facility.' Odenwaldkreis - Termin bestätigen';
-                $res=mail($k_email, $title, $content, $header, "-r no-reply@testzentrum-odenwald.de");
+                
+                
+                
+                if($GLOBALS['FLAG_MODE_MAIN'] == 2 && $_SESSION['b2b_signedin']) {
+                    // No verification via email - is internal usage w/o email verification - direct token
+                    $token_ver=A_generate_token(8);
+                    while( (S_get_entry($Db,'SELECT id FROM Voranmeldung WHERE Token=\''.$token.'\'')>0) ) {
+                        $token=A_generate_token(8);
+                    }
+                    S_set_data($Db,'UPDATE Voranmeldung SET Token="P'.$token_ver.'" WHERE id='.$prereg_id.';');
+                    echo '<div class="alert alert-success" role="alert">
+                    <h3>Ihre Daten wurden gespeichert</h3>
+                    <p>Die Person wurde für den Termin eingetragen. Der Anmeldevorgang ist beendet.</p>
+                    </div>';
+                } else {
+                    // Generate verification via email
+                    $token_ver=A_generate_token(16);
+                    S_set_data($Db,'INSERT INTO Voranmeldung_Verif (Token,id_preregistration) VALUES (\''.$token_ver.'\','.$prereg_id.');');
+                    // Send email for verification
+                    $header = "From: no-reply@testzentrum-odenwald.de\r\n";
+                    $header .= "Content-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit";
+                    $content="Guten Tag,\n
+    Sie wurden soeben für einen Termin im DRK $name_facility Odenwaldkreis eingetragen. Falls diese Anfrage von Ihnen nicht initiiert wurde, können Sie diese Nachricht ignorieren.\n
+    Bitte mit diesem Link den Termin bestätigen:\n";
+                    $content.=$FLAG_http.'://'.$hostname.($path == '/' ? '' : $path)."/index.php?confirm=confirm&t=$token_ver&i=$prereg_id";
+                    $content.="\n\n
+    Mit freundlichen Grüßen\n
+    Das Team vom DRK $name_facility Odenwaldkreis";
+                    $title='DRK Covid-19 '.$name_facility.' Odenwaldkreis - Termin bestätigen';
+                    $res=mail($k_email, $title, $content, $header, "-r no-reply@testzentrum-odenwald.de");
 
-                echo '<div class="alert alert-success" role="alert">
-                <h3>Ihre Daten wurden gespeichert</h3>
-                <p>Sie erhalten jetzt eine E-Mail, die Sie bestätigen müssen. Hierfür haben Sie 20 Minuten Zeit, andernfalls wird Ihr Termin wieder freigegeben und Ihre Daten gelöscht.</p>
-                <p><i>Schauen Sie auch in Ihrem Spam-Ordner, falls die E-Mail nicht ankommt.</i></p>
-                </div>';
+                    echo '<div class="alert alert-success" role="alert">
+                    <h3>Ihre Daten wurden gespeichert</h3>
+                    <p>Sie erhalten jetzt eine E-Mail, die Sie bestätigen müssen. Hierfür haben Sie 20 Minuten Zeit, andernfalls wird Ihr Termin wieder freigegeben und Ihre Daten gelöscht.</p>
+                    <p><i>Schauen Sie auch in Ihrem Spam-Ordner, falls die E-Mail nicht ankommt.</i></p>
+                    </div>';
+                }
 
                 if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                     echo '<div class="alert alert-info" role="alert">
@@ -152,6 +168,16 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                     <p>Bitte tragen Sie Ihre Daten ein. Sie erhalten anschließend eine E-Mail, die Sie bestätigen müssen.</p>
                     <p>Nach Abschluss des Registrierungsprozesses erhalten Sie auf Ihre E-Mail-Adresse einen QR-Code, den Sie bei dem Testzentrum vorzeigen müssen (gedruckt oder auf dem Display). Bitte halten Sie im Testzentrum auch einen Lichtbildausweis bereit.</p>
                     <p>Das Ergebnis Ihres Tests wird Ihnen nach dem Abstrich per E-Mail zugeschickt.</p>
+                    </div>';
+                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2 && $_SESSION['b2b_signedin']) {
+                    echo '<div class="alert alert-info" role="alert">
+                    <h3>Ablauf</h3>
+                    <p>Bitte wählen Sie einen freien Termin für jede Person, die geimpft werden soll.</p>
+                    <p>Bitte tragen Sie Ihre Daten ein.</p>
+                    </div>
+                    <div class="alert alert-info" role="alert">
+                    <h3>Auffrischungsimpfung / Booster</h3>
+                    <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens sechs Monate nach vollständiger Impfung möglich!</p>
                     </div>';
                 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                     echo '<div class="alert alert-info" role="alert">
@@ -789,9 +815,15 @@ Das Team vom DRK $name_facility Odenwaldkreis";
                         }
 
                         echo '
-                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-                        ';
+                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>';
+                        if($GLOBALS['FLAG_MODE_MAIN'] == 2 && $_SESSION['b2b_signedin']) {
+                            echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1"></div>
+                            <p>* optional</p>
+                            ';
+                        } else {
+                            echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+                            ';
+                        }
                         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                             if($val_cwa_connection==1 && $pcr_test==0) {
                                 echo '<div class="FAIRsepdown"></div>

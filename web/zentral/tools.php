@@ -338,7 +338,7 @@ function H_build_table_testdates_all($mode) {
 	if($mode == 'vaccinate') {
 		$X=35;
 	} else {
-		$X=14;
+		$X=21;
 	}
 	// Ohne Terminbuchung für nächste X Tage / free2come
 	$today=date('Y-m-d');

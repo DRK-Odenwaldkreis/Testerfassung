@@ -448,15 +448,17 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         </div>';
     echo '
         <div class="col-lg-4 col-sm-6">
-            <div class="alert alert-info" role="alert">
+            <div class="alert alert-warning" role="alert">
             <div class="caption center_text">
             <h3>Auffrischungsimpfung / Booster</h3>
             <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens fünf Monate nach vollständiger Impfung möglich!</p>
+            <h3>Impfstoff Spikevax von Moderna</h3>
+            <p>Der Impfstoff Spikevax von Moderna ist nur für Personen ab 30 Jahren zulässig - bitte beachten Sie dies bei der Terminwahl. Ein Wechsel auf einen anderen Impfstoff vor Ort ist nicht möglich.</p>
             </div>
             </div>
         </div>
         <div class="col-lg-4 col-sm-6">
-            <div class="alert alert-warning" role="alert">
+            <div class="alert alert-info" role="alert">
             <div class="caption center_text">
             <h3>Parkmöglichkeiten für Erbach</h3>
             <p>AAuf dem Parkdeck am Lustgarten sind Parkmöglichkeiten, die Sie bitte nutzen können.</p>
@@ -600,7 +602,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             $calendar=H_build_table_testdates2('antikoerper');
         }
         //large display
-        echo '<div class="calendar-large">';
+        echo '<div class="calendar-large" style="overflow-x: scroll;">';
         echo $calendar[0];
         echo '</div>';
         // small display
