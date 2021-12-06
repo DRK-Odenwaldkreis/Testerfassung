@@ -317,7 +317,11 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       }
     } else {
       echo '
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[1].', '.$i[2].'</td>';
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[1].', '.$i[2];
+      if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+        echo '<br>geb. '.$birthDate;
+      }
+      echo '</td>';
       if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         echo '
         <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'<br>'.$i[4].'</td>';

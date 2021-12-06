@@ -460,8 +460,8 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         <div class="col-lg-4 col-sm-6">
             <div class="alert alert-info" role="alert">
             <div class="caption center_text">
-            <h3>Parkmöglichkeiten für Erbach</h3>
-            <p>AAuf dem Parkdeck am Lustgarten sind Parkmöglichkeiten, die Sie bitte nutzen können.</p>
+            <h3>Parkmöglichkeiten für das Impfzentrum Erbach</h3>
+            <p>Auf dem Parkdeck am Lustgarten sind Parkmöglichkeiten, die Sie bitte nutzen können.</p>
             </div>
             </div>
         </div>

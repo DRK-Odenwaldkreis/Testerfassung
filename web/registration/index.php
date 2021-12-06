@@ -19,7 +19,7 @@ include_once 'tools.php';
 include_once 'auth.php';
 include_once 'menu.php';
 
-$current_site="index";
+$current_site="index2";
 
 
 // Print html header
@@ -72,6 +72,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
         // ///////////////
 
         // save data
+        $age_verif=true;
         $k_nname=A_sanitize_input_light($_POST['nname']);
         $k_vname=A_sanitize_input_light($_POST['vname']);
         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
@@ -81,6 +82,11 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             $k_geb=sprintf('%04d',$gebdatum_y).'-'.sprintf('%02d',$gebdatum_m).'-'.sprintf('%02d',$gebdatum_d);
             $k_adresse=A_sanitize_input_light($_POST['adresse']);
             $k_ort=A_sanitize_input_light($_POST['ort']);
+        } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+            $gebdatum_d = A_sanitize_input_light($_POST['gebdatum_d']);
+            $gebdatum_m = A_sanitize_input_light($_POST['gebdatum_m']);
+            $gebdatum_y = A_sanitize_input_light($_POST['gebdatum_y']);
+            $city_id = A_sanitize_input_light($_POST['city']);
         }
         $k_telefon=A_sanitize_input_light($_POST['telefon']);
         $k_email=A_sanitize_input_light($_POST['email']);
@@ -88,8 +94,24 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
         $k_date=A_sanitize_input_light($_POST['date']);
         $k_int_date=A_sanitize_input_light($_POST['int_date']);
         $k_int_time1=A_sanitize_input_light($_POST['int_time1']);
-        $k_int_time2=A_sanitize_input_light($_POST['int_time1']);
+        $k_int_time2=A_sanitize_input_light($_POST['int_time2']);
         $k_int_location=A_sanitize_input_light($_POST['int_location']);
+        if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+            $k_int_vaccine=A_sanitize_input_light($_POST['int_vaccine']);
+            $min_age=A_sanitize_input_light($_POST['min_age']);
+            if(isset($_POST['vaccine_number'])) { $k_vaccine_number=intval($_POST['vaccine_number']); } else { $k_vaccine_number=null; }
+            if($k_vaccine_number==3) {$k_vaccine_booster=1;} else {$k_vaccine_booster=0;}
+            // check min age of person for vaccine
+            $timestamp_date=strtotime(substr($k_int_date,6,4).'-'.substr($k_int_date,3,2).'-'.substr($k_int_date,0,2));
+            $age = (date("md", date("U", mktime(0, 0, 0, $gebdatum_m, $gebdatum_d, $gebdatum_y))) > date("md",$timestamp_date)
+                ? ((date("Y",$timestamp_date) - $gebdatum_y) - 1)
+                : (date("Y",$timestamp_date) - $gebdatum_y));
+            if($age<$min_age) {
+                $age_verif=false;
+            } else {
+                $age_verif=true;
+            }
+        }
         $k_cwa_req=$_POST['cb_cwa'];
         if($k_cwa_req=='on') { $k_cwa_req=1; } else { $k_cwa_req=0; }
         $k_cwa_anonym_req=$_POST['cb_cwa_anonym'];
@@ -108,11 +130,21 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             echo '<p>Ihr gewählter Termin liegt in der Vergangenheit.</p>
             <p>Bitte wählen Sie neu auf der <a href="../index.php">Startseite</a>.</p>
             </div>';
+        } elseif(!$age_verif) {
+            // Age verification not passed - person is too young
+            echo '<div class="alert alert-warning" role="alert">
+            <h3>Altersverifikation</h3>';
+            echo '<p>Ihr gewählter Impfstoff hat ein Mindestalter, die Person muss mindestens '.$min_age.' Jahre alt sein.</p>
+            <p>Die eingetragene Person ist allerdings am Tag der Impfung erst '.$age.' Jahre alt - entsprechend Ihrer Eingabe.</p>
+            <p>Bitte wählen Sie einen anderen Impfstoff auf der <a href="../index.php">Startseite</a>.</p>
+            </div>';
         } elseif ( ($k_email=='' && $GLOBALS['FLAG_MODE_MAIN'] == 2 && $_SESSION['b2b_signedin']) || filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                 $prereg_id=S_set_entry_voranmeldung($Db,array($k_vname,$k_nname,$k_geb,$k_adresse,$k_ort,$k_telefon,$k_email,$k_slot_id,$k_date,$k_cwa_req,$k_pcr_grund));
+            } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+                $prereg_id=S_set_entry_voranmeldung_vaccinate($Db,array($k_vname,$k_nname,$k_geb,$k_telefon,$k_email,$k_slot_id,$k_date,$k_vaccine_booster));
             } else {
-                $prereg_id=S_set_entry_voranmeldung_vaccinate($Db,array($k_vname,$k_nname,$k_telefon,$k_email,$k_slot_id,$k_date));
+                $prereg_id=S_set_entry_voranmeldung_vaccinate($Db,array($k_vname,$k_nname,'',$k_telefon,$k_email,$k_slot_id,$k_date,0));
             }
             if($prereg_id=='DOUBLE_ENTRY') {
                 echo '<div class="alert alert-danger" role="alert">
@@ -244,10 +276,25 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                 <b>Gewählter Termin</b>
                 </div>
                 <div class="panel-body">
-                <div class="row">
-                <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$k_int_date.'</span></div>
-                <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="'.$color_cal_facility.'">'.$k_int_time1.' - '.$k_int_time2.' Uhr</span></div>
-                <div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$k_int_location.'</span></div>
+                <div class="row">';
+
+
+                if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                    echo '<div class="col-sm-4 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$k_int_date.'</span></div>
+                    <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="'.$color_cal_facility.'">'.$k_int_time1.' - '.$k_int_time2.' Uhr</span></div>
+                    <div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$k_int_location.'</span></div>';
+                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+                    echo '<div class="col-sm-6 col-lg-2 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$k_int_date.'</span></div>
+                    <div class="col-sm-6 col-lg-3 calendar-col"><b>Uhrzeit</b> <span class="'.$color_cal_facility.'">'.$k_int_time1.' - '.$k_int_time2.' Uhr</span></div>
+                    <div class="col-sm-6 col-lg-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$k_int_location.'</span></div>
+                    <div class="col-sm-6 col-lg-3 calendar-col"><b>Impfstoff</b> <span class="'.$color_cal_facility.'">'.$k_int_vaccine.'</span></div>';
+                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+                    echo '<div class="col-sm-4 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$k_int_date.'</span></div>
+                    <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="'.$color_cal_facility.'">'.$k_int_time1.' - '.$k_int_time2.' Uhr</span></div>
+                    <div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$k_int_location.'</span></div>';
+                }
+
+                echo '
                 </div>
                 </div>
                 </div>';
@@ -259,9 +306,13 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     <input type="text" value="'.$k_int_date.'" name="int_date" style="display:none;">
                     <input type="text" value="'.$k_int_time1.'" name="int_time1" style="display:none;">
                     <input type="text" value="'.$k_int_time2.'" name="int_time2" style="display:none;">
-                    <input type="text" value="'.$k_int_location.'" name="int_location" style="display:none;">
+                    <input type="text" value="'.$k_int_location.'" name="int_location" style="display:none;">';
+                if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+                    echo '<input type="text" value="'.$k_int_vaccine.'" name="int_vaccine" style="display:none;">';
+                    echo '<input type="text" value="'.$min_age.'" name="min_age" style="display:none;">';
+                }
 
-                    <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_vname.'" required></div>
+                    echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_vname.'" required></div>
                     <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_nname.'" required></div>';
                     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                         echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span>
@@ -272,6 +323,29 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 
                         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_adresse.'" required></div>
                         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_ort.'" required></div>';
+                    } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+                        $city_array=S_get_multientry($Db,'SELECT ID, PLZ, Gemeinde FROM Gemeinden;');
+                        echo '<div class="FAIRsepdown"></div>
+                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum *1)</span>
+                        <input type="number" min="1" max="31" placeholder="TT" class="form-control" name="gebdatum_d" value="'.$gebdatum_d.'"  required>
+                        <input type="number" min="1" max="12" placeholder="MM" class="form-control" name="gebdatum_m" value="'.$gebdatum_m.'"  required>
+                        <input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" value="'.$gebdatum_y.'"  required>
+                        </div>
+                        <p>*1) Die zu impfende Person muss zum Zeitpunkt der Impfung <b>mindestens '.$min_age.' Jahre</b> alt sein. Das Mindestalter für den gewählten Impfstoff beträgt '.$min_age.' Jahre.</p>
+
+                        <div class="FAIRsepdown"></div>
+                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Gemeinde *2)</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="city" required>
+                        <option value="" selected>Bitte wählen...</option>
+                            ';
+                            foreach($city_array as $i) {
+                                $display=$i[1].' '.$i[2];
+                                if($i[0]==$city_id) {$selected='selected';} else {$selected='';}
+                                echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
+                            }
+                            echo '
+                        </select></div>
+                        <p>*2) Nur Personen aus dem Lk Odenwaldkreis werden für eine Impfung akzeptiert.</p>
+                        <div class="FAIRsepdown"></div>';
                     }
                     
                     echo '
@@ -362,6 +436,24 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             </div>
                             <div class="FAIRsepdown"></div>';
                         }
+                    } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+                        if($k_vaccine_number==1) {$sel_vac_1='selected';$sel_vac_3='';} else {$sel_vac_3='selected';$sel_vac_1='';}
+                        echo '<div class="FAIRsepdown"></div>
+                        <div class="alert alert-warning" role="alert">
+                            <div class="header_icon">
+                                <img src="../img/icon/vaccine.png" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
+                                <div class="caption center_text">
+                                    <h3>Impfung</h3>
+                                    <h4>Wurden Sie bereits geimpft und dies ist eine Auffrischungsimpfung / Booster-Impfung?</h4>
+                                </div>
+                            </div>
+                            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Art der Impfung</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="vaccine_number" required>
+                            <option value="" selected>Bitte wählen...</option>
+                            <option value="1" '.$sel_vac_1.'>Grundimmunisierung (1. bzw. 2. Impfung)</option>
+                            <option value="3" '.$sel_vac_3.'>Auffrischungs-, Booster-Impfung</option>
+                            </select></div>
+                        </div>
+                        <div class="FAIRsepdown"></div>';
                     }
 
                     if($GLOBALS['FLAG_MODE_MAIN'] == 1 && $pcr_test!=1) {
@@ -399,15 +491,15 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 
                     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                         echo '<div class="FAIRsepdown"></div><div class="cb_drk">
-                        <input type="checkbox" id="cb1" name="cb1" required/>
+                        <input type="checkbox" id="cb1" name="cb1" required checked/>
                         <label for="cb1">Ich habe derzeit <b>keine</b> grippeähnlichen Symptome wie Husten, Fieber oder plötzlichen Verlust des Geruchs- oder Geschmackssinnes.</label>
                         </div>
                         <div class="FAIRsepdown"></div><div class="cb_drk">
-                        <input type="checkbox" id="cb2" name="cb2" required/>
+                        <input type="checkbox" id="cb2" name="cb2" required checked/>
                         <label for="cb2">Ich bestätige die wahrheitsgemäße Angabe der Selbsteinschätzung und der angegebenen Daten. Falls sich an den obigen Antworten bis zum Testzeitpunkt etwas ändert, verpflichte ich mich, dies dem Testzentrum vor dem Abstrich mitzuteilen.</label>
                         </div>
                         <div class="FAIRsepdown"></div><div class="cb_drk">
-                        <input type="checkbox" id="cb3" name="cb3" required/>
+                        <input type="checkbox" id="cb3" name="cb3" required checked/>
                         <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
                         (<a href="../impressum_test.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
                         </div>
@@ -420,11 +512,11 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                         ';
                     } else {
                         echo '<div class="FAIRsepdown"></div><div class="cb_drk">
-                        <input type="checkbox" id="cb1" name="cb1" required/>
+                        <input type="checkbox" id="cb1" name="cb1" required checked/>
                         <label for="cb1">Ich habe derzeit <b>keine</b> grippeähnlichen Symptome wie Husten, Fieber oder plötzlichen Verlust des Geruchs- oder Geschmackssinnes.</label>
                         </div>
                         <div class="FAIRsepdown"></div><div class="cb_drk">
-                        <input type="checkbox" id="cb3" name="cb3" required/>
+                        <input type="checkbox" id="cb3" name="cb3" required checked/>
                         <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
                         (<a href="../impressum_impf.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
                         </div>
@@ -679,13 +771,17 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     $location=$stations_array[0][1].', '.$stations_array[0][2];
                 }
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-                $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.Kurzbezeichnung FROM Station 
+                $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.Kurzbezeichnung, Impfstoff.Mindestalter FROM Station 
                 JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id WHERE Station.id="'.$array_appointment[7].'";');
                 if($array_appointment[5]!='') {
-                    $location=$stations_array[0][3].' in '.$array_appointment[5].', '.$array_appointment[6];
+                    $location=$array_appointment[5].', '.$array_appointment[6];
+                    $vaccine=$stations_array[0][3];
+                    
                 } else {
-                    $location=$stations_array[0][3].' in '.$stations_array[0][1].', '.$stations_array[0][2];
+                    $location=$stations_array[0][1].', '.$stations_array[0][2];
+                    $vaccine=$stations_array[0][3];
                 }
+                $min_age=$stations_array[0][4];
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
                 $stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station WHERE id="'.$array_appointment[7].'";');
                 if($array_appointment[5]!='') {
@@ -777,14 +873,20 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     </div>
                     <div class="panel-body">
                     <div class="row">
-                    <div class="col-sm-4 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$date.'</span></div>
-                    <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="'.$color_cal_facility.'">'.$time1.' - '.$time2.' Uhr</span></div>';
+                    ';
                     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                        echo '<div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                        echo '<div class="col-sm-4 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$date.'</span></div>
+                        <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="'.$color_cal_facility.'">'.$time1.' - '.$time2.' Uhr</span></div>
+                        <div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
                     } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-                        echo '<div class="col-sm-4 calendar-col"><b>Impfstoff</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                        echo '<div class="col-sm-6 col-lg-2 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$date.'</span></div>
+                        <div class="col-sm-6 col-lg-3 calendar-col"><b>Uhrzeit</b> <span class="'.$color_cal_facility.'">'.$time1.' - '.$time2.' Uhr</span></div>
+                        <div class="col-sm-6 col-lg-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>
+                        <div class="col-sm-6 col-lg-3 calendar-col"><b>Impfstoff</b> <span class="'.$color_cal_facility.'">'.$vaccine.'</span></div>';
                     } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
-                        echo '<div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                        echo '<div class="col-sm-4 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$date.'</span></div>
+                        <div class="col-sm-4 calendar-col"><b>Uhrzeit</b> <span class="'.$color_cal_facility.'">'.$time1.' - '.$time2.' Uhr</span></div>
+                        <div class="col-sm-4 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
                     }
                     echo '</div>
                     </div>
@@ -797,9 +899,13 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                         <input type="text" value="'.$date.'" name="int_date" style="display:none;">
                         <input type="text" value="'.$time1.'" name="int_time1" style="display:none;">
                         <input type="text" value="'.$time2.'" name="int_time2" style="display:none;">
-                        <input type="text" value="'.$location.'" name="int_location" style="display:none;">
+                        <input type="text" value="'.$location.'" name="int_location" style="display:none;">';
+                        if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+                            echo '<input type="text" value="'.$vaccine.'" name="int_vaccine" style="display:none;">';
+                            echo '<input type="text" value="'.$min_age.'" name="min_age" style="display:none;">';
+                        }
 
-                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+                        echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
                         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>';
 
                         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
@@ -812,6 +918,30 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 
                             <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
                             <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>';
+                        } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+                            $city_array=S_get_multientry($Db,'SELECT ID, PLZ, Gemeinde FROM Gemeinden;');
+
+                            echo '<div class="FAIRsepdown"></div>
+                            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span>
+                            <input type="number" min="1" max="31" placeholder="TT" class="form-control" name="gebdatum_d" required>
+                            <input type="number" min="1" max="12" placeholder="MM" class="form-control" name="gebdatum_m" required>
+                            <input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" required>
+                            </div>
+                            <p>*1) Die zu impfende Person muss zum Zeitpunkt der Impfung <b>mindestens '.$min_age.' Jahre</b> alt sein. Das Mindestalter für den gewählten Impfstoff beträgt '.$min_age.' Jahre.</p>
+
+                            <div class="FAIRsepdown"></div>
+                            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Gemeinde *2)</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="city" required>
+                            <option value="" selected>Bitte wählen...</option>
+                                ';
+                                foreach($city_array as $i) {
+                                    $display=$i[1].' '.$i[2];
+                                    echo '<option value="'.$i[0].'">'.$display.'</option>';
+                                }
+                                echo '
+                            </select></div>
+                            <p>*2) Nur Personen aus dem Lk Odenwaldkreis werden für eine Impfung akzeptiert.</p>
+
+                            <div class="FAIRsepdown"></div>';
                         }
 
                         echo '
@@ -904,6 +1034,23 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                 </div>
                                 <div class="FAIRsepdown"></div>';
                             }
+                        } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+                            echo '<div class="FAIRsepdown"></div>
+                            <div class="alert alert-warning" role="alert">
+                                <div class="header_icon">
+                                    <img src="../img/icon/vaccine.png" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
+                                    <div class="caption center_text">
+                                        <h3>Impfung</h3>
+                                        <h4>Wurden Sie bereits geimpft und dies ist eine Auffrischungsimpfung / Booster-Impfung?</h4>
+                                    </div>
+                                </div>
+                                <div class="input-group"><span class="input-group-addon" id="basic-addon1">Art der Impfung</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="vaccine_number" required>
+                                <option value="" selected>Bitte wählen...</option>
+                                <option value="1">Grundimmunisierung (1. bzw. 2. Impfung)</option>
+                                <option value="3">Auffrischungs-, Booster-Impfung</option>
+                                </select></div>
+                            </div>
+                            <div class="FAIRsepdown"></div>';
                         }
 
                         if($GLOBALS['FLAG_MODE_MAIN'] == 1 && $pcr_test!=1) {
@@ -995,14 +1142,16 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     </div>
                     <div class="panel-body">
                     <div class="row">
-                    <div class="col-sm-6 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$date.'</span></div>';
+                    <div class="col-sm-3 calendar-col"><b>Datum</b> <span class="'.$color_cal_facility.'">'.$date.'</span></div>';
                     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                         echo '<div class="col-sm-6 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
                     } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-                        echo '<div class="col-sm-6 calendar-col"><b>Impfstoff</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
+                        echo '<div class="col-sm-5 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>
+                        <div class="col-sm-4 calendar-col"><b>Impfstoff</b> <span class="'.$color_cal_facility.'">'.$vaccine.'</span></div>';
                     } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
                         echo '<div class="col-sm-6 calendar-col"><b>Ort</b> <span class="'.$color_cal_facility.'">'.$location.'</span></div>';
                     }
+
                     echo '</div>
                     </div>
                     </div>';

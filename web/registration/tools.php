@@ -182,12 +182,12 @@ function S_set_entry_voranmeldung ($Db,$array_data) {
 }
 function S_set_entry_voranmeldung_vaccinate ($Db,$array_data) {
 	// First, check if Termin_id is already used by same person (  to fix a bug found by N.B. <3  )
-	if($array_data[3]=='') {
+	if($array_data[4]=='') {
 		$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Tag=?;");
-		mysqli_stmt_bind_param($stmt, "sssssss", $array_data[0], $array_data[1], $array_data[2], $array_data[5]);
+		mysqli_stmt_bind_param($stmt, "sssssss", $array_data[0], $array_data[1], $array_data[3], $array_data[6]);
 	} else {
 		$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Mailadresse=? AND Tag=?;");
-		mysqli_stmt_bind_param($stmt, "ssssssss", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[5]);
+		mysqli_stmt_bind_param($stmt, "ssssssss", $array_data[0], $array_data[1], $array_data[3], $array_data[4], $array_data[6]);
 	}
 	mysqli_stmt_execute($stmt);
 	mysqli_stmt_bind_result($stmt, $double_entry_id);
@@ -200,7 +200,7 @@ function S_set_entry_voranmeldung_vaccinate ($Db,$array_data) {
 
 	// Second, check if Termin_id is already used by other person
 	$stmt=mysqli_prepare($Db,"SELECT id, Slot, id_station, Tag, Stunde FROM Termine WHERE id=?;");
-	mysqli_stmt_bind_param($stmt, "i", $array_data[4]);
+	mysqli_stmt_bind_param($stmt, "i", $array_data[5]);
 	mysqli_stmt_execute($stmt);
 	mysqli_stmt_bind_result($stmt, $termin_id, $termin_slot, $termin_station, $termin_tag, $termin_stunde);
 	mysqli_stmt_fetch($stmt);
@@ -227,12 +227,12 @@ function S_set_entry_voranmeldung_vaccinate ($Db,$array_data) {
 	if($termin_slot>0) {
 		S_set_data($Db,'UPDATE Termine SET Used=1 WHERE id=CAST('.$termin_id.' as int);');
 	}
-	if($array_data[3]=='') {
-		$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Telefon, Termin_id, Tag) VALUES (?,?,?,?,?);");
-		mysqli_stmt_bind_param($stmt, "sssis", $array_data[0], $array_data[1], $array_data[2], $termin_id, $array_data[5]);
+	if($array_data[4]=='') {
+		$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Geburtsdatum, Telefon, Termin_id, Tag, Booster) VALUES (?,?,?,?,?,?,?);");
+		mysqli_stmt_bind_param($stmt, "ssssisi", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $termin_id, $array_data[6], $array_data[7]);
 	} else {
-		$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Telefon, Mailadresse, Termin_id, Tag) VALUES (?,?,?,?,?,?);");
-		mysqli_stmt_bind_param($stmt, "ssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $termin_id, $array_data[5]);
+		$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Geburtsdatum, Telefon, Mailadresse, Termin_id, Tag, Booster) VALUES (?,?,?,?,?,?,?,?);");
+		mysqli_stmt_bind_param($stmt, "sssssisi", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[4], $termin_id, $array_data[6], $array_data[7]);
 	}
 	mysqli_stmt_execute($stmt);
 	mysqli_stmt_bind_result($stmt, $result);
@@ -240,7 +240,7 @@ function S_set_entry_voranmeldung_vaccinate ($Db,$array_data) {
 	mysqli_stmt_close($stmt);
 
 	$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Termin_id=? AND Tag=? ORDER BY id DESC;");
-	mysqli_stmt_bind_param($stmt, "sssis", $array_data[0], $array_data[1], $array_data[2], $termin_id, $array_data[5]);
+	mysqli_stmt_bind_param($stmt, "sssis", $array_data[0], $array_data[1], $array_data[3], $termin_id, $array_data[6]);
 	mysqli_stmt_execute($stmt);
 	mysqli_stmt_bind_result($stmt, $result2);
 	mysqli_stmt_fetch($stmt);
@@ -315,7 +315,7 @@ function A_sanitize_input_light($input) {
 	/* if(preg_match("/^[a-zA-Z0-9\-\.@\,\+äöüÄÖÜßéèêóòôíìîáàâúùû&\/]+$/", $input)) {
 		$validated = $input;
 	} */
-	$whitelist=array('/^[a-zA-Z0-9äöüÄÖÜßéèêóòôíìîáàâúùû&\ \_\-\.@\,\+\/]+$/');
+	$whitelist=array('/^[a-zA-Z0-9äöüÄÖÜßéèêóòôíìîáàâúùû&\ \_\-\.@\,\:\+\/]+$/');
 	// Check if each character of input is in white list
 	foreach($whitelist as $k => $v) {
 		if(preg_match($v, $input)) {
@@ -533,11 +533,20 @@ function H_build_table_testdates2( $mode ) {
 	}
 	// X ist Anzahl an Tagen für Vorschau in Tabelle
 	if($mode == 'vaccinate') {
-		$X=28;
+		$last_date_for_calendar=S_get_entry($Db,'SELECT Termine.Tag FROM Termine 
+		JOIN Station ON Station.id=Termine.id_station
+		WHERE Station.Firmencode=""
+		ORDER BY Termine.Tag DESC;');
+		$diff=( strtotime($last_date_for_calendar) - strtotime(date('Y-m-d')) ) /(3600*24);
+		$X=$diff+2;
+		$Xx=28;
+		if($X>28) {$X=$Xx;} // max. Xx days
 	} elseif($mode == 'b2b-vaccinate') {
-		$X=35;
+		$Xx=35;
+		$X=$Xx;
 	} else {
-		$X=14;
+		$Xx=14;
+		$X=$Xx;
 	}
 	// Ohne Terminbuchung für nächste X Tage
 	$today=date('Y-m-d');
@@ -583,7 +592,7 @@ function H_build_table_testdates2( $mode ) {
 			$display_location_thirdline='';
 			$res.='<tr>';
 			if($mode=='vaccinate' || $mode == 'b2b-vaccinate') {
-				$string_location='<b>'.$st[4].'</b><br>'.$st[1].', '.$st[2].'';
+				$string_location='<b>'.$st[4].'</b><br>'.$st[1].'<br><span class="text-sm">'.$st[2].'</span>';
 			} else {
 				$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
 			}
@@ -676,7 +685,7 @@ function H_build_table_testdates2( $mode ) {
 				}
 				$res.='<tr>';
 				if($mode=='vaccinate' || $mode == 'b2b-vaccinate') {
-					$string_location='<b>'.$st[4].'</b><br>'.$st[1].', '.$st[2].'';
+					$string_location='<b>'.$st[4].'</b><br>'.$st[1].'<br><span class="text-sm">'.$st[2].'</span>';
 				} else {
 					$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
 				}
@@ -741,7 +750,8 @@ function H_build_table_testdates2( $mode ) {
 	}
 
 	if(!$bool_valid_appointments_found) {
-		$res.='<tr><td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1" colspan="'.($X+2).'"><b>Keine freien Termine gefunden<b></td></tr>';
+		$res.='<tr><td class="FAIR-data-height1 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top FAIR-data-center1" colspan="'.($X+2).'"><b>Keine freien Termine in den nächsten '.$Xx.' Tagen gefunden</b></td></tr>';
+		$res_s_array[$j][0].='<div class="cal-element"><div style="display: block; margin-top: 5px;"><b>Keine freien Termine in den nächsten '.$Xx.' Tagen gefunden</b></div></div>';
 	}
 	
 	$res.='<tr>
