@@ -103,7 +103,7 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
     // Print html content part A
     echo $GLOBALS['G_html_main_right_a'];
 
-    echo '<h1>Termine für Teststation erstellen</h1>';
+    echo '<h1>Termine für eine Test-/Impf-Station erstellen</h1>';
 
 
     echo '<div class="row">';
@@ -130,12 +130,13 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
         }
         S_close_db($Db);
 
-        echo '
-        <div class="col-lg-6"><div class="card">
-        <h3>Ohne Terminbuchung / Offener Termin</h3>
-        <p class="list-group-item-text">Zum Erstellen bitte alle Felder ausfüllen.</p><p></p>';
-        echo '<form action="'.$current_site.'.php" method="post">
-        <div class="input-group">
+        if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+            echo '
+            <div class="col-lg-6"><div class="card">
+            <h3>Ohne Terminbuchung / Offener Termin</h3>
+            <p class="list-group-item-text">Zum Erstellen bitte alle Felder ausfüllen.</p><p></p>';
+            echo '<form action="'.$current_site.'.php" method="post">
+            <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">Station</span>
             <select id="select-state" placeholder="Wähle eine Station..." class="custom-select" style="margin-top:0px;" name="station_id">
             <option value="" selected>Wähle Station...</option>
@@ -177,7 +178,44 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
             </div>
             </form>';
             echo $errorhtml1;
-        echo '</div>';
+            echo '</div>';
+        } else {
+            echo '
+            <div class="col-lg-6"><div class="card">
+            <h3>Ohne Terminbuchung / Offener Termin</h3>
+            <p class="list-group-item-text">Diese Option ist gesperrt für das Impfzentrum</p><p></p>';
+            echo '
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Station</span>
+            <input type="text" id="select-state" class="form-control" aria-describedby="basic-addon1" name="station_id" disabled>
+            </div>
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon4">Datum</span>
+            <input type="date" class="form-control" aria-describedby="basic-addon4" value="" name="date" disabled>
+            </div>
+
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon4">Von</span>
+            <input type="time" class="form-control" aria-describedby="basic-addon4" name="startzeit" disabled>
+            <span class="input-group-addon" id="basic-addon4">Bis</span>
+            <input type="time" class="form-control" aria-describedby="basic-addon4" name="endzeit" disabled>
+            </div>
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon4">Optional Name d. Ortes</span>
+            <input type="text" class="form-control" aria-describedby="basic-addon4" name="opt_station" disabled>
+            <span class="input-group-addon" id="basic-addon4">Optional Adresse</span>
+            <input type="text" class="form-control" aria-describedby="basic-addon4" name="opt_station_adresse" disabled>
+            </div>
+            <div class="FAIR-si-button">
+            <input type="submit" class="btn btn-danger" value="Termin erstellen" name="create_termine1" disabled/>
+            </div>';
+            echo H_build_boxinfo( 0, "Diese Option für Termine steht nur dem Testzentrum zur Verfügung. Bitte nutzen Sie stattdessen die Terminbuchungsoption.", 'red' );
+            echo '
+            </div>
+            </form>';
+            echo $errorhtml1;
+            echo '</div>';
+        }
 
         echo '
         <div class="col-lg-6"><div class="card">
