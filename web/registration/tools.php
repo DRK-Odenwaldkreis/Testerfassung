@@ -709,7 +709,7 @@ function H_build_table_testdates2( $mode ) {
 							// TODAY do not show past entries
 							$current_hour=date('G');
 							$current_slot=intval(date('i')/15);
-							$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" AND Stunde>='.$current_hour.' AND Slot>'.$current_slot.';');
+							$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" AND (Stunde>'.$current_hour.' OR (Stunde='.$current_hour.' AND Slot>'.$current_slot.'));');
 						/* } */
 					} else {
 						$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'";');
