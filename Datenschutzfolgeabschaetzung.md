@@ -32,6 +32,7 @@ Dabei gibt es drei Optionen:
 1. Anmeldung für einen Test mit Terminvereinbarung
 2. Anmeldung für einen Test ohne Terminvereinbarung
 3. Anmeldung für einen Test bei einem teilnehmenden Pfleg- bzw. Behindertenwohnheim
+
 Die zu testenden Personen können sich für einen freien Termin in einem der Testzentren anmelden und bekommen zur E-Mail-Verifizierung eine E-Mail zugeschickt, die sie bestätigen müssen. Mit Hilfe einer Webapplikation werden die Daten der Person in der zentralen Anmelde-Datenbank auf einem Webserver erfasst. Mit der Registrierung bekommen die zu testenden Personen ein QR Code (Buchungscode) angestellt. 
 Mit Hilfe des Buchungscodes können die Personen beim Testzentrum die Buchung eines Termins für einen SARS Cov2 Schnelltest nachweisen. Personen, die keinen Termin online gebucht haben können zusätzlich noch vor Ort durch Mitarbeiter der Testzentren erfasst werden. 
 Bei der Registrierung über die Website oder im Testzentrum werden die zu testenden Personen über die Erfassung der personenbezogenen Daten aufgeklärt. 
@@ -58,6 +59,7 @@ Personen, die sich für einen PCR Test interessieren, können sich online, mit A
 Dabei gibt es die beiden Optionen:
 1. Anmeldung für einen Test mit Terminvereinbarung
 2. Anmeldung für einen Test ohne Terminvereinbarung
+
 Alle weiteren Details zur Anmeldung verhalten sich wie bei den Schnelltests, siehe Abschnitt 2. Eine Übermittlung von PCR Testergebnissen an die CWA (Corona-Warn-App) ist von uns nicht vorgesehen
 ### Ablauf im Testzentrum
 Bei Anmeldung im Testzentrums (durch Scan des Buchungscodes oder manueller Erfassung) muss die zu testende Person nachweisen, dass der PCR Test von einem Gesundheitsamt angeordnet wurde oder den Test selbst bezahlen (die Bezahlung ist nicht teil des hier beschriebenen Systems). Nun wird der zu testenden Person noch ein zweiter QR Code ausgehändigt (Testcode). Dieser Testcode wird durch einen Mitarbeiter gescannt wodurch der im Code enthaltene Token den persönlichen Daten der zu testenden Person hinzugefügt.
