@@ -602,8 +602,24 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             $calendar=H_build_table_testdates2('antikoerper');
         }
         //large display
-        echo '<div class="calendar-large" style="overflow-x: scroll;">';
-        echo $calendar[0];
+        
+        if($GLOBALS['FLAG_MODE_MAIN'] == 2) {  // SET VALUE TO e.g. 12345 and this calendar view will be invisible
+            echo '<div class="calendar-large">';
+            foreach($calendar[2] as $i) {
+                //rows
+                foreach($i as $print) {
+                    //columns
+                    if($print!='') {
+                        echo $print;
+                    }
+                }
+            }
+        } else {
+            echo '<div class="calendar-large" style="overflow-x: scroll;">';
+            echo $calendar[0];
+        }
+        
+        
         echo '</div>';
         // small display
         echo '<div class="calendar-small">

@@ -44,7 +44,7 @@ body {
 @media screen and (max-width: 768px) {
 	.navbar-header {
 		float: left;
-		min-width: 130px;
+		min-width: 100px;
 	}
 	.navbar-right {
 		float: right;
@@ -65,11 +65,19 @@ body {
 		padding-right: 7px;
 		padding-left: 7px;
 	}
+	div.center_text {
+		text-align: center;
+		font-size: 85%;
+	}
 }
 @media screen and (min-width: 1201px) {
 	.navbar-nav > li > a {
 		padding-right: 15px;
 		padding-left: 15px;
+	}
+	div.center_text {
+		text-align: center;
+		font-size: 110%;
 	}
 }
 @media screen and (max-width: 901px) {
@@ -444,8 +452,14 @@ table.FAIR-data {
 	border-collapse: collapse;
 	width: 100%;
 }
+tr.FAIR-data-odd {
+	background-color: #f0f0f0;
+}
 td.FAIR-data-top {
 	border-top: 1px solid #d4d4d4;
+	padding: 3px 8px 3px 4px;
+}
+td.FAIR-data-top-noline {
 	padding: 3px 8px 3px 4px;
 }
 td.FAIR-data-first-padding {
@@ -500,17 +514,48 @@ td.FAIR-data-gray {
 td.FAIR-data-blue1 {
 	color: #fff;
 	background-color: #337ab7;
-	font-size: 18px;
+	font-size: 16px;
 }
 td.FAIR-data-blue2 {
 	color: #111;
 	background-color: #3379b77a;
-	font-size: 18px;
+	font-size: 16px;
 }
 td.FAIR-data-blue3 {
-	color: #111;
+	color: #555;
 	background-color: #3379b728;
+	font-size: 16px;
+}
+
+td.FAIR-data-bluehead-t1 {
+	color: #111;
+	background-color: rgb(134, 209, 217);
 	font-size: 18px;
+}
+td.FAIR-data-bluehead-t2 {
+	color: #111;
+	background-color: rgb(119, 180, 242);
+	font-size: 18px;
+}
+td.FAIR-data-bluehead-t3 {
+	color: #111;
+	background-color: rgb(146, 127, 213);
+	font-size: 18px;
+}
+td.FAIR-data-bluehead1 {
+	color: #111;
+	background-color: rgb(134, 209, 217, 0.7);
+	font-size: 16px;
+}
+td.FAIR-data-bluehead2 {
+	color: #111;
+	background-color: rgb(119, 180, 242, 0.7);
+	font-size: 16px;
+}
+td.FAIR-data-bluehead3 {
+	color: #111;
+	background-color: rgb(146, 127, 213, 0.7);
+	font-size: 16px;
 }
 td.FAIR-data-yellow1 {
 	color: #111;
@@ -638,7 +683,7 @@ a.calendaryellow-dis:hover {
 	text-decoration: none;
 }
 
-@media (min-width: 1249px) {
+@media (min-width: 849px) {
 	div.calendar-large {
 		display: block;
 	}
@@ -646,7 +691,7 @@ a.calendaryellow-dis:hover {
 		display: none;
 	}
 }
-@media (max-width: 1250px) {
+@media (max-width: 850px) {
 	div.calendar-large {
 		display: none;
 	}
@@ -915,10 +960,10 @@ div.input-group {
 margin-bottom:7px;
 }
 
-div.center_text {
+/* div.center_text {
 	text-align: center;
 	font-size: 120%;
-}
+} */
 div.header_icon_main {
 	background-color: #fff;
 	border: 1px solid #ddd;

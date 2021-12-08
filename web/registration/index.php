@@ -19,7 +19,7 @@ include_once 'tools.php';
 include_once 'auth.php';
 include_once 'menu.php';
 
-$current_site="index2";
+$current_site="index";
 
 
 // Print html header

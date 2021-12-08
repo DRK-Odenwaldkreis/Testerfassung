@@ -82,7 +82,7 @@ echo $GLOBALS['G_html_main_right_a'];
     }
 ?>
         <p>
-            in Erbach<br>(teilweise auch in Reichelsheim und Lützelbach)
+            in Erbach<br>(teilweise auch in Reichelsheim, Beerfelden, Lützelbach, Höchst, ...)
         </p>
 
         </div>

@@ -184,13 +184,24 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		}
 		//large display
 		echo '<div class="calendar-large">';
-		echo $calendar[0];
+		if($GLOBALS['FLAG_MODE_MAIN'] == 2) { // SET VALUE TO e.g. 12345 and this calendar view will be invisible
+            foreach($calendar[2] as $i) {
+                //rows
+                foreach($i as $print) {
+                    //columns
+                    if($print!='') {
+                        echo $print;
+                    }
+                }
+            }
+        } else {
+            echo $calendar[0];
+        }
 		echo '</div>';
 		// small display
 		if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
 			echo '<div class="calendar-small">
-			<div class="cal-day-head-yellow"><i>Für gelbe Stationen ist eine Voranmeldung und Terminbuchung erforderlich - bitte einen Termin wählen</i></div>
-			<div class="cal-day-head-blue"><i>Für blaue Stationen ist keine Terminbuchung notwendig, eine Voranmeldung Ihrer Daten kann gerne gemacht werden, dann geht es vor Ort schneller - bitte dafür einen Termin wählen</i></div>
+			
 			';
 		} else {
 			echo '<div class="calendar-small">
