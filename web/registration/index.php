@@ -378,7 +378,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             <br><span class="text-sm">
                             Hiermit erkläre ich mein Einverständnis zum Übermitteln meines Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Das Testergebnis in der App kann hierbei nicht als namentlicher Testnachweis verwendet werden. Mir wurden Hinweise zum Datenschutz ausgehändigt.
                             </span><br>
-                            (<a href="../impressum_test.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
+                            (<a href="../impressum.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
                             </div>
                             <div class="FAIRsepdown"></div>
                             <div class="cb_drk">
@@ -387,7 +387,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             <br><span class="text-sm">
                             Hiermit erkläre ich mein Einverständnis zum Übermitteln des Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Ich willige außerdem in die Übermittlung meines Namens und Geburtsdatums an die App ein, damit mein Testergebnis in der App als namentlicher Testnachweis angezeigt werden kann. Mir wurden Hinweise zum Datenschutz ausgehändigt.
                             </span><br>
-                            (<a href="../impressum_test.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
+                            (<a href="../impressum.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
                             </div>
                             </div><div class="FAIRsepdown"></div>';
 
@@ -500,7 +500,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                         <div class="FAIRsepdown"></div><div class="cb_drk">
                         <input type="checkbox" id="cb3" name="cb3" required checked/>
                         <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
-                        (<a href="../impressum_test.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
+                        (<a href="../impressum.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
                         </div>
                         <div class="FAIRsepdown"></div>
                         <span class="input-group-btn">
@@ -517,7 +517,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                         <div class="FAIRsepdown"></div><div class="cb_drk">
                         <input type="checkbox" id="cb3" name="cb3" required checked/>
                         <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
-                        (<a href="../impressum_impf.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
+                        (<a href="../impressum.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
                         </div>
                         <div class="FAIRsepdown"></div>
                         <span class="input-group-btn">
@@ -975,7 +975,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                 <br><span class="text-sm">
                                 Hiermit erkläre ich mein Einverständnis zum Übermitteln meines Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Das Testergebnis in der App kann hierbei nicht als namentlicher Testnachweis verwendet werden. Mir wurden Hinweise zum Datenschutz ausgehändigt.
                                 </span><br>
-                                (<a href="../impressum_test.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
+                                (<a href="../impressum.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
                                 </div>
                                 <div class="FAIRsepdown"></div>
                                 <div class="cb_drk">
@@ -984,7 +984,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                 <br><span class="text-sm">
                                 Hiermit erkläre ich mein Einverständnis zum Übermitteln des Testergebnisses und meines pseudonymen Codes an das Serversystem des RKI, damit ich mein Testergebnis mit der Corona Warn App abrufen kann. Ich willige außerdem in die Übermittlung meines Namens und Geburtsdatums an die App ein, damit mein Testergebnis in der App als namentlicher Testnachweis angezeigt werden kann. Mir wurden Hinweise zum Datenschutz ausgehändigt.
                                 </span><br>
-                                (<a href="../impressum_test.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
+                                (<a href="../impressum.php#datenschutz_cwa" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>)</label>
                                 </div>
                                 </div><div class="FAIRsepdown"></div>';
                             
@@ -1098,7 +1098,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             <div class="FAIRsepdown"></div><div class="cb_drk">
                             <input type="checkbox" id="cb3" name="cb3" required/>
                             <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
-                            (<a href="../impressum_test.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
+                            (<a href="../impressum.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
                             </div>
                             <div class="FAIRsepdown"></div>
                             <span class="input-group-btn">
@@ -1115,7 +1115,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             <div class="FAIRsepdown"></div><div class="cb_drk">
                             <input type="checkbox" id="cb3" name="cb3" required/>
                             <label for="cb3">Ich bin mit dem oben genannten Ablauf einverstanden und akzeptiere die Erklärung zum Datenschutz 
-                            (<a href="../impressum_impf.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
+                            (<a href="../impressum.php#datenschutz" target="_blank">Datenschutzerklärung in neuem Fenster öffnen</a>).</label>
                             </div>
                             <div class="FAIRsepdown"></div>
                             <span class="input-group-btn">
