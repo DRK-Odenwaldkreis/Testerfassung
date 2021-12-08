@@ -249,6 +249,74 @@ function S_set_entry_voranmeldung_vaccinate ($Db,$array_data) {
 	
 }
 
+function S_set_entry_voranmeldung_antikoerper ($Db,$array_data) {
+	// First, check if Termin_id is already used by same person (  to fix a bug found by N.B. <3  )
+	if($array_data[3]=='') {
+		$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Tag=?;");
+		mysqli_stmt_bind_param($stmt, "ssss", $array_data[0], $array_data[1], $array_data[2], $array_data[5]);
+	} else {
+		$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Mailadresse=? AND Tag=?;");
+		mysqli_stmt_bind_param($stmt, "ssssssss", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[5]);
+	}
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $double_entry_id);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+	
+	if($double_entry_id>0) {
+		return 'DOUBLE_ENTRY';
+	}
+
+	// Second, check if Termin_id is already used by other person
+	$stmt=mysqli_prepare($Db,"SELECT id, Slot, id_station, Tag, Stunde FROM Termine WHERE id=?;");
+	mysqli_stmt_bind_param($stmt, "i", $array_data[4]);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $termin_id, $termin_slot, $termin_station, $termin_tag, $termin_stunde);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+	if($termin_slot>0) {
+		$check_termin_id=S_get_entry($Db,'SELECT id FROM Voranmeldung WHERE Termin_id=CAST('.$termin_id.' as int);');
+	} else {
+		$check_termin_id=0;
+	}
+
+	if($check_termin_id>0) {
+		// Selected Termin is used, select another in same slot if available
+		$new_termin_id=S_get_entry($Db,'SELECT id FROM Termine WHERE id_station='.$termin_station.' AND Tag="'.$termin_tag.'" AND Stunde='.$termin_stunde.' AND Slot='.$termin_slot.' AND Used is null;');
+		if($new_termin_id>0) {
+			// is available - use new termin_id
+			$termin_id=$new_termin_id;
+		} else {
+			// is not available
+			return 'NOT_AVAILABLE';
+		}
+	} 
+	// Write data because Termin_id is not used or Termin_id has no slots
+	if($termin_slot>0) {
+		S_set_data($Db,'UPDATE Termine SET Used=1 WHERE id=CAST('.$termin_id.' as int);');
+	}
+	if($array_data[3]=='') {
+		$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Telefon, Termin_id, Tag) VALUES (?,?,?,?,?);");
+		mysqli_stmt_bind_param($stmt, "sssis", $array_data[0], $array_data[1], $array_data[2], $termin_id, $array_data[5]);
+	} else {
+		$stmt=mysqli_prepare($Db,"INSERT INTO Voranmeldung (Vorname, Nachname, Telefon, Mailadresse, Termin_id, Tag) VALUES (?,?,?,?,?,?);");
+		mysqli_stmt_bind_param($stmt, "ssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $termin_id, $array_data[5]);
+		
+	}
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $result);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+	$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Mailadresse=? AND Termin_id=? AND Tag=? ORDER BY id DESC;");
+	mysqli_stmt_bind_param($stmt, "ssssis", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $termin_id, $array_data[5]);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $result2);
+	mysqli_stmt_fetch($stmt);
+	mysqli_stmt_close($stmt);
+	return $result2; // need id as a return value
+	
+}
+
 function S_get_entry_voranmeldung ($Db,$array_data) {
 	$stmt=mysqli_prepare($Db,"SELECT id_preregistration FROM Voranmeldung_Verif WHERE id_preregistration=? AND Token=?;");
 	mysqli_stmt_bind_param($stmt, "is", $array_data[0], $array_data[1]);
