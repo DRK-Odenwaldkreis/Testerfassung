@@ -19,7 +19,7 @@ include_once 'tools.php';
 include_once 'auth.php';
 include_once 'menu.php';
 
-$current_site="index2";
+$current_site="index";
 
 
 // Print html header
@@ -52,7 +52,6 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     $logo_facility='impfzentrum.jpg';
     $color_cal_facility='calendarblue';
 }
-
 
 
 
@@ -144,7 +143,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                 $prereg_id=S_set_entry_voranmeldung_vaccinate($Db,array($k_vname,$k_nname,$k_geb,$k_telefon,$k_email,$k_slot_id,$k_date,$k_vaccine_booster));
             } else {
-                $prereg_id=S_set_entry_voranmeldung_vaccinate($Db,array($k_vname,$k_nname,'',$k_telefon,$k_email,$k_slot_id,$k_date,0));
+                $prereg_id=S_set_entry_voranmeldung_antikoerper($Db,array($k_vname,$k_nname,$k_telefon,$k_email,$k_slot_id,$k_date));
             }
             if($prereg_id=='DOUBLE_ENTRY') {
                 echo '<div class="alert alert-danger" role="alert">
