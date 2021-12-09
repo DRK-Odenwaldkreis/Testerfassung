@@ -16,7 +16,7 @@ imprint site
 
 // Include functions
 include_once 'menu.php';
-
+include_once 'admin01.php';
 
 // Print html header
 echo $GLOBALS['G_html_header'];
@@ -36,22 +36,34 @@ echo '<h3 class="imprint">Impressum und Kontakt</h3>
 
 
 if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-    echo '<h3 class="imprint">Rückfragen</h3>
-    <p>Bei Fragen zu den Impfmöglichkeiten oder organisatorischen Anfragen:</p>
-    <p><a href="https://portal-civ.ekom21.de/civ.public/start.html?oe=00.00.LKOW&mode=cc&cc_key=Impfhotline">Kontaktformular</a></p>
-    <p>Service-Hotline <a href="tel:+496062703346">06062 70 33 46</a></p>
-    <p>&nbsp;</p>';
-  } elseif($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-    echo '<h3 class="imprint">Rückfragen</h3>
-    <p>Bei Fragen zum Testen oder organisatorischen Anfragen:</p>
-    <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
-    <p>&nbsp;</p>';
-  } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
-    echo '<h3 class="imprint">Rückfragen</h3>
-    <p>Bei Fragen zum Testen oder organisatorischen Anfragen:</p>
-    <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
-    <p>&nbsp;</p>';
-  }
+  echo '<h3 class="imprint">Rückfragen</h3>
+  <p>Bei Fragen zu den Impfmöglichkeiten oder organisatorischen Anfragen:</p>
+  <p><a href="https://portal-civ.ekom21.de/civ.public/start.html?oe=00.00.LKOW&mode=cc&cc_key=Impfhotline">Kontaktformular</a></p>
+  <p>Service-Hotline <a href="tel:+496062703346">06062 70 33 46</a></p>
+  <p>&nbsp;</p>';
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+  echo '<h3 class="imprint">Rückfragen</h3>
+  <p>Bei Fragen zum Testen oder organisatorischen Anfragen:</p>
+  <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
+  <p>&nbsp;</p>';
+} elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
+  echo '<h3 class="imprint">Rückfragen</h3>
+  <p>Bei Fragen zum Testen oder organisatorischen Anfragen:</p>
+  <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
+  <p>&nbsp;</p>';
+} else {
+  echo '<h3 class="imprint">Rückfragen Impfen</h3>
+  <p>Bei Fragen zu den Impfmöglichkeiten oder organisatorischen Anfragen:</p>
+  <p><a href="https://portal-civ.ekom21.de/civ.public/start.html?oe=00.00.LKOW&mode=cc&cc_key=Impfhotline">Kontaktformular</a></p>
+  <p>Service-Hotline <a href="tel:+496062703346">06062 70 33 46</a></p>
+  <p>&nbsp;</p>';
+
+  echo '<h3 class="imprint">Rückfragen Testen</h3>
+  <p>Bei Fragen zum Testen oder organisatorischen Anfragen:</p>
+  <p><a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a></p>
+  <p>&nbsp;</p>';
+
+}
 
 
 echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörden</h3>
@@ -61,7 +73,7 @@ echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörd
 <p><a href="mailto:info@testzentrum-odenwald.de">info@testzentrum-odenwald.de</a></p>
 <p>&nbsp;</p>
 
-<div id="datenschutz_website" class="FAIRsepdown"></div>
+<div id="datenschutz" class="FAIRsepdown"></div>
 <div class="FAIRsepdown"></div>
 <div class="FAIRsepdown"></div>
 <h3 class="imprint">Datenschutzhinweis bei der Verwendung der Website</h3>
@@ -176,7 +188,7 @@ echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörd
 <p><strong>&nbsp;</strong></p>
 <p>Informationen zur Datenverarbeitung im Rahmen Ihrer Anmeldung / Durchführung eines Corona Schnelltests entnehmen Sie bitte der gesonderten Datenschutzinformation gemäß DSVGO Art.  13.</p>
 <p>
-<a href="impressum.php#datenschutz_durchfuehrung_impf">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rahmen der Durchführung von Corona Schnelltests/PCR-Test</a></p>
+<a href="impressum.php#datenschutz_durchfuehrung_agtest">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rahmen der Durchführung von Corona Schnelltests/PCR-Test</a></p>
 
 <p><strong>&nbsp;</strong></p>
 <ol start="5">
@@ -185,7 +197,7 @@ echo '<h3 class="imprint">Technischer Support für die Teams vor Ort und Behörd
 <p><strong>&nbsp;</strong></p>
 <p>Informationen zur Datenverarbeitung im Rahmen Ihrer Anmeldung / Durchführung einer Corona Impfung entnehmen Sie bitte der gesonderten Datenschutzinformation gemäß DSVGO Art. 13.</p>
 <p>
-<a href="impressum.php#datenschutz_durchfuehrung_agtest">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rahmen der im Rahmen der Anmeldung und Terminkoordination von Corona-Impfungen</a></p>
+<a href="impressum.php#datenschutz_durchfuehrung_impf">Datenschutzinformationen nach Art. 13 und 14 DSGVO im Rahmen der im Rahmen der Anmeldung und Terminkoordination von Corona-Impfungen</a></p>
 
 <p><strong>&nbsp;</strong></p>
 <ol start="6">
@@ -290,8 +302,13 @@ von geltend gemachten Rechtsansprüchen gegen uns erforderlich ist. Rechtsgrundl
 
 <p><strong>&nbsp;</strong></p>
 <p><strong>Kategorie personenbezogener Daten</strong></p>
-<p>Wir verarbeiten nur solche Daten, die im Zusammenhang mit der Anmeldung und der Terminkoordination bei der Durchführung von Corona Impfungen in einer Einrichtung des Deutschen Roten Kreuz Kreisverband e.V. stehen. Dies sind im Einzelnen:</p>
-<p>Vorname, Nachname, Namenszusätze, Kontaktdaten (etwa private Anschrift, (Mobil-)Telefonnummer, E-Mail-Adresse), gewählter Impfstoff, Status grippeähnliche Symptome.</p>
+<p>Wir verarbeiten nur solche Daten, die im Zusammenhang mit der Anmeldung und der Terminkoordination bei der Durchführung von Corona Impfungen in einer Einrichtung des Deutschen Roten Kreuz Kreisverband e. V. stehen.</p>
+
+<p>Da sich das im Rahmen der Anmeldung und Terminkoordination vorbereitete Impfangebot an die Bevölkerung des Odenwaldkreises richtet, erfragen wir im Zusammenhang mit Ihrer Anmeldung auch Ihren Wohnort.</p>
+
+<p>Im Einzelnen verarbeiten wir die nachfolgend benannten Datenkategorien:</p>
+<p>Vorname, Nachname, Namenszusätze, Geburtsdatum, Kontaktdaten (etwa private Anschrift, Handynummer, Telefonnummer, E-Mail-Adresse), Wohnort, Art der Impfung, gewählter Impfstoff, Status "grippeähnliche Symptome".
+</p>
 <p>&nbsp;</p>
 
 <p><strong>&nbsp;</strong></p>
@@ -617,7 +634,7 @@ anderweitigen verwaltungsrechtlichen oder gerichtlichen Rechtsbehelfs.
 <div class="FAIRsepdown"></div>
 <div class="FAIRsepdown"></div>
 <div class="FAIRsepdown"></div>
-Erbach, Im Oktober 2021
+Erbach, Im Dezember 2021
 <p></p>
 Deutsches Rotes Kreuz Kreisverband Odenwaldkreis e.V.
 <div class="FAIRsepdown"></div>
