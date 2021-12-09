@@ -85,6 +85,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             $gebdatum_d = A_sanitize_input_light($_POST['gebdatum_d']);
             $gebdatum_m = A_sanitize_input_light($_POST['gebdatum_m']);
             $gebdatum_y = A_sanitize_input_light($_POST['gebdatum_y']);
+            $k_geb=sprintf('%04d',$gebdatum_y).'-'.sprintf('%02d',$gebdatum_m).'-'.sprintf('%02d',$gebdatum_d);
             $city_id = A_sanitize_input_light($_POST['city']);
         }
         $k_telefon=A_sanitize_input_light($_POST['telefon']);
@@ -927,6 +928,8 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             <input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" required>
                             </div>
                             <p>*1) Die zu impfende Person muss zum Zeitpunkt der Impfung <b>mindestens '.$min_age.' Jahre</b> alt sein. Das Mindestalter für den gewählten Impfstoff beträgt '.$min_age.' Jahre.</p>
+                            <p>Personen unter 16 Jahren müssen in Begleitung eines Erziehungsberechtigten vor Ort erscheinen.</p>
+                            <p>Personen zwischen 16 und 18 benötigen die Unterschrift eines Erziehungsberechtigten auf dem  Einwilligungsdokument.</p>
 
                             <div class="FAIRsepdown"></div>
                             <div class="input-group"><span class="input-group-addon" id="basic-addon1">Gemeinde *2)</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="city" required>
@@ -938,7 +941,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                 }
                                 echo '
                             </select></div>
-                            <p>*2) Nur Personen aus dem Lk Odenwaldkreis werden für eine Impfung akzeptiert.</p>
+                            <p>*2) Nur Personen aus dem Landkreis Odenwaldkreis werden für eine Impfung akzeptiert.</p>
 
                             <div class="FAIRsepdown"></div>';
                         }

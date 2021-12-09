@@ -582,7 +582,15 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
         if(isset($_GET['s']) && ($_GET['s']=='pcr' || $_GET['s']=='ag' ) ) {
             //large display
             echo '<div class="calendar-large">';
-            echo $calendar[0];
+            foreach($calendar[2] as $i) {
+                //rows
+                foreach($i as $print) {
+                    //columns
+                    if($print!='') {
+                        echo $print;
+                    }
+                }
+            }
             echo '</div>';
             // small display
             echo '<div class="calendar-small">

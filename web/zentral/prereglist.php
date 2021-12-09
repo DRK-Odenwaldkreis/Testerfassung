@@ -319,7 +319,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       echo '
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[1].', '.$i[2];
       if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-        echo '<br>geb. '.$birthDate;
+        echo '<br>geb. '.$i[3];
       }
       echo '</td>';
       if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
@@ -332,7 +332,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
         // Impfdaten
         // if registered before this date - show no specific data
-        $cutoff="2021-12-28";
+        $cutoff="2021-12-10";
         if( $cutoff<=substr($i[15],0,10) ) {
           $birthDate=explode("-",$i[3]);
           $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[1], $birthDate[2], $birthDate[0]))) > date("md")

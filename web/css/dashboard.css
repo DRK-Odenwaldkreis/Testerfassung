@@ -452,11 +452,16 @@ table.FAIR-data {
 	border-collapse: collapse;
 	width: 100%;
 }
+table.FAIR-data-table-md {
+	max-width: 1200px;
+	margin-left: auto;
+	margin-right: auto;
+}
 tr.FAIR-data-odd {
 	background-color: #f0f0f0;
 }
 td.FAIR-data-top {
-	border-top: 1px solid #d4d4d4;
+	border-top: 1px solid #fff;
 	padding: 3px 8px 3px 4px;
 }
 td.FAIR-data-top-noline {
@@ -466,13 +471,13 @@ td.FAIR-data-first-padding {
 	padding-left: 15px;
 }
 td.FAIR-data-right {
-	border-right: 1px solid #d4d4d4;
+	border-right: 1px solid #fff;
 }
 td.FAIR-data-left {
-	border-left: 1px solid #d4d4d4;
+	border-left: 1px solid #fff;
 }
 td.FAIR-data-bottom {
-	border-bottom: 1px solid #d4d4d4;
+	border-bottom: 1px solid #fff;
 }
 td.FAIR-data-height0 {
 	height: 80px;

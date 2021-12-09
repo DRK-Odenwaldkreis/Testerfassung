@@ -184,7 +184,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		}
 		//large display
 		echo '<div class="calendar-large">';
-		if($GLOBALS['FLAG_MODE_MAIN'] == 2) { // SET VALUE TO e.g. 12345 and this calendar view will be invisible
+		if($GLOBALS['FLAG_MODE_MAIN'] == 1 || $GLOBALS['FLAG_MODE_MAIN'] == 2) { // SET VALUE TO e.g. 12345 and this calendar view will be invisible
             foreach($calendar[2] as $i) {
                 //rows
                 foreach($i as $print) {
