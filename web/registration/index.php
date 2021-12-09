@@ -332,6 +332,8 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                         <input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" value="'.$gebdatum_y.'"  required>
                         </div>
                         <p>*1) Die zu impfende Person muss zum Zeitpunkt der Impfung <b>mindestens '.$min_age.' Jahre</b> alt sein. Das Mindestalter für den gewählten Impfstoff beträgt '.$min_age.' Jahre.</p>
+                        <p>Personen unter 16 Jahren müssen in Begleitung eines Erziehungsberechtigten vor Ort erscheinen.</p>
+                        <p>Personen zwischen 16 und 18 benötigen die Unterschrift eines Erziehungsberechtigten auf dem  Einwilligungsdokument.</p>
 
                         <div class="FAIRsepdown"></div>
                         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Gemeinde *2)</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="city" required>
@@ -922,7 +924,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             $city_array=S_get_multientry($Db,'SELECT ID, PLZ, Gemeinde FROM Gemeinden;');
 
                             echo '<div class="FAIRsepdown"></div>
-                            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span>
+                            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum *1)</span>
                             <input type="number" min="1" max="31" placeholder="TT" class="form-control" name="gebdatum_d" required>
                             <input type="number" min="1" max="12" placeholder="MM" class="form-control" name="gebdatum_m" required>
                             <input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" required>
