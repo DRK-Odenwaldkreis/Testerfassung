@@ -610,21 +610,15 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             $calendar=H_build_table_testdates2('antikoerper');
         }
         //large display
-        
-        if($GLOBALS['FLAG_MODE_MAIN'] == 2) {  // SET VALUE TO e.g. 12345 and this calendar view will be invisible
-            echo '<div class="calendar-large">';
-            foreach($calendar[2] as $i) {
-                //rows
-                foreach($i as $print) {
-                    //columns
-                    if($print!='') {
-                        echo $print;
-                    }
+        echo '<div class="calendar-large">';
+        foreach($calendar[2] as $i) {
+            //rows
+            foreach($i as $print) {
+                //columns
+                if($print!='') {
+                    echo $print;
                 }
             }
-        } else {
-            echo '<div class="calendar-large" style="overflow-x: scroll;">';
-            echo $calendar[0];
         }
         
         
@@ -646,7 +640,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
     <p>Derzeit finden Arbeiten an dieser Seite statt, der Kalender und die Terminbuchung stehen momentan nicht zur Verfügung. Bald geht es wieder weiter...wir bitten um etwas Geduld.</p>
     </div>
     <div class="alert alert-info" role="alert">
-    <h2>Aktuelle Öffnungszeiten</h2>
+    <h2>Aktuelle Öffnungszeiten Testzentren</h2>
     <h3>ohne Terminanmeldung derzeit</h3>
     <p></p>
     <h3>Impfzentrum Erbach</h3>
