@@ -88,6 +88,9 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
         } else {
           $k_pcr_grund='';
         }
+      } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+        $k_geb=$_POST['geburtsdatum'];
+        $k_vacc_number=$_POST['vaccine_number'];
       }
 
 
@@ -107,9 +110,12 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
           $val_cwa_req=S_get_entry($Db,'SELECT CWA_request FROM Vorgang WHERE id=CAST('.$k_id.' AS int);');
         } else {
           // Impfzentrum
+          if($k_vacc_number==3) {$k_vacc_booster=1;} else {$k_vacc_booster=0;}
           S_set_data($Db,'UPDATE Voranmeldung SET
           Vorname=\''.$k_vname.'\',
           Nachname=\''.$k_nname.'\',
+          Geburtsdatum=\''.$k_geb.'\',
+          Booster=CAST('.$k_vacc_booster.' AS int),
           Telefon=\''.$k_tel.'\',
           Mailadresse=\''.$k_email.'\'
           WHERE id=CAST('.$k_id.' AS int);');
@@ -149,9 +155,12 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
           $val_cwa_req=S_get_entry($Db,'SELECT CWA_request FROM Vorgang WHERE id=CAST('.$k_id.' AS int);');
         } else {
           // Impfzentrum
+          if($k_vacc_number==3) {$k_vacc_booster=1;} else {$k_vacc_booster=0;}
           S_set_data($Db,'UPDATE Voranmeldung SET
           Vorname=\''.$k_vname.'\',
           Nachname=\''.$k_nname.'\',
+          Geburtsdatum=\''.$k_geb.'\',
+          Booster=CAST('.$k_vacc_booster.' AS int),
           Telefon=\''.$k_tel.'\'
           WHERE id=CAST('.$k_id.' AS int);');
         }
@@ -230,7 +239,7 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
         }
       } else {
         // Impfzentrum
-        $array_vorgang=S_get_multientry($Db,'SELECT id, Token, Anmeldezeitpunkt,Vorname,Nachname,Telefon,Mailadresse FROM Voranmeldung WHERE id=CAST('.$_GET['id'].' AS int);');
+        $array_vorgang=S_get_multientry($Db,'SELECT id, Token, Anmeldezeitpunkt,Vorname,Nachname,Telefon,Mailadresse,Geburtsdatum,Booster FROM Voranmeldung WHERE id=CAST('.$_GET['id'].' AS int);');
         $cwa_edit_lock=false;
       }
         echo '<div class="row">';
@@ -269,7 +278,8 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
         } else {
           // Impfzentrum
           echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][3].'" required></div>
-          <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][4].'" required></div>';
+          <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][4].'" required></div>
+          <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][7].'" required></div>';
         }
         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
           echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][7].'" required></div>
@@ -280,6 +290,11 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
           // Impfzentrum
           echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][5].'" required></div>
           <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][6].'"></div>';
+          if($array_vorgang[0][8]=='1') {$sel_vac_3='selected';$sel_vac_1='';} else {$sel_vac_1='selected';$sel_vac_3='';}
+          echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">Art der Impfung</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="vaccine_number" required>
+          <option value="1" '.$sel_vac_1.'>Grundimmunisierung (1. bzw. 2. Impfung)</option>
+          <option value="3" '.$sel_vac_3.'>Auffrischungs-, Booster-Impfung</option>
+          </select></div>';
         }
         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
           if($val_cwa_connection==1 && $array_vorgang[0][15]==null) {

@@ -289,7 +289,8 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       if($i[13]==0) {
         echo '<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="confirm.php?id='.$i[10].'" title="Person bestätigen"><span class="icon-forward"></span>&nbsp;#'.$i[0].'</a></td>';
       } else {
-        echo '<span class="icon-checkmark2"></span>&nbsp;Bestätigt</td>';
+        echo '
+        <span class="icon-checkmark2"></span>&nbsp;Bestätigt&nbsp;<a class="list-group-item list-group-item-action list-group-item-redtext" style="display:inline;" target="_blank" href="confirm.php?id='.$i[10].'&undo=1" title="Person zurücksetzen"><span class="icon-undo"></span>&nbsp;Reset</a></td>';
       }
     }
     if($GLOBALS['FLAG_MODE_MAIN'] == 2) {

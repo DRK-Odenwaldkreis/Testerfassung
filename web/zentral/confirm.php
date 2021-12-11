@@ -45,25 +45,49 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
     // ///////////////
 
     $token=$_GET['id'];
+    if( isset($_GET['undo']) ) { $undo=$_GET['undo']; } else { $undo=0; }
 
-    if( S_get_entry($Db,'SELECT Used FROM Voranmeldung WHERE Token=\''.$token.'\';')==0 ) {
+    if($undo==0) {
+      if( S_get_entry($Db,'SELECT Used FROM Voranmeldung WHERE Token=\''.$token.'\';')==0 ) {
 
-      S_set_data($Db,'UPDATE Voranmeldung SET Used=1 WHERE Token=\''.$token.'\';');
-      echo '<div class="row">';
-      echo '<div class="col-sm-12">
-      <h3>Person wurde bestätigt. Das Fenster kann geschlossen werden.</h3>
-      </div>';
-      
+        S_set_data($Db,'UPDATE Voranmeldung SET Used=1 WHERE Token=\''.$token.'\';');
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Person wurde bestätigt. Das Fenster kann geschlossen werden.</h3>
+        </div>';
+        
+      } else {
+
+        // ///////////////
+        // ID  ungültig
+        // ///////////////
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Person wurde bereits bestätigt oder Vorgang ungültig!</h3>
+        </div>';
+
+      }
     } else {
+      // Undo confirm
+      if( S_get_entry($Db,'SELECT Used FROM Voranmeldung WHERE Token=\''.$token.'\';')==1 ) {
 
-      // ///////////////
-      // ID  ungültig
-      // ///////////////
-      echo '<div class="row">';
-      echo '<div class="col-sm-12">
-      <h3>Person wurde bereits bestätigt oder Vorgang ungültig!</h3>
-      </div>';
+        S_set_data($Db,'UPDATE Voranmeldung SET Used=0 WHERE Token=\''.$token.'\';');
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Person wurde zurückgesetzt, Impfung/Testung abgebrochen. Das Fenster kann geschlossen werden.</h3>
+        </div>';
+        
+      } else {
 
+        // ///////////////
+        // ID  ungültig
+        // ///////////////
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Person wurde bereits zurückgesetzt oder Vorgang ungültig!</h3>
+        </div>';
+
+      }
     }
   } else {
     // ///////////////
