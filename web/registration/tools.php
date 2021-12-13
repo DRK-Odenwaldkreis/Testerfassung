@@ -815,18 +815,23 @@ function H_build_table_testdates2( $mode ) {
 						if($array_location_opt[0][0]!='') {
 							$string_location=$array_location_opt[0][0];
 						} else {
-							$string_location=$st[1];
+							$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
+							if($mode=='vaccinate' || $mode == 'b2b-vaccinate') {
+								$string_location4=$st[1];
+							} else {
+								$string_location4='';
+							}
 						}
 						$string_location3='';
 						if($mode=='vaccinate' || $mode == 'b2b-vaccinate') {
 							$string_location3.='<b>'.$st[4].'</b><br>';
 						}
 						if(!($mode=='vaccinate' || $mode == 'b2b-vaccinate')) {
-							$string_location3=$string_location;
-							$string_location='';
+							//$string_location3=$string_location;
+							$string_location3='';
 						}
 						$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top FAIR-data-bottom FAIR-data-center1 FAIR-data-'.$cal_color.'2"><span class="text-sm"><div style="display: block; margin-bottom: 5px;">alle Termine ausgebucht</div></span><div style="display: block; margin-top: 5px;"><span class="label label-default">'.($array_termine_open[0][0]).'</span></div></td>';
-						$res_l_array[$j+2][$col_j].='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1 FAIR-data-'.$cal_color.'3"><span class="text-sm"><div style="display: block; margin-bottom: 5px;"><b>'.$string_location.'</b><br>alle Termine ausgebucht</div></span><div style="display: block; margin-top: 5px; margin-bottom: 7px;"><span class="label label-default">'.($array_termine_open[0][0]).'</span></div></td>';
+						$res_l_array[$j+2][$col_j].='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1 FAIR-data-'.$cal_color.'3"><span class="text-sm"><div style="display: block; margin-bottom: 5px;"><b>'.$string_location4.'</b><br>alle Termine ausgebucht</div></span><div style="display: block; margin-top: 5px; margin-bottom: 7px;"><span class="label label-default">'.($array_termine_open[0][0]).'</span></div></td>';
 						$res_s_array[$j][1].='<div class="cal-element"><div style="display: block; margin-top: 5px;">'.$string_location3.''.$string_location.'</div><span class="text-sm"><div style="display: block; margin-top: 5px;">Alle Termine ausgebucht</div></span><div style="display: block; margin-top: 5px; margin-bottom: 5px;"><span class="label label-default">'.($array_termine_open[0][0]).'</span></div></div>';
 					} else {
 						$res.='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top FAIR-data-bottom FAIR-data-center1"></td>';
