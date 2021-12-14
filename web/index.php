@@ -86,7 +86,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
 
 if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
     // Wechsel Impfzentrum
-    if( date("Y-m-d") > "2021-12-03") {
+    if( date("Y-m-d") < "2021-12-15") {
         echo '
         <div class="row">
             <div class="col-lg-12 col-sm-12">
@@ -104,7 +104,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
     }
 } else {
     // Wechsel Impfzentrum
-    if( date("Y-m-d") > "2021-12-03") {
+    if( date("Y-m-d") < "2021-12-15") {
         echo '
         <div class="row">
             <div class="col-lg-12 col-sm-12">
