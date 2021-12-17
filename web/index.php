@@ -452,8 +452,11 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <div class="caption center_text">
             <h3>Auffrischungsimpfung / Booster</h3>
             <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens fünf Monate nach vollständiger Impfung möglich!</p>
+            <p>Personen, die eine Impfstoffdosis mit Janssen von Johnson & Johnson erhalten haben, sollen zur Optimierung des Impfschutzes nach frühestens vier Wochen einen mRNA-Impfstoff als Auffrischung erhalten (STIKO Empfehlung).</p>
             <h3>Impfstoff Spikevax von Moderna</h3>
             <p>Der Impfstoff Spikevax von Moderna ist nur für Personen ab 30 Jahren zulässig - bitte beachten Sie dies bei der Terminwahl. Ein Wechsel auf einen anderen Impfstoff vor Ort ist nicht möglich.</p>
+            <h3>Impfstoff Janssen von Johnson & Johnson (J&J)</h3>
+            <p>Der Impfstoff Janssen von Johnson & Johnson ist nur für Erstimpfungen zulässig. Eine Zweitimpfung oder Auffrischungsimpfung ist gemäß einer STIKO-Empfehlung mit einem mRNA-Impfstoff durchzuführen (Moderna oder BioNTech-Pfizer). Bitte beachten Sie dies bei der Terminwahl - ein Wechsel auf einen anderen Impfstoff vor Ort ist nicht möglich.</p>
             </div>
             </div>
         </div>
