@@ -84,46 +84,6 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
     ';
 }
 
-if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-    // Wechsel Impfzentrum
-    if( date("Y-m-d") < "2021-12-15") {
-        echo '
-        <div class="row">
-            <div class="col-lg-12 col-sm-12">
-                <div class="alert alert-danger" role="alert">
-                    <div style="text-align: center;">
-                        <h3><b>Das Impfzentrum Erbach ist umgezogen</b></h3>
-                        <p>Ab 06.12. finden Sie das Erbacher Impfzentrum in der</p>
-                        <p><b>Neue Lustgartenstraße 1-3</b></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="FAIRsepdown"></div>
-        ';
-    }
-} else {
-    // Wechsel Impfzentrum
-    if( date("Y-m-d") < "2021-12-15") {
-        echo '
-        <div class="row">
-            <div class="col-lg-12 col-sm-12">
-                <div class="alert alert-danger" role="alert">
-                    <div style="text-align: center;">
-                        <h3><b>Das Impfzentrum Erbach ist umgezogen</b></h3>
-                        <p>Ab 06.12. finden Sie das Erbacher Impfzentrum in der</p>
-                        <p><b>Neue Lustgartenstraße 1-3</b></p>
-                        <p>&nbsp;</p>
-                        <p><b>Das Testzentrum Erbach ist weiterhin in der Martin-Luther-Str. 18-20</b></p>
-                        <p>dort bieten wir weiterhin die Antigentests, PCR-Tests und Antikörpertests an</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="FAIRsepdown"></div>
-        ';
-    }
-}
 
 
 if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
@@ -253,34 +213,44 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         <h4>Wir bieten für Sie:</h4>
 
         <div class="row">
-        <div class="col-sm-4 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'?s=ag#calendar\'">
+        <div class="col-sm-3 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'?s=ag#calendar\'">
             <div class="header_icon">
             <img src="img/icon/rapid_test.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             <div class="FAIRsep"></div>
             <div class="caption center_text">
-            <h4>Antigen-Schnelltest *1)</h4>';
-            echo '<h5>*1) aktuell kostenfrei</h5>';
+            <h4>Antigen-Schnelltest / Bürgertest</h4>';
+            echo '<h5>aktuell kostenfrei</h5>';
             //echo '<h5>*1) kostenfrei für Bürgertest-Berechtigte, sonst kostenpflichtig für 20 €</h5>';
             echo '</div>
             </div>
         </div>
-        <div class="col-sm-4 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'?s=pcr#calendar\'">
+        <div class="col-sm-3 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'?s=pcr#calendar\'">
             <div class="header_icon">
             <img src="img/icon/certified_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             <div class="FAIRsep"></div>
             <div class="caption center_text">
-                <h4>PCR-Test *2)</h4>
-                <h5>*2) kostenfrei für angeordnete Tests, sonst kostenpflichtig für 70 €</h5>
+                <h4>PCR-Test</h4>
+                <h5>kostenfrei für angeordnete Tests, sonst kostenpflichtig für 70 €</h5>
             </div>
             </div>
         </div>
-        <div class="col-sm-4 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'registration/business.php\'">
+        <div class="col-sm-3 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'https://www.impfzentrum-odw.de/antikoerper\'">
             <div class="header_icon">
             <img src="img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             <div class="FAIRsep"></div>
             <div class="caption center_text">
-            <h4>Kostenpflichtige Firmen-Testung *3)</h4>
-            <h5>*3) wenden Sie sich für ein Angebot an das '.$name_facility.' <a href="mailto:'.$email_facility.'">'.$email_facility.'</a></h5>
+            <h4>Kostenpflichtige Antikörper-Testung</h4>
+            <h5>ein Service des DRK Impfzentrum Erbach</h5>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-3 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'registration/business.php\'">
+            <div class="header_icon">
+            <img src="img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
+            <div class="FAIRsep"></div>
+            <div class="caption center_text">
+            <h4>Kostenpflichtige Firmen-Testung</h4>
+            <h5>wenden Sie sich für ein Angebot an das '.$name_facility.' <a href="mailto:'.$email_facility.'">'.$email_facility.'</a></h5>
             </div>
             </div>
         </div>
@@ -558,6 +528,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class=""><a href="?s=ag#calendar">Antigen-Schnelltest</a></li>
             <li role="presentation" class="active"><a href="?s=pcr#calendar">PCR-Test</a></li>
+            <li role="presentation" class=""><a href="https://www.impfzentrum-odw.de/antikoerper">Antikörper-Test</a></li>
             <li role="presentation" class=""><a href="registration/business.php">Firmenanmeldung</a></li>
             </ul>
             ';
@@ -567,6 +538,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class="active"><a href="?s=ag#calendar">Antigen-Schnelltest</a></li>
             <li role="presentation" class=""><a href="?s=pcr#calendar">PCR-Test</a></li>
+            <li role="presentation" class=""><a href="https://www.impfzentrum-odw.de/antikoerper">Antikörper-Test</a></li>
             <li role="presentation" class=""><a href="registration/business.php">Firmenanmeldung</a></li>
             </ul>
             ';
@@ -576,6 +548,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class=""><a href="?s=ag#calendar">Antigen-Schnelltest</a></li>
             <li role="presentation" class=""><a href="?s=pcr#calendar">PCR-Test</a></li>
+            <li role="presentation" class=""><a href="https://www.impfzentrum-odw.de/antikoerper">Antikörper-Test</a></li>
             <li role="presentation" class=""><a href="registration/business.php">Firmenanmeldung</a></li>
             </ul>
             ';
