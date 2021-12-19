@@ -99,6 +99,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
         if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
             $k_int_vaccine=A_sanitize_input_light($_POST['int_vaccine']);
             $min_age=A_sanitize_input_light($_POST['min_age']);
+            $max_age=A_sanitize_input_light($_POST['max_age']);
             if(isset($_POST['vaccine_number'])) { $k_vaccine_number=intval($_POST['vaccine_number']); } else { $k_vaccine_number=null; }
             if($k_vaccine_number==3) {$k_vaccine_booster=1;} else {$k_vaccine_booster=0;}
             // check min age of person for vaccine
@@ -107,9 +108,14 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                 ? ((date("Y",$timestamp_date) - $gebdatum_y) - 1)
                 : (date("Y",$timestamp_date) - $gebdatum_y));
             if($age<$min_age) {
-                $age_verif=false;
+                $age_verif_min=false;
             } else {
-                $age_verif=true;
+                $age_verif_min=true;
+            }
+            if($max_age>0 && $age>$max_age) {
+                $age_verif_max=false;
+            } else {
+                $age_verif_max=true;
             }
         }
         $k_cwa_req=$_POST['cb_cwa'];
@@ -130,12 +136,20 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             echo '<p>Ihr gewählter Termin liegt in der Vergangenheit.</p>
             <p>Bitte wählen Sie neu auf der <a href="../index.php">Startseite</a>.</p>
             </div>';
-        } elseif(!$age_verif) {
+        } elseif(!$age_verif_min) {
             // Age verification not passed - person is too young
             echo '<div class="alert alert-warning" role="alert">
             <h3>Altersverifikation</h3>';
             echo '<p>Ihr gewählter Impfstoff hat ein Mindestalter, die Person muss mindestens '.$min_age.' Jahre alt sein.</p>
             <p>Die eingetragene Person ist allerdings am Tag der Impfung erst '.$age.' Jahre alt - entsprechend Ihrer Eingabe.</p>
+            <p>Bitte wählen Sie einen anderen Impfstoff auf der <a href="../index.php">Startseite</a>.</p>
+            </div>';
+        } elseif(!$age_verif_max) {
+            // Age verification not passed - person is too old
+            echo '<div class="alert alert-warning" role="alert">
+            <h3>Altersverifikation</h3>';
+            echo '<p>Ihr gewählter Impfstoff hat ein Maximalter, die Person darf maximal '.$max_age.' Jahre alt sein.</p>
+            <p>Die eingetragene Person ist allerdings am Tag der Impfung bereits '.$age.' Jahre alt - entsprechend Ihrer Eingabe.</p>
             <p>Bitte wählen Sie einen anderen Impfstoff auf der <a href="../index.php">Startseite</a>.</p>
             </div>';
         } elseif ( ($k_email=='' && $GLOBALS['FLAG_MODE_MAIN'] == 2 && $_SESSION['b2b_signedin']) || filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
@@ -310,6 +324,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                 if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                     echo '<input type="text" value="'.$k_int_vaccine.'" name="int_vaccine" style="display:none;">';
                     echo '<input type="text" value="'.$min_age.'" name="min_age" style="display:none;">';
+                    echo '<input type="text" value="'.$max_age.'" name="max_age" style="display:none;">';
                 }
 
                     echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_vname.'" required></div>
@@ -330,9 +345,13 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                         <input type="number" min="1" max="31" placeholder="TT" class="form-control" name="gebdatum_d" value="'.$gebdatum_d.'"  required>
                         <input type="number" min="1" max="12" placeholder="MM" class="form-control" name="gebdatum_m" value="'.$gebdatum_m.'"  required>
                         <input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" value="'.$gebdatum_y.'"  required>
-                        </div>
-                        <p>*1) Die zu impfende Person muss zum Zeitpunkt der Impfung <b>mindestens '.$min_age.' Jahre</b> alt sein. Das Mindestalter für den gewählten Impfstoff beträgt '.$min_age.' Jahre.</p>
-                        <p>Personen unter 16 Jahren müssen in Begleitung eines Erziehungsberechtigten vor Ort erscheinen.</p>
+                        </div>';
+                        if($max_age>0) {
+                            echo '<p>*1) Die zu impfende Person muss zum Zeitpunkt der Impfung <b>mindestens '.$min_age.' Jahre</b> und darf <b>maximal '.$max_age.' Jahre</b> alt sein. Das Mindestalter für den gewählten Impfstoff beträgt '.$min_age.' Jahre. Das Maximalalter für den gewählten Impfstoff beträgt '.$max_age.' Jahre.</p>';
+                        } else {
+                            echo '<p>*1) Die zu impfende Person muss zum Zeitpunkt der Impfung <b>mindestens '.$min_age.' Jahre</b> alt sein. Das Mindestalter für den gewählten Impfstoff beträgt '.$min_age.' Jahre.</p>';
+                        }
+                        echo '<p>Personen unter 16 Jahren müssen in Begleitung eines Erziehungsberechtigten vor Ort erscheinen.</p>
                         <p>Personen zwischen 16 und 18 benötigen die Unterschrift eines Erziehungsberechtigten auf dem  Einwilligungsdokument.</p>
 
                         <div class="FAIRsepdown"></div>
@@ -773,7 +792,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     $location=$stations_array[0][1].', '.$stations_array[0][2];
                 }
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-                $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.Kurzbezeichnung, Impfstoff.Mindestalter FROM Station 
+                $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.Kurzbezeichnung, Impfstoff.Mindestalter, Impfstoff.Maximalalter FROM Station 
                 JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id WHERE Station.id="'.$array_appointment[7].'";');
                 if($array_appointment[5]!='') {
                     $location=$array_appointment[5].', '.$array_appointment[6];
@@ -784,6 +803,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     $vaccine=$stations_array[0][3];
                 }
                 $min_age=$stations_array[0][4];
+                $max_age=$stations_array[0][5];
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
                 $stations_array=S_get_multientry($Db,'SELECT id, Ort, Adresse FROM Station WHERE id="'.$array_appointment[7].'";');
                 if($array_appointment[5]!='') {
@@ -905,6 +925,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                         if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                             echo '<input type="text" value="'.$vaccine.'" name="int_vaccine" style="display:none;">';
                             echo '<input type="text" value="'.$min_age.'" name="min_age" style="display:none;">';
+                            echo '<input type="text" value="'.$max_age.'" name="max_age" style="display:none;">';
                         }
 
                         echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
@@ -928,9 +949,13 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             <input type="number" min="1" max="31" placeholder="TT" class="form-control" name="gebdatum_d" required>
                             <input type="number" min="1" max="12" placeholder="MM" class="form-control" name="gebdatum_m" required>
                             <input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" required>
-                            </div>
-                            <p>*1) Die zu impfende Person muss zum Zeitpunkt der Impfung <b>mindestens '.$min_age.' Jahre</b> alt sein. Das Mindestalter für den gewählten Impfstoff beträgt '.$min_age.' Jahre.</p>
-                            <p>Personen unter 16 Jahren müssen in Begleitung eines Erziehungsberechtigten vor Ort erscheinen.</p>
+                            </div>';
+                            if($max_age>0) {
+                                echo '<p>*1) Die zu impfende Person muss zum Zeitpunkt der Impfung <b>mindestens '.$min_age.' Jahre</b> und darf <b>maximal '.$max_age.' Jahre</b> alt sein. Das Mindestalter für den gewählten Impfstoff beträgt '.$min_age.' Jahre. Das Maximalalter für den gewählten Impfstoff beträgt '.$max_age.' Jahre.</p>';
+                            } else {
+                                echo '<p>*1) Die zu impfende Person muss zum Zeitpunkt der Impfung <b>mindestens '.$min_age.' Jahre</b> alt sein. Das Mindestalter für den gewählten Impfstoff beträgt '.$min_age.' Jahre.</p>';
+                            }
+                            echo '<p>Personen unter 16 Jahren müssen in Begleitung eines Erziehungsberechtigten vor Ort erscheinen.</p>
                             <p>Personen zwischen 16 und 18 benötigen die Unterschrift eines Erziehungsberechtigten auf dem  Einwilligungsdokument.</p>
 
                             <div class="FAIRsepdown"></div>

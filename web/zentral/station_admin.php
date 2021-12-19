@@ -95,23 +95,28 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
                     CAST('.$stationid_new.' AS int));');
                 $new_user_id=S_get_entry($Db,'SELECT id FROM li_user WHERE Username=\''.('team_'.$station_ort).'\'');
 
-                // Send job for PDF with QR code for scanning password
-                $dir="/home/webservice/Testerfassung/LoginSheetJob/";
-                chdir($dir);
-                $station_ort_space=str_replace(' ','',$station_ort);
-                $job="python3 job.py ".$_SESSION['uid']." $new_username $new_pw $station_ort_space";
-                exec($job,$script_output);
-                $file=$script_output[0];
-                if( file_exists("/home/webservice/LoginSheet/$file") ) {
-                    header('Content-Type: application/octet-stream');
-                    header('Content-Disposition: attachment; filename="'.basename($file).'"');
-                    header('Pragma: no-cache');
-                    header('Expires: 0');
-                    readfile("/home/webservice/LoginSheet/$file");
-                    exit;
+                if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                    // Send job for PDF with QR code for scanning password
+                    $dir="/home/webservice/Testerfassung/LoginSheetJob/";
+                    chdir($dir);
+                    $station_ort_space=str_replace(' ','',$station_ort);
+                    $job="python3 job.py ".$_SESSION['uid']." $new_username $new_pw $station_ort_space";
+                    exec($job,$script_output);
+                    $file=$script_output[0];
+                    if( file_exists("/home/webservice/LoginSheet/$file") ) {
+                        header('Content-Type: application/octet-stream');
+                        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+                        header('Pragma: no-cache');
+                        header('Expires: 0');
+                        readfile("/home/webservice/LoginSheet/$file");
+                        exit;
+                    }
+                    $errorhtml2 =  H_build_boxinfo( 0, 'Station S'.$stationid_new.' - '.$station_ort.' wurde erstellt. Ein Stations-Benutzer wurde angelegt, die PDF wurde erstellt und zum Download angeboten.', 'green' );
+                } else {
+                    $errorhtml2 =  H_build_boxinfo( 0, 'Station S'.$stationid_new.' - '.$station_ort.' wurde erstellt. Ein Stations-Benutzer wurde angelegt.', 'green' );
                 }
 
-                $errorhtml2 =  H_build_boxinfo( 0, 'Station S'.$stationid_new.' - '.$station_ort.' wurde erstellt. Ein Stations-Benutzer wurde angelegt, die PDF wurde erstellt und zum Download angeboten.', 'green' );
+                
             }
         }
 
