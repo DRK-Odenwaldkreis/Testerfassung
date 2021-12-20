@@ -336,8 +336,8 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                         <input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" value="'.$gebdatum_y.'" required>
                         </div>
 
-                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_adresse.'" required></div>
-                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_ort.'" required></div>';
+                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Straße Hausnr.</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_adresse.'" required></div>
+                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">PLZ Ort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_ort.'" required></div>';
                     } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                         $city_array=S_get_multientry($Db,'SELECT ID, PLZ, Gemeinde FROM Gemeinden;');
                         echo '<div class="FAIRsepdown"></div>
@@ -939,8 +939,8 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             <input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" required>
                             </div>
 
-                            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
-                            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>';
+                            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Straße Hausnr.</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
+                            <div class="input-group"><span class="input-group-addon" id="basic-addon1">PLZ Ort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>';
                         } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                             $city_array=S_get_multientry($Db,'SELECT ID, PLZ, Gemeinde FROM Gemeinden;');
 

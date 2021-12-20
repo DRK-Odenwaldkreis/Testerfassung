@@ -649,7 +649,6 @@ function H_build_table_testdates2( $mode ) {
 	$col_st_j=0;
 	$count_same_type_openslot=0;
 	
-	
 	// START of appointments w/ slots
 	if($flag_prereg!=0) {
 
@@ -726,24 +725,11 @@ function H_build_table_testdates2( $mode ) {
 				for($j=0;$j<$X;$j++) {
 					$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
 					if($j==0) {
-						/* if($mode == 'vaccinate' || $mode == 'b2b-vaccinate') {
-							// TODAY do not show past entries AND do not show entries after certain hour of day has reached
-							$hour_limit_monfri=11;
-							$hour_limit_satsun=8;
-							$current_hour=date('G');
-							$current_dateinweek=date('w');
-							if( ( ($current_dateinweek==0 OR $current_dateinweek==6) AND $current_hour<$hour_limit_satsun ) 
-							OR ( ($current_dateinweek>0 AND $current_dateinweek<6) AND $current_hour<$hour_limit_monfri ) ) {
-								$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" AND Stunde>='.$current_hour.';');
-							} else {
-								$array_termine_open=array(0,0);
-							}
-						} else { */
 							// TODAY do not show past entries
 							$current_hour=date('G');
 							$current_slot=intval(date('i')/15)+1;
 							$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Tag="'.$in_j_days.'" AND (Stunde>'.$current_hour.' OR (Stunde='.$current_hour.' AND Slot>'.$current_slot.'));');
-						/* } */
+
 					} else {
 						$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Tag="'.$in_j_days.'";');
 					}

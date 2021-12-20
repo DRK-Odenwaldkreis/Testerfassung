@@ -518,8 +518,6 @@ echo '
     <div class="col-sm-12"><div class="card">';
 
 
-
-
 if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         // Show table of available dates
