@@ -117,6 +117,9 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             } else {
                 $age_verif_max=true;
             }
+        } else {
+            $age_verif_max=true;
+            $age_verif_min=true;
         }
         $k_cwa_req=$_POST['cb_cwa'];
         if($k_cwa_req=='on') { $k_cwa_req=1; } else { $k_cwa_req=0; }
