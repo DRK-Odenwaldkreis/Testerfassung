@@ -547,6 +547,11 @@ td.FAIR-data-bluehead-t3 {
 	background-color: rgb(146, 127, 213);
 	font-size: 18px;
 }
+td.FAIR-data-bluehead-t4 {
+	color: #111;
+	background-color: rgb(125, 143, 238);
+	font-size: 18px;
+}
 td.FAIR-data-bluehead1 {
 	color: #111;
 	background-color: rgb(134, 209, 217, 0.7);
@@ -560,6 +565,11 @@ td.FAIR-data-bluehead2 {
 td.FAIR-data-bluehead3 {
 	color: #111;
 	background-color: rgb(146, 127, 213, 0.7);
+	font-size: 16px;
+}
+td.FAIR-data-bluehead4 {
+	color: #111;
+	background-color: rgb(125, 143, 238, 0.7);
 	font-size: 16px;
 }
 td.FAIR-data-yellow1 {

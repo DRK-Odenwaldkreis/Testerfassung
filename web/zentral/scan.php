@@ -150,8 +150,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][1].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][2].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][3].'" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][4].'" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][5].'" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Straße Hausnr.</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][4].'" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">PLZ Ort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][5].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][6].'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][7].'" required></div>
         <div class="FAIRsepdown"></div>';
@@ -248,8 +248,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <input type="number" min="1" max="12" placeholder="MM" class="form-control" name="gebdatum_m" required>
         <input type="number" min="1900" max="2999" placeholder="JJJJ" class="form-control" name="gebdatum_y" required>
         </div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Straße Hausnr.</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">PLZ Ort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off"></div>
         ';
@@ -724,8 +724,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <input type="number" min="1" max="12" placeholder="MM" value="'.$gebdatum_m.'" class="form-control" name="gebdatum_m" required>
         <input type="number" min="1900" max="2999" placeholder="JJJJ" value="'.$gebdatum_y.'" class="form-control" name="gebdatum_y" required>
         </div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$k_adresse.'" required></div>
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$k_ort.'" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Straße Hausnr.</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$k_adresse.'" required></div>
+        <div class="input-group"><span class="input-group-addon" id="basic-addon1">PLZ Ort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$k_ort.'" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_tel.'" autocomplete="off" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_email.'" autocomplete="off"></div>';
         if(S_get_entry($Db,'SELECT Testtyp.IsPCR Name FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id WHERE Station.id='.$_SESSION['station_id'].';')==1) {
