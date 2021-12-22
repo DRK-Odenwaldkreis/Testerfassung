@@ -175,34 +175,6 @@ Darüberhinaus einmal "Vorgang", in welche die Testvorgänge gespeichert werden.
 
 Erzeugt werden können die Tabellen mit folgenden SQL statements:
 
-### Abrechnung
-```mysql
-CREATE TABLE `Abrechnung` (
-  `id` int(11) NOT NULL,
-  `Teststation` int(11) NOT NULL,
-  `Date` date NOT NULL DEFAULT current_timestamp(),
-  `Amount` int(11) NOT NULL,
-  `Negativ` int(11) DEFAULT NULL,
-  `Positiv` int(11) DEFAULT NULL,
-  `Updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-```
-
-### Archive
-
-```mysql
-CREATE TABLE `Archive` (
-  `id` int(11) NOT NULL,
-  `TestNr` int(11) DEFAULT NULL,
-  `Station` int(11) DEFAULT NULL,
-  `Token` varchar(8) DEFAULT NULL,
-  `Registrierungszeitpunkt` datetime DEFAULT NULL,
-  `CWA_request` int(11) DEFAULT NULL,
-  `reg_type` varchar(10) DEFAULT NULL,
-  `Updated` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-```
-
 ### Station
 
 ```mysql
