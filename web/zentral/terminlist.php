@@ -241,8 +241,8 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
                 echo '<input type="text" value="'.$i[0].'" name="termin_id" style="display:none;">';
                 echo'<span class="input-group-btn">
                     <input type="submit" class="btn btn-info" value="Alle freien Term. für S'.$station.' am '.date("d.m.",strtotime($i[1])).' löschen" name="delete_termin_free1day" />
-                    <input type="submit" class="btn btn-success" value="Freie Term. löschen" name="delete_" />
-                    <input type="submit" class="btn btn-warning" value="Alle Term. löschen" name="delete_termin_all1slot" />
+                    <input type="submit" class="btn btn-success" value="Freie Term. im Slot löschen" name="delete_termin_free1slot" />
+                    <input type="submit" class="btn btn-warning" value="Alle Term. im Slot löschen" name="delete_termin_all1slot" />
                     <input type="submit" class="btn btn-danger" value="Alle Term. für S'.$station.' am '.date("d.m.",strtotime($i[1])).' löschen" name="delete_termin_all1day" />
                     </span>';
                 echo '</div></form>';
