@@ -175,45 +175,123 @@ Darüberhinaus einmal "Vorgang", in welche die Testvorgänge gespeichert werden.
 
 Erzeugt werden können die Tabellen mit folgenden SQL statements:
 
-Vorgang:
+### Abrechnung
+```mysql
+CREATE TABLE `Abrechnung` (
+  `id` int(11) NOT NULL,
+  `Teststation` int(11) NOT NULL,
+  `Date` date NOT NULL DEFAULT current_timestamp(),
+  `Amount` int(11) NOT NULL,
+  `Negativ` int(11) DEFAULT NULL,
+  `Positiv` int(11) DEFAULT NULL,
+  `Updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+### Archive
+
+```mysql
+CREATE TABLE `Archive` (
+  `id` int(11) NOT NULL,
+  `TestNr` int(11) DEFAULT NULL,
+  `Station` int(11) DEFAULT NULL,
+  `Token` varchar(8) DEFAULT NULL,
+  `Registrierungszeitpunkt` datetime DEFAULT NULL,
+  `CWA_request` int(11) DEFAULT NULL,
+  `reg_type` varchar(10) DEFAULT NULL,
+  `Updated` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+### Station
+
+```mysql
+CREATE TABLE `Station` (
+  `id` int(11) NOT NULL,
+  `Ort` varchar(100) NOT NULL,
+  `Adresse` varchar(100) NOT NULL,
+  `Firmencode` varchar(32) DEFAULT NULL,
+  `Oeffnungszeiten` varchar(100) DEFAULT NULL,
+  `Testtyp_id` int(11) NOT NULL DEFAULT 1,
+  `Updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+### Termine
+
+```mysql
+CREATE TABLE `Termine` (
+  `id` int(11) NOT NULL,
+  `id_station` int(11) NOT NULL,
+  `opt_station` varchar(36) DEFAULT NULL,
+  `opt_station_adresse` varchar(64) DEFAULT NULL,
+  `Tag` date DEFAULT NULL,
+  `Stunde` int(2) DEFAULT NULL,
+  `Slot` int(2) DEFAULT NULL,
+  `Used` tinyint(1) DEFAULT NULL,
+  `Startzeit` datetime DEFAULT NULL,
+  `Endzeit` datetime DEFAULT NULL,
+  `Updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+### Voranmeldung
+
+```mysql
+CREATE TABLE `Voranmeldung` (
+  `id` int(11) NOT NULL,
+  `Token` varchar(40) DEFAULT NULL,
+  `Mailsend` tinyint(4) NOT NULL DEFAULT 0,
+  `Anmeldezeitpunkt` datetime NOT NULL DEFAULT current_timestamp(),
+  `Vorname` varchar(40) NOT NULL,
+  `Nachname` varchar(100) NOT NULL,
+  `Wohnort` varchar(150) NOT NULL,
+  `Adresse` varchar(150) NOT NULL,
+  `Telefon` varchar(50) DEFAULT NULL,
+  `Mailadresse` varchar(50) NOT NULL,
+  `Geburtsdatum` varchar(25) NOT NULL,
+  `Tag` date NOT NULL,
+  `Termin_id` int(11) DEFAULT NULL,
+  `Used` int(11) NOT NULL DEFAULT 0,
+  `Reminded` tinyint(4) NOT NULL DEFAULT 0,
+  `zip_request` tinyint(1) NOT NULL DEFAULT 0,
+  `CWA_request` int(1) NOT NULL DEFAULT 0 COMMENT '1=Personalisiert;2=Anonymisiert',
+  `PCR_Grund` int(11) DEFAULT NULL,
+  `Updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+### Vorgang
+
 ```mysql
 CREATE TABLE `Vorgang` (
   `id` int(11) NOT NULL,
-  `Teststation` int(11) NOT NULL,
-  `Token` int(11) NOT NULL,
+  `Teststation` int(11) DEFAULT NULL,
+  `Token` varchar(8) NOT NULL,
   `Registrierungszeitpunkt` datetime NOT NULL DEFAULT current_timestamp(),
-  `Ergebniszeitpunkt` datetime NOT NULL,
+  `reg_type` text DEFAULT NULL,
+  `Ergebniszeitpunkt` datetime DEFAULT NULL,
   `Nachname` varchar(100) NOT NULL,
   `Vorname` varchar(100) NOT NULL,
-  `Adresse` varchar(150) NOT NULL,
-  `Telefon` varchar(15) NOT NULL,
-  `Mailadresse` varchar(50) NOT NULL,
-  `Geburtsdatum`varchar(20) NOT NULL,
-  `Ergebnis` int(11) NOT NULL,
-  `Mailsend` tinyint(4) NOT NULL,
+  `Wohnort` varchar(150) DEFAULT NULL,
+  `Adresse` varchar(150) DEFAULT NULL,
+  `Telefon` varchar(50) DEFAULT NULL,
+  `Mailadresse` varchar(50) DEFAULT NULL,
+  `Geburtsdatum` varchar(25) DEFAULT NULL,
+  `Ergebnis` int(3) DEFAULT 5,
+  `Customer_key` text DEFAULT NULL,
+  `customer_lock` int(3) DEFAULT NULL,
+  `privateMail_lock` int(3) DEFAULT NULL,
+  `gaMail_lock` int(3) DEFAULT NULL,
+  `CWA_lock` int(3) DEFAULT NULL,
+  `zip_lock` int(3) DEFAULT NULL,
+  `privateMail_request` tinyint(1) NOT NULL DEFAULT 0,
+  `handout_request` tinyint(1) NOT NULL DEFAULT 0,
+  `CWA_request` int(1) NOT NULL DEFAULT 0 COMMENT '	1=Personalisiert;2=Anonymisiert	',
+  `zip_request` tinyint(1) NOT NULL DEFAULT 0,
+  `salt` varchar(250) DEFAULT NULL,
+  `Testtyp_id` int(11) DEFAULT 1,
+  `PCR_Grund` int(11) DEFAULT NULL,
   `Updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-ALTER TABLE `Vorgang`
-  ADD UNIQUE KEY `id` (`id`);
-
-ALTER TABLE `Vorgang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
-```
-
-Teststation:
-```mysql
-CREATE TABLE `Teststation` (
-  `id` int(11) NOT NULL,
-  `Ort` varchar(100) NOT NULL,
-  `Updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-ALTER TABLE `Teststation`
-  ADD KEY `id` (`id`);
-
-ALTER TABLE `Teststation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
 ```
