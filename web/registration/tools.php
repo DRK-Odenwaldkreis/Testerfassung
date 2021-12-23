@@ -184,10 +184,10 @@ function S_set_entry_voranmeldung_vaccinate ($Db,$array_data) {
 	// First, check if Termin_id is already used by same person (  to fix a bug found by N.B. <3  )
 	if($array_data[4]=='') {
 		$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Tag=?;");
-		mysqli_stmt_bind_param($stmt, "sssssss", $array_data[0], $array_data[1], $array_data[3], $array_data[6]);
+		mysqli_stmt_bind_param($stmt, "ssss", $array_data[0], $array_data[1], $array_data[3], $array_data[6]);
 	} else {
 		$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Mailadresse=? AND Tag=?;");
-		mysqli_stmt_bind_param($stmt, "ssssssss", $array_data[0], $array_data[1], $array_data[3], $array_data[4], $array_data[6]);
+		mysqli_stmt_bind_param($stmt, "sssss", $array_data[0], $array_data[1], $array_data[3], $array_data[4], $array_data[6]);
 	}
 	mysqli_stmt_execute($stmt);
 	mysqli_stmt_bind_result($stmt, $double_entry_id);
