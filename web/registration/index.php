@@ -100,6 +100,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             $k_int_vaccine=A_sanitize_input_light($_POST['int_vaccine']);
             $min_age=A_sanitize_input_light($_POST['min_age']);
             $max_age=A_sanitize_input_light($_POST['max_age']);
+            $plz_filter=A_sanitize_input_light($_POST['plz_filter']);
             if(isset($_POST['vaccine_number'])) { $k_vaccine_number=intval($_POST['vaccine_number']); } else { $k_vaccine_number=null; }
             if($k_vaccine_number==3) {$k_vaccine_booster=1;} else {$k_vaccine_booster=0;}
             // check min age of person for vaccine
@@ -236,7 +237,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     </div>
                     <div class="alert alert-info" role="alert">
                     <h3>Auffrischungsimpfung / Booster</h3>
-                    <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens fünf Monate nach vollständiger Impfung möglich!</p>
+                    <p>Beachten Sie bitte die Informationen zu Impfungen auf unserer Startseite.</p>
                     </div>';
                 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
                     echo '<div class="alert alert-info" role="alert">
@@ -355,21 +356,23 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             echo '<p>*1) Die zu impfende Person muss zum Zeitpunkt der Impfung <b>mindestens '.$min_age.' Jahre</b> alt sein. Das Mindestalter für den gewählten Impfstoff beträgt '.$min_age.' Jahre.</p>';
                         }
                         echo '<p>Personen unter 16 Jahren müssen in Begleitung eines Erziehungsberechtigten vor Ort erscheinen.</p>
-                        <p>Personen zwischen 16 und 18 benötigen die Unterschrift eines Erziehungsberechtigten auf dem  Einwilligungsdokument.</p>
-
-                        <div class="FAIRsepdown"></div>
-                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Gemeinde *2)</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="city" required>
-                        <option value="" selected>Bitte wählen...</option>
-                            ';
-                            foreach($city_array as $i) {
-                                $display=$i[1].' '.$i[2];
-                                if($i[0]==$city_id) {$selected='selected';} else {$selected='';}
-                                echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
-                            }
-                            echo '
-                        </select></div>
-                        <p>*2) Nur Personen aus dem Lk Odenwaldkreis werden für eine Impfung akzeptiert.</p>
-                        <div class="FAIRsepdown"></div>';
+                        <p>Personen zwischen 16 und 18 benötigen die Unterschrift eines Erziehungsberechtigten auf dem  Einwilligungsdokument.</p>';
+                        if($plz_filter==1) {
+                            // PLZ filter
+                            echo '<div class="FAIRsepdown"></div>
+                            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Gemeinde *2)</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="city" required>
+                            <option value="" selected>Bitte wählen...</option>
+                                ';
+                                foreach($city_array as $i) {
+                                    $display=$i[1].' '.$i[2];
+                                    if($i[0]==$city_id) {$selected='selected';} else {$selected='';}
+                                    echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
+                                }
+                                echo '
+                            </select></div>
+                            <p>*2) Nur Personen aus dem Lk Odenwaldkreis werden für eine Impfung akzeptiert.</p>';
+                        }
+                        echo '<div class="FAIRsepdown"></div>';
                     }
                     
                     echo '
@@ -795,7 +798,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     $location=$stations_array[0][1].', '.$stations_array[0][2];
                 }
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-                $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.Kurzbezeichnung, Impfstoff.Mindestalter, Impfstoff.Maximalalter FROM Station 
+                $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.Kurzbezeichnung, Impfstoff.Mindestalter, Impfstoff.Maximalalter, Station.PLZfilter FROM Station 
                 JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id WHERE Station.id="'.$array_appointment[7].'";');
                 if($array_appointment[5]!='') {
                     $location=$array_appointment[5].', '.$array_appointment[6];
@@ -873,7 +876,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     </div>
                     <div class="alert alert-info" role="alert">
                     <h3>Auffrischungsimpfung / Booster</h3>
-                    <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens fünf Monate nach vollständiger Impfung möglich!</p>
+                    <p>Beachten Sie bitte die Informationen zu Impfungen auf unserer Startseite.</p>
                     </div>';
                 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
                     echo '<div class="alert alert-info" role="alert">
@@ -929,6 +932,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             echo '<input type="text" value="'.$vaccine.'" name="int_vaccine" style="display:none;">';
                             echo '<input type="text" value="'.$min_age.'" name="min_age" style="display:none;">';
                             echo '<input type="text" value="'.$max_age.'" name="max_age" style="display:none;">';
+                            echo '<input type="text" value="'.$stations_array[0][6].'" name="plz_filter" style="display:none;">';
                         }
 
                         echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" required></div>
@@ -959,21 +963,23 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                 echo '<p>*1) Die zu impfende Person muss zum Zeitpunkt der Impfung <b>mindestens '.$min_age.' Jahre</b> alt sein. Das Mindestalter für den gewählten Impfstoff beträgt '.$min_age.' Jahre.</p>';
                             }
                             echo '<p>Personen unter 16 Jahren müssen in Begleitung eines Erziehungsberechtigten vor Ort erscheinen.</p>
-                            <p>Personen zwischen 16 und 18 benötigen die Unterschrift eines Erziehungsberechtigten auf dem  Einwilligungsdokument.</p>
+                            <p>Personen zwischen 16 und 18 benötigen die Unterschrift eines Erziehungsberechtigten auf dem  Einwilligungsdokument.</p>';
+                            if($stations_array[0][6]==1) {
+                                // PLZ filter
+                                echo '<div class="FAIRsepdown"></div>
+                                <div class="input-group"><span class="input-group-addon" id="basic-addon1">Gemeinde *2)</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="city" required>
+                                <option value="" selected>Bitte wählen...</option>
+                                    ';
+                                    foreach($city_array as $i) {
+                                        $display=$i[1].' '.$i[2];
+                                        echo '<option value="'.$i[0].'">'.$display.'</option>';
+                                    }
+                                    echo '
+                                </select></div>
+                                <p>*2) Nur Personen aus dem Landkreis Odenwaldkreis werden für eine Impfung akzeptiert.</p>';
+                            }
 
-                            <div class="FAIRsepdown"></div>
-                            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Gemeinde *2)</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="city" required>
-                            <option value="" selected>Bitte wählen...</option>
-                                ';
-                                foreach($city_array as $i) {
-                                    $display=$i[1].' '.$i[2];
-                                    echo '<option value="'.$i[0].'">'.$display.'</option>';
-                                }
-                                echo '
-                            </select></div>
-                            <p>*2) Nur Personen aus dem Landkreis Odenwaldkreis werden für eine Impfung akzeptiert.</p>
-
-                            <div class="FAIRsepdown"></div>';
+                            echo '<div class="FAIRsepdown"></div>';
                         }
 
                         echo '
