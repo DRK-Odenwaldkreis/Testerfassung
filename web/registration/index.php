@@ -237,11 +237,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     </div>
                     <div class="alert alert-info" role="alert">
                     <h3>Auffrischungsimpfung / Booster</h3>
-<<<<<<< HEAD
                     <p>Beachten Sie bitte die Informationen zu Impfungen auf unserer Startseite.</p>
-=======
-                    <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens drei Monate nach vollständiger Impfung möglich!</p>
->>>>>>> c9e814e436fa57e70b2382887f7802f7761c0d26
                     </div>';
                 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
                     echo '<div class="alert alert-info" role="alert">
@@ -880,11 +876,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     </div>
                     <div class="alert alert-info" role="alert">
                     <h3>Auffrischungsimpfung / Booster</h3>
-<<<<<<< HEAD
                     <p>Beachten Sie bitte die Informationen zu Impfungen auf unserer Startseite.</p>
-=======
-                    <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens drei Monate nach vollständiger Impfung möglich!</p>
->>>>>>> c9e814e436fa57e70b2382887f7802f7761c0d26
                     </div>';
                 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
                     echo '<div class="alert alert-info" role="alert">
