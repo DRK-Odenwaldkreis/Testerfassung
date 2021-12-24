@@ -38,10 +38,17 @@ class PDFgenerator(FPDF):
 		self.set_font('GNU', '', 15)
 		self.qrcode = pyqrcode.create('K' + str(self.code), error='Q')
 		self.qrcode.png('tmp/'+str(code) + '.png', scale=6, quiet_zone=4)
-		self.image('tmp/'+str(code) + '.png', x=85, w=50)
+		self.current_x = self.get_x()
+		self.current_y = self.get_y()
+		#print(self.current_y)
+		self.image('../utils/checkbox.png', h=45,x=10, w=100)
+		self.set_xy(self.current_x + 120,self.current_y)
+		#self.set_x = self.current_x
+		#self.set_y = self.current_y
+		self.image('tmp/'+str(code) + '.png', x=120, w=50)
 		#self.cell(10, 0, '', ln=1)
-		self.current_x=self.get_x
-		self.cell(200, 10, 'K%s' % (self.code), ln=1, align='C')
+		self.current_x=self.get_x()
+		self.cell(20, 10, 'K%s' % (self.code), ln=1, align='C')
 		os.remove('tmp/'+str(code) + '.png')
 
 	def add_codes(self,codes):
@@ -62,7 +69,7 @@ class PDFgenerator(FPDF):
 		self.image(Logo, x=7, y=10, w=100, h=24, type='PNG')
 		self.image(Logo2,x=170, y=5, w=30, h=30, type='PNG')
 		self.ln(4)
-		self.cell(210,10, 'V2.0', ln=1)
+		self.cell(210,10, 'V3.0', ln=1)
 		self.ln(2)
 
 
