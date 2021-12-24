@@ -44,12 +44,13 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             $opening=($_POST['e_opening']);
             $b2b_code=($_POST['e_b2b']);
             $testtyp=($_POST['e_testtyp']);
+            $plzfilter=($_POST['e_plzfilter']);
 
             //  edit station data
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                 S_set_data($Db,'UPDATE Station SET Ort=\''.$station_ort.'\',Adresse=\''.$address.'\',Oeffnungszeiten=\''.$opening.'\',Firmencode=\''.$b2b_code.'\',Testtyp_id=\''.$testtyp.'\' WHERE id='.$user_id.';');
             } else {
-                S_set_data($Db,'UPDATE Station SET Ort=\''.$station_ort.'\',Adresse=\''.$address.'\',Oeffnungszeiten=\''.$opening.'\',Firmencode=\''.$b2b_code.'\',Impfstoff_id=\''.$testtyp.'\' WHERE id='.$user_id.';');
+                S_set_data($Db,'UPDATE Station SET Ort=\''.$station_ort.'\',Adresse=\''.$address.'\',Oeffnungszeiten=\''.$opening.'\',Firmencode=\''.$b2b_code.'\',Impfstoff_id=\''.$testtyp.'\', PLZfilter=\''.$plzfilter.'\' WHERE id='.$user_id.';');
             }
             $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
 
@@ -72,12 +73,13 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
                         \''.$b2b_code.'\',
                         '.$testtyp.');');
                 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-                    S_set_data($Db,'INSERT INTO Station (id, Ort, Adresse, Firmencode, Impfstoff_id) VALUES (
+                    S_set_data($Db,'INSERT INTO Station (id, Ort, Adresse, Firmencode, Impfstoff_id, PLZfilter) VALUES (
                         CAST('.$stationid_new.' AS int),
                         \''.$station_ort.'\',
                         \''.$address.'\',
                         \''.$b2b_code.'\',
-                        '.$testtyp.');');
+                        '.$testtyp.',
+                        1);');
                 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
                     S_set_data($Db,'INSERT INTO Station (id, Ort, Adresse, Firmencode) VALUES (
                         CAST('.$stationid_new.' AS int),
@@ -136,6 +138,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
                 $u_testtyp_id=S_get_entry($Db,'SELECT Testtyp_id FROM Station WHERE id=CAST('.$user_id.' AS int);');
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                 $u_testtyp_id=S_get_entry($Db,'SELECT Impfstoff_id FROM Station WHERE id=CAST('.$user_id.' AS int);');
+                $u_plzfilter=S_get_entry($Db,'SELECT PLZfilter FROM Station WHERE id=CAST('.$user_id.' AS int);');
             }
         }
 
@@ -233,6 +236,11 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
                 }
                 echo '
             </select>
+            <span class="input-group-addon" id="basic-addon1">PLZ Filter</span>
+            <select id="select-state_typ" placeholder="Wähle..." class="custom-select" style="margin-top:0px;" name="e_plzfilter">
+            <option value="0" '.( ($u_plzfilter==0) ? 'selected' : '' ).'>Alle / kein Filter</option>
+            <option value="1" '.( ($u_plzfilter==1) ? 'selected' : '' ).'>Nur aus dem Landkreis</option>
+            </select>
         </div>';
         }
         echo '<div class="FAIR-si-button">
@@ -256,13 +264,16 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Ort</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Adresse</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Öffnungsz.</h4></td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Testtyp/Impfstoff</h4></td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Firmencode</h4></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Testtyp/Impfstoff</h4></td>';
+      if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+        echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>PLZ Filter</h4></td>';
+      }
+      echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Firmencode</h4></td>
       </tr>';
     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         $array_station=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Station.Firmencode, Testtyp.id, Testtyp.Kurzbezeichnung, Station.Oeffnungszeiten FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id ORDER BY Station.id ASC;');
     } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-        $array_station=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Station.Firmencode, Impfstoff.id, Impfstoff.Kurzbezeichnung, Station.Oeffnungszeiten FROM Station JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id ORDER BY Station.id ASC;');
+        $array_station=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Station.Firmencode, Impfstoff.id, Impfstoff.Kurzbezeichnung, Station.Oeffnungszeiten, Station.PLZfilter FROM Station JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id ORDER BY Station.id ASC;');
     } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
         $array_station=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Station.Firmencode, 0,0, Station.Oeffnungszeiten FROM Station ORDER BY Station.id ASC;');
     }
@@ -273,8 +284,11 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[1].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[2].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[6].'</td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">T'.$i[4].' / '.$i[5].'</td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">T'.$i[4].' / '.$i[5].'</td>';
+      if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+        echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.( ($i[7]==1) ? 'nur Kreis' : 'alle' ).'</td>';
+      }
+      echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'</td>
       
       </tr>';
     }
