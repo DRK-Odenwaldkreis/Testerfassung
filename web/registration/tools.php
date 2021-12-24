@@ -256,7 +256,7 @@ function S_set_entry_voranmeldung_antikoerper ($Db,$array_data) {
 		mysqli_stmt_bind_param($stmt, "ssss", $array_data[0], $array_data[1], $array_data[2], $array_data[5]);
 	} else {
 		$stmt=mysqli_prepare($Db,"SELECT id FROM Voranmeldung WHERE Vorname=? AND Nachname=? AND Telefon=? AND Mailadresse=? AND Tag=?;");
-		mysqli_stmt_bind_param($stmt, "ssssssss", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[5]);
+		mysqli_stmt_bind_param($stmt, "sssss", $array_data[0], $array_data[1], $array_data[2], $array_data[3], $array_data[5]);
 	}
 	mysqli_stmt_execute($stmt);
 	mysqli_stmt_bind_result($stmt, $double_entry_id);
