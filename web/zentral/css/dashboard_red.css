@@ -66,11 +66,19 @@ body {
 		padding-right: 7px;
 		padding-left: 7px;
 	}
+	div.center_text {
+		text-align: center;
+		font-size: 85%;
+	}
 }
 @media screen and (min-width: 1201px) {
 	.navbar-nav > li > a {
 		padding-right: 15px;
 		padding-left: 15px;
+	}
+	div.center_text {
+		text-align: center;
+		font-size: 110%;
 	}
 }
 @media screen and (max-width: 901px) {
@@ -441,6 +449,9 @@ table.FAIR-data {
 	border-collapse: collapse;
 	width: 100%;
 }
+tr.FAIR-data-odd {
+	background-color: #f0f0f0;
+}
 td.FAIR-data-top {
 	border-top: 1px solid #d4d4d4;
 	padding: 3px 8px 3px 4px;
@@ -509,6 +520,36 @@ td.FAIR-data-blue3 {
 	background-color: #3379b728;
 	font-size: 18px;
 }
+td.FAIR-data-bluehead-t1 {
+	color: #111;
+	background-color: rgb(134, 209, 217);
+	font-size: 18px;
+}
+td.FAIR-data-redhead-t1 {
+	color: #111;
+	background-color: rgb(241, 174, 166);
+	font-size: 18px;
+}
+td.FAIR-data-yellowhead-t1 {
+	color: #111;
+	background-color: rgb(243, 223, 157);
+	font-size: 18px;
+}
+td.FAIR-data-bluehead1 {
+	color: #111;
+	background-color: rgb(134, 209, 217, 0.7);
+	font-size: 16px;
+}
+td.FAIR-data-redhead1 {
+	color: #111;
+	background-color: rgb(241, 174, 166, 0.7);
+	font-size: 16px;
+}
+td.FAIR-data-yellowhead1 {
+	color: #111;
+	background-color: rgb(243, 223, 157, 0.7);
+	font-size: 16px;
+}
 td.FAIR-data-yellow1 {
 	color: #111;
 	background-color: #e7bd32;
@@ -573,6 +614,37 @@ div.calendar-col {
 	padding-top:8px;
 	padding-bottom:8px;
 	line-height: 36px;
+}
+
+td.calendarblue:hover {
+	color:#fff;
+	cursor: pointer;
+	background-color: #06447a;
+}
+td.calendaryellow:hover {
+	color:#fff;
+	cursor: pointer;
+	background-color: #c29605;
+}
+td.calendarred:hover {
+	color:#fff;
+	cursor: pointer;
+	background-color: #c24105;
+}
+
+div.right-container {
+	display: flex;
+	height: 100%;
+	line-height: 16px;
+	position: relative;
+	right: -5px;
+	top: 0;
+}
+
+span.red-square {
+    color: #BE3600;
+    font-size: 14px;
+	text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.6);
 }
 
 

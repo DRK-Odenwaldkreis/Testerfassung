@@ -152,8 +152,32 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
         $testtyp_array=S_get_multientry($Db,'SELECT id, Kurzbezeichnung FROM Impfstoff;');
     }
 
+    // pre settings for DataTables
+    $local_dt_language="'language': {
+        'info': 'Zeige _START_ bis _END_ von _TOTAL_ Einträgen',
+        'infoFiltered': '(gefiltert aus _MAX_ Einträgen)',
+        'search': 'Suchen:',
+        select: {
+            rows: {
+                _: '%d Zeilen ausgewählt',
+                0: '',
+                1: '1 Zeile ausgewählt'
+            }
+        }
+    }";
+
     // Print html header
-    echo $GLOBALS['G_html_header'];
+    echo $GLOBALS['G_html_header_start'];
+    echo '
+
+    <link rel="stylesheet" type="text/css" href="lib/datatables/datatables.min.css"/>
+    <script type="text/javascript" src="lib/datatables/datatables.min.js"></script>
+    ';
+    echo '
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />';
+    echo $GLOBALS['G_html_header_end'];
 
     // Print html menu
     echo $GLOBALS['G_html_menu'];
@@ -166,10 +190,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
     //
     // Select user
     //
-    echo '
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />';
+    
 
     echo "<script>
     $(document).ready(function () {
@@ -181,7 +202,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
 
 
     echo '<div class="card"><div class="row">
-    <div class="col-sm-4">
+    <div class="col-md-4">
     <h3>Station wählen</h3>';
 
     echo'<form action="'.$current_site.'.php" method="post">
@@ -258,7 +279,8 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
     <div class="col-sm-12">
     <h3>Stationen</h3>';
 
-    echo '<table class="FAIR-data">
+    echo '<table class="FAIR-data" id="maintable" data-order=\'[[ 0, "asc" ]]\' data-page-length=\'1000\'>
+    <thead>
       <tr>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Nr.</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Ort</h4></td>
@@ -269,7 +291,9 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
         echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>PLZ Filter</h4></td>';
       }
       echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Firmencode</h4></td>
-      </tr>';
+      </tr>
+      </thead>
+      <tbody>';
     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         $array_station=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Station.Firmencode, Testtyp.id, Testtyp.Kurzbezeichnung, Station.Oeffnungszeiten FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id ORDER BY Station.id ASC;');
     } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
@@ -280,7 +304,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
     
     foreach($array_station as $i) {
         echo '<tr>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">S'.$i[0].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">S'.(sprintf("%02d", $i[0])).'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[1].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[2].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[6].'</td>
@@ -292,8 +316,20 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
       
       </tr>';
     }
-    echo '</table>';
+    echo '</tbody></table>';
     echo '</div></div></div>';
+
+    // Initialize DataTables JavaScript
+    echo "
+    <script>
+    $(document).ready( function () {
+        $('#maintable').DataTable( {
+            dom: \"frti\",
+            $local_dt_language
+        });
+    } );
+    </script>
+    ";
 
     //
     // Add station
