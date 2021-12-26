@@ -552,6 +552,11 @@ td.FAIR-data-bluehead-t4 {
 	background-color: rgb(125, 143, 238);
 	font-size: 18px;
 }
+td.FAIR-data-bluehead-t5 {
+	color: #111;
+	background-color: rgb(200, 146, 204);
+	font-size: 18px;
+}
 td.FAIR-data-bluehead1 {
 	color: #111;
 	background-color: rgb(134, 209, 217, 0.7);
@@ -570,6 +575,11 @@ td.FAIR-data-bluehead3 {
 td.FAIR-data-bluehead4 {
 	color: #111;
 	background-color: rgb(125, 143, 238, 0.7);
+	font-size: 16px;
+}
+td.FAIR-data-bluehead5 {
+	color: #111;
+	background-color: rgb(200, 146, 204, 0.7);
 	font-size: 16px;
 }
 td.FAIR-data-yellow1 {
@@ -801,6 +811,32 @@ div.calendarred:hover {
 	color:#fff;
 	cursor: pointer;
 	background-color: #c24105;
+}
+
+div.FAIR-data-bluehead1 {
+	color: #111;
+	background-color: rgb(134, 209, 217, 0.7);
+	font-size: 16px;
+}
+div.FAIR-data-bluehead2 {
+	color: #111;
+	background-color: rgb(119, 180, 242, 0.7);
+	font-size: 16px;
+}
+div.FAIR-data-bluehead3 {
+	color: #111;
+	background-color: rgb(146, 127, 213, 0.7);
+	font-size: 16px;
+}
+div.FAIR-data-bluehead4 {
+	color: #111;
+	background-color: rgb(125, 143, 238, 0.7);
+	font-size: 16px;
+}
+div.FAIR-data-bluehead5 {
+	color: #111;
+	background-color: rgb(200, 146, 204, 0.7);
+	font-size: 16px;
 }
 
 

@@ -690,7 +690,7 @@ function H_build_table_testdates2( $mode ) {
 				if($mode=='vaccinate' || $mode == 'b2b-vaccinate') {
 					if($st[4]!=$pre_vacc_string) {
 						$pre_vacc_string=$st[4];
-						if($pre_vacc_no==4) {
+						if($pre_vacc_no==5) {
 							$pre_vacc_no=1;
 						} else {
 							$pre_vacc_no++;
@@ -758,7 +758,7 @@ function H_build_table_testdates2( $mode ) {
 						$value_termine_id=S_get_entry($Db,'SELECT id FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Tag="'.$in_j_days.'" ORDER BY Stunde ASC LIMIT 1;');
 
 						$res_l_array[$j+2][$col_j].='<td onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1 '.$station_color.' calendar'.$cal_color.'">'.$string_times.$display_termine.'</td>';
-						$res_s_array[$j][1].='<div class="cal-element calendar'.$cal_color.'" onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'">'.$string_location3.''.$display_termine.$label_age.'</div>';
+						$res_s_array[$j][1].='<div class="cal-element '.$station_color.' calendar'.$cal_color.'" onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'">'.$string_location3.''.$display_termine.$label_age.'</div>';
 
 						$bool_valid_appointments_found=true;
 					} elseif($array_termine_open[0][0]>0) {
@@ -766,6 +766,9 @@ function H_build_table_testdates2( $mode ) {
 						$array_location_opt=S_get_multientry($Db,'SELECT opt_station, opt_station_adresse FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Tag="'.$in_j_days.'" ORDER BY Stunde ASC;');
 						if($array_location_opt[0][0]!='') {
 							$string_location=$array_location_opt[0][0];
+							if($mode=='vaccinate' || $mode == 'b2b-vaccinate') {
+								$string_location4=$string_location;
+							}
 						} else {
 							$string_location='<b>'.$st[1].'</b><br>'.$st[2].'';
 							if($mode=='vaccinate' || $mode == 'b2b-vaccinate') {
