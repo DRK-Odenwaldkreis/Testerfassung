@@ -449,6 +449,11 @@ table.FAIR-data {
 	border-collapse: collapse;
 	width: 100%;
 }
+table.FAIR-data-table-md {
+	max-width: 1200px;
+	margin-left: auto;
+	margin-right: auto;
+}
 tr.FAIR-data-odd {
 	background-color: #f0f0f0;
 }

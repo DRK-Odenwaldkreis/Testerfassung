@@ -89,7 +89,38 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     }
 
     // Print html header
-    echo $GLOBALS['G_html_header'];
+    echo $GLOBALS['G_html_header_start'];
+    echo '
+    <style>
+    .nav-tab-active > a {
+        background-color: #2c95c9;
+        color: #000;
+      }
+      .nav-tab > a {
+        cursor: pointer;
+      }
+      
+      .tab-content {
+        display: none;
+      }
+      
+      .tab-content.active {
+        display: block;
+      }
+      </style>
+    <script>
+    $( document ).ready(function() {
+        $(\'.nav-tab\').click(function(e) {
+            //Toggle tab link
+            $(this).addClass(\'nav-tab-active\').siblings().removeClass(\'nav-tab-active\');
+        
+            //Toggle target tab
+            $($(this).attr(\'href\')).addClass(\'active\').siblings().removeClass(\'active\');
+        });
+    });
+      </script>
+      ';
+    echo $GLOBALS['G_html_header_end'];
 
     // Print html menu
     echo $GLOBALS['G_html_menu'];
@@ -270,6 +301,19 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         echo '<div class="col-sm-12">
         <div class="card">
         <h3>Alle Stationen in den nächsten Tagen (inkl. Firmen)</h3>';
+
+        if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+            // Tabs for station or vaccine summarized list
+            echo '
+            <ul class="nav nav-pills" role="tablist">
+            <li role="presentation" class="nav-tab nav-tab-active" href="#tab-station"><a>Nach einzelnen Stationen</a></li>
+            <li role="presentation" class="nav-tab" href="#tab-vacc"><a>Nach Impfstoff summiert</a></li>
+            </ul>
+            ';
+        }
+
+
+
         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             $calendar=H_build_table_testdates_new_2_0('');
         } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
@@ -277,16 +321,41 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         } else {
             $calendar=H_build_table_testdates_new_2_0('vaccinate');
         }
-        //var_dump($calendar);
-        foreach($calendar as $i) {
-            //rows
-            foreach($i as $print) {
-                //columns
-                if($print!='') {
-                    echo $print;
+        if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+            echo '<div id="tab-station" class="tab-content active">';
+            foreach($calendar[0] as $i) {
+                //rows
+                foreach($i as $print) {
+                    //columns
+                    if($print!='') {
+                        echo $print;
+                    }
+                }
+            }
+            echo '</div>';
+            echo '<div id="tab-vacc" class="tab-content">';
+            foreach($calendar[1] as $i) {
+                //rows
+                foreach($i as $print) {
+                    //columns
+                    if($print!='') {
+                        echo $print;
+                    }
+                }
+            }
+            echo '</div>';
+        } else {
+            foreach($calendar[0] as $i) {
+                //rows
+                foreach($i as $print) {
+                    //columns
+                    if($print!='') {
+                        echo $print;
+                    }
                 }
             }
         }
+        
         echo '</div></div>';
     }
 

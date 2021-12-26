@@ -536,9 +536,10 @@ function H_build_table_testdates_all($mode) {
 function H_build_table_testdates_new_2_0($mode) {
 	
 	$res_l_array=array(); // for large displays - array for table [row=days][column=station]
+	$res_v_array=array(); // for vaccine sum displays - array for table [row=days][column=station]
 	$Db=S_open_db();
 	if($mode == 'vaccinate') {
-		$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, 1, Impfstoff.Kurzbezeichnung, Firmencode FROM Station
+		$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.id, Impfstoff.Kurzbezeichnung, Firmencode FROM Station
 		JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id
 		ORDER BY Impfstoff.Kurzbezeichnung ASC, Station.Ort ASC;');
 	} else {
@@ -560,11 +561,12 @@ function H_build_table_testdates_new_2_0($mode) {
 
 	// Table
 	$res_l_array[0][0]='
-		<table class="FAIR-data" style="table-layout: fixed;">
-		<tr>
-		<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline"></td>';
+	<table class="FAIR-data" style="table-layout: fixed;">
+	<tr>
+	<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline"></td>';
+	$res_v_array[0][0]=$res_l_array[0][0];
 	
-	$res_l_array[1][0].='
+	$res_l_array[1][0]='
 	<tr>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline"></td>';
 	
@@ -578,10 +580,12 @@ function H_build_table_testdates_new_2_0($mode) {
 		$string_date=A_get_day_name_2(date('w', strtotime($yesterday. ' + '.$j.' days'))).'<br>'.date('d.m.', strtotime($yesterday. ' + '.$j.' days'));
 		if($j==0) {$string_date='Gestern';} elseif($j==1) {$string_date='Heute';}
 		$res_l_array[$j+2][0].='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1"><h5>'.$string_date.'</h5></td>';
+		$res_v_array[$j+2][0]=$res_l_array[$j+2][0];
 	}
 
 	$col_j=0;
 	$col_st_j=0;
+	$col_vacc_j=0;
 	$count_same_type_openslot=0;
 	if($mode == 'vaccinate' || $mode == 'b2b-vaccinate') {
 		$cal_color='blue';
@@ -595,6 +599,8 @@ function H_build_table_testdates_new_2_0($mode) {
 	$pre_vacc_no=0;
 	$count_same_type=0;
 	$count_same_vaccine=0;
+	$count_same_vaccine_is=array(); // counter for sum vaccine per day
+	$count_same_vaccine_io=array(); // counter for open vaccine per day
 
 	// START of appointments w/ slots
 	foreach($stations_array as $st) {
@@ -616,7 +622,9 @@ function H_build_table_testdates_new_2_0($mode) {
 					$count_vaccine=$col_j;
 					$station_color_head='FAIR-data-'.$cal_color.'head-t'.$pre_vacc_no;
 					$station_color='FAIR-data-'.$cal_color.'head'.$pre_vacc_no;
-					$count_same_vaccine=1;
+					$count_same_vaccine=1; // Reset values for new vaccine in list
+					$count_same_vaccine_is=array();
+					$count_same_vaccine_io=array();
 				} else {
 					//same vaccine
 					$count_same_vaccine++;
@@ -643,6 +651,10 @@ function H_build_table_testdates_new_2_0($mode) {
 				$res_l_array[0][1+3*$count_vaccine-2]='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline '.$station_color_head.'" colspan="';
 				$res_l_array[0][1+3*$count_vaccine-1]=$count_same_vaccine; // colspan value
 				$res_l_array[0][1+3*$count_vaccine]='"><div class="center_text"><b>'.$st[4].'</b></div></td>';
+				if($count_same_vaccine==1) {
+					$res_v_array[0][1+$count_vaccine]='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline '.$station_color_head.'"><div class="center_text"><b>'.$st[4].'</b></div></td>';
+					$col_vacc_j++;
+				}
 			}
 			$col_st_j++;
 
@@ -676,6 +688,8 @@ function H_build_table_testdates_new_2_0($mode) {
 					$display_termine.='<div style="display: block; margin-top: 5px;"><span class="label label-danger">'.sprintf('%01d',$value_reservation_unused).'</span></div>
 					<span class="text-sm"><div style="display: block; margin-top: 5px; margin-bottom: 8px;">no-show</div></span>';
 				}
+				$count_same_vaccine_io[$j]+=$count_free;
+				$count_same_vaccine_is[$j]+=$array_termine_open[0][0];
 				
 				if($count_free>0) {
 					$string_times='';
@@ -709,6 +723,21 @@ function H_build_table_testdates_new_2_0($mode) {
 					$res_l_array[$j+2][$col_j].='<td onclick="window.location=\'terminlist2.php?station='.($st[0]).'&date='.$in_j_days.'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-center1 '.$station_color.' calendar'.$cal_color.'">'.$string_location.$string_times.$display_termine.$code_station.'</td>';
 				} else {
 					$res_l_array[$j+2][$col_j].='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1"></td>';
+				}
+
+				if($count_same_vaccine_is[$j]>0) {
+					if( $count_same_vaccine_io[$j]==0 ) {
+						$label_free='default';
+					} elseif( ($count_same_vaccine_io[$j]/$count_same_vaccine_is[$j])<0.2 || $count_same_vaccine_io[$j]<3) {
+						$label_free='warning';
+					} else {
+						$label_free='success';
+					}
+					// Print box entry
+					$display_termine='<div style="display: block; margin-top: 5px; margin-bottom: 8px;"><span class="label label-'.$label_free.'">'.($count_same_vaccine_io[$j]).' von '.$count_same_vaccine_is[$j].'</span></div>';
+					$res_v_array[$j+2][$st[3]]='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-center1 '.$station_color.'">'.$display_termine.'<div class="text-sm">freie Termine</div></td>';
+				} else {
+					$res_v_array[$j+2][$st[3]]='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1"></td>';
 				}
 			}
 		}
@@ -806,10 +835,13 @@ function H_build_table_testdates_new_2_0($mode) {
 		$res_l_array[$jj][]='
 		</tr>
 		';
+		$res_v_array[$jj][]='
+		</tr>
+		';
 		$jj++;
 	}
 
-	if($col_st_j<4) {
+	if($col_st_j<5) {
 		// smaller table in width
 		$res_l_array[0][0]='
 		<table class="FAIR-data FAIR-data-table-md" style="table-layout: fixed;">
@@ -817,6 +849,18 @@ function H_build_table_testdates_new_2_0($mode) {
 		<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline"></td>';
 	} else {
 		$res_l_array[0][0]='
+		<table class="FAIR-data" style="table-layout: fixed;">
+		<tr>
+		<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline"></td>';
+	}
+	if($col_vacc_j<5) {
+		// smaller table in width
+		$res_v_array[0][0]='
+		<table class="FAIR-data FAIR-data-table-md" style="table-layout: fixed;">
+		<tr>
+		<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline"></td>';
+	} else {
+		$res_v_array[0][0]='
 		<table class="FAIR-data" style="table-layout: fixed;">
 		<tr>
 		<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline"></td>';
@@ -836,12 +880,16 @@ function H_build_table_testdates_new_2_0($mode) {
 		$res_l_array[0][0].='"><div class="center_text"><b>Offene Termine, Voranmeldung möglich</b></div></td>';
 	}
 	
+	
 	$res_l_array[$jj][]='
 		</table>
 		';
+	$res_v_array[$jj][0]='
+	</table>
+	';
 
 	S_close_db($Db);
-	return $res_l_array;
+	return array($res_l_array, $res_v_array);
 }
 
 ?>
