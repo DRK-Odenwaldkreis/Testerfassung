@@ -597,6 +597,14 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
         
         
         echo '</div>';
+
+        if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+            echo '<div>
+            <div class="right-container"><b>Auch für Personen außerhalb des Odenwaldkreis bei Terminen mit </b>
+            <span class="yellow-square" style="position:relative; right:-5px;" title="Auch für Personen außerhalb des Odenwaldkreis"><span class="icon-stop2"></span></span></div>
+            </div>';
+        }
+        
         // small display
         echo '<div class="calendar-small">
         ';

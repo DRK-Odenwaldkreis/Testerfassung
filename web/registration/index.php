@@ -370,7 +370,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                 }
                                 echo '
                             </select></div>
-                            <p>*2) Nur Personen aus dem Lk Odenwaldkreis werden für eine Impfung akzeptiert.</p>';
+                            <p>*2) Nur Personen aus dem Landkreis Odenwaldkreis werden für eine Impfung mit diesem Impfstoff akzeptiert.</p>';
                         }
                         echo '<div class="FAIRsepdown"></div>';
                     }
@@ -798,7 +798,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     $location=$stations_array[0][1].', '.$stations_array[0][2];
                 }
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-                $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.Kurzbezeichnung, Impfstoff.Mindestalter, Impfstoff.Maximalalter, Station.PLZfilter FROM Station 
+                $stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.Name, Impfstoff.Mindestalter, Impfstoff.Maximalalter, Station.PLZfilter FROM Station 
                 JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id WHERE Station.id="'.$array_appointment[7].'";');
                 if($array_appointment[5]!='') {
                     $location=$array_appointment[5].', '.$array_appointment[6];
@@ -976,7 +976,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                     }
                                     echo '
                                 </select></div>
-                                <p>*2) Nur Personen aus dem Landkreis Odenwaldkreis werden für eine Impfung akzeptiert.</p>';
+                                <p>*2) Nur Personen aus dem Landkreis Odenwaldkreis werden für eine Impfung mit diesem Impfstoff akzeptiert.</p>';
                             }
 
                             echo '<div class="FAIRsepdown"></div>';

@@ -593,7 +593,7 @@ function H_build_table_testdates2( $mode ) {
 	$Db=S_open_db();
 	$flag_prereg=S_get_entry($Db,'SELECT value FROM website_settings WHERE name="FLAG_Pre_registration" LIMIT 1;');
 	if($mode == 'vaccinate' || $mode == 'b2b-vaccinate') {
-		$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, 1, Impfstoff.Kurzbezeichnung, Impfstoff.Mindestalter, Impfstoff.Maximalalter FROM Station 
+		$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, 1, Impfstoff.Kurzbezeichnung, Impfstoff.Mindestalter, Impfstoff.Maximalalter, Station.PLZfilter FROM Station 
 		JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id WHERE '.$query_b2b.' ORDER BY Impfstoff.Kurzbezeichnung ASC, Station.Ort ASC;');
 	} elseif($mode == 'antikoerper') {
 		$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse FROM Station WHERE '.$query_b2b.';');
@@ -644,7 +644,7 @@ function H_build_table_testdates2( $mode ) {
 		$string_date=A_get_day_name(date('w', strtotime($today. ' + '.$j.' days'))).' '.date('d.m.', strtotime($today. ' + '.$j.' days'));
 		$res_s_array[$j][0]='<div class="cal-day-head">'.$string_date.'</div>';
 	}
-
+	$code_station='';
 	$col_j=0;
 	$col_st_j=0;
 	$count_same_type_openslot=0;
@@ -703,6 +703,14 @@ function H_build_table_testdates2( $mode ) {
 						//same vaccine
 						$count_same_vaccine++;
 					}
+					if($st[7]!=1) {
+						$code_station='<div class="right-container">
+						<span class="yellow-square" title="Auch für Personen außerhalb des Odenwaldkreis"><span class="icon-stop2"></span></span></div>';
+						$code_station_s='<div class="right-container-s">
+						<span class="yellow-square" title="Auch für Personen außerhalb des Odenwaldkreis"><span class="icon-stop2"></span></span></div>';
+					} else {
+						$code_station='';
+					}
 				} else {
 					$station_color='FAIR-data-'.$cal_color.'head1';
 					$station_color_head='FAIR-data-'.$cal_color.'head-t1';
@@ -757,8 +765,8 @@ function H_build_table_testdates2( $mode ) {
 						// get times
 						$value_termine_id=S_get_entry($Db,'SELECT id FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Tag="'.$in_j_days.'" ORDER BY Stunde ASC LIMIT 1;');
 
-						$res_l_array[$j+2][$col_j].='<td onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1 '.$station_color.' calendar'.$cal_color.'">'.$string_times.$display_termine.'</td>';
-						$res_s_array[$j][1].='<div class="cal-element '.$station_color.' calendar'.$cal_color.'" onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'">'.$string_location3.''.$display_termine.$label_age.'</div>';
+						$res_l_array[$j+2][$col_j].='<td onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1 '.$station_color.' calendar'.$cal_color.'">'.$string_times.$display_termine.$code_station.'</td>';
+						$res_s_array[$j][1].='<div class="cal-element '.$station_color.' calendar'.$cal_color.'" onclick="window.location=\''.$path_to_reg.'index.php?appointment='.($value_termine_id).'\'">'.$string_location3.''.$display_termine.$label_age.$code_station_s.'</div>';
 
 						$bool_valid_appointments_found=true;
 					} elseif($array_termine_open[0][0]>0) {

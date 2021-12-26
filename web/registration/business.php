@@ -175,6 +175,12 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		echo '</div>
 		<div class="col-sm-12"><div class="card">
 		';
+		if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+            echo '<div>
+            <div class="right-container"><b>Auch für Personen außerhalb des Odenwaldkreis bei Terminen mit </b>
+            <span class="yellow-square" style="position:relative; right:-5px;" title="Auch für Personen außerhalb des Odenwaldkreis"><span class="icon-stop2"></span></span></div>
+            </div>';
+        }
 
 		// Show table of available dates
 		if($GLOBALS['FLAG_MODE_MAIN'] == 2) {

@@ -42,19 +42,19 @@ $G_html_header='<html lang="en">
 ';
 
 if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-  echo'
+  $G_html_header.='
   <link href="../css/bootstrap_red.css" rel="stylesheet">
   <!-- Custom styles for this template -->
   <link href="../css/dashboard_red.css" rel="stylesheet">';
 } else {
-  echo'
+  $G_html_header.='
   <link href="../css/bootstrap.css" rel="stylesheet">
   <!-- Custom styles for this template -->
   <link href="../css/dashboard.css" rel="stylesheet">';
 }
 
-echo'
-    
+$G_html_header.= '
+<link href="../css/symbols-fair.css" rel="stylesheet">
   </head>';
 
 // HTML body with menu

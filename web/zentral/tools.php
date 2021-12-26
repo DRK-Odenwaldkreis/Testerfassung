@@ -340,7 +340,7 @@ function H_build_table_testdates_new_2_0($mode) {
 	$res_v_array=array(); // for vaccine sum displays - array for table [row=days][column=station]
 	$Db=S_open_db();
 	if($mode == 'vaccinate') {
-		$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.id, Impfstoff.Kurzbezeichnung, Firmencode FROM Station
+		$stations_array=S_get_multientry($Db,'SELECT Station.id, Station.Ort, Station.Adresse, Impfstoff.id, Impfstoff.Kurzbezeichnung, Station.Firmencode FROM Station
 		JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id
 		ORDER BY Impfstoff.Kurzbezeichnung ASC, Station.Ort ASC;');
 	} else {
