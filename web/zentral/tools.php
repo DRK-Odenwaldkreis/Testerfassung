@@ -348,7 +348,7 @@ function H_build_table_testdates_new_2_0($mode) {
 	}
 	// X ist Anzahl an Tagen für Vorschau in Tabelle
 	if($mode == 'vaccinate') {
-		$X=35;
+		$X=42;
 	} else {
 		$X=28;
 	}
@@ -402,6 +402,7 @@ function H_build_table_testdates_new_2_0($mode) {
 	$count_same_vaccine=0;
 	$count_same_vaccine_is=array(); // counter for sum vaccine per day
 	$count_same_vaccine_io=array(); // counter for open vaccine per day
+	$count_same_vaccine_iu=array(); // counter for unused vaccine per day / no-show
 
 	// START of appointments w/ slots
 	foreach($stations_array as $st) {
@@ -426,6 +427,7 @@ function H_build_table_testdates_new_2_0($mode) {
 					$count_same_vaccine=1; // Reset values for new vaccine in list
 					$count_same_vaccine_is=array();
 					$count_same_vaccine_io=array();
+					$count_same_vaccine_iu=array();
 				} else {
 					//same vaccine
 					$count_same_vaccine++;
@@ -488,6 +490,7 @@ function H_build_table_testdates_new_2_0($mode) {
 					$value_reservation_unused=S_get_entry($Db,'SELECT count(Voranmeldung.id) FROM Voranmeldung JOIN Termine ON Termine.id=Voranmeldung.Termin_id WHERE Termine.Slot>0 AND Termine.id_station='.$st[0].' AND Date(Termine.Tag)="'.$in_j_days.'" AND Termine.Stunde<'.$current_hour.' AND Voranmeldung.Used=0;');
 					$display_termine.='<div style="display: block; margin-top: 5px;"><span class="label label-danger">'.sprintf('%01d',$value_reservation_unused).'</span></div>
 					<span class="text-sm"><div style="display: block; margin-top: 5px; margin-bottom: 8px;">no-show</div></span>';
+					$count_same_vaccine_iu[$j]+=$value_reservation_unused;
 				}
 				$count_same_vaccine_io[$j]+=$count_free;
 				$count_same_vaccine_is[$j]+=$array_termine_open[0][0];
@@ -497,7 +500,7 @@ function H_build_table_testdates_new_2_0($mode) {
 					// opt location
 					$array_location_opt=S_get_multientry($Db,'SELECT opt_station, opt_station_adresse FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
 					if($array_location_opt[0][0]!='') {
-						$string_times.='<span class="text-sm">'.$array_location_opt[0][0].',<br>'.$array_location_opt[0][1].'</span><br>';
+						$string_times.='<span class="FAIR-text-sm">'.$array_location_opt[0][0].',<br>'.$array_location_opt[0][1].'</span><br>';
 					}
 					// get times
 					$value_termine_times1=S_get_entry($Db,'SELECT Stunde FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
@@ -513,7 +516,7 @@ function H_build_table_testdates_new_2_0($mode) {
 					// opt location
 					$array_location_opt=S_get_multientry($Db,'SELECT opt_station, opt_station_adresse FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
 					if($array_location_opt[0][0]!='') {
-						$string_times.='<span class="text-sm">'.$array_location_opt[0][0].',<br>'.$array_location_opt[0][1].'</span><br>';
+						$string_times.='<span class="FAIR-text-sm">'.$array_location_opt[0][0].',<br>'.$array_location_opt[0][1].'</span><br>';
 					}
 					// get times
 					$value_termine_times1=S_get_entry($Db,'SELECT Stunde FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
@@ -534,9 +537,15 @@ function H_build_table_testdates_new_2_0($mode) {
 					} else {
 						$label_free='success';
 					}
+					if($j<2) {
+						// display no-shows
+						$display_noshow='<div style="display: block; margin-top: 5px;"><span class="label label-danger">'.sprintf('%01d',$count_same_vaccine_iu[$j]).'</span></div><span class="text-sm"><div style="display: block; margin-top: 5px; margin-bottom: 8px;">no-show</div></span>';
+					} else {
+						$display_noshow='';
+					}
 					// Print box entry
 					$display_termine='<div style="display: block; margin-top: 5px; margin-bottom: 8px;"><span class="label label-'.$label_free.'">'.($count_same_vaccine_io[$j]).' von '.$count_same_vaccine_is[$j].'</span></div>';
-					$res_v_array[$j+2][$st[3]]='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-center1 '.$station_color.'">'.$display_termine.'<div class="text-sm">freie Termine</div></td>';
+					$res_v_array[$j+2][$st[3]]='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-center1 '.$station_color.'">'.$display_termine.'<div class="text-sm">freie Termine</div>'.$display_noshow.'</td>';
 				} else {
 					$res_v_array[$j+2][$st[3]]='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1"></td>';
 				}

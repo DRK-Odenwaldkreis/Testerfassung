@@ -689,7 +689,7 @@ a.calendaryellow-dis:hover {
 	text-decoration: none;
 }
 
-@media (min-width: 1249px) {
+@media (min-width: 849px) {
 	div.calendar-large {
 		display: block;
 	}
@@ -697,7 +697,7 @@ a.calendaryellow-dis:hover {
 		display: none;
 	}
 }
-@media (max-width: 1250px) {
+@media (max-width: 850px) {
 	div.calendar-large {
 		display: none;
 	}

@@ -227,7 +227,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     </div>
                     <div class="alert alert-info" role="alert">
                     <h3>Auffrischungsimpfung / Booster</h3>
-                    <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens sechs Monate nach vollständiger Impfung möglich!</p>
+                    <p>Beachten Sie bitte die Informationen zu Impfungen auf unserer Startseite.</p>
                     </div>';
                 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                     echo '<div class="alert alert-info" role="alert">
@@ -472,6 +472,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                 <div class="caption center_text">
                                     <h3>Impfung</h3>
                                     <h4>Wurden Sie bereits geimpft und dies ist eine Auffrischungsimpfung / Booster-Impfung?</h4>
+                                    <p>Booster sind derzeit nur für Personen <b>ab 18 Jahren</b> erlaubt und <b>nur</b> mit mRNA Impfstoffen (von Moderna oder BioNTech-Pfizer).</p>
                                 </div>
                             </div>
                             <div class="input-group"><span class="input-group-addon" id="basic-addon1">Art der Impfung</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="vaccine_number" required>
@@ -1080,6 +1081,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                     <div class="caption center_text">
                                         <h3>Impfung</h3>
                                         <h4>Wurden Sie bereits geimpft und dies ist eine Auffrischungsimpfung / Booster-Impfung?</h4>
+                                        <p>Booster sind derzeit nur für Personen <b>ab 18 Jahren</b> erlaubt und <b>nur</b> mit mRNA Impfstoffen (von Moderna oder BioNTech-Pfizer).</p>
                                     </div>
                                 </div>
                                 <div class="input-group"><span class="input-group-addon" id="basic-addon1">Art der Impfung</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="vaccine_number" required>
