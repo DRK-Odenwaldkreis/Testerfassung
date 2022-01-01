@@ -27,7 +27,7 @@ if __name__ == "__main__":
         else:
             requestedNumber = sys.argv[1]
             DatabaseConnect = Database()
-            sql = "Select Vorname,Nachname,Ergebnis,Registrierungszeitpunkt,Geburtsdatum,Testtyp.Name,Testtyp.IsPCR from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where Token=%s;"%(requestedNumber)
+            sql = "Select Vorname,Nachname,Ergebnis,Registrierungszeitpunkt,Geburtsdatum,Testtyp.Name,Testtyp.IsPCR,Vorgang.Customer_key from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where Token=%s;"%(requestedNumber)
             requester = DatabaseConnect.read_single(sql)
             vorname = requester[0]
             nachname = requester[1]
@@ -36,6 +36,7 @@ if __name__ == "__main__":
             geburtsdatum = requester[4]
             manufacturer = requester[5]
             isPCR = requester[6]
+            key = requester[7]
             if isPCR == 1:
                 testtype = "RT-PCR Labortest"
             else:
@@ -48,8 +49,9 @@ if __name__ == "__main__":
                 inputFile = "../utils/MailLayout/Indistinct_Result.html"
             else:
                 raise Exception
+            qrURL = f'https://www.testzentrum-odw.de/result.php?i={requestedNumber}&t={key}'
             layout = open(inputFile, 'r', encoding='utf-8')
-            inputContent = layout.read().replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum)).replace('[[MANUFACTURER]]', str(manufacturer)).replace('[[TESTTYPE]]', str(testtype))
+            inputContent = layout.read().replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum)).replace('[[MANUFACTURER]]', str(manufacturer)).replace('[[TESTTYPE]]', str(testtype)).replace('[[QRURL]]', str(qrURL))
             outputFile = "../../Zertifikate/" + str(requestedNumber) + ".pdf" 
             pdfkit.from_string(inputContent, outputFile)
             print(str(requestedNumber) + ".pdf")

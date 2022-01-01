@@ -11,6 +11,15 @@
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Ergebnis Ihres Tests liegt vor</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            function generateBarCode()
+            {
+                var nric = $('#text').val();
+                var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=50x50';
+                $('#barcode').attr('src', url);
+            }
+        </script>
     <style>
         /* -------------------------------------
           GLOBAL RESETS
@@ -397,6 +406,7 @@
                                                                 </table>
                                                                 <p>Bitte beachten Sie die Informationen des Gesundheitsamt des Odenwaldkreis: <a
                                                                         href="https://testzentrum-odw.de/download/Informationen_Gesundheitsamt.pdf">Link</a></p>
+                                                                        
                                                                 <p>Bitte beachten Sie die Informationen des HMSI: <a href="https://testzentrum-odw.de/download/HMSI-Informationen.pdf">Link</a></p>
                                             <p><b>Datenschutzinformationen:</b> Im Rahmen des bei Ihnen durchgeführten Corona-Schnelltests (PoC-Antigentest auf
                                                 SARS-CoV-2 oder PCR Labortest)
@@ -405,8 +415,11 @@
                                                 Informationen zum Datenschutz sind auf der Webseite des DRK unter 
                                                 <a href="https://testzentrum-odw.de/impressum.php#datenschutz_durchfuehrung">Datenschutz</a> jederzeit
                                                 nachzulesen und können bei Bedarf heruntergeladen bzw. ausgedruckt werden.</p>
-                                        <br>
-                                        <br>
+                                            <br>
+                                                <center>
+                                                    <img src="https://chart.googleapis.com/chart?cht=qr&chl=[[QRURL]]&chs=200x200&chld=L|0"></img>
+                                                </center>
+                                            <br>
                                         <p>Getestete Person/Tested Person: [[VORNAME]], [[NACHNAME]]</p>
                                         <p>Ergebnis/Result: Unklar/Indistinct</p>
                                         <p>Geburtsdatum/Date of Birth: [[GEBDATUM]]</p>
