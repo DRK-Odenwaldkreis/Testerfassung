@@ -53,7 +53,6 @@ if __name__ == "__main__":
                 filename = []
                 filename.append(str(PDF.creatPDF(i,location)))
                 filename.append(str(create_ics(date,slot,stunde,location,token)))
-                print(type(filename))
                 url = "https://testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token,entry)
                 if send_qr_ticket_mail(mail,date,vorname,nachname,appointment,location,filename,url): 
                     logger.debug('Mail was succesfully send, closing entry in db')
