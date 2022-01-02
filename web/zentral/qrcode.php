@@ -14,7 +14,9 @@ include_once 'lib/phpqrcode/qrlib.php';
 
 if(isset($_GET['id'])) {
     $param = $_GET['id']; // remember to sanitize that - it is user input!
+    $size = 60;
 } elseif(isset($_GET['cwa'])) {
+    $size = 6;
     $param = 'https://s.coronawarn.app?v=1#'.$_GET['cwa']; // for CWA QR code
 }
 
@@ -32,6 +34,6 @@ $debugLog = ob_get_contents();
 ob_end_clean();
 
 // outputs image directly into browser, as PNG stream
-QRcode::png($codeText,false,QR_ECLEVEL_H,6,4);
+QRcode::png($codeText,false,QR_ECLEVEL_H,$size,4);
 
 ?>
