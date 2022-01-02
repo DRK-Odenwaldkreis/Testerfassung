@@ -43,11 +43,10 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 
 	$ALLOWANCE_RESULT=0;
 
-	if ( $_SERVER['REQUEST_METHOD'] == 'POST' || isset($_GET['internal_download']) ) {
-
-		if(isset($_POST['button'])) {
+	if ( $_SERVER['REQUEST_METHOD'] == 'POST' || isset($_GET['internal_download']) || isset($_GET['validate'])) {
+		if(isset($_POST['button']) || isset($_GET['validate'])) {
 			// Check birth date to show result
-			
+			if(isset($_POST['button'])) {
 			$token = A_sanitize_input($_POST['token']);
 			$customer_key = A_sanitize_input($_POST['customer_key']);
 			//$gebdatum = $_POST['gebdatum'];
@@ -55,6 +54,11 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 			$gebdatum_m = A_sanitize_input($_POST['gebdatum_m']);
 			$gebdatum_y = A_sanitize_input($_POST['gebdatum_y']);
 			$gebdatum=sprintf('%04d',$gebdatum_y).'-'.sprintf('%02d',$gebdatum_m).'-'.sprintf('%02d',$gebdatum_d);
+			} elseif(isset($_GET['validate'])){
+			$token=A_sanitize_input($_GET['i']);
+			$customer_key=A_sanitize_input($_GET['t']);
+			$gebdatum=A_sanitize_input($_GET['g']);
+			}
 
 			// Daten werde überprüft
 			if($gebdatum!='') {
