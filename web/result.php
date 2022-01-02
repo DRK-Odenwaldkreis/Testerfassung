@@ -159,7 +159,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		$display_result=str_replace('[[MANUFACTURER]]', $result_array[0][6], $display_result);
 		$display_result=str_replace('[[GEBDATUM]]', date('d.m.Y',strtotime($result_array[0][4])), $display_result);
 		$display_result=str_replace('[[DATE]]', date('d.m.Y',strtotime($result_array[0][1])).' um '.date('H:i',strtotime($result_array[0][1])).' Uhr', $display_result);
-
+		$display_result=str_replace('[[QRURL]]', 'https://www.testzentrum-odw.de/result.php?validate=1&i='.$token.'&t='.$key.'&g='.$geburtsdatum.'' , $display_result);
 		echo '<div style="margin-top:20px;">
 		<form action="'.$current_site.'.php" method="post">
 		
