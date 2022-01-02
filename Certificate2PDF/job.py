@@ -49,7 +49,7 @@ if __name__ == "__main__":
                 inputFile = "../utils/MailLayout/Indistinct_Result.html"
             else:
                 raise Exception
-            qrURL = f'https://www.testzentrum-odw.de/result.php?validate=1&i={requestedNumber}&t={key}&g={geburtsdatum}'
+            qrURL = f'https://www.testzentrum-odw.de/result.php?validate=1%26i={requestedNumber}%26t={key}%26g={geburtsdatum}'
             layout = open(inputFile, 'r', encoding='utf-8')
             inputContent = layout.read().replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum)).replace('[[MANUFACTURER]]', str(manufacturer)).replace('[[TESTTYPE]]', str(testtype)).replace('[[QRURL]]', str(qrURL))
             outputFile = "../../Zertifikate/" + str(requestedNumber) + ".pdf" 
