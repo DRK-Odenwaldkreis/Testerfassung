@@ -10,7 +10,6 @@ tools
 
 ** ************** */
 
-include_once 'lib/phpqrcode/qrlib.php';
 
 /****************************************/
 /* SQL functions */
@@ -705,6 +704,7 @@ function H_build_table_testdates_new_2_0($mode) {
 }
 
 function A_qr_code($type,$param) {
+	include_once 'lib/phpqrcode/qrlib.php';
     
 	if($type == 'CWA'){
 	$size=6;	
