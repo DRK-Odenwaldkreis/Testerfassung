@@ -583,6 +583,14 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
         } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
             $calendar=H_build_table_testdates2('antikoerper');
         }
+
+        if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+			echo '<p><div>
+			<div class="right-container"><b>Diese Impfungen sind auch für Personen mit Wohnsitz außerhalb des Odenwaldkreises freigegeben </b>
+			<span class="yellow-square" style="position:relative; right:-5px;" title="Diese Impfungen sind auch für Personen mit Wohnsitz außerhalb des Odenwaldkreises freigegeben"><span class="icon-stop2"></span></span></div>
+			</div> <br>';
+			}
+            
         //large display
         echo '<div class="calendar-large">';
         foreach($calendar[2] as $i) {
@@ -597,13 +605,6 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
         
         
         echo '</div>';
-
-        if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-            echo '<div>
-            <div class="right-container"><b>Auch für Personen außerhalb des Odenwaldkreis bei Terminen mit </b>
-            <span class="yellow-square" style="position:relative; right:-5px;" title="Auch für Personen außerhalb des Odenwaldkreis"><span class="icon-stop2"></span></span></div>
-            </div>';
-        }
         
         // small display
         echo '<div class="calendar-small">
