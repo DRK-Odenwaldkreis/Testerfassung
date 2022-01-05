@@ -708,9 +708,10 @@ function A_qr_code($type,$param) {
     
 	if($type == 'CWA'){
 	$size=6;
-	$codeText = $param;
-    // outputs image directly into browser, as PNG stream
-    return QRcode::png($codeText,false,QR_ECLEVEL_H,$size,4);	
+	$codeText = 'https://s.coronawarn.app?v=1#'.$param;
+    // // outputs image directly into browser, as PNG stream
+    //return QRcode::png($codeText,false,QR_ECLEVEL_H,$size,4);
+	return QRcode::svg($codeText); 
 	}
 	elseif($type == 'result'){
 	$codeText = $param;

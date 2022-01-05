@@ -948,4 +948,26 @@ function H_build_table_testdates2( $mode ) {
 	return array('',$res_s_array,$res_l_array);
 }
 
+function A_qr_code($type,$param) {
+	include_once 'lib/phpqrcode/full/qrlib.php';
+    
+	if($type == 'CWA'){
+	$size=6;
+	$codeText = 'https://s.coronawarn.app?v=1#'.$param;
+    // // outputs image directly into browser, as PNG stream
+    //return QRcode::png($codeText,false,QR_ECLEVEL_H,$size,4);
+	return QRcode::svg($codeText); 
+	}
+	elseif($type == 'result'){
+	$codeText = $param;
+	return QRcode::svg($codeText); 
+	}
+	else{
+	$codeText = $param;
+	return QRcode::svg($codeText); 
+	}
+
+	
+}
+
 ?>

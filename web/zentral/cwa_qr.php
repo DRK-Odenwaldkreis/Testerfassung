@@ -53,7 +53,8 @@ if($bool_no_permission) {
 } else {
     echo '<div class="row">
     <div class="col-sm-12"><h4>CWA QR-Code für Kunde</h4>';
-    echo '<img src="qrcode.php?cwa='.$cwa_base64.'" />';
+    $image = A_qr_code('CWA',$cwa_base64);
+    echo $image;
     echo '<h4>Kunde: <b>'.$vname.' '.$nname.'</b></h4>';
     echo '</div></div>';
 }

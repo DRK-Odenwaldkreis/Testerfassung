@@ -692,7 +692,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         echo '<div class="FAIRsepdown"></div>
         <div class="col-sm-12 placeholders"><h3 class="imprint">CWA QR-Code für Kunde</h3>';
         $cwa_base64=S_get_cwa_qr_code ($Db,$array_written[0][0]);
-        echo '<img src="qrcode.php?cwa='.$cwa_base64.'" />';
+        $image = A_qr_code('CWA',$cwa_base64);
+        echo $image;
         echo '</div>';
       }
     } else {
