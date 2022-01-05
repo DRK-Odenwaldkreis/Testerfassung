@@ -136,7 +136,7 @@ function S_get_cwa_qr_code ($Db,$test_id) {
 		$pre_hash=$test_array[0][0].'#'.$test_array[0][1].'#'.$test_array[0][2].'#'.strtotime($test_array[0][3]).'#'.$test_array[0][5].'#'.$test_array[0][4];
 		$hash=hash("sha256",$pre_hash);
 		// build json
-		$json='{"dob":"'.$test_array[0][0].'","fn":"'.$test_array[0][1].'","ln":"'.$test_array[0][2].'","testid":"'.$test_array[0][5].'","timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","hash":"'.$hash.'"}';
+		$json='{"dob":"'.$test_array[0][0].'","fn":"'.$test_array[0][1].'","ln":"'.$test_array[0][2].'","testid":"'.$test_array[0][5].'","timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","dgc":true ,"hash":"'.$hash.'"}';
 	} elseif($test_array[0][6]==2) {
 		// // anonymous CWA
 		// build hash
