@@ -704,21 +704,24 @@ function H_build_table_testdates_new_2_0($mode) {
 }
 
 function A_qr_code($type,$param) {
-	include_once 'lib/phpqrcode/qrlib.php';
+	include_once 'lib/phpqrcode/full/qrlib.php';
     
 	if($type == 'CWA'){
-	$size=6;	
-	}
-	elseif($type == 'result'){
-	$size=60;
-	}
-	else{
 	$size=6;
-	}
-
 	$codeText = $param;
     // outputs image directly into browser, as PNG stream
-    QRcode::png($codeText,false,QR_ECLEVEL_H,$size,4);
+    return QRcode::png($codeText,false,QR_ECLEVEL_H,$size,4);	
+	}
+	elseif($type == 'result'){
+	$codeText = $param;
+	return QRcode::svg($codeText); 
+	}
+	else{
+	$codeText = $param;
+	return QRcode::svg($codeText); 
+	}
+
+	
 }
 
 
