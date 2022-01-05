@@ -47,6 +47,16 @@
             font-size: 14px;
             vertical-align: top;
         }
+        table.noline td {
+            border:0px;
+        }
+        table.bottomline td {
+            border-bottom:1px solid black;
+            font-weight: bold;
+        }
+        table td.topline {
+            border-top:1px solid black;
+        }
 
         /* -------------------------------------
           BODY & CONTAINER
@@ -84,27 +94,27 @@
     </style>
 </head>
 <body class="">    
-    <table role="presentation" border="0" cellpadding="20" cellspacing="0" class="body">
+    <table role="presentation" cellpadding="20" cellspacing="0" class="body noline">
         <tr>
             <td>&nbsp;</td>
             <td class="container">
                 <div class="content">
                     <!-- START CENTERED WHITE CONTAINER -->
-                    <table role="presentation" class="main">
+                    <table role="presentation" class="main noline">
                         <!-- START MAIN CONTENT AREA -->
                         <tr>
                             <td class="wrapper">
-                                <table role="presentation" border="0" cellpadding="20px" cellspacing="0">
+                                <table role="presentation" cellpadding="20px" cellspacing="0" class="noline">
                                     <tr>
                                         <td>
                                             <img src="https://testzentrum-odw.de/img/logo.png" alt="Ergebnis Ihres Tests liegt vor" style="display: block;" />
                                             <p>Hallo [[VORNAME]] [[NACHNAME]],</p>
                                             <p>Sie waren am [[DATE]] im Testzentrum und haben sich testen lassen. Das Testergebnis liegt vor.</p>
-                                            <table role="presentation" border="1" cellpadding="20px" style="text-align: center; align-content: center;">
+                                            <table role="presentation" cellpadding="20px" style="text-align: center; align-content: center;" class="noline">
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            <table role="presentation" border="0" cellpadding="20" cellspacing="0" style="padding-top: 40px; text-align: center; width: auto;">
+                                                            <table role="presentation" cellpadding="20" cellspacing="0" style="padding-top: 40px; text-align: center; width: auto;" class="noline">
                                                                 <tbody>
                                                                     <tr>
                                                                         <td style="background-color: #fbff00; border-radius: 10px;">Ihr Testergebnis ist nicht eindeutig</td>
@@ -116,7 +126,7 @@
                                                                 daher unbedingt weiterhin die Abstands- und Hygieneregeln einschließlich Mundschutz.</P>
                                                         </td>
                                                         <td>
-                                                            <table role="presentation">
+                                                            <table role="presentation" class="noline">
                                                                 <tbody>
                                                                     <tr>
                                                                         <td> [[QRURL]] <p></p> <center>Scan2Check</center></td>
@@ -128,14 +138,14 @@
                                                 </table>
                                 <p>Bitte beachten Sie die informationen des Gesundheitsamts:</p>
                                 <p> <center><a href="https://www.testzentrum-odw.de/download/Informationen_Gesundheitsamt.pdf">https://testzentrum-odw.de/download/Informationen_Gesundheitsamt.pdf</a></center></p>
-                                <table role="presentation" border="1" cellpadding="5px" cellspacing="0"style="width: auto;
-                                background:  linear-gradient(rgba(255,255,255,.95), rgba(255,255,255,.95)), url(https://upload.wikimedia.org/wikipedia/de/d/d1/DRK-Rundlogo.png) center no-repeat;
+                                <table role="presentation" cellpadding="5px" cellspacing="0"style="width: auto;
+                                background:  linear-gradient(rgba(255,255,255,.95), rgba(255,255,255,.85)), url(https://upload.wikimedia.org/wikipedia/de/d/d1/DRK-Rundlogo.png) center no-repeat;
                                 background-size: 300px 300px; 
-                                ">
+                                " class="bottomline">
                                     <tbody>
                                         <tr>
-                                            <td>Getestete Person/Tested:</td>
-                                            <td>[[VORNAME]], [[NACHNAME]]</td>
+                                            <td class="topline">Getestete Person/Tested:</td>
+                                            <td class="topline">[[VORNAME]] [[NACHNAME]]</td>
                                         </tr>
                                         <tr>
                                             <td>Ergebnis/Result:</td>
