@@ -9,6 +9,7 @@ from utils.database import Database
 from pdfcreator.pdf import PDFgenerator
 from utils.sendmail import send_qr_ticket_mail
 from utils.slot import get_slot_time
+from utils.icsCreation import create_ics
 import datetime
 import time
 import locale
@@ -49,7 +50,9 @@ if __name__ == "__main__":
                 else:
                     location = str(opt_ort) + "," + str(opt_adress)
                 PDF = PDFgenerator()
-                filename = PDF.creatPDF(i,location)
+                filename = []
+                filename.append(str(PDF.creatPDF(i,location)))
+                filename.append(str(create_ics(date,slot,stunde,location,token)))
                 url = "https://testzentrum-odw.de/registration/index.php?cancel=cancel&t=%s&i=%s" % (token,entry)
                 if send_qr_ticket_mail(mail,date,vorname,nachname,appointment,location,filename,url): 
                     logger.debug('Mail was succesfully send, closing entry in db')

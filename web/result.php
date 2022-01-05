@@ -43,11 +43,10 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 
 	$ALLOWANCE_RESULT=0;
 
-	if ( $_SERVER['REQUEST_METHOD'] == 'POST' || isset($_GET['internal_download']) ) {
-
-		if(isset($_POST['button'])) {
+	if ( $_SERVER['REQUEST_METHOD'] == 'POST' || isset($_GET['internal_download']) || isset($_GET['validate'])) {
+		if(isset($_POST['button']) || isset($_GET['validate'])) {
 			// Check birth date to show result
-			
+			if(isset($_POST['button'])) {
 			$token = A_sanitize_input($_POST['token']);
 			$customer_key = A_sanitize_input($_POST['customer_key']);
 			//$gebdatum = $_POST['gebdatum'];
@@ -55,6 +54,11 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 			$gebdatum_m = A_sanitize_input($_POST['gebdatum_m']);
 			$gebdatum_y = A_sanitize_input($_POST['gebdatum_y']);
 			$gebdatum=sprintf('%04d',$gebdatum_y).'-'.sprintf('%02d',$gebdatum_m).'-'.sprintf('%02d',$gebdatum_d);
+			} elseif(isset($_GET['validate'])){
+			$token=A_sanitize_input($_GET['i']);
+			$customer_key=A_sanitize_input($_GET['t']);
+			$gebdatum=A_sanitize_input($_GET['g']);
+			}
 
 			// Daten werde überprüft
 			if($gebdatum!='') {
@@ -155,7 +159,12 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		$display_result=str_replace('[[MANUFACTURER]]', $result_array[0][6], $display_result);
 		$display_result=str_replace('[[GEBDATUM]]', date('d.m.Y',strtotime($result_array[0][4])), $display_result);
 		$display_result=str_replace('[[DATE]]', date('d.m.Y',strtotime($result_array[0][1])).' um '.date('H:i',strtotime($result_array[0][1])).' Uhr', $display_result);
-
+		$url = 'https://www.testzentrum-odw.de/result.php?validate=1&i='.$token.'&t='.$customer_key.'&g='.$gebdatum.'';
+		$image = A_qr_code('result',$url);
+		$display_result=str_replace('[[QRURL]]', $image , $display_result);
+		
+		if(!isset($_GET['validate'])){
+	
 		echo '<div style="margin-top:20px;">
 		<form action="'.$current_site.'.php" method="post">
 		
@@ -190,9 +199,11 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		color: #fff;
 background-color: #286090;
 border-color: #204d74;" value="PDF herunterladen" name="download_pdf" />
+
 		</div></form>
 		</div>';
 
+	}
 		echo $display_result;
 		
 

@@ -4,7 +4,6 @@
 
 
 -->
-
 <!doctype html>
 <html>
 <head>
@@ -25,7 +24,6 @@
         }
 
         body {
-            background-color: #f6f6f6;
             font-family: sans-serif;
             -webkit-font-smoothing: antialiased;
             font-size: 14px;
@@ -38,9 +36,9 @@
 
         table {
             border-collapse: separate;
-            mso-table-lspace: 0pt;
-            mso-table-rspace: 0pt;
             width: 100%;
+            margin-left:auto; 
+            margin-right:auto;
         }
 
         table td {
@@ -53,317 +51,39 @@
           BODY & CONTAINER
       ------------------------------------- */
 
-        .body {
-            background-color: #f6f6f6;
-            width: 100%;
-        }
 
         /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
         .container {
-            display: block;
             margin: 0 auto !important;
             /* makes it centered */
-            max-width: 580px;
+            max-width: 21cm;
+            max-height: 29.7cm;
             padding: 10px;
-            width: 580px;
+            
         }
 
         /* This should also be a block element, so that it will fill 100% of the .container */
         .content {
             box-sizing: border-box;
-            display: block;
             margin: 0 auto;
-            max-width: 580px;
+            max-width: 21cm;
+            max-height: 29.7cm;
             padding: 10px;
         }
 
         /* -------------------------------------
           HEADER, FOOTER, MAIN
       ------------------------------------- */
-        .main {
-            background: #ffffff;
-            border-radius: 3px;
-            width: 100%;
-        }
 
         .wrapper {
             box-sizing: border-box;
             padding: 20px;
         }
 
-        .content-block {
-            padding-bottom: 10px;
-            padding-top: 10px;
-        }
-
-        .footer {
-            clear: both;
-            margin-top: 10px;
-            text-align: center;
-            width: 100%;
-        }
-
-        .footer td,
-        .footer p,
-        .footer span,
-        .footer a {
-            color: #999999;
-            font-size: 12px;
-            text-align: center;
-        }
-
-        /* -------------------------------------
-          TYPOGRAPHY
-      ------------------------------------- */
-        h1,
-        h2,
-        h3,
-        h4 {
-            color: #000000;
-            font-family: sans-serif;
-            font-weight: 400;
-            line-height: 1.4;
-            margin: 0;
-            margin-bottom: 30px;
-        }
-
-        h1 {
-            font-size: 35px;
-            font-weight: 300;
-            text-align: center;
-            text-transform: capitalize;
-        }
-
-        p,
-        ul,
-        ol {
-            font-family: sans-serif;
-            font-size: 14px;
-            font-weight: normal;
-            margin: 0;
-            margin-bottom: 15px;
-        }
-
-        p li,
-        ul li,
-        ol li {
-            list-style-position: inside;
-            margin-left: 5px;
-        }
-
-        a {
-            color: #3498db;
-            text-decoration: underline;
-        }
-
-        /* -------------------------------------
-          BUTTONS
-      ------------------------------------- */
-        .btn {
-            box-sizing: border-box;
-            width: 100%;
-        }
-
-        .btn>tbody>tr>td {
-            padding-bottom: 15px;
-        }
-
-        .btn table {
-            width: auto;
-        }
-
-        .btn table td {
-            background-color: #ffffff;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .btn a {
-            background-color: #ff0000;
-            border: solid 1px #ff0000;
-            border-radius: 5px;
-            box-sizing: border-box;
-            color: #3498db;
-            cursor: pointer;
-            display: inline-block;
-            font-size: 14px;
-            font-weight: bold;
-            margin: 0;
-            padding: 12px 25px;
-            text-decoration: none;
-            text-transform: capitalize;
-        }
-
-        .btn-primary table td {
-            background-color: #ff0000;
-        }
-
-        .btn-primary a {
-            background-color: #ff0000;
-            border-color: #ff0000;
-            color: #ffffff;
-        }
-
-        /* -------------------------------------
-          OTHER STYLES THAT MIGHT BE USEFUL
-      ------------------------------------- */
-        .last {
-            margin-bottom: 0;
-        }
-
-        .first {
-            margin-top: 0;
-        }
-
-        .align-center {
-            text-align: center;
-        }
-
-        .align-right {
-            text-align: right;
-        }
-
-        .align-left {
-            text-align: left;
-        }
-
-        .clear {
-            clear: both;
-        }
-
-        .mt0 {
-            margin-top: 0;
-        }
-
-        .mb0 {
-            margin-bottom: 0;
-        }
-
-        .preheader {
-            color: transparent;
-            display: none;
-            height: 0;
-            max-height: 0;
-            max-width: 0;
-            opacity: 0;
-            overflow: hidden;
-            mso-hide: all;
-            visibility: hidden;
-            width: 0;
-        }
-
-        .powered-by a {
-            text-decoration: none;
-        }
-
-        hr {
-            border: 0;
-            border-bottom: 1px solid #f6f6f6;
-            margin: 20px 0;
-        }
-
-        /* -------------------------------------
-          RESPONSIVE AND MOBILE FRIENDLY STYLES
-      ------------------------------------- */
-        @media only screen and (max-width: 620px) {
-            table[class=body] h1 {
-                font-size: 28px !important;
-                margin-bottom: 10px !important;
-            }
-
-            table[class=body] p,
-            table[class=body] ul,
-            table[class=body] ol,
-            table[class=body] td,
-            table[class=body] span,
-            table[class=body] a {
-                font-size: 16px !important;
-            }
-
-            table[class=body] .wrapper,
-            table[class=body] .article {
-                padding: 10px !important;
-            }
-
-            table[class=body] .content {
-                padding: 0 !important;
-            }
-
-            table[class=body] .container {
-                padding: 0 !important;
-                width: 100% !important;
-            }
-
-            table[class=body] .main {
-                border-left-width: 0 !important;
-                border-radius: 0 !important;
-                border-right-width: 0 !important;
-            }
-
-            table[class=body] .btn table {
-                width: 100% !important;
-            }
-
-            table[class=body] .btn a {
-                width: 100% !important;
-            }
-
-            table[class=body] .img-responsive {
-                height: auto !important;
-                max-width: 100% !important;
-                width: auto !important;
-            }
-        }
-
-        /* -------------------------------------
-          PRESERVE THESE STYLES IN THE HEAD
-      ------------------------------------- */
-        @media all {
-            .ExternalClass {
-                width: 100%;
-            }
-
-            .ExternalClass,
-            .ExternalClass p,
-            .ExternalClass span,
-            .ExternalClass font,
-            .ExternalClass td,
-            .ExternalClass div {
-                line-height: 100%;
-            }
-
-            .apple-link a {
-                color: inherit !important;
-                font-family: inherit !important;
-                font-size: inherit !important;
-                font-weight: inherit !important;
-                line-height: inherit !important;
-                text-decoration: none !important;
-            }
-
-            #MessageViewBody a {
-                color: inherit;
-                text-decoration: none;
-                font-size: inherit;
-                font-family: inherit;
-                font-weight: inherit;
-                line-height: inherit;
-            }
-
-            .btn-primary table td:hover {
-                background-color: #ff0000 !important;
-            }
-
-            .btn-primary a:hover {
-                background-color: #ff0000 !important;
-                border-color: #ff0000 !important;
-            }
-        }
     </style>
 </head>
 <body class="">
-    <span class="preheader">Ergebnis Ihres Tests liegt vor</span>
-    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
+    <table role="presentation" border="0" cellpadding="20" cellspacing="0" class="body">
         <tr>
             <td>&nbsp;</td>
             <td class="container">
@@ -373,61 +93,93 @@
                         <!-- START MAIN CONTENT AREA -->
                         <tr>
                             <td class="wrapper">
-                                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                                <table role="presentation" border="0" cellpadding="20px" cellspacing="0">
                                     <tr>
                                         <td>
                                             <img src="https://testzentrum-odw.de/img/logo.png" alt="Ergebnis Ihres Tests liegt vor" style="display: block;" />
                                             <p>Hallo [[VORNAME]] [[NACHNAME]],</p>
                                             <p>Sie waren am [[DATE]] im Testzentrum und haben sich testen lassen. Das Testergebnis liegt vor.</p>
-                                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                                            <table role="presentation" border="1" cellpadding="20px" style="text-align: center; align-content: center;">
                                                 <tbody>
                                                     <tr>
-                                                        <td align="center">
-                                                            <table role="presentation" border="0" cellpadding="20" cellspacing="20">
+                                                        <td>
+                                                            <table role="presentation" border="0" cellpadding="20" cellspacing="0" style="padding-top: 40px; text-align: center; width: auto;">
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td> Ihr Testergebnis ist positiv </td>
+                                                                        <td style="background-color: #ff0000; border-radius: 10px;">Ihr Testergebnis ist positiv</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
-                                                            <P>Mit überwiegender Wahrscheinlichkeit sind Sie mit dem neuartigen Corona-Virus (SARS-CoV-2) infiziert!</P>
-                                        </td>
-                                    </tr>
+                                                            <br>
+                                                            <P>Mit überwiegender Wahrscheinlichkeit sind Sie mit dem neuartigen Corona-Virus (SARS-CoV-2) infiziert! Das Gesundheitsamt des Odenwaldkreis wurde über dieses Testergebnis informiert.</P>
+                                                        </td>
+                                                        <td>
+                                                            <table role="presentation">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td> [[QRURL]] <p></p> <center>Scan2Check</center></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                <p>Bitte beachten Sie die informationen des Gesundheitsamts:</p>
+                                <p> <center><a href="https://www.testzentrum-odw.de/download/Informationen_Gesundheitsamt.pdf">https://testzentrum-odw.de/download/Informationen_Gesundheitsamt.pdf</a></center></p>
+                                <table role="presentation" border="1" cellpadding="5px" cellspacing="0"style="width: auto;
+                                background:  linear-gradient(rgba(255,255,255,.95), rgba(255,255,255,.95)), url(https://upload.wikimedia.org/wikipedia/de/d/d1/DRK-Rundlogo.png) center no-repeat;
+                                background-size: 300px 300px; 
+                                ">
+                                    <tbody>
+                                        <tr>
+                                            <td>Getestete Person/Tested:</td>
+                                            <td>[[VORNAME]], [[NACHNAME]]</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ergebnis/Result:</td>
+                                            <td>Positiv/Positive</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Geburtsdatum/Date of Birth:</td>
+                                            <td>[[GEBDATUM]]</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hersteller/Manufacturer:</td>
+                                            <td>[[MANUFACTURER]]</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Art des Tests/Type of Test:</td>
+                                            <td>[[TESTTYPE]]</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Testort/Location of Test:</td>
+                                            <td>Testzentrum des Odenwaldkreises</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Erreger/Pathogen:</td>
+                                            <td>SARS-CoV-2</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Aussteller/Authority:</td>
+                                            <td>DRK KV Odenwaldkreis e.V., Illigstr. 11, 64711 Erbach, DE</td>
+                                        </tr>
+                                        <tr>
+                                            <td>*Ausweisnummer/ID:</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>    
                                 </table>
-                                <p>Bitte beachten Sie die informationen des Gesundheitsamts: <br> <a href="https://www.testzentrum-odw.de/download/Informationen_Gesundheitsamt.pdf">testzentrum-odw.de/download/Informationen_Gesundheitsamt.pdf</a></p>
-                                            <p>Das Gesundheitsamt des Odenwaldkreis wurde über dieses Testergebnis informiert.</p>
                                 <p><b>Datenschutzinformationen:</b> Im Rahmen des bei Ihnen durchgeführten Corona-Schnelltests (PoC-Antigentest auf SARS-CoV-2 oder PCR Labortest)
                                 erhebt der DRK-Kreisverband Odenwaldkreis e.V., Illigstr. 11, 64711 Erbach, personenbezogene Daten von Ihnen. Weitere
-                                Informationen zum Datenschutz sind auf der Webseite des DRK unter <a href="https://drk-odenwaldkreis.de/datenschutz/">Datenschutz</a> jederzeit
+                                Informationen zum Datenschutz sind auf der Webseite des DRK unter <a href="https://testzentrum-odw.de/impressum.php#datenschutz_durchfuehrung">Datenschutz</a> jederzeit
                                 nachzulesen und können bei Bedarf heruntergeladen bzw. ausgedruckt werden.</p>
                                 <br>
-                                <br>
-                                <p>Getestete Person/Tested Person: [[VORNAME]], [[NACHNAME]]</p>
-                                <p>Ergebnis/Result: Postiv/Positive</p>
-                                <p>Geburtsdatum/Date of Birth: [[GEBDATUM]]</p>
-                                <p>Hersteller/Manufacturer: [[MANUFACTURER]]</p>
-                                <p>Art des Tests/Type of Test: [[TESTTYPE]]</p>
-                                <p>Testort/Location of Test: Testzentrum des Odenwaldkreises</p>
-                                <p>Erreger/Pathogen: SARS-CoV-2</p>
-                                <p>Aussteller/Authority: DRK KV Odenwaldkreis e.V., Illigstr. 11, 64711 Erbach, DE</p>
-                                <p>*Ausweisnummer/ID: </p>
                             </td>
                         </tr>
+                        
                         <!-- END MAIN CONTENT AREA -->
                     </table>
                     <!-- END CENTERED WHITE CONTAINER -->
-
-                    <!-- START FOOTER -->
-                    <div class="footer">
-                        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                            <tr>
-                                <td class="content-block">
-                                  <a href="http://testzentrum-odw.de">Testzentrum-Odenwaldkreis</a>.
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <!-- END FOOTER -->
                 </div>
             </td>
             <td>&nbsp;</td>

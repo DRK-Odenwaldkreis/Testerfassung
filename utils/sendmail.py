@@ -411,7 +411,7 @@ def send_qr_ticket_pre_register_mail(recipient,date,vorname,nachname,ort,filenam
             "The following error occured in send mail qr ticket: %s" % (err))
         return False
 
-def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, ort, filename, url):
+def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, ort, files, url):
     try:
         logging.debug("Receviced the following recipient: %s to be sent to." % (
             recipient))
@@ -424,7 +424,6 @@ def send_qr_ticket_mail(recipient, date, vorname, nachname, appointment, ort, fi
         message['From'] = "Testzentrum des DRK Odenwaldkreis" + f' <{FROM_EMAIL}>'
         message['Reply-To'] = FROM_EMAIL
         message['To'] = recipient
-        files = [filename]
         for item in files:
             attachment = open(item, 'rb')
             part = MIMEBase('application', 'octet-stream')

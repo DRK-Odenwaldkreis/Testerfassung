@@ -10,6 +10,7 @@ tools
 
 ** ************** */
 
+
 /****************************************/
 /* SQL functions */
 /****************************************/
@@ -701,5 +702,27 @@ function H_build_table_testdates_new_2_0($mode) {
 	S_close_db($Db);
 	return array($res_l_array, $res_v_array);
 }
+
+function A_qr_code($type,$param) {
+	include_once 'lib/phpqrcode/full/qrlib.php';
+    
+	if($type == 'CWA'){
+	$size=6;
+	$codeText = $param;
+    // outputs image directly into browser, as PNG stream
+    return QRcode::png($codeText,false,QR_ECLEVEL_H,$size,4);	
+	}
+	elseif($type == 'result'){
+	$codeText = $param;
+	return QRcode::svg($codeText); 
+	}
+	else{
+	$codeText = $param;
+	return QRcode::svg($codeText); 
+	}
+
+	
+}
+
 
 ?>

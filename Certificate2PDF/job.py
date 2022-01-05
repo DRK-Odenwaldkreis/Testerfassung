@@ -6,7 +6,7 @@
 import datetime
 from os import path
 import logging
-import pdfkit
+from pdfkit import from_url as pdf_from_url
 import codecs
 import sys
 sys.path.append("..")
@@ -14,7 +14,7 @@ from utils.database import Database
 
 
 logFile = '../../Logs/certificateJob.log'
-logging.basicConfig(filename=logFile,level=logging.INFO,
+logging.basicConfig(filename=logFile,level=logging.WARNING,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Single Certification Job startet on: %s' %(datetime.datetime.now()))
 logger.info('Starting single certificate creation Job')
@@ -27,31 +27,13 @@ if __name__ == "__main__":
         else:
             requestedNumber = sys.argv[1]
             DatabaseConnect = Database()
-            sql = "Select Vorname,Nachname,Ergebnis,Registrierungszeitpunkt,Geburtsdatum,Testtyp.Name,Testtyp.IsPCR from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where Token=%s;"%(requestedNumber)
+            sql = "Select Vorgang.Customer_key,Vorgang.Geburtsdatum from Vorgang where Token=%s;"%(requestedNumber)
             requester = DatabaseConnect.read_single(sql)
-            vorname = requester[0]
-            nachname = requester[1]
-            ergebnis = requester[2]
-            date = requester[3].strftime("%d.%m.%Y um %H:%M Uhr")
-            geburtsdatum = requester[4]
-            manufacturer = requester[5]
-            isPCR = requester[6]
-            if isPCR == 1:
-                testtype = "RT-PCR Labortest"
-            else:
-                testtype = "SARS-CoV-2 PoC Ag Test"
-            if ergebnis == 1:
-                inputFile = "../utils/MailLayout/Positive_Result.html"
-            elif ergebnis == 2:
-                inputFile = "../utils/MailLayout/Negative_Result.html"
-            elif ergebnis == 9:
-                inputFile = "../utils/MailLayout/Indistinct_Result.html"
-            else:
-                raise Exception
-            layout = open(inputFile, 'r', encoding='utf-8')
-            inputContent = layout.read().replace('[[DATE]]', str(date)).replace('[[VORNAME]]', str(vorname)).replace('[[NACHNAME]]',str(nachname)).replace('[[GEBDATUM]]',str(geburtsdatum)).replace('[[MANUFACTURER]]', str(manufacturer)).replace('[[TESTTYPE]]', str(testtype))
+            key = requester[0]
+            geburtsdatum = requester[1]
+            url = f'https://www.testzentrum-odw.de/result.php?validate=1&i={requestedNumber}&t={key}&g={geburtsdatum}'
             outputFile = "../../Zertifikate/" + str(requestedNumber) + ".pdf" 
-            pdfkit.from_string(inputContent, outputFile)
+            pdf_from_url(url, outputFile)
             print(str(requestedNumber) + ".pdf")
             logger.info('Done')
     except Exception as e:
