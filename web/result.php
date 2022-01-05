@@ -159,10 +159,12 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		$display_result=str_replace('[[MANUFACTURER]]', $result_array[0][6], $display_result);
 		$display_result=str_replace('[[GEBDATUM]]', date('d.m.Y',strtotime($result_array[0][4])), $display_result);
 		$display_result=str_replace('[[DATE]]', date('d.m.Y',strtotime($result_array[0][1])).' um '.date('H:i',strtotime($result_array[0][1])).' Uhr', $display_result);
-		$url = 'https://www.testzentrum-odw.de/result.php?validate=1%26i='.$token.'%26t='.$customer_key.'%26g='.$gebdatum.'';
+		$url = 'https://www.testzentrum-odw.de/result.php?validate=1&i='.$token.'&t='.$customer_key.'&g='.$gebdatum.'';
 		$image = A_qr_code('result',$url);
 		$display_result=str_replace('[[QRURL]]', $image , $display_result);
-
+		
+		if(!isset($_GET['validate'])){
+	
 		echo '<div style="margin-top:20px;">
 		<form action="'.$current_site.'.php" method="post">
 		
@@ -197,9 +199,11 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		color: #fff;
 background-color: #286090;
 border-color: #204d74;" value="PDF herunterladen" name="download_pdf" />
+
 		</div></form>
 		</div>';
 
+	}
 		echo $display_result;
 		
 
