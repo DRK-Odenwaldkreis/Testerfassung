@@ -29,20 +29,25 @@ class LatinCharError(Exception):
 
 class Handler:
 
-    def __init__(self, config):
+    def __init__(self, config, dcc, content):
         self._config = config
+        self.content = content
+        self.dcc = dcc
+        self.testId = self.dcc['testId']
+        self.dcci = self.dcc['dcci']
+        self.publicKeyStr = self.dcc['publicKey']
 
-    def respond_to_dgc_request( self, testId, dcci, publicKeyStr ):
+    def respond_to_dgc_request( self):
         """ Beantwortet einen DCC-Antrag
             und ruft dazu handle_dgc_request auf"""
-        payload = self.handle_dgc_request( testId, dcci, publicKeyStr )
-        response = requests.post(   url=f'{self._config["dcc-endpoint"]}/version/v1/test/{testId}/dcc',
+        payload = self.handle_dgc_request()
+        response = requests.post(   url=f'{self._config["dcc-endpoint"]}/version/v1/test/{self.testId}/dcc',
                                     cert=self._config["dcc-client-cert"],
                                     json=payload )
-        logging.info(f'Upload encrypted data: TestID: {testId} Status Code: {response.status_code}')
+        logging.info(f'Upload encrypted data: TestID: {self.testId} Status Code: {response.status_code}')
 
 
-    def handle_dgc_request( self, testId, dcci, publicKeyStr ):
+    def handle_dgc_request( self ):
         "Erstellt eine Antwort auf einen DCC-Antrag"
 
         # Zufälligen Schlüssel erzeugen
@@ -61,8 +66,8 @@ class Handler:
         #     
 
         # Payload erzeugen
-        dcc_data = self._get_dgc_data(testId)
-        dcc_data['t'][0]['ci'] = dcci
+        dcc_data = self._get_dgc_data()
+        dcc_data['t'][0]['ci'] = self.dcci
 
         logging.info(f'DCC-DATA = {dcc_data}')
 
@@ -84,7 +89,7 @@ class Handler:
         hasher.update( cbor_to_sign )
         hex_hash = hexlify(hasher.digest())
         # Der symmetrische Schlüssel wird mit dem Public Key verschlüselt
-        encrypted_key = self._encrypt_dek_with_public_key(dek, publicKeyStr)
+        encrypted_key = self._encrypt_dek_with_public_key(dek)
 
         return {
             "dataEncryptionKey": b64encode(encrypted_key).decode('utf-8'), # encrypted DEK as base64
@@ -107,12 +112,12 @@ class Handler:
         return cbor2.dumps(cborMap)
 
 
-    def _encrypt_dek_with_public_key( self, dek, publicKeyStr ):
+    def _encrypt_dek_with_public_key( self, dek ):
         """Verschlüsselt den symmetrischen DEK mit dem publicKey
             dek: binär
             publicKeyStr: Base64 kodiertes DER
             """
-        publicKey = load_pem_public_key( self._wrap_public_key(publicKeyStr) , default_backend() )
+        publicKey = load_pem_public_key( self._wrap_public_key(self.publicKeyStr) , default_backend() )
         encrypted_key = publicKey.encrypt(dek,
             asym_padding.OAEP(
                 mgf=asym_padding.MGF1(algorithm=hashes.SHA256()),
@@ -127,27 +132,8 @@ class Handler:
         "Base64 kodiertes DER + BEGIN/END-Markierungen ergibt PEM"
         return ('-----BEGIN PUBLIC KEY-----\n' + key + '\n-----END PUBLIC KEY-----').encode('utf-8')
 
-    def _random_dgc_data(self):
-        data = self._config["dcc-template"].copy()
-        fn = ''.join(random.choices(string.ascii_lowercase, k=random.randint(5,15))).capitalize()
-        gn = ''.join(random.choices(string.ascii_lowercase, k=random.randint(5,15))).capitalize()
-
-        data['nam']['fn'] = fn
-        data['nam']['fnt'] = self._convertToICAONormal(fn)
-        data['nam']['gn'] = gn
-        data['nam']['gnt'] = self._convertToICAONormal(gn)
-        data['dob'] = str(random.randint(1930,2000))+"-0"+str(random.randint(1,9))+"-"+str(random.randint(10,28))
-        data['t'][0]['sc'] = datetime.fromtimestamp(datetime.utcnow().timestamp()-600).isoformat(timespec='seconds')+'Z'
-        if 'dr' in data['t'][0]: # Abwärtskompatibilität mit Schema Version 1.0.0
-            data['t'][0]['dr'] = datetime.fromtimestamp(datetime.utcnow().timestamp()-300).isoformat(timespec='seconds')+'Z'
-
-        return data
-
-    def _get_dgc_data(self, testId):
-        DatabaseConnect = Database()
-        sql = "Select Nachname, Vorname, Registrierungszeitpunkt, Geburtsdatum, Testtyp.Name, Testtype.Device_ID from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where Ergebnis =2 and CWA_request=2 and HashOfHash=%s;"%(testId)
-        content = DatabaseConnect.read_single(sql)
-        
+    def _get_dgc_data(self):
+            
         data = self._config["dcc-template"].copy()
 
         #HIER EINFÜGEN:
@@ -160,12 +146,11 @@ class Handler:
         #ma = RAT device ID
         #nm = RAT commercial name
 
-        fn = content[0]
-        gn = content[1]
-        dob = content[3]
-        sc = content[2]
-        ma = content[5]
-        nm = content[4]
+        fn = self.content[0]
+        gn = self.content[1]
+        dob = self.content[3]
+        sc = self.content[2].isoformat(timespec='seconds')+'Z'
+        ma = f'{self.content[4]}'
 
 
         data['nam']['fn'] = fn
@@ -175,7 +160,6 @@ class Handler:
         data['dob'] = dob
         data['t'][0]['sc'] = sc
         data['t'][0]['ma'] = ma
-        data['t'][0]['nm'] = nm
 
         return data
 
@@ -318,36 +302,43 @@ class Handler:
                     logging.error(f'Name contains non-latin character {s}.')
                     raise LatinCharError
         return string
-        
-        
-    def run(self):
-        logging.info(f'Endpoint: ' + self._config["dcc-endpoint"] )
-        logging.info(f'Lab ID: {self._config["lab-ID"]}')
-        response = requests.get( self._config["dcc-endpoint"]+'/version/v1/publicKey/search/'+self._config["lab-ID"] ,
-                                    cert=self._config["dcc-client-cert"])
-        logging.info( f'Polling response status code: {response.status_code} Length: {len(response.text)}')
-        for dcc_request in response.json():
-            logging.info(f'Received DCC request: {dcc_request}')
-            try:
-                self.respond_to_dgc_request( dcc_request['testId'], dcc_request['dcci'], dcc_request['publicKey'])
-            except Exception as e:
-                logging.error(e)
+    
 
-def main(args):
+    
+    def start(self):
+        try:
+            self.respond_to_dgc_request()
+        except Exception as e:
+            logging.error(e)
+
+
+def main(args, dcc_request, id):
     config = json.load( open(args.config_file, encoding='utf-8' ))
-    job = Handler(config)
-    job.run()
-
+    handler = Handler(config, dcc_request, id)
+    handler.start()
 
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    logger = logging.getLogger('DCC Handler: %s' %(datetime.datetime.now()))
+    logger = logging.getLogger('DCC Handler: %s' %(datetime.now()))
     logger.info('Starting DCC Request')
     parser = ArgumentParser(description='''Simulator for Covid-Test Center or Lab''')
     parser.add_argument('-f', '--config-file', default='config.json', help='Configuration file')
     parser.add_argument( '--dry-run', action='store_true', help='Do not upload DCCs but write to dry_run.txt')
     args = parser.parse_args()
-    logging.info("Starting DCC lab simulator")
-    main(args)
+    config = json.load( open(args.config_file, encoding='utf-8' ))
+    response = requests.get( config["dcc-endpoint"]+'/version/v1/publicKey/search/'+config["lab-ID"] ,
+                                cert=config["dcc-client-cert"])
+    logging.info( f'Polling response status code: {response.status_code} Length: {len(response.text)}')
+    DatabaseConnect = Database()
+    for dcc_request in response.json():
+        print(dcc_request)
+        sql = "Select Nachname, Vorname, Registrierungszeitpunkt, Geburtsdatum, Testtyp.Device_ID from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where Ergebnis =2 and CWA_request=1 and HashOfHash='%s' and Testtyp.Device_ID is not NULL;"%(dcc_request['testId'])
+        content = DatabaseConnect.read_single(sql)
+        print(content)
+        if not content:
+            logging.info('No entry found')
+            break
+        else:
+            main(args,dcc_request,content)
