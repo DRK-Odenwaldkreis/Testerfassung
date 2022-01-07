@@ -36,10 +36,11 @@ class Handler:
         """ Beantwortet einen DCC-Antrag
             und ruft dazu handle_dgc_request auf"""
         payload = self.handle_dgc_request(dcc_request, db_entry)
-        response = requests.post(   url=f'{self._config["dcc-endpoint"]}/version/v1/test/{dcc_request['testId']}/dcc',
+        testId = dcc_request['testId']
+        response = requests.post(   url=f'{self._config["dcc-endpoint"]}/version/v1/test/{testId}/dcc',
                                     cert=self._config["dcc-client-cert"],
                                     json=payload )
-        logging.info(f'Upload encrypted data: TestID: {dcc_request['testId']} Status Code: {response.status_code}')
+        logging.info(f'Upload encrypted data: TestID: {testId} Status Code: {response.status_code}')
 
 
     def handle_dgc_request(self, dcc_request, db_entry):
@@ -317,4 +318,4 @@ if __name__ == '__main__':
     parser.add_argument('-f', '--config-file', default='config.json', help='Configuration file')
     #parser.add_argument( '--dry-run', action='store_true', help='Do not upload DCCs but write to dry_run.txt')
     args = parser.parse_args()
-
+    main(args)
