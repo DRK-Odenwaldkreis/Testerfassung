@@ -29,47 +29,31 @@ class LatinCharError(Exception):
 
 class Handler:
 
-    def __init__(self, config, dcc, content):
+    def __init__(self, config):
         self._config = config
-        self.content = content
-        self.dcc = dcc
-        self.testId = self.dcc['testId']
-        self.dcci = self.dcc['dcci']
-        self.publicKeyStr = self.dcc['publicKey']
 
-    def respond_to_dgc_request( self):
+    def respond_to_dgc_request(self, dcc_request, db_entry):
         """ Beantwortet einen DCC-Antrag
             und ruft dazu handle_dgc_request auf"""
-        payload = self.handle_dgc_request()
-        response = requests.post(   url=f'{self._config["dcc-endpoint"]}/version/v1/test/{self.testId}/dcc',
+        payload = self.handle_dgc_request(dcc_request, db_entry)
+        response = requests.post(   url=f'{self._config["dcc-endpoint"]}/version/v1/test/{dcc_request['testId']}/dcc',
                                     cert=self._config["dcc-client-cert"],
                                     json=payload )
-        logging.info(f'Upload encrypted data: TestID: {self.testId} Status Code: {response.status_code}')
+        logging.info(f'Upload encrypted data: TestID: {dcc_request['testId']} Status Code: {response.status_code}')
 
 
-    def handle_dgc_request( self ):
+    def handle_dgc_request(self, dcc_request, db_entry):
         "Erstellt eine Antwort auf einen DCC-Antrag"
 
         # Zufälligen Schlüssel erzeugen
-        # (Achtung! Pseudo-Zufallszahlen! Dies ist nur zum Testen)
-        # STIMMT NICHT os.urandom(size) ist sicher!
+
         dek = random_bytes(32)
 
-        # Payload aus testresults-Verzeichnis übernehmen oder zufällige Payload erzeugen
-        # try:
-        #     with open(f"testresults/{testId}.json",encoding='utf-8') as resultfile:
-        #         dcc_data = json.load(resultfile)
-        #     logging.info(f"Loaded test result from file {testId}.json")
-        # except:
-        #     logging.info("Using random negative test result")
-        #     dcc_data = self._random_dgc_data()
-        #     
-
         # Payload erzeugen
-        dcc_data = self._get_dgc_data()
-        dcc_data['t'][0]['ci'] = self.dcci
+        dcc_data = self._get_dgc_data(db_entry)
+        dcc_data['t'][0]['ci'] = dcc_request['dcci']
 
-        logging.info(f'DCC-DATA = {dcc_data}')
+        logging.debug(f'DCC-DATA = {dcc_data}')
 
         # Daten CBOR-kodieren
         cbor_data = self.dcc_cbor(dcc_data)
@@ -89,7 +73,7 @@ class Handler:
         hasher.update( cbor_to_sign )
         hex_hash = hexlify(hasher.digest())
         # Der symmetrische Schlüssel wird mit dem Public Key verschlüselt
-        encrypted_key = self._encrypt_dek_with_public_key(dek)
+        encrypted_key = self._encrypt_dek_with_public_key(dek, dcc_request['publicKey'])
 
         return {
             "dataEncryptionKey": b64encode(encrypted_key).decode('utf-8'), # encrypted DEK as base64
@@ -112,12 +96,12 @@ class Handler:
         return cbor2.dumps(cborMap)
 
 
-    def _encrypt_dek_with_public_key( self, dek ):
+    def _encrypt_dek_with_public_key( self, dek, publicKeyStr):
         """Verschlüsselt den symmetrischen DEK mit dem publicKey
             dek: binär
             publicKeyStr: Base64 kodiertes DER
             """
-        publicKey = load_pem_public_key( self._wrap_public_key(self.publicKeyStr) , default_backend() )
+        publicKey = load_pem_public_key( self._wrap_public_key(publicKeyStr) , default_backend() )
         encrypted_key = publicKey.encrypt(dek,
             asym_padding.OAEP(
                 mgf=asym_padding.MGF1(algorithm=hashes.SHA256()),
@@ -132,13 +116,10 @@ class Handler:
         "Base64 kodiertes DER + BEGIN/END-Markierungen ergibt PEM"
         return ('-----BEGIN PUBLIC KEY-----\n' + key + '\n-----END PUBLIC KEY-----').encode('utf-8')
 
-    def _get_dgc_data(self):
+    def _get_dgc_data(self, db_entry):
             
         data = self._config["dcc-template"].copy()
 
-        #HIER EINFÜGEN:
-        #DB Anbindung und Abfrage nach testId if Testergebnis = Negativ
-        #Die folgenden Werte müssen für die jeweilige testId abgefragt und eingesetzt werden:
         #fn = family Name
         #gn = given Name
         #dob = date of birth
@@ -146,11 +127,11 @@ class Handler:
         #ma = RAT device ID
         #nm = RAT commercial name
 
-        fn = self.content[0]
-        gn = self.content[1]
-        dob = self.content[3]
-        sc = self.content[2].isoformat(timespec='seconds')+'Z'
-        ma = f'{self.content[4]}'
+        fn = db_entry[0]
+        gn = db_entry[1]
+        dob = db_entry[3]
+        sc = db_entry[2].isoformat(timespec='seconds')+'Z'
+        ma = f'{db_entry[4]}'
 
 
         data['nam']['fn'] = fn
@@ -305,17 +286,26 @@ class Handler:
     
 
     
-    def start(self):
-        try:
-            self.respond_to_dgc_request()
-        except Exception as e:
-            logging.error(e)
+def main(args):
 
-
-def main(args, dcc_request, id):
     config = json.load( open(args.config_file, encoding='utf-8' ))
-    handler = Handler(config, dcc_request, id)
-    handler.start()
+    response = requests.get( config["dcc-endpoint"]+'/version/v1/publicKey/search/'+config["lab-ID"] ,
+                                cert=config["dcc-client-cert"])
+    logging.info( f'Polling response status code: {response.status_code} Length: {len(response.text)}')
+    DatabaseConnect = Database()
+    handler = Handler(config)
+    for dcc_request in response.json():
+        logging.debug(dcc_request)
+        sql = "Select Nachname, Vorname, Registrierungszeitpunkt, Geburtsdatum, Testtyp.Device_ID from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where Ergebnis =2 and CWA_request=1 and HashOfHash='%s' and Testtyp.Device_ID is not NULL;"%(dcc_request['testId'])
+        content = DatabaseConnect.read_single(sql)
+        logging.debug(content)
+        if not content:
+            logging.info('Either hash not found or test not permitted for DCC')
+        else:
+            try:
+                handler.respond_to_dgc_request(dcc_request, content)
+            except Exception as e:
+                logging.error(e)
 
 
 if __name__ == '__main__':
@@ -325,20 +315,6 @@ if __name__ == '__main__':
     logger.info('Starting DCC Request')
     parser = ArgumentParser(description='''Simulator for Covid-Test Center or Lab''')
     parser.add_argument('-f', '--config-file', default='config.json', help='Configuration file')
-    parser.add_argument( '--dry-run', action='store_true', help='Do not upload DCCs but write to dry_run.txt')
+    #parser.add_argument( '--dry-run', action='store_true', help='Do not upload DCCs but write to dry_run.txt')
     args = parser.parse_args()
-    config = json.load( open(args.config_file, encoding='utf-8' ))
-    response = requests.get( config["dcc-endpoint"]+'/version/v1/publicKey/search/'+config["lab-ID"] ,
-                                cert=config["dcc-client-cert"])
-    logging.info( f'Polling response status code: {response.status_code} Length: {len(response.text)}')
-    DatabaseConnect = Database()
-    for dcc_request in response.json():
-        print(dcc_request)
-        sql = "Select Nachname, Vorname, Registrierungszeitpunkt, Geburtsdatum, Testtyp.Device_ID from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where Ergebnis =2 and CWA_request=1 and HashOfHash='%s' and Testtyp.Device_ID is not NULL;"%(dcc_request['testId'])
-        content = DatabaseConnect.read_single(sql)
-        print(content)
-        if not content:
-            logging.info('No entry found')
-            break
-        else:
-            main(args,dcc_request,content)
+
