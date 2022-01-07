@@ -19,15 +19,11 @@
         [
             {
                 "tg": "840539006",
-                "tt": "LP6464-4",
-                "ma": "1232 (wird geändert)",
-                "sc": "2021-06-01T12:34:56Z (wird geändert)",
+                "tt": "LP217198-3",
                 "tr": "260415000",
-                "nm": "ACME Schnelltest (wird geändert)",
                 "tc": "Testzentrum DRK-KV Odenwaldkreis e. V.",
                 "co": "DE",
-                "is": "Test Issuer",
-                "ci": "(wird aus DCC-Request übernommen)"
+                "is": "Robert Koch-Institut"
             }
         ]
     }
