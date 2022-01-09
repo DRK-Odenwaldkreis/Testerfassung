@@ -187,7 +187,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
             <h4>3. Wann erhalte ich mein Ergebnis?</h4>
             <p>Innerhalb von etwa 15-20 Minuten steht das Ergebnis fest. Sie erhalten das Ergebnis über Anwesenheit und Menge der neutralisierenden Antikörper vor Ort.</p>
             <h4>4. Was bedeutet das Ergebnis für mich? </h4>
-            <p>Der sogenannte BAU/ml-Wert (BAU = binding antibody units) ist die Konzentration der neutralisierenden Antikörper im Blut. Hinweis von der Verpackung: Achtung das Ergebnis ist nur ein Hinweis, keine Garantie, zu den Abwehrkräften spielen weitere Fakrtoren eine Rolle</p>
+            <p>Der sogenannte BAU/ml-Wert (BAU = binding antibody units) ist die Konzentration der neutralisierenden Antikörper im Blut. Hinweis von der Verpackung: Achtung das Ergebnis ist nur ein Hinweis und keine Garantie für einen ausreichenden Schutz gegen Covid-19. Bei den Abwehrkräften gegen das Virus spielen weitere Faktoren eine Rolle. Wir empfehlen die Corona-Schutzimpfungen nach den geltenden Vorgaben.</p>
             <p><b>Zur Orientierung:</b></p>
             <p>< 25 BAU/ml: negativer SARS-CoV2-NAb-Titer</p>
             <p>≥ 25 BAU/ml < 250 BAU/ml: geringer SARS-CoV2-NAb-Titer</p>
