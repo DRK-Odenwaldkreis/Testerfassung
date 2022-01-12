@@ -129,14 +129,19 @@ function S_get_entry_voranmeldung ($Db,$scanevent) {
 }
 
 function S_get_cwa_qr_code ($Db,$test_id) {
-	$test_array=S_get_multientry($Db,'SELECT Geburtsdatum, Vorname, Nachname, Registrierungszeitpunkt, Salt, Token, CWA_request FROM Vorgang WHERE id=CAST('.$test_id.' AS int);');
+	$test_array=S_get_multientry($Db,'SELECT Geburtsdatum, Vorname, Nachname, Registrierungszeitpunkt, Salt, Token, CWA_request, Testtyp.Device_ID FROM Vorgang JOIN Testtyp ON Vorgang.Testtyp_id=Testtyp.id WHERE Vorgang.id=CAST('.$test_id.' AS int);');
 	if($test_array[0][6]==1) {
 		// // personalized CWA
 		// build hash
 		$pre_hash=$test_array[0][0].'#'.$test_array[0][1].'#'.$test_array[0][2].'#'.strtotime($test_array[0][3]).'#'.$test_array[0][5].'#'.$test_array[0][4];
 		$hash=hash("sha256",$pre_hash);
 		// build json
+		if($test_array[0][7]== null) {
+			// // Check if Device_ID of RAT list exists, if not create QR Code without dgc attribute
 		$json='{"dob":"'.$test_array[0][0].'","fn":"'.$test_array[0][1].'","ln":"'.$test_array[0][2].'","testid":"'.$test_array[0][5].'","timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","hash":"'.$hash.'"}';
+		}else{
+		$json='{"dob":"'.$test_array[0][0].'","fn":"'.$test_array[0][1].'","ln":"'.$test_array[0][2].'","testid":"'.$test_array[0][5].'","timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","dgc":true,"hash":"'.$hash.'"}';
+		}
 	} elseif($test_array[0][6]==2) {
 		// // anonymous CWA
 		// build hash
@@ -148,6 +153,32 @@ function S_get_cwa_qr_code ($Db,$test_id) {
 	// build base64coded
 	$base64=rtrim( strtr( base64_encode( $json ), '+/', '-_'), '=');
 	return $base64;
+}
+
+function S_get_cwa_url ($Db,$test_id) {
+	$test_array=S_get_multientry($Db,'SELECT Geburtsdatum, Vorname, Nachname, Registrierungszeitpunkt, Salt, Token, CWA_request, Testtyp.Device_ID FROM Vorgang JOIN Testtyp ON Vorgang.Testtyp_id=Testtyp.id WHERE id=CAST('.$test_id.' AS int);');
+	if($test_array[0][6]==1) {
+		// // personalized CWA
+		// build hash
+		$pre_hash=$test_array[0][0].'#'.$test_array[0][1].'#'.$test_array[0][2].'#'.strtotime($test_array[0][3]).'#'.$test_array[0][5].'#'.$test_array[0][4];
+		$hash=hash("sha256",$pre_hash);
+		// build json
+		if($test_array[0][7]== null) {
+			// // Check if Device_ID of RAT list exists, if not create QR Code without dgc attribute
+		$json='{"dob":"'.$test_array[0][0].'","fn":"'.$test_array[0][1].'","ln":"'.$test_array[0][2].'","testid":"'.$test_array[0][5].'","timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","hash":"'.$hash.'"}';
+		}else{
+		$json='{"dob":"'.$test_array[0][0].'","fn":"'.$test_array[0][1].'","ln":"'.$test_array[0][2].'","testid":"'.$test_array[0][5].'","timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","dgc":true,"hash":"'.$hash.'"}';
+		}
+	} elseif($test_array[0][6]==2) {
+		// // anonymous CWA
+		// build hash
+		$pre_hash=strtotime($test_array[0][3]).'#'.$test_array[0][4];
+		$hash=hash("sha256",$pre_hash);
+		// build json
+		$json='{"timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","hash":"'.$hash.'"}';
+	}
+	$url = 'https://s.coronawarn.app?v=1#'.$json;
+	return $url; 
 }
 
 

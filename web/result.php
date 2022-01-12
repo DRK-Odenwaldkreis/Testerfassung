@@ -162,6 +162,8 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		$url = 'https://www.testzentrum-odw.de/result.php?validate=1&i='.$token.'&t='.$customer_key.'&g='.$gebdatum.'';
 		$image = A_qr_code('result',$url);
 		$display_result=str_replace('[[QRURL]]', $image , $display_result);
+		$cwa = S_get_cwa_url($Db,$ALLOWANCE_RESULT);
+		$display_result=str_replace('[[CWAURL]]', $cwa , $display_result);
 		
 		if(!isset($_GET['validate'])){
 	
