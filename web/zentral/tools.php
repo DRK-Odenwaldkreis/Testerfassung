@@ -156,7 +156,7 @@ function S_get_cwa_qr_code ($Db,$test_id) {
 }
 
 function S_get_cwa_url ($Db,$test_id) {
-	$test_array=S_get_multientry($Db,'SELECT Geburtsdatum, Vorname, Nachname, Registrierungszeitpunkt, Salt, Token, CWA_request, Testtyp.Device_ID FROM Vorgang JOIN Testtyp ON Vorgang.Testtyp_id=Testtyp.id WHERE id=CAST('.$test_id.' AS int);');
+	$test_array=S_get_multientry($Db,'SELECT Geburtsdatum, Vorname, Nachname, Registrierungszeitpunkt, Salt, Token, CWA_request, Testtyp.Device_ID FROM Vorgang JOIN Testtyp ON Vorgang.Testtyp_id=Testtyp.id WHERE Vorgang.id=CAST('.$test_id.' AS int);');
 	if($test_array[0][6]==1) {
 		// // personalized CWA
 		// build hash
@@ -177,7 +177,8 @@ function S_get_cwa_url ($Db,$test_id) {
 		// build json
 		$json='{"timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","hash":"'.$hash.'"}';
 	}
-	$url = 'https://s.coronawarn.app?v=1#'.$json;
+	$base64=rtrim( strtr( base64_encode( $json ), '+/', '-_'), '=');
+	$url = 'https://s.coronawarn.app?v=1#'. $base64;
 	return $url; 
 }
 
