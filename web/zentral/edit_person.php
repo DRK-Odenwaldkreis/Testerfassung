@@ -229,9 +229,9 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
       // ///////////////
       if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         // Get data
-        $array_vorgang=S_get_multientry($Db,'SELECT id,Teststation, Token, Registrierungszeitpunkt,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,CWA_request,handout_request,zip_request,Ergebnis,PCR_Grund FROM Vorgang WHERE id=CAST('.$_GET['id'].' AS int);');
-        if($array_vorgang[0][11]>0 && $array_vorgang[0][14]!=5) {
-          // CWA aktiviert und Ergebnis bereits eingetragen
+        $array_vorgang=S_get_multientry($Db,'SELECT id,Teststation, Token, Registrierungszeitpunkt,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,CWA_request,handout_request,zip_request,Ergebnis,PCR_Grund,customer_lock FROM Vorgang WHERE id=CAST('.$_GET['id'].' AS int);');
+        if($array_vorgang[0][11]>0 && $array_vorgang[0][16]=0) {
+          // CWA aktiviert und Ergebnis bereits abgeholt
           // keine Änderung von Name, Geb-Dat. möglich
           $cwa_edit_lock=true;
         } else {

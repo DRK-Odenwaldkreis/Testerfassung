@@ -13,10 +13,10 @@ September 2021
 include_once 'admin01.php';
 include_once 'menu.php';
 //$GLOBALS['FLAG_SHUTDOWN_MAIN']=false;
-if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
+/* if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
     include_once '../registration/auth.php';
     include_once '../registration/tools.php';
-}
+} */
 
 // Print html header
 echo $GLOBALS['G_html_header'];

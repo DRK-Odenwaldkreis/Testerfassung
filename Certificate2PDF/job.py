@@ -33,7 +33,8 @@ if __name__ == "__main__":
             geburtsdatum = requester[1]
             url = f'https://www.testzentrum-odw.de/result.php?validate=1&i={requestedNumber}&t={key}&g={geburtsdatum}'
             outputFile = "../../Zertifikate/" + str(requestedNumber) + ".pdf" 
-            pdf_from_url(url, outputFile)
+            options = {'disable-external-links': True,'page-size':'A4', 'dpi':300}
+            pdf_from_url(url, outputFile,options=options)
             print(str(requestedNumber) + ".pdf")
             logger.info('Done')
     except Exception as e:

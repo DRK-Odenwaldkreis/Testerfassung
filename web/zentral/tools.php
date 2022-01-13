@@ -129,14 +129,19 @@ function S_get_entry_voranmeldung ($Db,$scanevent) {
 }
 
 function S_get_cwa_qr_code ($Db,$test_id) {
-	$test_array=S_get_multientry($Db,'SELECT Geburtsdatum, Vorname, Nachname, Registrierungszeitpunkt, Salt, Token, CWA_request FROM Vorgang WHERE id=CAST('.$test_id.' AS int);');
+	$test_array=S_get_multientry($Db,'SELECT Geburtsdatum, Vorname, Nachname, Registrierungszeitpunkt, Salt, Token, CWA_request, Testtyp.Device_ID FROM Vorgang JOIN Testtyp ON Vorgang.Testtyp_id=Testtyp.id WHERE Vorgang.id=CAST('.$test_id.' AS int);');
 	if($test_array[0][6]==1) {
 		// // personalized CWA
 		// build hash
 		$pre_hash=$test_array[0][0].'#'.$test_array[0][1].'#'.$test_array[0][2].'#'.strtotime($test_array[0][3]).'#'.$test_array[0][5].'#'.$test_array[0][4];
 		$hash=hash("sha256",$pre_hash);
 		// build json
-		$json='{"dob":"'.$test_array[0][0].'","fn":"'.$test_array[0][1].'","ln":"'.$test_array[0][2].'","testid":"'.$test_array[0][5].'","timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","dgc":true ,"hash":"'.$hash.'"}';
+		if($test_array[0][7]== null) {
+			// // Check if Device_ID of RAT list exists, if not create QR Code without dgc attribute
+		$json='{"dob":"'.$test_array[0][0].'","fn":"'.$test_array[0][1].'","ln":"'.$test_array[0][2].'","testid":"'.$test_array[0][5].'","timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","hash":"'.$hash.'"}';
+		}else{
+		$json='{"dob":"'.$test_array[0][0].'","fn":"'.$test_array[0][1].'","ln":"'.$test_array[0][2].'","testid":"'.$test_array[0][5].'","timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","dgc":true,"hash":"'.$hash.'"}';
+		}
 	} elseif($test_array[0][6]==2) {
 		// // anonymous CWA
 		// build hash
@@ -148,6 +153,33 @@ function S_get_cwa_qr_code ($Db,$test_id) {
 	// build base64coded
 	$base64=rtrim( strtr( base64_encode( $json ), '+/', '-_'), '=');
 	return $base64;
+}
+
+function S_get_cwa_url ($Db,$test_id) {
+	$test_array=S_get_multientry($Db,'SELECT Geburtsdatum, Vorname, Nachname, Registrierungszeitpunkt, Salt, Token, CWA_request, Testtyp.Device_ID FROM Vorgang JOIN Testtyp ON Vorgang.Testtyp_id=Testtyp.id WHERE Vorgang.id=CAST('.$test_id.' AS int);');
+	if($test_array[0][6]==1) {
+		// // personalized CWA
+		// build hash
+		$pre_hash=$test_array[0][0].'#'.$test_array[0][1].'#'.$test_array[0][2].'#'.strtotime($test_array[0][3]).'#'.$test_array[0][5].'#'.$test_array[0][4];
+		$hash=hash("sha256",$pre_hash);
+		// build json
+		if($test_array[0][7]== null) {
+			// // Check if Device_ID of RAT list exists, if not create QR Code without dgc attribute
+		$json='{"dob":"'.$test_array[0][0].'","fn":"'.$test_array[0][1].'","ln":"'.$test_array[0][2].'","testid":"'.$test_array[0][5].'","timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","hash":"'.$hash.'"}';
+		}else{
+		$json='{"dob":"'.$test_array[0][0].'","fn":"'.$test_array[0][1].'","ln":"'.$test_array[0][2].'","testid":"'.$test_array[0][5].'","timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","dgc":true,"hash":"'.$hash.'"}';
+		}
+	} elseif($test_array[0][6]==2) {
+		// // anonymous CWA
+		// build hash
+		$pre_hash=strtotime($test_array[0][3]).'#'.$test_array[0][4];
+		$hash=hash("sha256",$pre_hash);
+		// build json
+		$json='{"timestamp":'.strtotime($test_array[0][3]).',"salt":"'.$test_array[0][4].'","hash":"'.$hash.'"}';
+	}
+	$base64=rtrim( strtr( base64_encode( $json ), '+/', '-_'), '=');
+	$url = 'https://s.coronawarn.app?v=1#'. $base64;
+	return $url; 
 }
 
 
@@ -510,7 +542,7 @@ function H_build_table_testdates_new_2_0($mode) {
 					$string_times.='<span class="text-sm"><div style="display: block; margin-top: 5px;">'.sprintf('%02d', $value_termine_times1).':00 - '.sprintf('%02d', $value_termine_times2 + 1).':00</div></span>';
 
 
-					$res_l_array[$j+2][$col_j].='<td onclick="window.location=\'terminlist2.php?station='.($st[0]).'&date='.$in_j_days.'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1 '.$station_color.' calendar'.$cal_color.'">
+					$res_l_array[$j+2][$col_j].='<td onclick="window.location=\'terminlist.php?station='.($st[0]).'&date='.$in_j_days.'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1 '.$station_color.' calendar'.$cal_color.'">
 					'.$string_location.$string_times.$display_termine.$code_station.'</td>';
 				} elseif($array_termine_open[0][0]>0) {
 					$string_times='';
@@ -525,7 +557,7 @@ function H_build_table_testdates_new_2_0($mode) {
 					//$value_termine_id=S_get_entry($Db,'SELECT id FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" ORDER BY Stunde ASC;');
 					$string_times.='<span class="text-sm"><div style="display: block; margin-top: 5px;">'.sprintf('%02d', $value_termine_times1).':00 - '.sprintf('%02d', $value_termine_times2 + 1).':00</div></span>';
 
-					$res_l_array[$j+2][$col_j].='<td onclick="window.location=\'terminlist2.php?station='.($st[0]).'&date='.$in_j_days.'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-center1 '.$station_color.' calendar'.$cal_color.'">'.$string_location.$string_times.$display_termine.$code_station.'</td>';
+					$res_l_array[$j+2][$col_j].='<td onclick="window.location=\'terminlist.php?station='.($st[0]).'&date='.$in_j_days.'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-center1 '.$station_color.' calendar'.$cal_color.'">'.$string_location.$string_times.$display_termine.$code_station.'</td>';
 				} else {
 					$res_l_array[$j+2][$col_j].='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1"></td>';
 				}
@@ -627,7 +659,7 @@ function H_build_table_testdates_new_2_0($mode) {
 						if($mode=='get_id_for_zip') {
 							$res_l_array[$j+2][$col_j].='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1 '.$station_color.' calendar'.$cal_color_wo.'">'.$string_times.'</td>';
 						} else {
-							$res_l_array[$j+2][$col_j].='<td onclick="window.location=\'terminlist2.php?station='.($st[0]).'&date='.$in_j_days.'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1 '.$station_color.' calendar'.$cal_color_wo.'">'.$string_location.$string_times.'</td>';
+							$res_l_array[$j+2][$col_j].='<td onclick="window.location=\'terminlist.php?station='.($st[0]).'&date='.$in_j_days.'\'" class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1 '.$station_color.' calendar'.$cal_color_wo.'">'.$string_location.$string_times.'</td>';
 						}
 						
 					} else {
