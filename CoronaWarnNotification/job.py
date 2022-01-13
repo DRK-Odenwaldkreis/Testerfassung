@@ -7,6 +7,7 @@ import datetime
 import locale
 from os import path
 import logging
+import hashlib
 import sys
 sys.path.append("..")
 from utils.database import Database
@@ -56,8 +57,10 @@ if __name__ == "__main__":
                         continue
                     notified = notify(hash=hash_string,result=result)
                     if notified:
+                        sha_signature = hashlib.sha256(hash_string.encode()).hexdigest()
+                        sha_sha_signature = hashlib.sha256(sha_signature.encode()).hexdigest()
                         logger.debug('Corona Warn Nofification was succesfully send, closing entry in db')
-                        sql = "Update Vorgang SET CWA_lock = 0 WHERE id = %s;" % (entry)
+                        sql = "Update Vorgang SET CWA_lock = 0, HashOfHash='%s' WHERE id = %s;" % (sha_sha_signature,entry)
                         DatabaseConnect.update(sql)
                     else:
                         failedAttempts += 1
