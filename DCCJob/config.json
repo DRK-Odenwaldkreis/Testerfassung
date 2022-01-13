@@ -1,17 +1,17 @@
 {
-    "dcc-endpoint": "https://dcc-proxy-cff4f7147260.coronawarn.app",
+    "dcc-endpoint": "https://dcc-proxy.coronawarn.app",
     "polling-period": 10,
-    "dcc-client-cert": "CWA-WRU.cer",
+    "dcc-client-cert": "CWA-PRD.cer",
     "lab-ID": "DRK_KV_ODENWALDKREIS",
-    "__template_doc__": "Das Template ist Basis für das zufallsgenerierte DCC",
+    "__template_doc__": "Das Template ist Basis für das DCC",
     "dcc-template":
     {
         "ver": "1.3.0",
         "nam":
         {
-            "fn": "Meier-Müller (wird zufällig geändert)",
+            "fn": "Meier-Müller (wird geändert)",
             "fnt": "MEIER<MUELLER (wird geändert)",
-            "gn": "Max (wird zufällig geändert)",
+            "gn": "Max (wird geändert)",
             "gnt": "MAX (wird geändert)"
         },
         "dob": "1999-09-09 (wird geändert)",

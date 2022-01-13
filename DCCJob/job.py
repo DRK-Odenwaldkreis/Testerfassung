@@ -15,7 +15,7 @@ import cbor2
 import requests
 from base64 import b64encode
 from binascii import hexlify
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from time import time, sleep
 import sys
 sys.path.append("..")
@@ -87,10 +87,15 @@ class Handler:
         if issuedAtTimestamp is None:
             issuedAtTimestamp = int(time())     # Wenn nichts angegeben, dann jetziger Zeitpunkt
         if expiredAfterSeconds is None:
-            expiredAfterSeconds = 60 * 60 * 24  # Wenn nichts angegeben, 1 Tag Gültigkeit
+            expiredAfterSeconds = 60 * 60 * 48  # Wenn nichts angegeben, 2 Tage Gültigkeit
 
         cborMap = {}
-        cborMap[4] = issuedAtTimestamp + expiredAfterSeconds
+
+        sc = certData['t'][0]['sc']
+        utc_dt = datetime.fromisoformat(sc[:-1])
+        testedAtTimestamp = int((utc_dt - datetime(1970, 1, 1)).total_seconds())
+
+        cborMap[4] = testedAtTimestamp + expiredAfterSeconds
         cborMap[6] = issuedAtTimestamp
         cborMap[1] = 'DE'
         cborMap[-260] = {1: certData}
@@ -131,7 +136,8 @@ class Handler:
         fn = db_entry[0]
         gn = db_entry[1]
         dob = db_entry[3]
-        sc = db_entry[2].isoformat(timespec='seconds')+'Z'
+        utc_dt = db_entry[2].astimezone(tz=timezone.utc).replace(tzinfo=None)
+        sc = utc_dt.isoformat(timespec='seconds')+'Z'
         ma = f'{db_entry[4]}'
 
 
