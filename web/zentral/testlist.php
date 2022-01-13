@@ -348,7 +348,8 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         // no result and not delivered to CWA
         $text_result_deliveredCWA='';
       }
-      $cwa_qr_code_button='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="cwa_qr.php?i='.$i[0].'"><span class="icon-qrcode"></span>&nbsp;CWA QR</a>';
+      //QR Code is not shown via Button klick anymore within Testliste
+      //$cwa_qr_code_button='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="cwa_qr.php?i='.$i[0].'"><span class="icon-qrcode"></span>&nbsp;CWA QR</a>';
     } else {
       $cwa_qr_code_button='';
     }
