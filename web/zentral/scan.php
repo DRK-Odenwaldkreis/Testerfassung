@@ -71,7 +71,15 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         echo '</div></div>';
 
       } elseif($testkarte=='Read Error'){
-        echo 'Read error';
+       // ///////////////
+        // Kartenfehler
+        // ///////////////
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Lesefehler der Karte</h3>
+        <div class="list-group">';
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
+        echo '</div></div>';
       }elseif($testkarte=="Used") {
         // ///////////////
         // Karte bereits benutzt
