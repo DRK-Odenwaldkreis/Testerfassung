@@ -84,12 +84,16 @@ function S_set_data ($Db,$sQuery) {
 
 function S_get_entry_vorgang ($Db,$scanevent) {
 	$kartennummer = substr($scanevent, strrpos($scanevent, 'K' )+1);
-	$token=substr($kartennummer,1);
-	$pruefziffer = substr($kartennummer,0,1);
-	if(array_sum(str_split($token)) != $pruefziffer && strlen($token)!=8 )
-	{
-		// Kartenlesefehler
-		return "Error read";
+	if (strlen($kartennummer)==8){
+	$token=$kartennummer;	
+	}else{
+		$token=substr($kartennummer,1);
+		$pruefziffer = substr($kartennummer,0,1);
+			if(array_sum(str_split($token)))
+			{
+				// Kartenlesefehler
+				return "Error read";
+			}
 	}
 	$stmt=mysqli_prepare($Db,"SELECT id, Used FROM Kartennummern WHERE id=?;");
 	mysqli_stmt_bind_param($stmt, "i", $token);
