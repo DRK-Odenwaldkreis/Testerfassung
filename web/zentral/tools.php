@@ -90,11 +90,7 @@ function S_get_entry_vorgang ($Db,$scanevent) {
 	}else{
 		$token=substr($kartennummer,1);
 		$pruefziffer = substr($kartennummer,0,1);
-		$quersumme = array_sum(str_split($token));
-		while($quersumme>=10){
-			  $quersumme = array_sum(str_split($quersumme));
-			}
-		if($quersumme!=$pruefziffer){
+		if(A_calculate_last_sum($token)!=$pruefziffer){
 				// Kartenlesefehler
 				return "Read Error";
 		}
@@ -201,6 +197,17 @@ function S_get_cwa_url ($Db,$test_id) {
 /****************************************/
 /* Auxilliary functions */
 /****************************************/
+
+
+// Calculate last sum
+
+function A_calculate_last_sum($number){
+	$quersumme = array_sum(str_split($number));
+		while($quersumme>=10){
+			  $quersumme = array_sum(str_split($quersumme));
+			}
+	return $quersumme;
+}
 
 // Generate random token
 function A_generate_token($length = 8) {

@@ -239,12 +239,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
 
   //Get list of times
   foreach($array_tests as $i) {
-    foreach($array_tests as $i) {
-          $quersumme = array_sum(str_split($i[2]));
-          while($quersumme>=10){
-          $quersumme = array_sum(str_split($quersumme));
-          }
-    $testkarte = 'K' .$quersumme. '' .$i[2];
+    $testkarte = 'K' .A_calculate_last_sum($i[2]). '' .$i[2];
     // Show result
     if($i[12]==1) {
       // Test POSITIV
