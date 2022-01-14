@@ -6,6 +6,7 @@
 
 import sys
 import pyqrcode
+from utils.sum import get_last_sum
 import random
 import png
 from fpdf import FPDF
@@ -36,7 +37,7 @@ class PDFgenerator(FPDF):
 		self.cell(200, 5, 'Test-Ticket für einen', ln=1, align='C')
 		self.cell(200, 15, 'SARS-CoV-2-Schnelltest(PoC) bzw. RT-PCR Labortest', ln=1, align='C')
 		self.set_font('GNU', '', 15)
-		self.qrcode = pyqrcode.create('K' + str(self.code), error='Q')
+		self.qrcode = pyqrcode.create('K' + str(get_last_sum(self.code)) + str(self.code), error='Q')
 		self.qrcode.png('tmp/'+str(code) + '.png', scale=6, quiet_zone=4)
 		self.current_x = self.get_x()
 		self.current_y = self.get_y()
@@ -48,7 +49,7 @@ class PDFgenerator(FPDF):
 		self.image('tmp/'+str(code) + '.png', x=120, w=50)
 		#self.cell(10, 0, '', ln=1)
 		self.current_x=self.get_x()
-		self.cell(20, 10, 'K%s' % (self.code), ln=1, align='C')
+		self.cell(20, 10, 'K%s%s' % (get_last_sum(self.code),self.code), ln=1, align='C')
 		os.remove('tmp/'+str(code) + '.png')
 
 	def add_codes(self,codes):
