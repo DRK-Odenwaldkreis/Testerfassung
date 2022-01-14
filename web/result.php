@@ -162,9 +162,15 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		$url = 'https://www.testzentrum-odw.de/result.php?validate=1&i='.$token.'&t='.$customer_key.'&g='.$gebdatum.'';
 		$image = A_qr_code('result',$url);
 		$display_result=str_replace('[[QRURL]]', $image , $display_result);
+		
+		//Writing the Link clickable only into the html if it is for visualization, not for pdf
+		if(isset($_GET['internal_download'])){
+		$display_result=str_replace('[[CWAURL]]', 'https://s.coronawarn.app?v=1#' , $display_result);
+		}
+		else{
 		$cwa = S_get_cwa_url($Db,$ALLOWANCE_RESULT);
 		$display_result=str_replace('[[CWAURL]]', $cwa , $display_result);
-		
+		}
 		if(!isset($_GET['validate'])){
 	
 		echo '<div style="margin-top:20px;">

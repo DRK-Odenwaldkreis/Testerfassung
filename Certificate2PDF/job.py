@@ -36,12 +36,12 @@ if __name__ == "__main__":
             geburtsdatum = requester[1]
             url = f'https://www.testzentrum-odw.de/result.php?validate=1&i={requestedNumber}&t={key}&g={geburtsdatum}'
             r = requests.get(url)
-            plain_html = r.text
+            """plain_html = r.text
             pattern =r'<(a|/a).*?>'
-            result = re.sub(pattern , "", plain_html)
+            result = re.sub(pattern , "", plain_html)"""
             outputFile = "../../Zertifikate/" + str(requestedNumber) + ".pdf" 
             #options = {'disable-external-links': True,'page-size':'A4', 'dpi':300}
-            pdf_from_string(result, outputFile)
+            pdf_from_url(url, outputFile)
             print(str(requestedNumber) + ".pdf")
             logger.info('Done')
     except Exception as e:
