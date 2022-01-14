@@ -70,7 +70,9 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
         echo '</div></div>';
 
-      } elseif($testkarte=="Used") {
+      } elseif($testkarte=='Read Error'){
+        echo 'Read error';
+      }elseif($testkarte=="Used") {
         // ///////////////
         // Karte bereits benutzt
         // ///////////////
