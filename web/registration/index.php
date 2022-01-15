@@ -472,7 +472,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                 <div class="caption center_text">
                                     <h3>Impfung</h3>
                                     <h4>Wurden Sie bereits geimpft und dies ist eine Auffrischungsimpfung / Booster-Impfung?</h4>
-                                    <p>Booster sind derzeit nur für Personen <b>ab 18 Jahren</b> erlaubt und <b>nur</b> mit mRNA Impfstoffen (von Moderna oder BioNTech-Pfizer).</p>
+                                    <p>Booster sind derzeit nur für Personen <b>ab 12 Jahren</b> erlaubt und <b>nur</b> mit mRNA Impfstoffen (von Moderna oder BioNTech-Pfizer).</p>
                                 </div>
                             </div>
                             <div class="input-group"><span class="input-group-addon" id="basic-addon1">Art der Impfung</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="vaccine_number" required>
@@ -1081,7 +1081,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                     <div class="caption center_text">
                                         <h3>Impfung</h3>
                                         <h4>Wurden Sie bereits geimpft und dies ist eine Auffrischungsimpfung / Booster-Impfung?</h4>
-                                        <p>Booster sind derzeit nur für Personen <b>ab 18 Jahren</b> erlaubt und <b>nur</b> mit mRNA Impfstoffen (von Moderna oder BioNTech-Pfizer).</p>
+                                        <p>Booster sind derzeit nur für Personen <b>ab 12 Jahren</b> erlaubt und <b>nur</b> mit mRNA Impfstoffen (von Moderna oder BioNTech-Pfizer).</p>
                                     </div>
                                 </div>
                                 <div class="input-group"><span class="input-group-addon" id="basic-addon1">Art der Impfung</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="vaccine_number" required>
