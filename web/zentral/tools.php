@@ -107,7 +107,7 @@ function S_get_entry_vorgang ($Db,$scanevent) {
 		return "Used";
 	} elseif($id_kartennummer>0) {
 		$stmt=mysqli_prepare($Db,"SELECT id FROM Vorgang WHERE Token=?;");
-		mysqli_stmt_bind_param($stmt, "s", $token);
+		mysqli_stmt_bind_param($stmt, "s", $kartennummer);
 		mysqli_stmt_execute($stmt);
 		mysqli_stmt_bind_result($stmt, $id);
 		mysqli_stmt_fetch($stmt);

@@ -512,6 +512,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
     if( $testkarte!="Not registered" && $testkarte!="Used" && $testkarte>0 && $testtyp>0) {
       $now=date("Y-m-d H:i:s",time());
       $token=S_get_entry($Db,'SELECT Token FROM Vorgang WHERE id='.$testkarte.';');
+      $token=substr($token,-8);
       switch ($_GET['e']) {
         case "2":
           // Test NEGATIV

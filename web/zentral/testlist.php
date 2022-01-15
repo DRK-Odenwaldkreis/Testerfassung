@@ -239,7 +239,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
 
   //Get list of times
   foreach($array_tests as $i) {
-    $testkarte = 'K' .A_calculate_last_sum($i[2]). '' .$i[2];
+
     // Show result
     if($i[12]==1) {
       // Test POSITIV
@@ -376,7 +376,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     ';
     if($_SESSION['display_sensitive']==0) {
       echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top" style="background-color:rgb('.$color_st_code.');"><abbr title="'.$i[24].'">S'.$i[1].'/'.substr($i[24],0,10).'</abbr></td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$testkarte.'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">K'.$i[2].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'<br><span class="text-sm">'.$i[23].'</span></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
@@ -392,10 +392,10 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       if($i[25]==1 && $i[12]==5) {
         // is PCR and no result - button to set a result
         $text_result_download.='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="edit_person.php?label=download&id='.$i[2].'"><span class="icon-print"></span>&nbsp;Label</a>';
-        $pcr_button='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="scan.php?scan='.$testkarte.'&scan_send=Senden"><span class="icon-lab"></span>&nbsp;Erg&nbsp;setzen</a>';
+        $pcr_button='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="scan.php?scan=K'.$i[2].'&scan_send=Senden"><span class="icon-lab"></span>&nbsp;Erg&nbsp;setzen</a>';
       } else { $pcr_button=''; }
       echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top" style="background-color:rgb('.$color_st_code.');"><abbr title="'.$i[24].'">S'.$i[1].'/'.substr($i[24],0,10).'</abbr></td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$testkarte.'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">K'.$i[2].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'<br><span class="text-sm">'.$i[23].'</span></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[5].', '.$i[6].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.(date("d.m.Y",strtotime($i[11]))).'</td>
