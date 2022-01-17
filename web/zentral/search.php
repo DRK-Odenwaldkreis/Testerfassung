@@ -48,7 +48,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
     // show different date
     if(isset($_POST['search'])) {
         $nname=($_POST['nname']);
-        $nname=A_sanitize_input($nname);
+        $nname=A_sanitize_input_light($nname);
         $_SESSION['display_sensitive']=1;
       } 
   }
