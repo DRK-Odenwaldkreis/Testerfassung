@@ -120,7 +120,7 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
         echo '<div class="col-sm-4">
         <div class="alert alert-info" role="alert">
         <p>Höchste Testkartennummer</p>
-        <h3>K'.$stat_val_highest.' <span class="FAIR-text-sm"></span></h3>
+        <h3>K_'.$stat_val_highest.' <span class="FAIR-text-sm"></span></h3>
         </div>';
         echo '</div></div>';
 

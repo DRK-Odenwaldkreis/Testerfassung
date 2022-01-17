@@ -70,7 +70,17 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
         echo '</div></div>';
 
-      } elseif($testkarte=="Used") {
+      } elseif($testkarte=='Read Error'){
+       // ///////////////
+        // Kartenfehler
+        // ///////////////
+        echo '<div class="row">';
+        echo '<div class="col-sm-12">
+        <h3>Lesefehler der Karte</h3>
+        <div class="list-group">';
+        echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
+        echo '</div></div>';
+      }elseif($testkarte=="Used") {
         // ///////////////
         // Karte bereits benutzt
         // ///////////////
@@ -502,6 +512,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
     if( $testkarte!="Not registered" && $testkarte!="Used" && $testkarte>0 && $testtyp>0) {
       $now=date("Y-m-d H:i:s",time());
       $token=S_get_entry($Db,'SELECT Token FROM Vorgang WHERE id='.$testkarte.';');
+      $token=substr($token,-8);
       switch ($_GET['e']) {
         case "2":
           // Test NEGATIV

@@ -83,7 +83,18 @@ function S_set_data ($Db,$sQuery) {
 
 
 function S_get_entry_vorgang ($Db,$scanevent) {
-	$token=substr($scanevent, strrpos($scanevent, 'K' )+1);
+	$kartennummer = substr($scanevent, strrpos($scanevent, 'K' )+1);
+	//Prüfung ob es eine alte oder neue Karte ist
+	if (strlen($kartennummer)==8){
+	$token=$kartennummer;	
+	}else{
+		$token=substr($kartennummer,1);
+		$pruefziffer = substr($kartennummer,0,1);
+		if(A_calculate_last_sum($token)!=$pruefziffer){
+				// Kartenlesefehler
+				return "Read Error";
+		}
+	}
 	$stmt=mysqli_prepare($Db,"SELECT id, Used FROM Kartennummern WHERE id=?;");
 	mysqli_stmt_bind_param($stmt, "i", $token);
 	mysqli_stmt_execute($stmt);
@@ -96,12 +107,11 @@ function S_get_entry_vorgang ($Db,$scanevent) {
 		return "Used";
 	} elseif($id_kartennummer>0) {
 		$stmt=mysqli_prepare($Db,"SELECT id FROM Vorgang WHERE Token=?;");
-		mysqli_stmt_bind_param($stmt, "s", $token);
+		mysqli_stmt_bind_param($stmt, "s", $kartennummer);
 		mysqli_stmt_execute($stmt);
 		mysqli_stmt_bind_result($stmt, $id);
 		mysqli_stmt_fetch($stmt);
 		mysqli_stmt_close($stmt);
-
 		// Return result of SQL query
 		return $id;
 	} else {
@@ -187,6 +197,17 @@ function S_get_cwa_url ($Db,$test_id) {
 /****************************************/
 /* Auxilliary functions */
 /****************************************/
+
+
+// Calculate last sum
+
+function A_calculate_last_sum($number){
+	$quersumme = array_sum(str_split($number));
+		while($quersumme>=10){
+			  $quersumme = array_sum(str_split($quersumme));
+			}
+	return $quersumme;
+}
 
 // Generate random token
 function A_generate_token($length = 8) {
