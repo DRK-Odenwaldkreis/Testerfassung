@@ -527,7 +527,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       
       S_set_data($Db,'UPDATE Kartennummern SET Used=1 WHERE id='.$token.';');
       $customer_key=A_generate_token(64);
-      S_set_data($Db,'UPDATE Vorgang SET Customer_key=\''.$customer_key.'\' WHERE id='.$testkarte.';');
+      S_set_data($Db,'UPDATE Vorgang SET Customer_key=\''.$customer_key.'\', Zustaendiger=\''.$_SESSION['uid'].'\' WHERE id='.$testkarte.';');
 
       // PRINTED TEST CERTIFICATE REQUIRED ?
       if( S_get_entry($Db,'SELECT handout_request FROM Vorgang WHERE id='.$testkarte.';')==1 ) {
