@@ -63,6 +63,8 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     } elseif(isset($_POST['unshow_sensitive_data'])) {
       $today=$_POST['date'];
       $_SESSION['display_sensitive']=0;
+    } elseif(isset($_POST['all_days'])){
+      $all_days = 1;
     }
   }
 
@@ -167,8 +169,11 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung,Vorgang.reg_type, Station.Ort, Testtyp.IsPCR, Kosten_PCR.Kurzbezeichnung FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund JOIN Station ON Station.id=Vorgang.Teststation WHERE Date(Vorgang.Registrierungszeitpunkt)="'.$today.'" AND Vorgang.Teststation=CAST('.$_SESSION['station_id'].' AS int)  ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
   } else {
     // for all stations
+    if($all_days==1){
+    $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung,Vorgang.reg_type, Station.Ort, Testtyp.IsPCR, Kosten_PCR.Kurzbezeichnung FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund JOIN Station ON Station.id=Vorgang.Teststation ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
+    }else{
     $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung,Vorgang.reg_type, Station.Ort, Testtyp.IsPCR, Kosten_PCR.Kurzbezeichnung FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund JOIN Station ON Station.id=Vorgang.Teststation WHERE Date(Vorgang.Registrierungszeitpunkt)="'.$today.'"  ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
-
+    }
   }
 
 
@@ -185,7 +190,10 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     echo '<input type="date" class="form-control" placeholder="Tag wählen" aria-describedby="basic-addonA2" value="'.$today.'" name="date" disabled>';
   } else {
     // choose a day
-    echo'<form action="'.$current_site.'.php" method="post">
+    if(!$all_days){
+    //Date picker is only active if not ALL Days was activated  
+    echo'
+    <form action="'.$current_site.'.php" method="post">
     <div class="input-group">
     <span class="input-group-addon" id="basic-addonA2">Tag auswählen</span>
     <input type="date" class="form-control" placeholder="Tag wählen" aria-describedby="basic-addonA2" value="'.$today.'" name="date">
@@ -196,6 +204,33 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     <input type="submit" class="btn btn-default" value="+ 1 Tag" name="show_times_plus1" />
     </span>
     </div></form>';
+  
+    echo'<form action="'.$current_site.'.php" method="post">
+    <div class="input-group">
+    <input type="submit" class="btn btn-primary" value="Alle Tage" name="all_days" />
+    </div></form>';
+
+    } else{
+    
+    echo'
+    <fieldset disabled="disabled">
+    <form action="'.$current_site.'.php" method="post">
+    <div class="input-group">
+    <span class="input-group-addon" id="basic-addonA2">Tag auswählen</span>
+    <span class="input-group-addon" id="basic-addonA2">Alle Tage</span>
+    <span class="input-group-btn">
+    <input type="submit" class="btn btn-primary" value="Liste anzeigen" name="show_times" />
+    <input type="submit" class="btn btn-default" value="- 1 Tag" name="show_times_minus1" />
+    <input type="submit" class="btn btn-default" value="Heute" name="show_times_today" />
+    <input type="submit" class="btn btn-default" value="+ 1 Tag" name="show_times_plus1" />
+    </span>
+    </div></form>
+    </fieldset>';
+      echo'<form action="'.$current_site.'.php" method="post">
+      <div class="input-group">
+      <input type="submit" class="btn btn-primary" value="Zurück zur Datumsauswahl"/>
+      </div></form>';  
+    }
   }
 
   // Button to switch between sensitive data to display
