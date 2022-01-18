@@ -47,8 +47,8 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // show different date
     if(isset($_POST['search'])) {
-        $nname=($_POST['nname']);
-        $nname=A_sanitize_input_light($nname);
+        $name=($_POST['name']);
+        $name=A_sanitize_input_light($name);
         $_SESSION['display_sensitive']=1;
       } 
   }
@@ -102,8 +102,8 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
   $Db=S_open_db();
 
     // Get all test for today
-    if($nname){
-        $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung, Station.Ort, Kosten_PCR.Kurzbezeichnung, Testtyp.IsPCR FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id JOIN Station ON Station.id=Vorgang.Teststation LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund WHERE Vorgang.Nachname ="'.$nname.'" ORDER BY Vorgang.Ergebniszeitpunkt DESC;');
+    if($name){
+        $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung, Station.Ort, Kosten_PCR.Kurzbezeichnung, Testtyp.IsPCR FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id JOIN Station ON Station.id=Vorgang.Teststation LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund WHERE Vorgang.Nachname ="'.$name.'" or Vorgang.Vorname ="'.$name.'" ORDER BY Vorgang.Ergebniszeitpunkt DESC;');
       }
 
 
@@ -114,8 +114,8 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
     
       echo'<form action="'.$current_site.'.php" method="post">
       <div class="input-group">
-      <span class="input-group-addon" id="basic-addon1">Nachname</span>
-      <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="nname" autocomplete="off" ">
+      <span class="input-group-addon" id="basic-addon1">Vor oder Nachname</span>
+      <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="name" autocomplete="off" ">
       </div>
       <div class="FAIR-si-button">
       <input type="submit" class="btn btn-danger" value="Suchen" name="search" />
