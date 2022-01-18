@@ -119,8 +119,9 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
       </div>
       <div class="FAIR-si-button">
       <input type="submit" class="btn btn-danger" value="Suchen" name="search" />
+      <input type="submit" class="btn btn-danger" value="Clear" name="clear" />
       </div></form>';
-
+      
   echo'
     </div></form>
   </div>';
