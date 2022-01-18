@@ -226,7 +226,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     </span>
     </div></form>
     </fieldset>';
-      echo'<form action="'.$current_site.'.php" method="get">
+      echo'<form action="'.$current_site.'.php" method="post">
       <div class="input-group">
       <input type="submit" class="btn btn-primary" value="Zurück zur Datumsauswahl"/>
       </div></form>';  
