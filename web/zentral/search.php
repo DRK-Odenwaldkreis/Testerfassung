@@ -103,8 +103,8 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
 
     // Get all test for today
     if($name){
-        $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung, Station.Ort, Kosten_PCR.Kurzbezeichnung, Testtyp.IsPCR FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id JOIN Station ON Station.id=Vorgang.Teststation LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund WHERE Vorgang.Nachname ="'.$name.'" or Vorgang.Vorname ="'.$name.'" ORDER BY Vorgang.Ergebniszeitpunkt DESC;');
-      }
+      $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung, Station.Ort, Kosten_PCR.Kurzbezeichnung, Testtyp.IsPCR FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id JOIN Station ON Station.id=Vorgang.Teststation LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund WHERE Vorgang.Nachname LIKE "%'.$name.'%" or Vorgang.Vorname  LIKE "%'.$name.'%" ORDER BY Vorgang.Ergebniszeitpunkt DESC;');
+    }
 
 
 
