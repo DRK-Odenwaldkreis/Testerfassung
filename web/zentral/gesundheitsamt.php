@@ -372,7 +372,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
   echo '</div>';
 
 
-  echo '<h2>PCR-Tests im Vorlauf</h2>';
+  echo '<h1>PCR-Tests im Vorlauf</h1>';
 
   echo '<div class="row">';
 
