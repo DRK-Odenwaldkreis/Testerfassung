@@ -230,7 +230,6 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Typ</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Testergebnis</h4></td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Ergebnis</h4></td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"></td>
     </tr>
     </thead>';
 
@@ -330,8 +329,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'<br>'.$i[24].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">Erg '.$text_ergebnis.' / '.$i[4].'</td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.'</td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"></td>';
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.'</td>';
     } else {
       if($i[25]==1 && $i[12]==5) {
         // is PCR and no result - button for label
@@ -347,8 +345,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[10].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'<br>'.$i[24].'</td>
     <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">Erg '.$text_ergebnis.' / '.$i[4].'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.'</td>
-    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_download.'</td>';
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.'</td>';
     }
     echo '</tr>';
   }
@@ -387,7 +384,7 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
 
  echo '
   <div class="col-sm-12">
-  <table class="FAIR-data" id="maintable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'10000\'>';
+  <table class="FAIR-data" id="subtable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'10000\'>';
   
   echo '<thead>
     <tr>
@@ -425,8 +422,6 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
       $class_ergebnis='';
       $text_ergebnis='';
     }
-
-  
 
     echo '
     
@@ -466,6 +461,18 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
     <script>
     $(document).ready( function () {
       $('#maintable').DataTable( {
+        dom: \"frti\",
+        $local_dt_language
+      });
+    } );
+    </script>
+    ";
+
+
+    echo "
+    <script>
+    $(document).ready( function () {
+      $('#subtable').DataTable( {
         dom: \"frti\",
         $local_dt_language
       });
