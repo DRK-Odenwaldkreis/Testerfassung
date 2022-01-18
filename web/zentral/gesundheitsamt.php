@@ -375,6 +375,92 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
   echo '</div>';
 
 
+  echo '<h2>PCR-Tests im Vorlauf</h2>';
+
+  echo '<div class="row">';
+
+  echo '<div class="card">
+  <div class="col-sm-4">';
+  echo '<p></p>';
+
+ $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung, Station.Ort, Kosten_PCR.Kurzbezeichnung, Testtyp.IsPCR FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id JOIN Station ON Station.id=Vorgang.Teststation LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund WHERE (Vorgang.Ergebnis = 5 AND (Testtyp.IsPCR=1 AND Kosten_PCR.id!=3) ) ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
+
+ echo '
+  <div class="col-sm-12">
+  <table class="FAIR-data" id="maintable" data-order=\'[[ 0, "desc" ]]\' data-page-length=\'10000\'>';
+  
+  echo '<thead>
+    <tr>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Laufende Nummer</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Stations-ID</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Test Nummer</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Registrierung</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Name</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Geburtsdatum</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Adresse</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Telefonnummer</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Mail</h4></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Typ</h4></td>
+    </tr>
+    </thead>';
+
+    //Get list of times
+  foreach($array_tests as $i) {
+    if($i[12]==1) {
+      // Test POSITIV
+      $class_ergebnis='FAIR-text-red';
+      $text_ergebnis='POS';
+    } elseif($i[12]==2) {
+      // Test NEGATIV
+      $class_ergebnis='FAIR-text-green';
+      $text_ergebnis='NEG';
+    } elseif($i[12]==9) {
+      // Test FEHLERHAFT
+      $class_ergebnis='FAIR-change-red';
+      $text_ergebnis='ERR';
+    } elseif($i[12]==5) {
+      $class_ergebnis='';
+      $text_ergebnis='OFFEN';
+    } else {
+      $class_ergebnis='';
+      $text_ergebnis='';
+    }
+
+  
+
+    echo '
+    
+    <tr>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">#'.$i[0].'</td>
+    ';
+    if($_SESSION['display_sensitive']==0) {
+      echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><abbr title="'.$i[23].'">S'.$i[1].'/'.substr($i[23],0,10).'</abbr></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">K'.$i[2].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><span class="FAIR-sep-l-black"></span></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'<br>'.$i[24].'</td>';
+    } else {
+      if($i[25]==1 && $i[12]==5) {
+        // is PCR and no result - button for label
+      } else { $text_result_download=''; }
+      echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><abbr title="'.$i[23].'">S'.$i[1].'/'.substr($i[23],0,10).'</abbr></td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">K'.$i[2].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[3].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[5].', '.$i[6].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.(date("d.m.Y",strtotime($i[11]))).'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[7].'<br>'.$i[8].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[9].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[10].'</td>
+    <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'<br>'.$i[24].'</td>';
+    }
+    echo '</tr>';
+  }
+  echo '</table></div></div>';
+
     // Initialize DataTables JavaScript
     echo "
     <script>
