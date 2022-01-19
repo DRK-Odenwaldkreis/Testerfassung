@@ -201,7 +201,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     $content.="\n\n
     Mit freundlichen Grüßen\n
     Das Team vom DRK $name_facility Odenwaldkreis";
-                    $title='DRK Covid-19 '.$name_facility.' Odenwaldkreis - Termin bestätigen';
+                    $title='DRK Covid-19 '.$name_facility.' Odenwaldkreis - Termin bestaetigen';
                     $res=mail($k_email, $title, $content, $header, "-r no-reply@testzentrum-odenwald.de");
 
                     echo '<div class="alert alert-success" role="alert">
