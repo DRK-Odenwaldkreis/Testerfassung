@@ -432,6 +432,16 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
 
 
       }
+    } else {
+      // ///////////////
+      // Scan ungültig
+      // ///////////////
+      echo '<div class="row">';
+      echo '<div class="col-sm-12">
+      <h3>Scan ungültig / Kein gültiger QR Code erkannt</h3>
+      <div class="list-group">';
+      echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="'.$current_site.'.php">Neuen Scan durchführen</a>';
+      echo '</div></div>';
     }
 
   } elseif( isset($_POST['token']) && ( isset($_POST['result_positive']) || isset($_POST['result_negative']) || isset($_POST['result_failure']) ) ) {

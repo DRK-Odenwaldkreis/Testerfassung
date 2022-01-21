@@ -88,13 +88,18 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
         } else {
           $k_pcr_grund='';
         }
+        if($k_email!='' ) {
+          $k_privatemail_req=1;
+        } else {
+          $k_privatemail_req=0;
+        }
       } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
         $k_geb=$_POST['geburtsdatum'];
         $k_vacc_number=$_POST['vaccine_number'];
       }
 
 
-      if (filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
+      if(filter_var($k_email, FILTER_VALIDATE_EMAIL)) {
         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
           S_set_data($Db,'UPDATE Vorgang SET
           Vorname=\''.$k_vname.'\',
@@ -104,7 +109,8 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
           Wohnort=\''.$k_ort.'\',
           Telefon=\''.$k_tel.'\',
           Mailadresse=\''.$k_email.'\',
-          handout_request='.$k_val_print_cert.'
+          handout_request='.$k_val_print_cert.',
+          privateMail_request='.$k_privatemail_req.'
           '.$k_pcr_grund.'
           WHERE id=CAST('.$k_id.' AS int);');
           $val_cwa_req=S_get_entry($Db,'SELECT CWA_request FROM Vorgang WHERE id=CAST('.$k_id.' AS int);');
@@ -149,7 +155,8 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
           Adresse=\''.$k_adresse.'\',
           Wohnort=\''.$k_ort.'\',
           Telefon=\''.$k_tel.'\',
-          handout_request='.$k_val_print_cert.'
+          handout_request='.$k_val_print_cert.',
+          privateMail_request='.$k_privatemail_req.'
           '.$k_pcr_grund.'
           WHERE id=CAST('.$k_id.' AS int);');
           $val_cwa_req=S_get_entry($Db,'SELECT CWA_request FROM Vorgang WHERE id=CAST('.$k_id.' AS int);');
