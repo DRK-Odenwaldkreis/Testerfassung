@@ -70,7 +70,7 @@ class PDFgenerator(FPDF):
 		self.image(Logo, x=7, y=10, w=100, h=24, type='PNG')
 		self.image(Logo2,x=170, y=5, w=30, h=30, type='PNG')
 		self.ln(4)
-		self.cell(210,10, 'V3.0', ln=1)
+		self.cell(210,10, 'V4.0', ln=1)
 		self.ln(2)
 
 
