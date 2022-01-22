@@ -33,37 +33,38 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
 
     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         $material = 'Testkits';
-    }elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+    } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
         $material = 'Impfstoff';
-    }else{
+    } else {
         $material = '';
     }
 
-    // Show user
+    // Show entry
     $bool_staff_display=false;
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        // Edit user in database
+        // Edit entry in database
         if(isset($_POST['edit_material'])) {
             $id=($_POST['e_id']);
             $name=($_POST['e_name']);
             $kurzname=($_POST['e_kurzname']);
             $aktiv=($_POST['e_aktiv']);
-
+            if($aktiv=='on') {$aktiv_val=1;} else {$aktiv_val=0;}
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-            $device_ID=($_POST['e_deviceID']);
-            $isPCR=($_POST['e_isPCR']);
-            }elseif($GLOBALS['FLAG_MODE_MAIN'] == 2){
-            $min_alter=($_POST['e_min_alter']);
-            $max_alter=($_POST['e_max_alter']);    
+                $device_ID=($_POST['e_device_ID']);
+                $isPCR=($_POST['e_isPCR']);
+                if($isPCR=='on') {$isPCR_val=1;} else {$isPCR_val=0;}
+            } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2){
+                $min_alter=($_POST['e_min_alter']);
+                $max_alter=($_POST['e_max_alter']);
             }
 
 
-            //  edit station data
+            //  edit entry data
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                S_set_data($Db,'UPDATE Testtyp SET Name=\''.$name.'\',Kurzbezeichnung=\''.$kurzname.'\',Device_ID=\''.$device_ID.'\',Aktiv=\''.$aktiv.'\',IsPCR=\''.$isPCR.'\' WHERE id='.$id.';');
+                S_set_data($Db,'UPDATE Testtyp SET Name=\''.$name.'\',Kurzbezeichnung=\''.$kurzname.'\',Device_ID=\''.$device_ID.'\',Aktiv=\''.$aktiv_val.'\',IsPCR=\''.$isPCR_val.'\' WHERE id='.$id.';');
             } else {
-                S_set_data($Db,'UPDATE Impfstoff SET Name=\''.$name.'\',Kurzbezeichnung=\''.$kurzname.'\',Mindestalter=\''.$min_alter.'\',Maiximalalter=\''.$max_alter.'\',Aktiv=\''.$Aktiv.'\' WHERE id='.$id.';');
+                S_set_data($Db,'UPDATE Impfstoff SET Name=\''.$name.'\',Kurzbezeichnung=\''.$kurzname.'\',Mindestalter=\''.$min_alter.'\',Maiximalalter=\''.$max_alter.'\',Aktiv=\''.$aktiv_val.'\' WHERE id='.$id.';');
             }
             $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
 
@@ -74,27 +75,27 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                 $IsPCR=($_POST['n_isPCR']);
                 $Device_ID=($_POST['n_deviceID']);
-                }elseif($GLOBALS['FLAG_MODE_MAIN'] == 2){
+            } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2){
                 $min_alter=($_POST['n_min_alter']);
                 $max_alter=($_POST['n_max_alter']);
-                }
+            }
 
                 
-                if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                    S_set_data($Db,'INSERT INTO Testtyp (Name,Kurzbezeichnung,Device_ID,Aktiv,IsPCR) VALUES (
-                        \''.$name.'\',
-                        \''.$kurzname.'\',
-                        \''.$Device_ID.'\',
-                        \''.$aktiv.'\',
-                        '.$IsPCR.');');
-                } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-                    S_set_data($Db,'INSERT INTO Impfstoff (Name,Kurzbezeichnung,Mindestalter,Maximalalter,Aktiv) VALUES (
-                        \''.$name.'\',
-                        \''.$kurzname.'\',
-                        \''.$min_alter.'\',
-                        \''.$max_alter.'\',
-                        '.$aktiv.');');
-                } 
+            if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                S_set_data($Db,'INSERT INTO Testtyp (Name,Kurzbezeichnung,Device_ID,Aktiv,IsPCR) VALUES (
+                    \''.$name.'\',
+                    \''.$kurzname.'\',
+                    \''.$Device_ID.'\',
+                    \''.$aktiv.'\',
+                    '.$IsPCR.');');
+            } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+                S_set_data($Db,'INSERT INTO Impfstoff (Name,Kurzbezeichnung,Mindestalter,Maximalalter,Aktiv) VALUES (
+                    \''.$name.'\',
+                    \''.$kurzname.'\',
+                    \''.$min_alter.'\',
+                    \''.$max_alter.'\',
+                    '.$aktiv.');');
+            } 
         }
 
         // Search on number
@@ -102,26 +103,26 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             $material_id=($_POST['material_id']);
 
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-            $bool_staff_display=true;
-            $u_name=S_get_entry($Db,'SELECT Name FROM Testtyp WHERE id=CAST('.$material_id.' AS int);');
-            $u_kurzname=S_get_entry($Db,'SELECT Kurzbezeichnung FROM Testtyp WHERE id=CAST('.$material_id.' AS int);');
-            $u_aktiv=S_get_entry($Db,'SELECT Aktiv FROM Testtyp WHERE id=CAST('.$material_id.' AS int);');
-            $u_device_ID=S_get_entry($Db,'SELECT Device_ID FROM Testtyp WHERE id=CAST('.$material_id.' AS int);');
-            $u_isPCR=S_get_entry($Db,'SELECT IsPCR FROM Testtyp WHERE id=CAST('.$material_id.' AS int);');
-            } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2){
-            $bool_staff_display=true;
-            $u_name=S_get_entry($Db,'SELECT Name FROM Impfstoff WHERE id=CAST('.$material_id.' AS int);');
-            $u_kurzname=S_get_entry($Db,'SELECT Kurzbezeichnung FROM Impfstoff WHERE id=CAST('.$material_id.' AS int);');
-            $u_aktiv=S_get_entry($Db,'SELECT Aktiv FROM Impfstoff WHERE id=CAST('.$material_id.' AS int);');
-            $u_min_alter=S_get_entry($Db,'SELECT Mindestalter FROM Impfstoff WHERE id=CAST('.$material_id.' AS int);');
-            $u_max_alter=S_get_entry($Db,'SELECT Maximalalter FROM Impfstoff WHERE id=CAST('.$material_id.' AS int);');
+                $bool_staff_display=true;
+                $u_name=S_get_entry($Db,'SELECT Name FROM Testtyp WHERE id=CAST('.$material_id.' AS int);');
+                $u_kurzname=S_get_entry($Db,'SELECT Kurzbezeichnung FROM Testtyp WHERE id=CAST('.$material_id.' AS int);');
+                $u_aktiv=S_get_entry($Db,'SELECT Aktiv FROM Testtyp WHERE id=CAST('.$material_id.' AS int);');
+                $u_device_ID=S_get_entry($Db,'SELECT Device_ID FROM Testtyp WHERE id=CAST('.$material_id.' AS int);');
+                $u_isPCR=S_get_entry($Db,'SELECT IsPCR FROM Testtyp WHERE id=CAST('.$material_id.' AS int);');
+            } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
+                $bool_staff_display=true;
+                $u_name=S_get_entry($Db,'SELECT Name FROM Impfstoff WHERE id=CAST('.$material_id.' AS int);');
+                $u_kurzname=S_get_entry($Db,'SELECT Kurzbezeichnung FROM Impfstoff WHERE id=CAST('.$material_id.' AS int);');
+                $u_aktiv=S_get_entry($Db,'SELECT Aktiv FROM Impfstoff WHERE id=CAST('.$material_id.' AS int);');
+                $u_min_alter=S_get_entry($Db,'SELECT Mindestalter FROM Impfstoff WHERE id=CAST('.$material_id.' AS int);');
+                $u_max_alter=S_get_entry($Db,'SELECT Maximalalter FROM Impfstoff WHERE id=CAST('.$material_id.' AS int);');
             }
             
         }
 
     }
 
-    // Get  details
+    // Get entry details
 
     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         $material_array=S_get_multientry($Db,'SELECT id, Kurzbezeichnung FROM Testtyp;');
@@ -165,7 +166,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
 
     echo '<h1>Admin: Material-Management</h1>';
     //
-    // Select user
+    // Select entry
     //
     
 
@@ -189,7 +190,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
     <option value="" selected>Wähle...</option>
         ';
         foreach($material_array as $i) {
-            $display='S'.sprintf('%02d',$i[0]).' '.$i[1].' ('.$i[2].')';
+            $display='Mat-Nr. '.sprintf('%02d',$i[0]).' '.$i[1];
             echo '<option value="'.$i[0].'">'.$display.'</option>';
         }
         echo '
@@ -207,46 +208,54 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
 
         // Show material data
         echo '<div class="col-sm-8">
-        <h3>'.$user_id.'</h3>
-        <p>'.$u_display.'</p>';
+        <h3>Mat-Nr. '.$material_id.'</h3>';
 
         if($GLOBALS['FLAG_MODE_MAIN'] == 1){
             
-    
+            if($u_isPCR==1) {$u_isPCR_check="checked";} else {$u_isPCR_check="";}
+            if($u_aktiv==1) {$u_aktiv_check="checked";} else {$u_aktiv_check="";}
             echo'<form action="'.$current_site.'.php" method="post">
             <div class="input-group">
+            <input type="text" name="e_id" style="display:none;" value="'.$material_id.'">
             <span class="input-group-addon" id="basic-addon1">Name</span>
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_name" autocomplete="off" value="'.$u_name.'">
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_name" autocomplete="off" value="'.$u_name.'">
     
             <span class="input-group-addon" id="basic-addon1">Kurzbezeichnung</span>
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_kurzname" autocomplete="off" value="'.$u_kurzname.'">
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_kurzname" autocomplete="off" value="'.$u_kurzname.'">
             </div><div class="input-group">
             <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">Device_ID</span>
-            <input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_device_ID" autocomplete="off" value="'.$u_device_ID.'">
-            <span class="input-group-addon" id="basic-addon1">PCR Test</span>
-            <input type="checkbox" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_isPCR" autocomplete=" value="'.$u_isPCR.'"">
-            <span class="input-group-addon" id="basic-addon1">Aktiv</span>
-            <input type="checkbox" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_aktiv" autocomplete=" value="'.$u_aktiv.'"">
-            </div><div class="input-group">';
+            <input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_device_ID" autocomplete="off" value="'.$u_device_ID.'">
+            </div>
+            
+            <div class="FAIRsepdown"></div>
+            <div class="cb_drk">
+            <input type="checkbox" id="e_isPCR" name="e_isPCR" '.$u_isPCR_check.'><label for="e_isPCR">PCR Test</label>
+            </div>
+            <div class="FAIRsepdown"></div>
+            <div class="cb_drk">
+            <input type="checkbox" id="e_aktiv" name="e_aktiv" '.$u_aktiv_check.'><label for="e_aktiv">Aktiv</label>
+            </div>
+            ';
     
         } elseif ($GLOBALS['FLAG_MODE_MAIN'] == 2){
 
             echo'<form action="'.$current_site.'.php" method="post">
             <div class="input-group">
+            <input type="text" name="e_id" style="display:none;" value="'.$material_id.'">
             <span class="input-group-addon" id="basic-addon1">Name</span>
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_name" autocomplete="off" value="'.$u_name.'">
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_name" autocomplete="off" value="'.$u_name.'">
     
             <span class="input-group-addon" id="basic-addon1">Kurzbezeichnung</span>
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_kurzname" autocomplete="off" value="'.$u_kurzname.'">
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_kurzname" autocomplete="off" value="'.$u_kurzname.'">
             </div><div class="input-group">
             <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">Mindestalter</span>
-            <input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_device_ID" autocomplete="off" value="'.$u_min_alter.'">
+            <input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_device_ID" autocomplete="off" value="'.$u_min_alter.'">
             <span class="input-group-addon" id="basic-addon1">Maximalalter</span>
-            <input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_isPCR" autocomplete=" value="'.$u_max_alter.'"">
+            <input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_isPCR" autocomplete=" value="'.$u_max_alter.'"">
             <span class="input-group-addon" id="basic-addon1">Aktiv</span>
-            <input type="checkbox" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_aktiv" autocomplete=" value="'.$u_aktiv.'"">
+            <input type="checkbox" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_aktiv" autocomplete=" value="'.$u_aktiv.'"">
             </div><div class="input-group">';
             }
 
@@ -269,14 +278,14 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
     echo '<table class="FAIR-data" id="maintable" data-order=\'[[ 0, "asc" ]]\' data-page-length=\'1000\'>
     <thead>
       <tr>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Nr.</h4></td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Mat-Nr.</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Name</h4></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Kurzbezeichnung</h4></td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Aktiv</h4></td>';
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Aktiv (1=Ja)</h4></td>';
       if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Device_ID</h4></td>
-        <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>IsPCR</h4></td>';
-      }elseif($GLOBALS['FLAG_MODE_MAIN'] == 2){
+        <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>PCR (1=Ja)</h4></td>';
+      } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2){
         echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Mindestalter</h4></td>
             <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><h4>Maximalalter</h4></td>';
       }
@@ -285,9 +294,9 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
       </thead>
       <tbody>';
     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-        $array_station=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, Device_ID, Aktiv, IsPCR FROM Testtyp ORDER BY id ASC;');
+        $array_station=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, Aktiv, Device_ID, IsPCR FROM Testtyp ORDER BY id ASC;');
     } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-        $array_station=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, Mindestalter, Maximalalter, Aktiv FROM Impfstoff ORDER BY id ASC;');
+        $array_station=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, Aktiv, Mindestalter, Maximalalter FROM Impfstoff ORDER BY id ASC;');
     }
     
     foreach($array_station as $i) {
@@ -322,47 +331,52 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
     if(true) {
         
         if($GLOBALS['FLAG_MODE_MAIN'] == 1){
-        echo '<div class="card"><div class="row">
-        <div class="col-sm-12">
-        <h3>Neuen Testtyp anlegen</h3>';
+            echo '<div class="card"><div class="row">
+            <div class="col-sm-12">
+            <h3>Neuen Testtyp anlegen</h3>';
 
-        echo'<form action="'.$current_site.'.php" method="post">
-        <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Name</span>
-        <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_name" autocomplete="off" required>
+            echo'<form action="'.$current_site.'.php" method="post">
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Name</span>
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_name" autocomplete="off" required>
 
-        <span class="input-group-addon" id="basic-addon1">Kurzbezeichnung</span>
-        <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_kurzname" autocomplete="off" required>
-        </div><div class="input-group">
-        <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Device_ID</span>
-        <input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_device_ID" autocomplete="off">
-        <span class="input-group-addon" id="basic-addon1">PCR Test</span>
-        <input type="checkbox" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_isPCR" autocomplete="off">
-        <span class="input-group-addon" id="basic-addon1">Aktiv</span>
-        <input type="checkbox" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_aktiv" autocomplete="off">
-        </div><div class="input-group">';
+            <span class="input-group-addon" id="basic-addon1">Kurzbezeichnung</span>
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_kurzname" autocomplete="off" required>
+            </div><div class="input-group">
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Device_ID</span>
+            <input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_device_ID" autocomplete="off">
+            </div>
+            <div class="FAIRsepdown"></div>
+            <div class="cb_drk">
+            <input type="checkbox" id="n_isPCR" name="n_isPCR"><label for="n_isPCR">PCR Test</label>
+            </div>
+            <div class="FAIRsepdown"></div>
+            <div class="cb_drk">
+            <input type="checkbox" id="n_aktiv" name="n_aktiv"><label for="n_aktiv">Aktiv</label>
+            </div>';
 
         } elseif ($GLOBALS['FLAG_MODE_MAIN'] == 2){
 
-        echo '<div class="card"><div class="row">
-        <div class="col-sm-12">
-        <h3>Neuen Impfstoff anlegen</h3>';
+            echo '<div class="card"><div class="row">
+            <div class="col-sm-12">
+            <h3>Neuen Impfstoff anlegen</h3>';
 
-        echo'<form action="'.$current_site.'.php" method="post">
-        <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Stations-ID</span>
-        <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_station_id" autocomplete="off" required>
+            echo'<form action="'.$current_site.'.php" method="post">
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Stations-ID</span>
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_station_id" autocomplete="off" required>
 
-        <span class="input-group-addon" id="basic-addon1">Stationsname (Ort)</span>
-        <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_username" autocomplete="off" required>
-        </div><div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">Adresse</span>
-        <input type="bool" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_address" autocomplete="off">
+            <span class="input-group-addon" id="basic-addon1">Stationsname (Ort)</span>
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_username" autocomplete="off" required>
+            </div><div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Adresse</span>
+            <input type="bool" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_address" autocomplete="off">
 
-        <span class="input-group-addon" id="basic-addon1">Firmencode</span>
-        <input type="checkbox" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_b2b" autocomplete="off">
-        </div><div class="input-group">';
+            <span class="input-group-addon" id="basic-addon1">Firmencode</span>
+            <input type="checkbox" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_b2b" autocomplete="off">
+            </div>
+            <div class="input-group">';
  
         }
 
@@ -372,7 +386,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
         <input type="submit" class="btn btn-danger" value="Erstellen" name="create_material" />
         </div></form>';
         echo $errorhtml2;
-        echo '</div></div></div>';
+        echo '</div></div>';
     }
 
 
