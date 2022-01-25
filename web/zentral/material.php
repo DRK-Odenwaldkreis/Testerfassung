@@ -45,26 +45,29 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
 
         // Edit entry in database
         if(isset($_POST['edit_material'])) {
-            $id=($_POST['e_id']);
+            $id=A_sanitize_input($_POST['e_id']);
             $name=A_sanitize_input_light($_POST['e_name']);
             $kurzname=A_sanitize_input_light($_POST['e_kurzname']);
             $aktiv=A_sanitize_input($_POST['e_aktiv']);
             if($aktiv=='on') {$aktiv_val=1;} else {$aktiv_val=0;}
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                 $device_ID=A_sanitize_input($_POST['e_device_ID']);
+                if($device_ID=='') {$device_ID='NULL';} else {$device_ID=$device_ID;}
                 $isPCR=A_sanitize_input($_POST['e_isPCR']);
                 if($isPCR=='on') {$isPCR_val=1;} else {$isPCR_val=0;}
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2){
                 $min_alter=A_sanitize_input($_POST['e_min_alter']);
+                if($min_alter=='') {$min_alter='NULL';} else {$min_alter=$min_alter;}
                 $max_alter=A_sanitize_input($_POST['e_max_alter']);
+                if($max_alter=='') {$max_alter='NULL';} else {$max_alter=$max_alter;}
             }
 
 
             //  edit entry data
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                S_set_data($Db,'UPDATE Testtyp SET Name=\''.$name.'\',Kurzbezeichnung=\''.$kurzname.'\',Device_ID=\''.$device_ID.'\',Aktiv=\''.$aktiv_val.'\',IsPCR=\''.$isPCR_val.'\' WHERE id='.$id.';');
+                S_set_data($Db,'UPDATE Testtyp SET Name=\''.$name.'\',Kurzbezeichnung=\''.$kurzname.'\',Device_ID='.$device_ID.',Aktiv=\''.$aktiv_val.'\',IsPCR=\''.$isPCR_val.'\' WHERE id='.$id.';');
             } else {
-                S_set_data($Db,'UPDATE Impfstoff SET Name=\''.$name.'\',Kurzbezeichnung=\''.$kurzname.'\',Mindestalter=\''.$min_alter.'\',Maiximalalter=\''.$max_alter.'\',Aktiv=\''.$aktiv_val.'\' WHERE id='.$id.';');
+                S_set_data($Db,'UPDATE Impfstoff SET Name=\''.$name.'\',Kurzbezeichnung=\''.$kurzname.'\',Mindestalter='.$min_alter.',Maximalalter='.$max_alter.',Aktiv=\''.$aktiv_val.'\' WHERE id='.$id.';');
             }
             $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
 
@@ -76,10 +79,13 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                 $IsPCR=A_sanitize_input($_POST['n_isPCR']);
                 if($isPCR=='on') {$isPCR_val=1;} else {$isPCR_val=0;}
-                $Device_ID=A_sanitize_input($_POST['n_deviceID']);
+                $device_ID=A_sanitize_input($_POST['n_deviceID']);
+                if($device_ID=='') {$device_ID='NULL';} else {$device_ID=$device_ID;}
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2){
                 $min_alter=A_sanitize_input($_POST['n_min_alter']);
+                if($min_alter=='') {$min_alter='NULL';} else {$min_alter=$min_alter;}
                 $max_alter=A_sanitize_input($_POST['n_max_alter']);
+                if($max_alter=='') {$max_alter='NULL';} else {$max_alter=$max_alter;}
             }
 
                 
@@ -87,15 +93,15 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
                 S_set_data($Db,'INSERT INTO Testtyp (Name,Kurzbezeichnung,Device_ID,Aktiv,IsPCR) VALUES (
                     \''.$name.'\',
                     \''.$kurzname.'\',
-                    \''.$Device_ID.'\',
+                    '.$device_ID.',
                     \''.$aktiv_val.'\',
                     '.$IsPCR_val.');');
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                 S_set_data($Db,'INSERT INTO Impfstoff (Name,Kurzbezeichnung,Mindestalter,Maximalalter,Aktiv) VALUES (
                     \''.$name.'\',
                     \''.$kurzname.'\',
-                    \''.$min_alter.'\',
-                    \''.$max_alter.'\',
+                    '.$min_alter.',
+                    '.$max_alter.',
                     '.$aktiv_val.');');
             } 
         }
