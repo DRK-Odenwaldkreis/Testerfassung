@@ -48,11 +48,11 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             $id=($_POST['e_id']);
             $name=A_sanitize_input_light($_POST['e_name']);
             $kurzname=A_sanitize_input_light($_POST['e_kurzname']);
-            $aktiv=($_POST['e_aktiv']);
+            $aktiv=A_sanitize_input($_POST['e_aktiv']);
             if($aktiv=='on') {$aktiv_val=1;} else {$aktiv_val=0;}
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                 $device_ID=A_sanitize_input($_POST['e_device_ID']);
-                $isPCR=($_POST['e_isPCR']);
+                $isPCR=A_sanitize_input($_POST['e_isPCR']);
                 if($isPCR=='on') {$isPCR_val=1;} else {$isPCR_val=0;}
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2){
                 $min_alter=A_sanitize_input($_POST['e_min_alter']);
@@ -71,9 +71,11 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
         } elseif(isset($_POST['create_material'])) {
             $name=A_sanitize_input_light($_POST['n_name']);
             $kurzname=A_sanitize_input_light($_POST['n_kurzname']);
-            $aktiv=($_POST['n_aktiv']);
+            $aktiv=A_sanitize_input($_POST['n_aktiv']);
+            if($aktiv=='on') {$aktiv_val=1;} else {$aktiv_val=0;}
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                $IsPCR=($_POST['n_isPCR']);
+                $IsPCR=A_sanitize_input($_POST['n_isPCR']);
+                if($isPCR=='on') {$isPCR_val=1;} else {$isPCR_val=0;}
                 $Device_ID=A_sanitize_input($_POST['n_deviceID']);
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2){
                 $min_alter=A_sanitize_input($_POST['n_min_alter']);
@@ -86,21 +88,21 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
                     \''.$name.'\',
                     \''.$kurzname.'\',
                     \''.$Device_ID.'\',
-                    \''.$aktiv.'\',
-                    '.$IsPCR.');');
+                    \''.$aktiv_val.'\',
+                    '.$IsPCR_val.');');
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                 S_set_data($Db,'INSERT INTO Impfstoff (Name,Kurzbezeichnung,Mindestalter,Maximalalter,Aktiv) VALUES (
                     \''.$name.'\',
                     \''.$kurzname.'\',
                     \''.$min_alter.'\',
                     \''.$max_alter.'\',
-                    '.$aktiv.');');
+                    '.$aktiv_val.');');
             } 
         }
 
         // Search on number
         if( isset($_POST['search_material'])  ) {
-            $material_id=($_POST['material_id']);
+            $material_id=A_sanitize_input( $_POST['material_id']);
 
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                 $bool_staff_display=true;
@@ -240,6 +242,8 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
     
         } elseif ($GLOBALS['FLAG_MODE_MAIN'] == 2){
 
+            if($u_isPCR==1) {$u_isPCR_check="checked";} else {$u_isPCR_check="";}
+            if($u_aktiv==1) {$u_aktiv_check="checked";} else {$u_aktiv_check="";}
             echo'<form action="'.$current_site.'.php" method="post">
             <div class="input-group">
             <input type="text" name="e_id" style="display:none;" value="'.$material_id.'">
@@ -251,12 +255,16 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             </div><div class="input-group">
             <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">Mindestalter</span>
-            <input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_device_ID" autocomplete="off" value="'.$u_min_alter.'">
+            <input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_min_alter" autocomplete="off" value="'.$u_min_alter.'">
             <span class="input-group-addon" id="basic-addon1">Maximalalter</span>
-            <input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_isPCR" autocomplete=" value="'.$u_max_alter.'"">
-            <span class="input-group-addon" id="basic-addon1">Aktiv</span>
-            <input type="checkbox" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_aktiv" autocomplete=" value="'.$u_aktiv.'"">
-            </div><div class="input-group">';
+            <input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" name="e_max_alter" autocomplete="off" value="'.$u_max_alter.'">
+            </div>
+            
+            <div class="FAIRsepdown"></div>
+            <div class="cb_drk">
+            <input type="checkbox" id="e_aktiv" name="e_aktiv" '.$u_aktiv_check.'><label for="e_aktiv">Aktiv</label>
+            </div>
+            ';
             }
 
 
@@ -364,19 +372,22 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
 
             echo'<form action="'.$current_site.'.php" method="post">
             <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1">Stations-ID</span>
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_station_id" autocomplete="off" required>
+            <span class="input-group-addon" id="basic-addon1">Name</span>
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_name" autocomplete="off" required>
 
-            <span class="input-group-addon" id="basic-addon1">Stationsname (Ort)</span>
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_username" autocomplete="off" required>
+            <span class="input-group-addon" id="basic-addon1">Kurzbezeichnung</span>
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_kurzname" autocomplete="off" required>
             </div><div class="input-group">
-            <span class="input-group-addon" id="basic-addon1">Adresse</span>
-            <input type="bool" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_address" autocomplete="off">
-
-            <span class="input-group-addon" id="basic-addon1">Firmencode</span>
-            <input type="checkbox" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_b2b" autocomplete="off">
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Mindestalter</span>
+            <input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_min_alter" autocomplete="off">
+            <span class="input-group-addon" id="basic-addon1">Maximalalter</span>
+            <input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" name="n_max_alter" autocomplete="off">
             </div>
-            <div class="input-group">';
+            <div class="FAIRsepdown"></div>
+            <div class="cb_drk">
+            <input type="checkbox" id="n_aktiv" name="n_aktiv"><label for="n_aktiv">Aktiv</label>
+            </div>';
  
         }
 
