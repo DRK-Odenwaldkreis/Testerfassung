@@ -35,16 +35,16 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
 
         if(isset($_POST['create_termine1'])) {
             // Termin eintragen - ohne Terminbuchung
-            $t_station=$_POST['station_id'];
-            $t_datum=$_POST['date'];
-            $t_start=$_POST['startzeit'];
-            $t_ende=$_POST['endzeit'];
+            $t_station=A_sanitize_input_light($_POST['station_id']);
+            $t_datum=A_sanitize_input_light($_POST['date']);
+            $t_start=A_sanitize_input_light($_POST['startzeit']);
+            $t_ende=A_sanitize_input_light($_POST['endzeit']);
             // check values
             if( ($t_station!='') && ($t_datum!='') && ($t_start!='') && ($t_ende!='') ) {
                 $t_start_date="$t_datum $t_start:00";
                 $t_ende_date="$t_datum $t_ende:00";
-                $t_opt_station=$_POST['opt_station'];
-                $t_opt_station_adresse=$_POST['opt_station_adresse'];
+                $t_opt_station=A_sanitize_input_light($_POST['opt_station']);
+                $t_opt_station_adresse=A_sanitize_input_light($_POST['opt_station_adresse']);
                 // write values
                 $Db=S_open_db();
                 S_set_data($Db,'INSERT Termine (id_station,Tag,Startzeit,Endzeit,opt_station,opt_station_adresse) VALUES (cast(\''.$t_station.'\' AS int),\''.$t_datum.'\',\''.$t_start_date.'\',\''.$t_ende_date.'\',\''.$t_opt_station.'\',\''.$t_opt_station_adresse.'\');');
@@ -59,15 +59,15 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
             
         } elseif(isset($_POST['create_termine2'])) {
             // Termine eintragen - mit Terminbuchung
-            $t_station=$_POST['station_id'];
-            $t_datum=$_POST['date'];
-            $t_start_slot=$_POST['startzeit_slot'];
-            $t_ende_slot=$_POST['endzeit_slot'];
-            $t_number_slot=$_POST['terminzahl_slot'];
+            $t_station=A_sanitize_input_light($_POST['station_id']);
+            $t_datum=A_sanitize_input_light($_POST['date']);
+            $t_start_slot=A_sanitize_input_light($_POST['startzeit_slot']);
+            $t_ende_slot=A_sanitize_input_light($_POST['endzeit_slot']);
+            $t_number_slot=A_sanitize_input_light($_POST['terminzahl_slot']);
             // check values
             if( ($t_station!='') && ($t_datum!='') && ($t_start_slot!='') && ($t_ende_slot!='') && ($t_number_slot>0) ) {
-                $t_opt_station=$_POST['opt_station'];
-                $t_opt_station_adresse=$_POST['opt_station_adresse'];
+                $t_opt_station=A_sanitize_input_light($_POST['opt_station']);
+                $t_opt_station_adresse=A_sanitize_input_light($_POST['opt_station_adresse']);
                 // number of appointed times
                 $t_number_between_start_end= 1 + ( strtotime($t_ende_slot) - strtotime($t_start_slot) ) / 15 / 60;
                 // start slot and start hour

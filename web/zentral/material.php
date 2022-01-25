@@ -46,17 +46,17 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
         // Edit entry in database
         if(isset($_POST['edit_material'])) {
             $id=($_POST['e_id']);
-            $name=($_POST['e_name']);
-            $kurzname=($_POST['e_kurzname']);
+            $name=A_sanitize_input_light($_POST['e_name']);
+            $kurzname=A_sanitize_input_light($_POST['e_kurzname']);
             $aktiv=($_POST['e_aktiv']);
             if($aktiv=='on') {$aktiv_val=1;} else {$aktiv_val=0;}
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                $device_ID=($_POST['e_device_ID']);
+                $device_ID=A_sanitize_input($_POST['e_device_ID']);
                 $isPCR=($_POST['e_isPCR']);
                 if($isPCR=='on') {$isPCR_val=1;} else {$isPCR_val=0;}
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2){
-                $min_alter=($_POST['e_min_alter']);
-                $max_alter=($_POST['e_max_alter']);
+                $min_alter=A_sanitize_input($_POST['e_min_alter']);
+                $max_alter=A_sanitize_input($_POST['e_max_alter']);
             }
 
 
@@ -69,15 +69,15 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
 
         } elseif(isset($_POST['create_material'])) {
-            $name=($_POST['n_name']);
-            $kurzname=($_POST['n_kurzname']);
+            $name=A_sanitize_input_light($_POST['n_name']);
+            $kurzname=A_sanitize_input_light($_POST['n_kurzname']);
             $aktiv=($_POST['n_aktiv']);
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                 $IsPCR=($_POST['n_isPCR']);
-                $Device_ID=($_POST['n_deviceID']);
+                $Device_ID=A_sanitize_input($_POST['n_deviceID']);
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2){
-                $min_alter=($_POST['n_min_alter']);
-                $max_alter=($_POST['n_max_alter']);
+                $min_alter=A_sanitize_input($_POST['n_min_alter']);
+                $max_alter=A_sanitize_input($_POST['n_max_alter']);
             }
 
                 

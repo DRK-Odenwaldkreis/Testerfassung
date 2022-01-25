@@ -71,19 +71,19 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
       // ///////////////
       // Registrierungsänderung speichern
       // ///////////////
-      $k_id=$_POST['id'];
-      $k_nname=$_POST['nname'];
-      $k_vname=$_POST['vname'];
-      $k_tel=$_POST['telefon'];
-      $k_email=$_POST['email'];
+      $k_id=A_sanitize_input($_POST['id']);
+      $k_nname=A_sanitize_input_light($_POST['nname']);
+      $k_vname=A_sanitize_input_light($_POST['vname']);
+      $k_tel=A_sanitize_input_light($_POST['telefon']);
+      $k_email=A_sanitize_input_light($_POST['email']);
       if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-        $k_geb=$_POST['geburtsdatum'];
-        $k_adresse=$_POST['adresse'];
-        $k_ort=$_POST['ort'];
+        $k_geb=A_sanitize_input_light($_POST['geburtsdatum']);
+        $k_adresse=A_sanitize_input_light($_POST['adresse']);
+        $k_ort=A_sanitize_input_light($_POST['ort']);
         $k_print_cert=$_POST['cb_print_cert'];
         if($k_print_cert=='on') { $k_val_print_cert=1; } else { $k_val_print_cert=0; }
         if( isset($_POST['pcr_grund']) && $_POST['pcr_grund']>0 ) {
-          $k_pcr_grund=$_POST['pcr_grund'];
+          $k_pcr_grund=A_sanitize_input_light($_POST['pcr_grund']);
           $k_pcr_grund=', PCR_Grund='.$k_pcr_grund.'';
         } else {
           $k_pcr_grund='';
@@ -94,8 +94,8 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
           $k_privatemail_req=0;
         }
       } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-        $k_geb=$_POST['geburtsdatum'];
-        $k_vacc_number=$_POST['vaccine_number'];
+        $k_geb=A_sanitize_input_light($_POST['geburtsdatum']);
+        $k_vacc_number=A_sanitize_input_light($_POST['vaccine_number']);
       }
 
 

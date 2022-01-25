@@ -47,8 +47,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // show different date
     if(isset($_POST['search'])) {
-        $name=($_POST['name']);
-        $name=A_sanitize_input_light($name);
+        $name=A_sanitize_input_light($_POST['name']);
         $_SESSION['display_sensitive']=1;
       } 
   }

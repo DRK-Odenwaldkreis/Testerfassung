@@ -32,7 +32,7 @@ if( A_checkpermission(array(0,2,0,4,5)) ) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if(isset($_POST['create_testkarten'])) {
-            $amount=($_POST['amount']);
+            $amount=A_sanitize_input($_POST['amount']);
             
             $dir="/home/webservice/Testerfassung/QRGeneration/";
             chdir($dir);

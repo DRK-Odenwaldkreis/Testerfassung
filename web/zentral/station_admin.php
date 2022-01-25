@@ -38,13 +38,13 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
 
         // Edit user in database
         if(isset($_POST['edit_station'])) {
-            $user_id=($_POST['user_id']);
-            $station_ort=($_POST['e_username']);
-            $address=($_POST['e_address']);
-            $opening=($_POST['e_opening']);
-            $b2b_code=($_POST['e_b2b']);
-            $testtyp=($_POST['e_testtyp']);
-            $plzfilter=($_POST['e_plzfilter']);
+            $user_id=A_sanitize_input_light($_POST['user_id']);
+            $station_ort=A_sanitize_input_light($_POST['e_username']);
+            $address=A_sanitize_input_light($_POST['e_address']);
+            $opening=A_sanitize_input_light($_POST['e_opening']);
+            $b2b_code=A_sanitize_input_light($_POST['e_b2b']);
+            $testtyp=A_sanitize_input_light($_POST['e_testtyp']);
+            $plzfilter=A_sanitize_input_light($_POST['e_plzfilter']);
 
             //  edit station data
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
@@ -55,11 +55,11 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             $errorhtml3 =  H_build_boxinfo( 0, 'Änderungen wurden gespeichert.', 'green' );
 
         } elseif(isset($_POST['create_station'])) {
-            $stationid_new=($_POST['n_station_id']);
-            $station_ort=($_POST['n_username']);
-            $address=($_POST['n_address']);
-            $b2b_code=($_POST['n_b2b']);
-            $testtyp=($_POST['n_testtyp']);
+            $stationid_new=A_sanitize_input_light($_POST['n_station_id']);
+            $station_ort=A_sanitize_input_light($_POST['n_username']);
+            $address=A_sanitize_input_light($_POST['n_address']);
+            $b2b_code=A_sanitize_input_light($_POST['n_b2b']);
+            $testtyp=A_sanitize_input_light($_POST['n_testtyp']);
             $new_id=S_get_entry($Db,'SELECT id FROM Station WHERE id=CAST('.$stationid_new.' as int);');
             if($station_ort=='' || $new_id>0) {
                 $errorhtml2 =  H_build_boxinfo( 0, 'Fehler beim Erstellen, möglicherweise ist die gewählte Stations-ID bereits vergeben.', 'red' );
@@ -125,7 +125,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
         // Search on number
         if( isset($_POST['search_station']) || isset($_POST['edit_station']) || isset($_POST['create_station']) ) {
             if( isset($_POST['search_station']) ) {
-                $user_id=($_POST['user_id']);
+                $user_id=A_sanitize_input($_POST['user_id']);
             } elseif(isset($_POST['create_station'])) {
                 $user_id=$stationid_new;
             }
