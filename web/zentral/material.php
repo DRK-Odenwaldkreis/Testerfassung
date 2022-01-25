@@ -77,7 +77,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
             $aktiv=A_sanitize_input($_POST['n_aktiv']);
             if($aktiv=='on') {$aktiv_val=1;} else {$aktiv_val=0;}
             if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-                $IsPCR=A_sanitize_input($_POST['n_isPCR']);
+                $isPCR=A_sanitize_input($_POST['n_isPCR']);
                 if($isPCR=='on') {$isPCR_val=1;} else {$isPCR_val=0;}
                 $device_ID=A_sanitize_input($_POST['n_deviceID']);
                 if($device_ID=='') {$device_ID='NULL';} else {$device_ID=$device_ID;}
@@ -95,7 +95,7 @@ if( A_checkpermission(array(0,2,0,4,0)) ) {
                     \''.$kurzname.'\',
                     '.$device_ID.',
                     \''.$aktiv_val.'\',
-                    '.$IsPCR_val.');');
+                    '.$isPCR_val.');');
             } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
                 S_set_data($Db,'INSERT INTO Impfstoff (Name,Kurzbezeichnung,Mindestalter,Maximalalter,Aktiv) VALUES (
                     \''.$name.'\',
