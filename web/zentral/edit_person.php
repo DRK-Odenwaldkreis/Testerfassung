@@ -25,7 +25,7 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
   // ///////////////
   // Print label
   // ///////////////
-  $token=$_GET['id'];
+  $token=A_sanitize_input($_GET['id']);
   $dir="/home/webservice/Testerfassung/LabelCreationJob/";
   chdir($dir);
   $job="python3 job.py $token";

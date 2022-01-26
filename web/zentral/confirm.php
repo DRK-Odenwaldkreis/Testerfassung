@@ -44,7 +44,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
     // ID verarbeiten
     // ///////////////
 
-    $token=$_GET['id'];
+    $token=A_sanitize_input($_GET['id']);
     if( isset($_GET['undo']) ) { $undo=$_GET['undo']; } else { $undo=0; }
 
     if($undo==0) {
