@@ -239,15 +239,15 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
     if($i[12]==1) {
       // Test POSITIV
       $class_ergebnis='FAIR-text-red';
-      $text_ergebnis='POS';
+      $text_ergebnis='<span class="icon-plus"></span> POS / ';
     } elseif($i[12]==2) {
       // Test NEGATIV
       $class_ergebnis='FAIR-text-green';
-      $text_ergebnis='NEG';
+      $text_ergebnis='<span class="icon-minus"></span> NEG / ';
     } elseif($i[12]==9) {
       // Test FEHLERHAFT
-      $class_ergebnis='FAIR-change-red';
-      $text_ergebnis='ERR';
+      $class_ergebnis='FAIR-text-blue';
+      $text_ergebnis='<span class="icon-question2"></span> ERR / ';
     } elseif($i[12]==5) {
       $class_ergebnis='';
       $text_ergebnis='OFFEN';
@@ -408,15 +408,15 @@ if( A_checkpermission(array(0,0,3,4,0)) ) {
     if($i[12]==1) {
       // Test POSITIV
       $class_ergebnis='FAIR-text-red';
-      $text_ergebnis='POS';
+      $text_ergebnis='<span class="icon-plus"></span> POS / ';
     } elseif($i[12]==2) {
       // Test NEGATIV
       $class_ergebnis='FAIR-text-green';
-      $text_ergebnis='NEG';
+      $text_ergebnis='<span class="icon-minus"></span> NEG / ';
     } elseif($i[12]==9) {
       // Test FEHLERHAFT
-      $class_ergebnis='FAIR-change-red';
-      $text_ergebnis='ERR';
+      $class_ergebnis='FAIR-text-blue';
+      $text_ergebnis='<span class="icon-question2"></span> ERR / ';
     } elseif($i[12]==5) {
       $class_ergebnis='';
       $text_ergebnis='OFFEN';
