@@ -1056,6 +1056,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                             <img src="../img/icon/certified_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
                                             <div class="caption center_text">
                                             <h3>Sie haben einen PCR-Test ausgewählt.</h3>
+                                            <h4>Wichtig:  Bitte nehmen Sie 1 Stunde vor der Testung keine Getränke und Speißen zu sich, ansonsten kann es zu einer nicht auswertbaren Probe kommen.</h4>
                                             <h4>Das Ergebnis erhalten Sie nach ca. 48 Stunden (ohne Rechtsanspruch, falls es mal länger dauert).</h4>
                                             <h4>Wurde dieser Test angeordnet nach positivem Schnelltest oder aufgrund Kontakt zu einer positiv getesteten Person, so ist die Testung kostenfrei. Bitte bringen Sie dafür eine Bestätigung zum Testzentrum mit (z. B. ein Schnelltest-Zertifikat mit positivem Ergebnis).</h4>
                                             <h4>Andernfalls fallen für den PCR-Test Gebühren an, die Sie im Testzentrum entrichten müssen.</h4>
