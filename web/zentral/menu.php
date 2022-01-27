@@ -69,6 +69,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     2=>array("text"=>'<h4 class="list-group-item-heading">Voranmeldungen</h4><p class="list-group-item-text">Liste der Voranmeldungen und Übernahme in Reg-Prozess</p>',"text_s"=>'<span class="icon-ticket"></span>&nbsp;Voranmeldungen',"link"=>"prereglist.php","role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
     10=>array("text"=>'<h4 class="list-group-item-heading">Liste an Tests</h4><p class="list-group-item-text">Aktive Tests und Export CSV</p>',"link"=>"testlist.php","text_s"=>'<span class="icon-lab"></span>&nbsp;Testliste',"role"=>array(1,2,0,4,5),"role-disabled"=>array(0,0,0,0,0)),
     15=>array("text"=>'<h4 class="list-group-item-heading">Liste für Gesundheitsamt</h4><p class="list-group-item-text">PCR-Tests & Positivmeldungen und Export CSV</p>',"text_s"=>'<span class="icon-lab"></span>&nbsp;Gesundheitsamt',"link"=>"gesundheitsamt.php","role"=>array(0,0,3,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    17=>array("text"=>'<h4 class="list-group-item-heading">Mitarbeiterinfos</h4><p class="list-group-item-text">Aktuelle Mitarbeiterinfos</p>',"link"=>"news.php","text_s"=>'<span class="icon-lab"></span>&nbsp;Mitarbeiterinfos',"role"=>array(1,2,3,4,5),"role-disabled"=>array(0,0,0,0,0)),
     99=>array("text"=>'<h4 class="list-group-item-heading">Öffentliche Startseite Testzentrum</h4><p class="list-group-item-text"></p>',"text_s"=>'',"link"=>"../index.php","role"=>array(1,2,3,4,5),"role-disabled"=>array(0,0,0,0,0))
   );
   $_module_array2=array(
