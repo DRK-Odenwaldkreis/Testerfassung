@@ -41,6 +41,7 @@ class Handler:
                                     cert=self._config["dcc-client-cert"],
                                     json=payload )
         logging.info(f'Upload encrypted data: TestID: {testId} Status Code: {response.status_code}')
+        return response.status_code
 
 
     def handle_dgc_request(self, dcc_request, db_entry):
@@ -303,14 +304,17 @@ def main(args):
     handler = Handler(config)
     for dcc_request in response.json():
         logging.debug(dcc_request)
-        sql = "Select Nachname, Vorname, Registrierungszeitpunkt, Geburtsdatum, Testtyp.Device_ID from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where Ergebnis =2 and CWA_request=1 and HashOfHash='%s' and Testtyp.Device_ID is not NULL;"%(dcc_request['testId'])
+        sql = "Select Nachname, Vorname, Registrierungszeitpunkt, Geburtsdatum, Testtyp.Device_ID, Vorgang.id from Vorgang JOIN Testtyp ON Testtyp_id=Testtyp.id where Ergebnis =2 and CWA_request=1 and HashOfHash='%s' and Testtyp.Device_ID is not NULL and ((Vorgang.DCC_lock < 6 and Vorgang.DCC_lock != 0) or Vorgang.DCC_lock is NULL);"%(dcc_request['testId'])
         content = DatabaseConnect.read_single(sql)
         logging.debug(content)
         if not content:
             logging.info('Either hash not found or test not permitted for DCC')
         else:
             try:
-                handler.respond_to_dgc_request(dcc_request, content)
+                if handler.respond_to_dgc_request(dcc_request, content)==200:
+                    testID = content[5]
+                    sql = "Update Vorgang SET DCC_lock=0 WHERE id = %s;" % (testID)
+                    DatabaseConnect.update(sql)
             except Exception as e:
                 logging.error(e)
 
