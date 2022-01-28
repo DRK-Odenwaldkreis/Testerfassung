@@ -163,16 +163,16 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   if( A_checkpermission(array(1,0,0,0,0)) && !A_checkpermission(array(0,2,0,4,5)) ) {
     // only for own station and today
     $today=date("Y-m-d",time());
-    $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung,Vorgang.reg_type, Station.Ort, Testtyp.IsPCR, Kosten_PCR.Kurzbezeichnung FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund JOIN Station ON Station.id=Vorgang.Teststation WHERE Date(Vorgang.Registrierungszeitpunkt)="'.$today.'" AND Vorgang.Teststation=CAST('.$_SESSION['station_id'].' AS int) ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
+    $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung,Vorgang.reg_type, Station.Ort, Testtyp.IsPCR, Kosten_PCR.Kurzbezeichnung, Vorgang.DCC_lock FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund JOIN Station ON Station.id=Vorgang.Teststation WHERE Date(Vorgang.Registrierungszeitpunkt)="'.$today.'" AND Vorgang.Teststation=CAST('.$_SESSION['station_id'].' AS int) ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
   } elseif( A_checkpermission(array(0,0,0,0,5)) && !A_checkpermission(array(0,2,0,4,0)) ) {
     // only for own station
-    $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung,Vorgang.reg_type, Station.Ort, Testtyp.IsPCR, Kosten_PCR.Kurzbezeichnung FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund JOIN Station ON Station.id=Vorgang.Teststation WHERE Date(Vorgang.Registrierungszeitpunkt)="'.$today.'" AND Vorgang.Teststation=CAST('.$_SESSION['station_id'].' AS int)  ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
+    $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung,Vorgang.reg_type, Station.Ort, Testtyp.IsPCR, Kosten_PCR.Kurzbezeichnung, Vorgang.DCC_lock FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund JOIN Station ON Station.id=Vorgang.Teststation WHERE Date(Vorgang.Registrierungszeitpunkt)="'.$today.'" AND Vorgang.Teststation=CAST('.$_SESSION['station_id'].' AS int)  ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
   } else {
     // for all stations
     if($all_days==1){
-    $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung,Vorgang.reg_type, Station.Ort, Testtyp.IsPCR, Kosten_PCR.Kurzbezeichnung FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund JOIN Station ON Station.id=Vorgang.Teststation ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
+    $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung,Vorgang.reg_type, Station.Ort, Testtyp.IsPCR, Kosten_PCR.Kurzbezeichnung, Vorgang.DCC_lock FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund JOIN Station ON Station.id=Vorgang.Teststation ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
     }else{
-    $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung,Vorgang.reg_type, Station.Ort, Testtyp.IsPCR, Kosten_PCR.Kurzbezeichnung FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund JOIN Station ON Station.id=Vorgang.Teststation WHERE Date(Vorgang.Registrierungszeitpunkt)="'.$today.'"  ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
+    $array_tests=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Ergebniszeitpunkt, Vorgang.Nachname, Vorgang.Vorname, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.Geburtsdatum, Vorgang.Ergebnis, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.customer_lock, Vorgang.Customer_key, Vorgang.zip_request, Vorgang.CWA_request, Vorgang.CWA_lock, Vorgang.handout_request, Vorgang.zip_lock, Testtyp.Kurzbezeichnung,Vorgang.reg_type, Station.Ort, Testtyp.IsPCR, Kosten_PCR.Kurzbezeichnung, Vorgang.DCC_lock FROM Vorgang LEFT OUTER JOIN Testtyp ON Testtyp.id=Vorgang.Testtyp_id LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Vorgang.PCR_Grund JOIN Station ON Station.id=Vorgang.Teststation WHERE Date(Vorgang.Registrierungszeitpunkt)="'.$today.'"  ORDER BY Vorgang.Registrierungszeitpunkt DESC;');
     }
   }
 
@@ -274,7 +274,6 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
 
   //Get list of times
   foreach($array_tests as $i) {
-
     // Show result
     if($i[12]==1) {
       // Test POSITIV
@@ -373,6 +372,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       if($i[19]==0 && $i[19]!=null) {
         // delivered to CWA
         $text_result_deliveredCWA='<br><span class="icon-mobile"></span><span class="FAIR-sep"></span><span class="icon-checkmark"></span> CWA';
+         
       } elseif($i[19]>0) {
         // delivered to CWA error
         $text_result_deliveredCWA='<br><span class="icon-mobile"></span><span class="FAIR-sep"></span><span class="icon-minus"></span> CWA Fehler';
@@ -382,12 +382,23 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       } else {
         // no result and not delivered to CWA
         $text_result_deliveredCWA='';
+        
       }
+      
+      
       //QR Code is not shown via Button klick anymore within Testliste
       //$cwa_qr_code_button='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="cwa_qr.php?i='.$i[0].'"><span class="icon-qrcode"></span>&nbsp;CWA QR</a>';
     } else {
       $cwa_qr_code_button='';
     }
+  
+    if($i[27]==0 && $i[27]!=null){
+      $text_result_deliveredDCC='<br><span class="icon-qrcode"></span><span class="FAIR-sep"></span><span class="icon-checkmark"></span> DCC';
+      } elseif ($i[27] > 0 ){
+      $text_result_deliveredDCC='<br><span class="icon-qrcode"></span><span class="FAIR-sep"></span><span class="icon-minus"></span> DCC Fehler';
+      }else {
+      $text_result_deliveredDCC=''; 
+      }
 
 
 
@@ -421,7 +432,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"></td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'<br>'.$i[26].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">'.$text_ergebnis.'</td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.$text_result_deliveredDCC.'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_download.$text_mailsend.'</td>';
     } else {
       if($i[25]==1 && $i[12]==5) {
@@ -440,7 +451,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><a class="list-group-item list-group-item-action list-group-item-redtext" href="edit_person.php?id='.$i[0].'"><span class="icon-pencil"></span>&nbsp;Ändern</a>'.$cwa_qr_code_button.$pcr_button.'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'<br>'.$i[26].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">'.$text_ergebnis.'</td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.$text_result_deliveredDCC.'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_download.$text_mailsend.'</td>';
     }
     echo '</tr>';
