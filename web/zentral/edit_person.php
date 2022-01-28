@@ -134,7 +134,7 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
         echo '<div class="list-group">';
         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
           if($val_cwa_req>0) {
-            echo '<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="cwa_qr.php?i='.$array_vorgang[0][0].'"><span class="icon-qrcode"></span>&nbsp;CWA QR-Code für Kunden anzeigen</a><div class="FAIRsepdown"></div>';
+            #echo '<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="cwa_qr.php?i='.$array_vorgang[0][0].'"><span class="icon-qrcode"></span>&nbsp;CWA QR-Code für Kunden anzeigen</a><div class="FAIRsepdown"></div>';
           }
           echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="testlist.php">Zurück zur Testliste</a>
           <div class="FAIRsepdown"></div>';
@@ -181,7 +181,7 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
         echo '<div class="list-group">';
         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
           if($val_cwa_req>0) {
-            echo '<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="cwa_qr.php?i='.$array_vorgang[0][0].'"><span class="icon-qrcode"></span>&nbsp;CWA QR-Code für Kunden anzeigen</a><div class="FAIRsepdown"></div>';
+            #echo '<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="cwa_qr.php?i='.$array_vorgang[0][0].'"><span class="icon-qrcode"></span>&nbsp;CWA QR-Code für Kunden anzeigen</a><div class="FAIRsepdown"></div>';
           }
           echo '<a class="list-group-item list-group-item-action list-group-item-FAIR" href="testlist.php">Zurück zur Testliste</a>
           <div class="FAIRsepdown"></div>';
