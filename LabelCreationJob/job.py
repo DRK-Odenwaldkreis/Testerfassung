@@ -27,7 +27,7 @@ if __name__ == "__main__":
         else:
             requestedNumber = sys.argv[1]
             DatabaseConnect = Database()
-            sql = "Select Vorname,Nachname,Registrierungszeitpunkt,Geburtsdatum,Adresse,Wohnort,Token from Vorgang where Token=%s;"%(requestedNumber)
+            sql = "Select Vorname,Nachname,Registrierungszeitpunkt,Geburtsdatum,Adresse,Wohnort,Token,Telefon from Vorgang where Token=%s;"%(requestedNumber)
             content = DatabaseConnect.read_single(sql)
             logger.debug('Received the following entries: %s' %(str(content)))
             filename = createLabel.createLabel(content)

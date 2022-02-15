@@ -9,10 +9,11 @@ def createLabel(content):
     adresse = content[4]
     ort = content[5]
     token = content[6]
+    telefon = content[7]
     label_writer = LabelWriter("../utils/Labels/template.html", default_stylesheets=("../utils/Labels/style.css",))
     filename = "../../Labels/" + str(token) + ".pdf"
     records = [
-        dict(Vorname=vorname, Nachname=nachname, Adresse=adresse, Wohnort=ort, Geburtsdatum=geburtsdatum, Date=date),
+        dict(Vorname=vorname, Nachname=nachname, Adresse=adresse, Wohnort=ort, Geburtsdatum=geburtsdatum, Date=date, Telefon=telefon),
     ]
     label_writer.write_labels(records, target=filename)
     return filename
