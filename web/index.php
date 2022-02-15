@@ -111,7 +111,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
             <p><ul>
             <li><a href="https://www.rki.de/DE/Content/Infekt/Impfen/Materialien/COVID-19-Aufklaerungsbogen-Tab.html" target="_blank">Aufklärungs-, Anamnese- und Einwilligungsbogen zur Impfung mit mRNA-Impfstoff (Comirnaty von BioNTech/Pfizer und Spikevax von Moderna)</a></li>
             <li><a href="https://www.rki.de/DE/Content/Infekt/Impfen/Materialien/COVID-19-Vektorimpfstoff-Tab.html" target="_blank">Aufklärungs-, Anamnese- und Einwilligungsbogen zur Impfung mit Vektorimpfstoff (Vaxzevria von AstraZeneca und Janssen von Johnson & Johnson)</a></li>
-            <li><a href="https://corona.odenwaldkreis.de/wp-content/uploads/2021/05/Datenschutz-Info-Stand-15.03.2021.pdf" target="_blank">Information über die Verarbeitung personenbezogener Daten (Datenschutz) </a></li>
+            <li><a href="https://corona.odenwaldkreis.de/wp-content/uploads/2022/02/Datenschutz-Info-Stand-03.02.2022.pdf" target="_blank">Information über die Verarbeitung personenbezogener Daten (Datenschutz) </a></li>
             </ul></p>
             <h3 style="text-align: center;">Videos mit Informationen in Gebärdensprache</h3>
             <p><ul>
