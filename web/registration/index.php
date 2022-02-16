@@ -21,6 +21,12 @@ include_once 'menu.php';
 
 $current_site="index";
 
+$array_vaccine_series=array();
+$array_vaccine_series[]=array(0,"Grundimmunisierung (1. bzw. 2. Impfung)");
+$array_vaccine_series[]=array(1,"1. Auffrischungs-, Booster-Impfung");
+$array_vaccine_series[]=array(2,"2. Auffrischungs-, Booster-Impfung");
+//$array_vaccine_series[]=array(3,"3. Auffrischungs-, Booster-Impfung");
+
 
 // Print html header
 echo $GLOBALS['G_html_header'];
@@ -101,8 +107,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             $min_age=A_sanitize_input_light($_POST['min_age']);
             $max_age=A_sanitize_input_light($_POST['max_age']);
             $plz_filter=A_sanitize_input_light($_POST['plz_filter']);
-            if(isset($_POST['vaccine_number'])) { $k_vaccine_number=intval($_POST['vaccine_number']); } else { $k_vaccine_number=null; }
-            if($k_vaccine_number==3) {$k_vaccine_booster=1;} else {$k_vaccine_booster=0;}
+            if(isset($_POST['vaccine_number'])) { $k_vaccine_booster=A_sanitize_input_light($_POST['vaccine_number']); } else { $k_vaccine_booster=null; }
             // check min age of person for vaccine
             $timestamp_date=strtotime(substr($k_int_date,6,4).'-'.substr($k_int_date,3,2).'-'.substr($k_int_date,0,2));
             $age = (date("md", date("U", mktime(0, 0, 0, $gebdatum_m, $gebdatum_d, $gebdatum_y))) > date("md",$timestamp_date)
@@ -464,7 +469,6 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             <div class="FAIRsepdown"></div>';
                         }
                     } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
-                        if($k_vaccine_number==1) {$sel_vac_1='selected';$sel_vac_3='';} else {$sel_vac_3='selected';$sel_vac_1='';}
                         echo '<div class="FAIRsepdown"></div>
                         <div class="alert alert-warning" role="alert">
                             <div class="header_icon">
@@ -477,8 +481,12 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             </div>
                             <div class="input-group"><span class="input-group-addon" id="basic-addon1">Art der Impfung</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="vaccine_number" required>
                             <option value="" selected>Bitte wählen...</option>
-                            <option value="1" '.$sel_vac_1.'>Grundimmunisierung (1. bzw. 2. Impfung)</option>
-                            <option value="3" '.$sel_vac_3.'>Auffrischungs-, Booster-Impfung</option>
+                            ';
+                            foreach($array_vaccine_series as $avs) {
+                                if($k_vaccine_booster==$avs[0]) {$sel_vac='selected';} else {$sel_vac='';}
+                                echo '<option value="'.$avs[0].'" '.$sel_vac.'>'.$avs[1].'</option>';
+                            }
+                            echo '
                             </select></div>
                         </div>
                         <div class="FAIRsepdown"></div>';
@@ -1087,8 +1095,11 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                 </div>
                                 <div class="input-group"><span class="input-group-addon" id="basic-addon1">Art der Impfung</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="vaccine_number" required>
                                 <option value="" selected>Bitte wählen...</option>
-                                <option value="1">Grundimmunisierung (1. bzw. 2. Impfung)</option>
-                                <option value="3">Auffrischungs-, Booster-Impfung</option>
+                                ';
+                                foreach($array_vaccine_series as $avs) {
+                                    echo '<option value="'.$avs[0].'">'.$avs[1].'</option>';
+                                }
+                                echo '
                                 </select></div>
                             </div>
                             <div class="FAIRsepdown"></div>';
