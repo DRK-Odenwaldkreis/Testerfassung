@@ -421,13 +421,13 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <div class="alert alert-warning" role="alert">
             <div class="caption center_text">
             <h3>Auffrischungsimpfung / Booster</h3>
-            <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens drei Monate nach vollständiger Impfung möglich! Auffrischungen sind für Personen <b>ab 18 Jahren</b> generell möglich.</p>
-            <p>Eine Auffrischungsimpfung ist gemäß STIKO Empfehlung im Impfzentrum ebenso für Personen <b>ab 12 Jahren</b>  nach ärztl. Aufklärung möglich.</p>            
-            <p>Personen, die eine Impfstoffdosis mit Janssen von Johnson & Johnson erhalten haben, sollen zur Optimierung des Impfschutzes nach frühestens vier Wochen einen mRNA-Impfstoff als Auffrischung erhalten (STIKO Empfehlung).</p>
+            <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens drei Monate nach vollständiger Impfung möglich!</p>
+            <p>Die STIKO empfiehlt eine 2. Auffrischimpfung für Menschen ab 70 Jahren, BewohnerInnen und Betreute in Einrichtungen der Pflege, Menschen mit Immunschwäche ab 5 Jahren sowie Tätige in medizinischen Einrichtungen und Pflegeeinrichtungen (insbesondere bei direktem PatientInnen- und BewohnerInnenkontakt). Die 2. Auffrischimpfung soll bei gesundheitlich gefährdeten Personengruppen frühestens 3 Monate nach der 1. Auffrischimpfung mit einem mRNA-Impfstoff erfolgen. Menschen mit Immunschwäche wenden sich bitte an Ihren Hausarzt. Personal in medizinischen und pflegerischen Einrichtungen soll die 2. Auffrischimpfung frühestens nach 6 Monaten erhalten.</p>
+            <p>Auffrischungen sind generell für Personen ab 18 Jahren möglich. Eine Auffrischungsimpfung ist gemäß STIKO Empfehlung im Impfzentrum ebenso für Personen ab 12 Jahren nach ärztl. Aufklärung möglich.</p>            
             <h3>Impfstoff Spikevax von Moderna</h3>
             <p>Der Impfstoff Spikevax von Moderna ist nur für Personen ab 30 Jahren zulässig - bitte beachten Sie dies bei der Terminwahl. Ein Wechsel auf einen anderen Impfstoff vor Ort ist nicht möglich.</p>
-            <h3>Impfstoff Janssen von Johnson & Johnson (J&J)</h3>
-            <p>Der Impfstoff Janssen von Johnson & Johnson ist nur für Erstimpfungen zulässig. Eine Zweitimpfung oder Auffrischungsimpfung ist gemäß einer STIKO-Empfehlung mit einem mRNA-Impfstoff durchzuführen (Moderna oder BioNTech-Pfizer). Bitte beachten Sie dies bei der Terminwahl - ein Wechsel auf einen anderen Impfstoff vor Ort ist nicht möglich.</p>
+            <h3>Status Geimpft und Geboostert</h3>
+            <p>Alle Informationen zur Corona-Schutzimpfung und zum Impfstatus finden Sie hier: <a href="https://www.hessen.de/Handeln/Corona-in-Hessen">https://www.hessen.de/Handeln/Corona-in-Hessen</a></p>
             </div>
             </div>
         </div>
