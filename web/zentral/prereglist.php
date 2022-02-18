@@ -339,7 +339,11 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
           $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[1], $birthDate[2], $birthDate[0]))) > date("md")
             ? ((date("Y") - $birthDate[0]) - 1)
             : (date("Y") - $birthDate[0]));
-          $booster = ($i[4]) ? "<span class=\"FAIR-text-blue\">Booster</span>" : "<span class=\"FAIR-text-green\">Grundimmun.</span>";
+          if($i[4]>=1) {
+            $booster ="<span class=\"FAIR-text-blue\">".$i[4].". Booster</span>";
+          } else {
+            $booster ="<span class=\"FAIR-text-green\">Grundimmun.</span>";
+          }
           echo '
           <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">Alter: '.$age.'<br>Impfstoff: '.$i[14].'<br>'.$booster.'</td>';
         } else {

@@ -113,25 +113,31 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
   $stat_val_total_cwaareg_fday=S_get_entry($Db,'SELECT count(id) From Voranmeldung WHERE Date(Tag)=\''.$tomorrow.'\' AND CWA_request=2;');
 
   $stat_val_total_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\';');
+  $stat_val_totalPCR_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND PCR_Grund>0;');
   $stat_val_total_pocreg_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND reg_type=\'POCREG\';');
   $stat_val_total_cwanreg_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND CWA_request=1;');
   $stat_val_total_cwaareg_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND CWA_request=2;');
   $stat_val_neg_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Ergebnis=2;');
   $stat_val_pos_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Ergebnis=1;');
+  $stat_val_posPCR_day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Ergebnis=1 AND PCR_Grund>0;');
 
   $stat_val_total_yday=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\';');
+  $stat_val_totalPCR_yday=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$yesterday.'\' AND PCR_Grund>0;');
   $stat_val_total_pocreg_yday=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$yesterday.'\' AND reg_type=\'POCREG\';');
   $stat_val_total_cwanreg_yday=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$yesterday.'\' AND CWA_request=1;');
   $stat_val_total_cwaareg_yday=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$yesterday.'\' AND CWA_request=2;');
   $stat_val_neg_yday=S_get_entry($Db,'SELECT sum(Negativ) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\';');
   $stat_val_pos_yday=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE Date(Date)=\''.$yesterday.'\';');
+  $stat_val_posPCR_yday=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$yesterday.'\' AND Ergebnis=1 AND PCR_Grund>0;');
 
   $stat_val_total_2day=S_get_entry($Db,'SELECT sum(Amount) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\';');
+  $stat_val_totalPCR_2day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$beforetwodays.'\' AND PCR_Grund>0;');
   $stat_val_total_pocreg_2day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$beforetwodays.'\' AND reg_type=\'POCREG\';');
   $stat_val_total_cwanreg_2day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$beforetwodays.'\' AND CWA_request=1;');
   $stat_val_total_cwaareg_2day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$beforetwodays.'\' AND CWA_request=2;');
   $stat_val_neg_2day=S_get_entry($Db,'SELECT sum(Negativ) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\';');
   $stat_val_pos_2day=S_get_entry($Db,'SELECT sum(Positiv) From Abrechnung WHERE Date(Date)=\''.$beforetwodays.'\';');
+  $stat_val_posPCR_2day=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$beforetwodays.'\' AND Ergebnis=1 AND PCR_Grund>0;');
 
   $stat_val_total_day_st=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Teststation='.$station.';');
   $stat_val_total_pocreg_day_st=S_get_entry($Db,'SELECT count(Ergebnis) From Vorgang WHERE Date(Ergebniszeitpunkt)=\''.$today.'\' AND Teststation='.$station.' AND reg_type=\'POCREG\';');
@@ -152,7 +158,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
   S_close_db($Db);
 
   echo '<div class="row">';
-  echo '<div class="col-md-2">
+  echo '<div class="col-md-6">
   <div class="alert alert-info" role="alert">
   <p>Getestete Personen</p>
   <h3><span class="FAIR-text-sm">heute</span> '.$stat_val_total_day.'</h3>
@@ -167,7 +173,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
   $reg_pre=(number_format((100-$reg_cwan-$reg_cwaa),1,'.','.'));
 
   echo '</div>';
-  echo '<div class="col-md-2">
+  echo '<div class="col-md-6">
   <div class="alert alert-info" role="alert">
   <p>Registrierungsart</p>
   <h3><span class="FAIR-text-sm">morgen registr.'.$stat_val_total_fday.' / erwartet '.$reg_fday_estimation.'</span></h3>
@@ -257,12 +263,21 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
   </div>';
 
   echo '</div>';
-  echo '<div class="col-md-2">
+  echo '<div class="col-md-3">
   <div class="alert alert-danger" role="alert">
-  <p>Positive Fälle</p>
-  <h3><span class="FAIR-text-sm">heute</span> '.$stat_val_pos_day.' ('.(number_format(($stat_val_pos_day/$stat_val_total_day*100),1,',','.')).' %)</h3>
-  <h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_pos_yday.' ('.(number_format(($stat_val_pos_yday/$stat_val_total_yday*100),1,',','.')).' %)</h3>
-  <h3><span class="FAIR-text-sm">vorgestern</span> '.$stat_val_pos_2day.' ('.(number_format(($stat_val_pos_2day/$stat_val_total_2day*100),1,',','.')).' %)</h3>
+  <p>Positive Fälle Antigen</p>
+  <h3><span class="FAIR-text-sm">heute</span> '.($stat_val_pos_day-$stat_val_posPCR_day).' ('.(number_format((($stat_val_pos_day-$stat_val_posPCR_day)/$stat_val_total_day*100),1,',','.')).' %)</h3>
+  <h3><span class="FAIR-text-sm">gestern</span> '.($stat_val_pos_yday-$stat_val_posPCR_yday).' ('.(number_format((($stat_val_pos_yday-$stat_val_posPCR_yday)/$stat_val_total_yday*100),1,',','.')).' %)</h3>
+  <h3><span class="FAIR-text-sm">vorgestern</span> '.($stat_val_pos_2day-$stat_val_posPCR_2day).' ('.(number_format((($stat_val_pos_2day-$stat_val_posPCR_2day)/$stat_val_total_2day*100),1,',','.')).' %)</h3>
+  </div>';
+
+  echo '</div>';
+  echo '<div class="col-md-3">
+  <div class="alert alert-danger" role="alert">
+  <p>Positive Fälle PCR</p>
+  <h3><span class="FAIR-text-sm">heute</span> '.$stat_val_posPCR_day.' ('.(number_format(($stat_val_posPCR_day/$stat_val_totalPCR_day*100),1,',','.')).' %)</h3>
+  <h3><span class="FAIR-text-sm">gestern</span> '.$stat_val_posPCR_yday.' ('.(number_format(($stat_val_posPCR_yday/$stat_val_totalPCR_yday*100),1,',','.')).' %)</h3>
+  <h3><span class="FAIR-text-sm">vorgestern</span> '.$stat_val_posPCR_2day.' ('.(number_format(($stat_val_posPCR_2day/$stat_val_totalPCR_2day*100),1,',','.')).' %)</h3>
   </div>';
 
   echo '</div>';
