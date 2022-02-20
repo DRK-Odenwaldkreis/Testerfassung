@@ -1,0 +1,24 @@
+{
+"_id": "ID",
+"Station": "jkasfhasf",
+"Place": {"Adresse": "jhasfkhasf", "Ort": "kajsfasgjkf", "PLZ": "64720"},
+"Date": {"Day": "01.01.2022", "Begin": "12:00", "End": "15:00"},
+"Times": [
+    {"id": 1, "hour": "12", "Begin": "00", "End": "15", "Slot": [
+     {"id": 1, "Used": "ANMELDUNGSID"},
+     {"id": 2, "Used": "ANMELDUNGSID"},
+     {"id": 3, "Used": "ANMELDUNGSID"},
+     {"id": 4}  
+    ]},
+    {"id": 1, "hour": "12", "Begin": "15", "End": "30", "Slot": [
+        {"id": 1, "Used": "ANMELDUNGSID"},
+        {"id": 2},
+        {"id": 3},
+        {"id": 4}  
+       ]}
+        ],
+"lastModified": "TIMESTAMP",
+"creationTime": "TIMESTAMP",
+"Issuer": "ISSUER",
+"Stats": {"Used": 12321, "Free": 34134, "Total": 123123}
+}

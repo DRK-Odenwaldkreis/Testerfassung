@@ -1,0 +1,19 @@
+{
+    "_id": "ID",
+    "Token": "TOJSKJGASFGKAFSK",
+    "Personalia": {"Vorname": "Max", "Nachname": "Muster", "Wohnort": "Musterstadt", "PLZ": "64720", "Adresse": "Hauptweg 1", "Mailadresse": "Max@mustermann.de", "Geburtsdatum": "01.01.2000", "Telefon": "0123196632497"},
+    "Appointment": {"Station": "Ort", "Termin": "ID Termin"},
+    "CWA": {"type": "Personalisiert", "salt": "124124", "HashOfHash": "12348712468214"},
+    "PCR": "Positiver Schnelltest",
+    "Ticket": {"Mail": 1, "Reminded": 1},
+    "lastModified": "TIMESTAMP",
+    "creationTime": "TIMESTAMO",
+    "Used": 1,
+    "Verified": 1,
+    "Registration": "Voranmeldung",
+    "Kartenummer": "KARTENNUMMER",
+    "Key": "12349124789241",
+    "Result": {"Issuer": "PERSON", "creationTime": "TIMESTAMP", "state": "Positiv", "Testtype": {"Manufacturere": "asfhgasdkhfg", "Name": "akskhjasf"}},
+    "Notification": {"Mail": 1, "CWA": 1, "DCC": 1, "GA": 1},
+    "Locks": {"Zip": 0, "Mail": 0, "CWA": 0, "DCC": 0, "GA": 0}
+}

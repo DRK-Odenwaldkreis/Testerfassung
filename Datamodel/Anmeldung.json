@@ -1,0 +1,13 @@
+{
+    "_id": "ID",
+    "Token": "TOJSKJGASFGKAFSK",
+    "Personalia": {"Vorname": "Max", "Nachname": "Muster", "Wohnort": "Musterstadt", "PLZ": "64720", "Adresse": "Hauptweg 1", "Mailadresse": "Max@mustermann.de", "Geburtsdatum": "01.01.2000", "Telefon": "0123196632497"},
+    "Appointment": {"Station": "Ort", "Termin": "ID Termin"},
+    "CWA": {"type": "Personalisiert"},
+    "PCR": "Positiver Schnelltest",
+    "Ticket": {"Mail": 1, "Reminded": 1},
+    "lastModified": "TIMESTAMP",
+    "creationTime": "TIMESTAMO",
+    "Used": 1,
+    "Verified": 1
+}
