@@ -1,0 +1,42 @@
+{
+"_id": "ID",
+"Type": "PCR-Kosten",
+"Entries": [
+  {"id": 1, "Bezeichnung": "akakhsfkhasf", "Kurzbezeichnugn": "asjifhaskf"}, 
+  {"id": 2, "Bezeichnung": "akakhsfkhasf", "Kurzbezeichnugn": "asjifhaskf"} 
+
+],
+"lastModified": "TIMESTAMP",
+"creationTime": "TIMESTAMP"
+}
+
+----------------------
+
+{
+    "_id": "ID",
+    "Type": "Result",
+    "Entries": [
+      {"id": 1, "Bezeichnung": "akakhsfkhasf"}, 
+      {"id": 2, "Bezeichnung": "akakhsfkhasf"} 
+    
+    ],
+    "lastModified": "TIMESTAMP",
+    "creationTime": "TIMESTAMP"
+}
+
+----------------------------
+
+
+{
+    "_id": "ID",
+    "Type": "Tests",
+    "Entries": [
+      {"id": 1, "Bezeichnung": "akakhsfkhasf", "Kurzbezeichnung": "jkashfkasjf", "DeviceID": "ajsfhaskjfh", "disabled": 0, "type": "PCR"}, 
+      {"id": 2, "Bezeichnung": "akakhsfkhasf", "Kurzbezeichnung": "jkashfkasjf", "DeviceID": "ajsfhaskjfh", "disabled": 0, "type": "PCR"}, 
+      {"id": 3, "Bezeichnung": "akakhsfkhasf", "Kurzbezeichnung": "jkashfkasjf", "DeviceID": "ajsfhaskjfh", "disabled": 0, "type": "Antigen"}
+    
+    ],
+    "lastModified": "TIMESTAMP",
+    "creationTime": "TIMESTAMP"
+}
+
