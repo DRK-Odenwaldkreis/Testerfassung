@@ -79,6 +79,12 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
         } else {
             $station=$_SESSION['station_id'];
         }
+
+        if( isset($_POST['get_station']) && isset($_POST['get_date']) ) {
+            $sel_date=$_POST['get_date'];
+            $sel_station=$_POST['get_station'];
+            $station=$sel_station;
+        }
         
     } else {
         if( isset($_GET['station']) && isset($_GET['date']) ) {
@@ -265,6 +271,8 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
                     echo '<form action="'.$current_site.'.php" method="post">
                     <div class="input-group">';
                     echo '<input type="text" value="'.$i[0].'" name="termin_id" style="display:none;">';
+                    echo '<input type="text" value="'.$sel_station.'" name="get_station" style="display:none;">';
+                    echo '<input type="text" value="'.$sel_date.'" name="get_date" style="display:none;">';
                     echo'<span class="input-group-btn">
                         <input type="submit" class="btn btn-info" value="Alle freien Term. für S'.$station.' am '.date("d.m.",strtotime($i[1])).' löschen" name="delete_termin_free1day" />
                         <input type="submit" class="btn btn-success" value="Freie Term. im Slot löschen" name="delete_termin_free1slot" />
