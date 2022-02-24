@@ -111,6 +111,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
             <p><ul>
             <li><a href="https://www.rki.de/DE/Content/Infekt/Impfen/Materialien/COVID-19-Aufklaerungsbogen-Tab.html" target="_blank">Aufklärungs-, Anamnese- und Einwilligungsbogen zur Impfung mit mRNA-Impfstoff (Comirnaty von BioNTech/Pfizer und Spikevax von Moderna)</a></li>
             <li><a href="https://www.rki.de/DE/Content/Infekt/Impfen/Materialien/COVID-19-Vektorimpfstoff-Tab.html" target="_blank">Aufklärungs-, Anamnese- und Einwilligungsbogen zur Impfung mit Vektorimpfstoff (Vaxzevria von AstraZeneca und Janssen von Johnson & Johnson)</a></li>
+            <li><a href="https://www.rki.de/DE/Content/Infekt/Impfen/Materialien/COVID-19-Proteinimpfstoff-Tab.html" target="_blank">Aufklärungs-, Anamnese- und Einwilligungsbogen zur Impfung mit proteinbasiertem Impfstoff (Nuvaxovid von Novavax)</a></li>
             <li><a href="https://corona.odenwaldkreis.de/wp-content/uploads/2022/02/Datenschutz-Info-Stand-03.02.2022.pdf" target="_blank">Information über die Verarbeitung personenbezogener Daten (Datenschutz) </a></li>
             </ul></p>
             <h3 style="text-align: center;">Videos mit Informationen in Gebärdensprache</h3>
@@ -410,37 +411,49 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                     <h3><b>Sie haben Fragen?</b></h3>
                     <p>Schreiben Sie uns an <p><a href="https://portal-civ.ekom21.de/civ.public/start.html?oe=00.00.LKOW&mode=cc&cc_key=Impfhotline">Kontaktformular</a></p>
                     
-                    <h3><b>Zentrale Service-Hotline</b></h3>
+                    <h3><b>Zentrale Service Hotline und telefonische Terminvereinbarung</b></h3>
                     <h4><b><a href="tel:+496062703346">06062 70 33 46</a></b></h4>
                     <p><b>Montag bis Freitag von 8:00 bis 16:00 Uhr</b></p>
                 </div>
-            </div>
-        </div>';
-    echo '
-        <div class="col-lg-4 col-sm-6">
-            <div class="alert alert-warning" role="alert">
-            <div class="caption center_text">
-
-            <h3>Auffrischungsimpfung / Booster</h3>
-            <p>Eine Auffrischungsimpfung / Booster-Impfung ist frühestens drei Monate nach vollständiger Impfung möglich!</p>
-            <p>Die STIKO empfiehlt eine 2. Auffrischimpfung für Menschen ab 70 Jahren, BewohnerInnen und Betreute in Einrichtungen der Pflege, Menschen mit Immunschwäche ab 5 Jahren sowie Tätige in medizinischen Einrichtungen und Pflegeeinrichtungen (insbesondere bei direktem PatientInnen- und BewohnerInnenkontakt). Die 2. Auffrischungsimpfung soll bei gesundheitlich gefährdeten Personengruppen frühestens 3 Monate nach der 1. Auffrischimpfung mit einem mRNA-Impfstoff erfolgen. Menschen mit Immunschwäche wenden sich bitte an Ihren Hausarzt. Personal in medizinischen und pflegerischen Einrichtungen soll die 2. Auffrischimpfung frühestens nach 6 Monaten erhalten.</p>
-
-            <p>Auffrischungen sind generell für Personen ab 18 Jahren möglich. Eine Auffrischungsimpfung ist gemäß STIKO Empfehlung im Impfzentrum ebenso für Personen ab 12 Jahren nach ärztl. Aufklärung möglich.</p>
-                
-            <h3>Impfstoff Spikevax von Moderna</h3>
-            <p>Der Impfstoff Spikevax von Moderna ist nur für Personen ab 30 Jahren zulässig - bitte beachten Sie dies bei der Terminwahl. Ein Wechsel auf einen anderen Impfstoff vor Ort ist nicht möglich.</p>
-
-            <h3>Status Geimpft und Geboostert</h3>
-            <p>Alle Informationen zur Corona-Schutzimpfung und zum Impfstatus finden Sie hier: <a href="https://www.hessen.de/Handeln/Corona-in-Hessen">https://www.hessen.de/Handeln/Corona-in-Hessen</a></p>
-                
+                </div>
+            <div class="col-lg-14 col-sm-12">
+                <div class="alert alert-info" role="alert">
+                <div class="caption center_text">
+                <h3>Parkmöglichkeiten für das Impfzentrum Erbach</h3>
+                <p>Auf dem Parkdeck am Lustgarten sind Parkmöglichkeiten, die Sie bitte nutzen können.</p>
             </div>
             </div>
         </div>
-        <div class="col-lg-4 col-sm-6">
-            <div class="alert alert-info" role="alert">
+        </div>';
+    echo '
+        <div class="col-lg-8 col-sm-12">
+            <div class="alert alert-warning" role="alert">
             <div class="caption center_text">
-            <h3>Parkmöglichkeiten für das Impfzentrum Erbach</h3>
-            <p>Auf dem Parkdeck am Lustgarten sind Parkmöglichkeiten, die Sie bitte nutzen können.</p>
+
+            <h3>Erstimpfung/ Zweitimpfung</h3>
+            <p>Für Erstimpfungen können Sie einen Termin für den von Ihnen gewählten Impfstoff im Impfzentrum oder in einem unserer mobilen Angebote buchen. Der Termin für Ihre Zweitimpfung wird mit Ihnen vor Ort vereinbart. Aktuell stehen im Impfzentrum und mobil die Impfstoffe Comirnaty von Biontech (mRNA-Impfstoff), Spikevax von Moderna (mRNA-Impfstoff) und Nuvaxovid von Novavax (proteinbasierter Impfstoff) für Sie zur Verfügung.</p>
+            <h3>Biontech</h3>
+            <p>Abstand zur Zweitimpfung mind. 3 Wochen. Mindestalter 5 Jahre.</p>
+            <h3>Moderna</h3>
+            <p>Abstand zur Zweitimpfung mind. 4 Wochen. Mindestalter 30 Jahre.</p>
+            <h3>Novavax</h3>
+            <p>Abstand zur Zweitimpfung mind. 3 Wochen. Mindestalter 18 Jahre. Mit diesem Impfstoff ist bisher weder eine Auffrischimpfung noch eine Kreuzimpfung möglich. </p>
+                
+            <h3>Auffrischungsimpfung / Booster</h3>
+            <p>Eine erste Auffrischungsimpfung/ Booster-Impfung ist frühestens drei Monate nach vollständiger Impfung mit einem mRNA-Impfstoff möglich.</p>
+            <p>Die STIKO empfiehlt eine 2. Auffrischimpfung für Menschen ab 70 Jahren, BewohnerInnen und Betreute in Einrichtungen der Pflege, Menschen mit Immunschwäche ab 5 Jahren sowie Tätige in medizinischen Einrichtungen und Pflegeeinrichtungen (insbesondere bei direktem PatientInnen- und BewohnerInnenkontakt). Die 2. Auffrischungsimpfung soll bei gesundheitlich gefährdeten Personengruppen frühestens 3 Monate nach der ersten Auffrischimpfung mit einem mRNA-Impfstoff erfolgen. Menschen mit Immunschwäche wenden sich bitte an Ihren Hausarzt. Personal in medizinischen und pflegerischen Einrichtungen soll die zweite Auffrischimpfung frühestens nach 6 Monaten erhalten.</p>
+            <p>Auffrischungen sind generell für Personen ab 18 Jahren mit einem mRNA-Impfstoff zugelassen. Eine Auffrischungsimpfung ist gemäß STIKO Empfehlung im Impfzentrum ebenso für Personen ab 12 Jahren nach ärztl. Aufklärung möglich.</p>
+            
+            <h3>Impfungen für Kinder im Alter von 5-11 Jahren</h3>
+            <p>Im Impfzentrum sind Impfungen für Kinder im Alter von 5-11 Jahren mit dem speziell hierfür zugelassenen Impfstoff von Biontech nach ärztlicher Aufklärung möglich. Hierfür gibt es gesonderte Termine, bei denen eine Kinderfachärztin vor Ort für die Impfaufklärung zur Verfügung steht. Lassen Sie Ihr Kind ruhig vorher frühstücken. Kinder, sowie auch Jugendliche und Erwachsene, müssen nicht nüchtern zur Impfung erscheinen.</p>
+            <p>Bei Impfungen von Kindern im Alter von 5-15 Jahre ist die Anwesenheit eines Erziehungsberechtigten und die Zustimmung beider Erziehungsberechtigter notwendig. Für Jugendliche im Alter von 16-17 Jahren genügt die Zustimmung eines Erziehungsberechtigten durch Unterschrift auf dem Einwilligungsbogen.</p>
+
+            <h3>Impfung für Genese</h3>
+            <p>Die Möglichkeiten und Empfehlungen zur Impfung für Personen mit nachgewiesener SARS-CoV-2- Infektion finden Sie ebenfalls im Aufklärungsbogen zur Impfung mit einem mRNA-Impfstoff (Verlinkung oben links auf dieser Website).</p>
+            
+            <h3>Weitere Informationen zur Covid-19 Schutzimpfung</h3>
+            <p>Alle ausführlichen  Informationen zur Corona-Schutzimpfung, zum Impfstatus und zu Corona allgemein finden Sie hier: <a href="https://www.hessen.de/Handeln/Corona-in-Hessen">https://www.hessen.de/Handeln/Corona-in-Hessen</a> und auf der Website des Bundesministeriums für Gesundheit  <a href="https://www.zusammengegencorona.de/impfen/">https://www.zusammengegencorona.de/impfen/</a></p>
+                
             </div>
             </div>
         </div>
