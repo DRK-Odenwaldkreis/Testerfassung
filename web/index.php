@@ -453,7 +453,8 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             
             <h3>Weitere Informationen zur Covid-19 Schutzimpfung</h3>
             <p>Alle ausführlichen  Informationen zur Corona-Schutzimpfung, zum Impfstatus und zu Corona allgemein finden Sie hier: <a href="https://www.hessen.de/Handeln/Corona-in-Hessen">https://www.hessen.de/Handeln/Corona-in-Hessen</a> und auf der Website des Bundesministeriums für Gesundheit  <a href="https://www.zusammengegencorona.de/impfen/">https://www.zusammengegencorona.de/impfen/</a></p>
-                
+            
+            <h3><b>Bitte beachten Sie unbedingt die Informationen in den aktuellen Aufklärungsblättern des jeweiligen Impfstoffs sowie die Information über die Verarbeitung personenbezogener Daten (Datenschutz)! Die Verlinkung finden Sie oben links auf dieser Website.</b></h3>
             </div>
             </div>
         </div>
