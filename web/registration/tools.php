@@ -609,7 +609,7 @@ function H_build_table_testdates2( $mode ) {
 		JOIN Station ON Station.id=Termine.id_station
 		WHERE Station.Firmencode="" AND Termine.Tag < "'.$in_xx_days.'"
 		ORDER BY Termine.Tag DESC LIMIT 1;');
-		$diff=( strtotime($last_date_for_calendar) - strtotime(date('Y-m-d')) ) /(3600*24);
+		$diff=round(( strtotime($last_date_for_calendar) - strtotime(date('Y-m-d')) ) /(3600*24));
 		$X=$diff+2;
 		
 		if($X>28) {$X=$Xx;} // max. Xx days
