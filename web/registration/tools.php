@@ -735,11 +735,42 @@ function H_build_table_testdates2( $mode ) {
 				for($j=0;$j<$X;$j++) {
 					$in_j_days=date('Y-m-d', strtotime($today. ' + '.$j.' days'));
 					if($j==0) {
+						if($mode == 'vaccinate' || $mode == 'b2b-vaccinate') {
+							// TODAY do not show past entries AND do not show entries after certain hour of day has reached
+							$hour_limit_monfri=0;
+							$hour_limit_satsun=0;
+							$current_hour=date('G');
+							$current_dateinweek=date('w');
+							if( ( ($current_dateinweek==0 OR $current_dateinweek==6) AND $current_hour<$hour_limit_satsun ) 
+							OR ( ($current_dateinweek>0 AND $current_dateinweek<6) AND $current_hour<$hour_limit_monfri ) ) {
+								/* $array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Date(Tag)="'.$in_j_days.'" AND Stunde>='.$current_hour.';'); */
+								$current_slot=intval(date('i')/15)+1;
+								$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Tag="'.$in_j_days.'" AND (Stunde>'.$current_hour.' OR (Stunde='.$current_hour.' AND Slot>'.$current_slot.'));');
+							} else {
+								$array_termine_open=array(0,0);
+							}
+						} else {
 							// TODAY do not show past entries
 							$current_hour=date('G');
 							$current_slot=intval(date('i')/15)+1;
 							$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Tag="'.$in_j_days.'" AND (Stunde>'.$current_hour.' OR (Stunde='.$current_hour.' AND Slot>'.$current_slot.'));');
-
+						}
+					} elseif($j==1) {
+						if($mode == 'vaccinate' || $mode == 'b2b-vaccinate') {
+							// TODAY do not show entries after certain hour of day has reached for next day
+							$hour_limit_monfri=17;
+							$hour_limit_satsun=14;
+							$current_hour=date('G');
+							$current_dateinweek=date('w');
+							if( ( ($current_dateinweek==0 OR $current_dateinweek==6) AND $current_hour<$hour_limit_satsun ) 
+							OR ( ($current_dateinweek>0 AND $current_dateinweek<6) AND $current_hour<$hour_limit_monfri ) ) {
+								$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Tag="'.$in_j_days.'";');
+							} else {
+								$array_termine_open=array(0,0);
+							}
+						} else {
+							$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Tag="'.$in_j_days.'";');
+						}
 					} else {
 						$array_termine_open=S_get_multientry($Db,'SELECT count(id), count(Used) FROM Termine WHERE Slot>0 AND id_station='.$st[0].' AND Tag="'.$in_j_days.'";');
 					}
@@ -798,6 +829,9 @@ function H_build_table_testdates2( $mode ) {
 
 						$res_l_array[$j+2][$col_j].='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1 FAIR-data-'.$cal_color.'3"><span class="text-sm"><div style="display: block; margin-bottom: 5px;"><b>'.$string_location4.'</b><br>alle Termine ausgebucht</div></span><div style="display: block; margin-top: 5px; margin-bottom: 7px;"><span class="label label-default">'.($array_termine_open[0][0]).'</span></div></td>';
 						$res_s_array[$j][1].='<div class="cal-element"><div style="display: block; margin-top: 5px;">'.$string_location3.''.$string_location.'</div><span class="text-sm"><div style="display: block; margin-top: 5px;">Alle Termine ausgebucht</div></span><div style="display: block; margin-top: 5px; margin-bottom: 5px;"><span class="label label-default">'.($array_termine_open[0][0]).'</span></div></div>';
+					} elseif( $j==0 || $j==1 ) {
+						$res_l_array[$j+2][$col_j].='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1 FAIR-data-'.$cal_color.'3"><span class="text-sm"><div style="display: block; margin-bottom: 5px;">keine Termine mehr für diesen Tag buchbar</div></span></td>';
+						$res_s_array[$j][1]='<div class="cal-element"><span class="text-sm"><div style="display: block; margin-top: 5px;">keine Termine mehr für diesen Tag buchbar</div></span></div>';
 					} else {
 						$res_l_array[$j+2][$col_j].='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1"></td>';
 					}
