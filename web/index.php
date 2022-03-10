@@ -110,7 +110,6 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
             <h3 style="text-align: center;">Dokumente für die Impfung</h3>
             <p><ul>
             <li><a href="https://www.rki.de/DE/Content/Infekt/Impfen/Materialien/COVID-19-Aufklaerungsbogen-Tab.html" target="_blank">Aufklärungs-, Anamnese- und Einwilligungsbogen zur Impfung mit mRNA-Impfstoff (Comirnaty von BioNTech/Pfizer und Spikevax von Moderna)</a></li>
-            <li><a href="https://www.rki.de/DE/Content/Infekt/Impfen/Materialien/COVID-19-Vektorimpfstoff-Tab.html" target="_blank">Aufklärungs-, Anamnese- und Einwilligungsbogen zur Impfung mit Vektorimpfstoff (Vaxzevria von AstraZeneca und Janssen von Johnson & Johnson)</a></li>
             <li><a href="https://www.rki.de/DE/Content/Infekt/Impfen/Materialien/COVID-19-Proteinimpfstoff-Tab.html" target="_blank">Aufklärungs-, Anamnese- und Einwilligungsbogen zur Impfung mit proteinbasiertem Impfstoff (Nuvaxovid von Novavax)</a></li>
             <li><a href="https://corona.odenwaldkreis.de/wp-content/uploads/2022/02/Datenschutz-Info-Stand-03.02.2022.pdf" target="_blank">Information über die Verarbeitung personenbezogener Daten (Datenschutz) </a></li>
             </ul></p>
@@ -145,7 +144,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 2) {
 
         </div>
     </div>
-    <div class="FAIRsepdown"></div>';
+    <div class="FAIRsepdown"></div>';    
 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
     // Antikörpertest Infos
     echo '
@@ -353,7 +352,6 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             </div>
             </div>
         </div>
-
     </div>
     
     <div class="FAIRsepdown"></div>
@@ -367,6 +365,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         </div>
     </div>
     ';
+    
 } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
     
     echo '
@@ -400,12 +399,12 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         </div>
         </div>
     </div>
-
     </div>';
+
+
     echo '
     <div class="FAIRsepdown"></div>
     <div class="row">
-        <div class="col-lg-4 col-sm-12">
             <div class="alert alert-info" role="alert">
                 <div style="text-align: center;">
                     <h3><b>Sie haben Fragen?</b></h3>
@@ -416,17 +415,11 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                     <p><b>Montag bis Freitag von 8:00 bis 16:00 Uhr</b></p>
                 </div>
                 </div>
-            <div class="col-lg-14 col-sm-12">
-                <div class="alert alert-info" role="alert">
-                <div class="caption center_text">
-                <h3>Parkmöglichkeiten für das Impfzentrum Erbach</h3>
-                <p>Auf dem Parkdeck am Lustgarten sind Parkmöglichkeiten, die Sie bitte nutzen können.</p>
-            </div>
-            </div>
         </div>
         </div>';
+
     echo '
-        <div class="col-lg-8 col-sm-12">
+        <div class="row">
             <div class="alert alert-warning" role="alert">
             <div class="caption center_text">
 
