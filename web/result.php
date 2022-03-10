@@ -166,10 +166,16 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
 		//Writing the Link clickable only into the html if it is for visualization, not for pdf
 		if(isset($_POST['download_pdf']) || isset($_GET['internal_download'])){
 		$display_result=str_replace('[[CWAURL]]', 'https://s.coronawarn.app?v=1#' , $display_result);
+		$display_result=str_replace('[[CWATEXT]]', 'Download CWA App' , $display_result);
 		}
 		else{
 		$cwa = S_get_cwa_url($Db,$ALLOWANCE_RESULT);
 		$display_result=str_replace('[[CWAURL]]', $cwa , $display_result);
+		if($cwa=='https://s.coronawarn.app?v=1#'){
+			$display_result=str_replace('[[CWATEXT]]', 'Download CWA App' , $display_result);
+		}else{
+		$display_result=str_replace('[[CWATEXT]]', 'Download Ergebnis in die CWA' , $display_result);
+		}
 		}
 		if(!isset($_GET['validate'])){
 	
