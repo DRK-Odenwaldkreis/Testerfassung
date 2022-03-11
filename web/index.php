@@ -405,6 +405,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     echo '
     <div class="FAIRsepdown"></div>
     <div class="row">
+    <div class="col-sm-12 col-lg-4">
             <div class="alert alert-info" role="alert">
                 <div style="text-align: center;">
                     <h3><b>Sie haben Fragen?</b></h3>
@@ -415,11 +416,10 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                     <p><b>Montag bis Freitag von 8:00 bis 16:00 Uhr</b></p>
                 </div>
                 </div>
-        </div>
         </div>';
 
     echo '
-        <div class="row">
+        <div class="col-sm-12 col-lg-8">
             <div class="alert alert-warning" role="alert">
             <div class="caption center_text">
 
