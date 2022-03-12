@@ -423,7 +423,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <div class="alert alert-warning" role="alert">
             <div class="caption center_text">
 
-            <h3>Erstimpfung/ Zweitimpfung</h3>
+            <h3>Erstimpfung / Zweitimpfung</h3>
             <p>Für Erstimpfungen können Sie einen Termin für den von Ihnen gewählten Impfstoff im Impfzentrum oder in einem unserer mobilen Angebote buchen. Der Termin für Ihre Zweitimpfung wird mit Ihnen vor Ort vereinbart. Aktuell stehen im Impfzentrum und mobil die Impfstoffe Comirnaty von Biontech (mRNA-Impfstoff), Spikevax von Moderna (mRNA-Impfstoff) und Nuvaxovid von Novavax (proteinbasierter Impfstoff) für Sie zur Verfügung.</p>
             <h3>Biontech</h3>
             <p>Abstand zur Zweitimpfung mind. 3 Wochen. Mindestalter 5 Jahre.</p>

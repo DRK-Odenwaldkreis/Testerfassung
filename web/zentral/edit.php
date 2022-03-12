@@ -82,17 +82,24 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
         $k_ort=A_sanitize_input_light($_POST['ort']);
         $k_print_cert=$_POST['cb_print_cert'];
         if($k_print_cert=='on') { $k_val_print_cert=1; } else { $k_val_print_cert=0; }
-        if( isset($_POST['pcr_grund']) && $_POST['pcr_grund']>0 ) {
-          $k_pcr_grund=A_sanitize_input_light($_POST['pcr_grund']);
+        if( isset($_POST['e_kostenpcr']) && $_POST['e_kostenpcr']>0 ) {
+          $k_pcr_grund=A_sanitize_input_light($_POST['e_kostenpcr']);
           $k_pcr_grund=', PCR_Grund='.$k_pcr_grund.'';
         } else {
           $k_pcr_grund='';
         }
-        if($k_email!='' ) {
-          $k_privatemail_req=1;
-        } else {
-          $k_privatemail_req=0;
-        }
+        
+        $k_result=A_sanitize_input_light($_POST['e_result']);
+        $k_testtyp=A_sanitize_input_light($_POST['e_testtyp']);
+        $k_privmaillock=A_sanitize_input_light($_POST['e_privmaillock']);
+        if($k_privmaillock=='') {$k_privmaillock="privateMail_lock=NULL";} else {$k_privmaillock='privateMail_lock=\''.$k_privmaillock.'\'';}
+        $k_privmailreq=A_sanitize_input_light($_POST['e_privmailreq']);
+        $k_zipreq=A_sanitize_input_light($_POST['e_zipreq']);
+        $k_gamaillock=A_sanitize_input_light($_POST['e_gamaillock']);
+        if($k_gamaillock=='') {$k_gamaillock="gaMail_lock=NULL";} else {$k_gamaillock='gaMail_lock=\''.$k_gamaillock.'\'';}
+        $k_handoutreq=A_sanitize_input_light($_POST['e_handoutreq']);
+        $k_cwalock=A_sanitize_input_light($_POST['e_cwalock']);
+        if($k_cwalock=='') {$k_cwalock="CWA_lock=NULL";} else {$k_cwalock='CWA_lock=\''.$k_cwalock.'\'';}
       } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
         $k_geb=A_sanitize_input_light($_POST['geburtsdatum']);
         $k_vacc_number=A_sanitize_input_light($_POST['vaccine_number']);
@@ -109,8 +116,15 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
           Wohnort=\''.$k_ort.'\',
           Telefon=\''.$k_tel.'\',
           Mailadresse=\''.$k_email.'\',
-          handout_request='.$k_val_print_cert.',
-          privateMail_request='.$k_privatemail_req.'
+          Ergebnis=\''.$k_result.'\',
+          Testtyp_id=\''.$k_testtyp.'\',
+          '.$k_privmaillock.',
+          privateMail_request =\''.$k_privmailreq.'\',
+          zip_request =\''.$k_zipreq.'\',
+          '.$k_gamaillock.',
+          handout_request =\''.$k_handoutreq.'\',
+          '.$k_cwalock.'
+          
           '.$k_pcr_grund.'
           WHERE id=CAST('.$k_id.' AS int);');
           $val_cwa_req=S_get_entry($Db,'SELECT CWA_request FROM Vorgang WHERE id=CAST('.$k_id.' AS int);');
@@ -155,8 +169,15 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
           Adresse=\''.$k_adresse.'\',
           Wohnort=\''.$k_ort.'\',
           Telefon=\''.$k_tel.'\',
-          handout_request='.$k_val_print_cert.',
-          privateMail_request='.$k_privatemail_req.'
+          Ergebnis=\''.$k_result.'\',
+          Testtyp_id=\''.$k_testtyp.'\',
+          '.$k_privmaillock.',
+          privateMail_request =\''.$k_privmailreq.'\',
+          zip_request =\''.$k_zipreq.'\',
+          '.$k_gamaillock.',
+          handout_request =\''.$k_handoutreq.'\',
+          '.$k_cwalock.'
+          
           '.$k_pcr_grund.'
           WHERE id=CAST('.$k_id.' AS int);');
           $val_cwa_req=S_get_entry($Db,'SELECT CWA_request FROM Vorgang WHERE id=CAST('.$k_id.' AS int);');
@@ -237,9 +258,7 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
       if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         //Testzentrum
         // Get data
-        $array_vorgang=S_get_multientry($Db,'SELECT id,Teststation, Token, Registrierungszeitpunkt,Vorname,Nachname,Geburtsdatum,Adresse,Wohnort,Telefon,Mailadresse,CWA_request,handout_request,zip_request,Ergebnis,PCR_Grund,customer_lock,Ergebnis,Testtyp_id,PCR_Grund,Zustaendiger,
-        privateMail_lock,privateMail_request,CWA_lock,CWA_request,zip_lock,zip_request,gaMail_lock,handout_request,
-        DCC_lock,salt,HashOfHash FROM Vorgang WHERE id=CAST('.$_GET['id'].' AS int);');
+        $array_vorgang=S_get_multientry($Db,'SELECT Vorgang.id, Vorgang.Teststation, Vorgang.Token, Vorgang.Registrierungszeitpunkt, Vorgang.Vorname, Vorgang.Nachname, Vorgang.Geburtsdatum, Vorgang.Adresse, Vorgang.Wohnort, Vorgang.Telefon, Vorgang.Mailadresse, Vorgang.CWA_request, Vorgang.handout_request, Vorgang.zip_request, Vorgang.Ergebnis, Vorgang.PCR_Grund, Vorgang.customer_lock, Vorgang.Ergebnis, Vorgang.Testtyp_id, Vorgang.PCR_Grund, Vorgang.Zustaendiger, Vorgang.privateMail_lock, Vorgang.privateMail_request, Vorgang.CWA_lock, Vorgang.CWA_request, Vorgang.zip_lock, Vorgang.zip_request, Vorgang.gaMail_lock, Vorgang.handout_request, Vorgang.DCC_lock, Vorgang.salt, Vorgang.HashOfHash, li_user.username, Vorgang.Ergebniszeitpunkt FROM Vorgang JOIN li_user ON li_user.id=Vorgang.Zustaendiger WHERE Vorgang.id=CAST('.$_GET['id'].' AS int);');
         if($array_vorgang[0][11]>0 && $array_vorgang[0][16]==0) {
           // CWA aktiviert und Ergebnis bereits abgeholt
           // keine Änderung von Name, Geb-Dat. möglich
@@ -255,57 +274,46 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
         echo '<div class="row">';
         echo '<div class="col-sm-12">
         <h3>Kunden-Registrierung ändern / Admin-Ansicht</h3>';
-        if($cwa_edit_lock) {
-          echo '<div class="FAIRsepdown"></div><div><span class="anweisung"><span class="icon-notification"></span> ACHTUNG:</span>Änderungen von Name und Geb-Dat. sind nicht möglich, da Ergebnis bereits an CWA übermittelt. Bitte technischen Support kontaktieren, falls Änderung notwendig.</div><div class="FAIRsepdown"></div>';
-        }
+        
         echo '<form action="'.$current_site.'.php" method="post">
-        <div class="input-group"><span class="input-group-addon" id="basic-addon1">ID</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][0].'" disabled>';
+        <div class="input-group"><span class="input-group-addon" id="basic-addon0">ID</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon0" value="'.$array_vorgang[0][0].'" disabled>';
         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
           echo '<span class="input-group-addon" id="basic-addon1">S</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][1].'" disabled>
-          <span class="input-group-addon" id="basic-addon1">K</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][2].'" disabled></div>
-          <div class="input-group"><span class="input-group-addon" id="basic-addon1">Reg</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][3].'" disabled>
-          <span class="input-group-addon" id="basic-addon1">Änderung von</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="S'.$array_vorgang[0][20].'" disabled>
+          <span class="input-group-addon" id="basic-addon2">K</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="'.$array_vorgang[0][2].'" disabled></div>
+          <div class="input-group"><span class="input-group-addon" id="basic-addon3">Reg</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon3" value="'.$array_vorgang[0][3].'" disabled>
+          <span class="input-group-addon" id="basic-addon20">Änderung von</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon20" value="('.$array_vorgang[0][20].') '.$array_vorgang[0][32].'" disabled>
           <input type="text" name="id" value="'.$array_vorgang[0][0].'" style="display:none;"></div>';
         } else {
           // Impfzentrum
           echo '<span class="input-group-addon" id="basic-addon1">T</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][1].'" disabled></div>
-          <div class="input-group"><span class="input-group-addon" id="basic-addon1">Anmeldung</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][2].'" disabled>
+          <div class="input-group"><span class="input-group-addon" id="basic-addon2">Anmeldung</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="'.$array_vorgang[0][2].'" disabled>
           <input type="text" name="id" value="'.$array_vorgang[0][0].'" style="display:none;"></div>';
         }
         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-          if($cwa_edit_lock) {
-            echo '<h4>Kundendaten</h4>
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][4].'" disabled></div>
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][5].'" disabled></div>
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][6].'" disabled></div>
 
-            <input type="text" name="vname" value="'.$array_vorgang[0][4].'" style="display:none;"></div>
-            <input type="text" name="nname" value="'.$array_vorgang[0][5].'" style="display:none;"></div>
-            <input type="text" name="geburtsdatum" value="'.$array_vorgang[0][6].'" style="display:none;"></div>';
-          } else {
-            echo '<h4>Kundendaten</h4>
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][4].'" required></div>
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][5].'" required></div>
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][6].'" required></div>';
-          }
+          echo '<h4>Kundendaten</h4>
+          <div class="input-group"><span class="input-group-addon" id="basic-addon4">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon4" value="'.$array_vorgang[0][4].'" required></div>
+          <div class="input-group"><span class="input-group-addon" id="basic-addon5">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon5" value="'.$array_vorgang[0][5].'" required></div>
+          <div class="input-group"><span class="input-group-addon" id="basic-addon6">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon6" value="'.$array_vorgang[0][6].'" required></div>';
+
         } else {
           // Impfzentrum
-          echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][3].'" required></div>
-          <div class="input-group"><span class="input-group-addon" id="basic-addon1">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][4].'" required></div>
-          <div class="input-group"><span class="input-group-addon" id="basic-addon1">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][7].'" required></div>';
+          echo '<div class="input-group"><span class="input-group-addon" id="basic-addon3">Vorname</span><input type="text" name="vname" class="form-control" placeholder="" aria-describedby="basic-addon3" value="'.$array_vorgang[0][3].'" required></div>
+          <div class="input-group"><span class="input-group-addon" id="basic-addon4">Nachname</span><input type="text" name="nname" class="form-control" placeholder="" aria-describedby="basic-addon4" value="'.$array_vorgang[0][4].'" required></div>
+          <div class="input-group"><span class="input-group-addon" id="basic-addon7">Geburtsdatum</span><input type="date" name="geburtsdatum" class="form-control" placeholder="" aria-describedby="basic-addon7" value="'.$array_vorgang[0][7].'" required></div>';
         }
         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-          echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][7].'" required></div>
-          <div class="input-group"><span class="input-group-addon" id="basic-addon1">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][8].'" required></div>
-          <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][9].'" required></div>
-          <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][10].'"></div>';
+          echo '<div class="input-group"><span class="input-group-addon" id="basic-addon7">Wohnadresse</span><input type="text" name="adresse" class="form-control" placeholder="" aria-describedby="basic-addon7" value="'.$array_vorgang[0][7].'" required></div>
+          <div class="input-group"><span class="input-group-addon" id="basic-addon8">Wohnort</span><input type="text" name="ort" class="form-control" placeholder="" aria-describedby="basic-addon8" value="'.$array_vorgang[0][8].'" required></div>
+          <div class="input-group"><span class="input-group-addon" id="basic-addon9">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon9" value="'.$array_vorgang[0][9].'" required></div>
+          <div class="input-group"><span class="input-group-addon" id="basic-addon10">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon10" value="'.$array_vorgang[0][10].'"></div>';
 
           // Test-Ergebnis
           $result_array=S_get_multientry($Db,'SELECT id,Name FROM Ergebnis;');
           echo '<div class="FAIRsepdown"></div>
           <h4>Testdaten</h4>
-          <div class="input-group"><span class="input-group-addon" id="basic-addon1">Test-Ergebnis</span>
-          <select id="select-state_typ" placeholder="Wähle das Ergebnis" class="custom-select" style="margin-top:0px;" name="e_result">
+          <div class="input-group"><span class="input-group-addon" id="basic-addon17">Test-Ergebnis</span>
+          <select id="select-state_typ17" placeholder="Wähle das Ergebnis" class="custom-select" style="margin-top:0px;" name="e_result">
           <option value="" >Wähle...</option>
               ';
               foreach($result_array as $i) {
@@ -318,8 +326,8 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
           // Test-Typ
           $result_array=S_get_multientry($Db,'SELECT id,Kurzbezeichnung,IsPCR FROM Testtyp;');
           echo '
-          <div class="input-group"><span class="input-group-addon" id="basic-addon1">Test-Typ</span>
-          <select id="select-state_typ" placeholder="Wähle Testtyp aus" class="custom-select" style="margin-top:0px;" name="e_testtyp">
+          <div class="input-group"><span class="input-group-addon" id="basic-addon18">Test-Typ</span>
+          <select id="select-state_typ18" placeholder="Wähle Testtyp aus" class="custom-select" style="margin-top:0px;" name="e_testtyp">
           <option value="" >Wähle...</option>
               ';
               foreach($result_array as $i) {
@@ -334,8 +342,8 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
           $result_array=S_get_multientry($Db,'SELECT id,Kurzbezeichnung FROM Kosten_PCR;');
           if(is_null($array_vorgang[0][19])) {$val_selected="selected";} else {$val_selected="";}
           echo '
-          <div class="input-group"><span class="input-group-addon" id="basic-addon1">PCR-Grund</span>
-          <select id="select-state_typ" placeholder="Wähle PCR-Grund aus" class="custom-select" style="margin-top:0px;" name="e_kostenpcr">
+          <div class="input-group"><span class="input-group-addon" id="basic-addon19">PCR-Grund</span>
+          <select id="select-state_typ19" placeholder="Wähle PCR-Grund aus" class="custom-select" style="margin-top:0px;" name="e_kostenpcr">
           <option value="0" '.$val_selected.'>(0) kein</option>
               ';
               foreach($result_array as $i) {
@@ -344,49 +352,52 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
                   echo '<option value="'.$i[0].'" '.$val_selected.'>'.$display.'</option>';
               }
               echo '
-          </select></div>';
+          </select></div>
+          <div class="input-group">
+          <span class="input-group-addon" id="basic-addon33">Erg Zeit</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon33" value="'.$array_vorgang[0][33].'" disabled>
+          </div>';
 
           // Flags / weiteres
           echo '<div class="FAIRsepdown"></div>
           <h4>Systemdaten</h4>
           <p>E-Mail an Kunden schicken</p>
           <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1">private mail lock</span><input type="number" step="1" min="0" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][21].'" name="e_privmaillock">
-          <span class="input-group-addon" id="basic-addon1">private mail request</span><input type="number" step="1" min="0" max="1" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][22].'" name="e_privmailreq">
+          <span class="input-group-addon" id="basic-addon21">private mail lock</span><input type="number" step="1" min="0" class="form-control" placeholder="" aria-describedby="basic-addon21" value="'.$array_vorgang[0][21].'" name="e_privmaillock">
+          <span class="input-group-addon" id="basic-addon22">private mail request</span><input type="number" step="1" min="0" max="1" class="form-control" placeholder="" aria-describedby="basic-addon22" value="'.$array_vorgang[0][22].'" name="e_privmailreq">
           </div>
           <div class="FAIRsepdown"></div>
           <p>Ergebnis in ZIP-Datei packen</p>
           <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1">ZIP lock</span><input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][25].'" disabled>
-          <span class="input-group-addon" id="basic-addon1">ZIP request</span><input type="number" step="1" min="0" max="0" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][26].'" name="e_zipreq">
+          <span class="input-group-addon" id="basic-addon25">ZIP lock</span><input type="number" class="form-control" placeholder="" aria-describedby="basic-addon25" value="'.$array_vorgang[0][25].'" disabled>
+          <span class="input-group-addon" id="basic-addon26">ZIP request</span><input type="number" step="1" min="0" max="1" class="form-control" placeholder="" aria-describedby="basic-addon26" value="'.$array_vorgang[0][26].'" name="e_zipreq">
           </div>
           <div class="FAIRsepdown"></div>
           <p>Ergebnis an Gesundheitsamt (GA); Ergebnis ausdrucken für Kunden</p>
           <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1">ga mail lock</span><input type="number" step="1" min="0" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][27].'" name="e_gamaillock">
-          <span class="input-group-addon" id="basic-addon1">handout req</span><input type="number" step="1" min="0" max="1" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][28].'" name="e_handoutreq">
+          <span class="input-group-addon" id="basic-addon27">ga mail lock</span><input type="number" step="1" min="0" class="form-control" placeholder="" aria-describedby="basic-addon27" value="'.$array_vorgang[0][27].'" name="e_gamaillock">
+          <span class="input-group-addon" id="basic-addon28">handout req</span><input type="number" step="1" min="0" max="1" class="form-control" placeholder="" aria-describedby="basic-addon28" value="'.$array_vorgang[0][28].'" name="e_handoutreq">
           </div>
           <div class="FAIRsepdown"></div>
           <p>Ergebnis an CWA übertragen</p>
           <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1">CWA lock</span><input type="number" step="1" min="0" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][23].'" name="e_cwalock">
-          <span class="input-group-addon" id="basic-addon1">CWA request</span><input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][24].'" disabled>
+          <span class="input-group-addon" id="basic-addon23">CWA lock</span><input type="number" step="1" min="0" class="form-control" placeholder="" aria-describedby="basic-addon23" value="'.$array_vorgang[0][23].'" name="e_cwalock">
+          <span class="input-group-addon" id="basic-addon24">CWA request</span><input type="number" class="form-control" placeholder="" aria-describedby="basic-addon24" value="'.$array_vorgang[0][24].'" disabled>
           </div>
           <div class="FAIRsepdown"></div>
           <p>DCC erstellt; CWA Transfer Daten</p>
           <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1">DCC lock</span><input type="number" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][29].'" disabled>
-          <span class="input-group-addon" id="basic-addon1">salt</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][30].'" disabled>
-          <span class="input-group-addon" id="basic-addon1">hash-of-hash</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][31].'" disabled>
+          <span class="input-group-addon" id="basic-addon29">DCC lock</span><input type="number" class="form-control" placeholder="" aria-describedby="basic-addon29" value="'.$array_vorgang[0][29].'" disabled>
+          <span class="input-group-addon" id="basic-addon30">salt</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon30" value="'.$array_vorgang[0][30].'" disabled>
+          <span class="input-group-addon" id="basic-addon31">hash-of-hash</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon31" value="'.$array_vorgang[0][31].'" disabled>
           </div>
           ';
 
         } else {
           // Impfzentrum
-          echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][5].'" required></div>
-          <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_vorgang[0][6].'"></div>';
+          echo '<div class="input-group"><span class="input-group-addon" id="basic-addon5">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon5" value="'.$array_vorgang[0][5].'" required></div>
+          <div class="input-group"><span class="input-group-addon" id="basic-addon6">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon6" value="'.$array_vorgang[0][6].'"></div>';
           if($array_vorgang[0][8]=='1') {$sel_vac_3='selected';$sel_vac_1='';} else {$sel_vac_1='selected';$sel_vac_3='';}
-          echo '<div class="input-group"><span class="input-group-addon" id="basic-addon1">Art der Impfung</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="vaccine_number" required>
+          echo '<div class="input-group"><span class="input-group-addon" id="basic-addonx1">Art der Impfung</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="vaccine_number" required>
           <option value="1" '.$sel_vac_1.'>Grundimmunisierung (1. bzw. 2. Impfung)</option>
           <option value="3" '.$sel_vac_3.'>Auffrischungs-, Booster-Impfung</option>
           </select></div>';

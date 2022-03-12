@@ -435,6 +435,9 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.$text_result_deliveredDCC.'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_download.$text_mailsend.'</td>';
     } else {
+      if( A_checkpermission(array(0,2,0,4,0)) ) {
+        $edit_admin_button='<a class="list-group-item list-group-item-action list-group-item-redtext" href="edit.php?id='.$i[0].'"><span class="icon-cogs"></span>&nbsp;Admin</a>';
+      }
       if($i[25]==1 && $i[12]==5) {
         // is PCR and no result - button to set a result
         $text_result_download.='<a class="list-group-item list-group-item-action list-group-item-redtext" target="_blank" href="edit_person.php?label=download&id='.$i[2].'"><span class="icon-print"></span>&nbsp;Label</a>';
@@ -448,7 +451,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[7].'<br>'.$i[8].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[9].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[10].'</td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><a class="list-group-item list-group-item-action list-group-item-redtext" href="edit_person.php?id='.$i[0].'"><span class="icon-pencil"></span>&nbsp;Ändern</a>'.$cwa_qr_code_button.$pcr_button.'</td>
+      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"><a class="list-group-item list-group-item-action list-group-item-redtext" href="edit_person.php?id='.$i[0].'"><span class="icon-pencil"></span>&nbsp;Ändern</a>'.$edit_admin_button.$cwa_qr_code_button.$pcr_button.'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$i[22].'<br>'.$i[26].'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top '.$class_ergebnis.'">'.$text_ergebnis.'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.$text_result_deliveredDCC.'</td>

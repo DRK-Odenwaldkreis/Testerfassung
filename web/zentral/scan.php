@@ -679,6 +679,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
       }
       
       $k_id=S_get_entry($Db,'SELECT id FROM Vorgang WHERE Token=\''.$k_token.'\'');
+      S_set_data($Db,'UPDATE Vorgang SET Zustaendiger=\''.$_SESSION['uid'].'\' WHERE id='.$k_id.';');
       $array_written=S_get_multientry($Db,'SELECT id, Teststation, Token, Vorname, Nachname, Geburtsdatum, Adresse, Wohnort, Telefon, Mailadresse, CWA_request FROM Vorgang WHERE id='.$k_id.';');
       echo '<div class="row">';
       if($array_written[0][0]>0) {
