@@ -435,7 +435,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_delivered.$text_result_delivered_paper.$text_result_deliveredCWA.$text_result_deliveredDCC.'</td>
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$text_result_download.$text_mailsend.'</td>';
     } else {
-      if( A_checkpermission(array(0,2,0,4,0)) ) {
+      if( A_checkpermission(array(0,0,0,4,0)) ) {
         $edit_admin_button='<a class="list-group-item list-group-item-action list-group-item-redtext" href="edit.php?id='.$i[0].'"><span class="icon-cogs"></span>&nbsp;Admin</a>';
       }
       if($i[25]==1 && $i[12]==5) {

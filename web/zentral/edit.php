@@ -59,7 +59,7 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
   echo $GLOBALS['G_html_main_right_a'];
 
   // role check
-  if( A_checkpermission(array(0,2,0,4,0)) ) {
+  if( A_checkpermission(array(0,0,0,4,0)) ) {
 
 
     // Open database connection

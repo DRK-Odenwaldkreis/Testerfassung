@@ -758,8 +758,8 @@ function H_build_table_testdates2( $mode ) {
 					} elseif($j==1) {
 						if($mode == 'vaccinate' || $mode == 'b2b-vaccinate') {
 							// TODAY do not show entries after certain hour of day has reached for next day
-							$hour_limit_monfri=17;
-							$hour_limit_satsun=14;
+							$hour_limit_monfri=16;
+							$hour_limit_satsun=16;
 							$current_hour=date('G');
 							$current_dateinweek=date('w');
 							if( ( ($current_dateinweek==0 OR $current_dateinweek==6) AND $current_hour<$hour_limit_satsun ) 
@@ -830,8 +830,8 @@ function H_build_table_testdates2( $mode ) {
 						$res_l_array[$j+2][$col_j].='<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-top-noline FAIR-data-center1 FAIR-data-'.$cal_color.'3"><span class="text-sm"><div style="display: block; margin-bottom: 5px;"><b>'.$string_location4.'</b><br>alle Termine ausgebucht</div></span><div style="display: block; margin-top: 5px; margin-bottom: 7px;"><span class="label label-default">'.($array_termine_open[0][0]).'</span></div></td>';
 						$res_s_array[$j][1].='<div class="cal-element"><div style="display: block; margin-top: 5px;">'.$string_location3.''.$string_location.'</div><span class="text-sm"><div style="display: block; margin-top: 5px;">Alle Termine ausgebucht</div></span><div style="display: block; margin-top: 5px; margin-bottom: 5px;"><span class="label label-default">'.($array_termine_open[0][0]).'</span></div></div>';
 					} elseif( $j==0 || $j==1 ) {
-						$hour_limit_monfri=17;
-						$hour_limit_satsun=14;
+						$hour_limit_monfri=16;
+						$hour_limit_satsun=16;
 						$current_hour=date('G');
 						$current_dateinweek=date('w');
 						if( $j==0 || !(( ($current_dateinweek==0 OR $current_dateinweek==6) AND $current_hour<$hour_limit_satsun ) 
