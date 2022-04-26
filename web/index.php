@@ -356,11 +356,20 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     
     <div class="FAIRsepdown"></div>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-6 col-xs-12">
+            <div class="alert alert-danger" role="alert">
+            <div style="text-align: center;">
+                <h3><b>Wir ziehen um</b></h3>
+                <p>Ab dem Montag, 02.05.2022 finden Sie das <b>Testzentrum Erbach</b> in der Neue Lustgartenstr. 1-3 (wie auch bereits unser Impfzentrum).</a></p>
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xs-12">
             <div class="alert alert-info" role="alert">
             <div style="text-align: center;">
                 <h3><b>Sie haben Fragen?</b></h3>
                 <p>Schreiben Sie uns an <a href="mailto:'.$email_facility.'?subject=Fragen - '.$name_facility.'">'.$email_facility.'</a></p>
+            </div>
             </div>
         </div>
     </div>
