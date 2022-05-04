@@ -698,33 +698,23 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         <div class="col-sm-12">
         <h2 style="text-align: center;">Informationen zu Ihrem Testergebnis</h2>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
         <div class="thumbnail">
         <img style="height:231px; object-fit: contain;" src="img/covid-19-5057462_640.jpg" alt="">
         <div class="caption">
             <h3>Allgemeine Info des Gesundheitsamtes Odenwaldkreis</h3>
             <br>
-            <p><a href="download/Informationen_Gesundheitsamt.pdf" class="btn btn-primary" role="button">Download PDF</a></p>
+            <p><a href="download/Informationen_Gesundheitsamt.pdf" target="_blank" class="btn btn-primary" role="button">Download PDF</a></p>
         </div>
         </div>
         </div>
-        <div class="col-sm-4">
-        <div class="thumbnail">
-        <img style="height:231px; object-fit: contain;" src="img/laboratory-3827743_1280.jpg" alt="">
-        <div class="caption">
-            <h3>Informationen zur Freitestung</h3>
-            <p>Sie wurden positiv getestet oder sind Kontaktperson und möchten Sich informieren, wie Sie sich freitesten können.</p>
-            <p><a href="download/Freitestung.pdf" class="btn btn-primary" role="button">Download PDF</a></p>
-        </div>
-        </div>
-        </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
         <div class="thumbnail">
         <img style="height:231px; object-fit: contain;" src="img/test-tube-5065426_1280.jpg" alt="">
         <div class="caption">
             <h3>Positiv getestet?</h3>
             <p>Sie wurden positiv getestet, dann finden Sie einige Informationen auf der Seite vom Hessischen Ministerium für Soziales und Integration:</p>
-            <p><a href="https://soziales.hessen.de/Corona/Quarantaene" class="btn btn-primary" role="button">Zum HMSI</a></p>
+            <p><a href="https://soziales.hessen.de/Corona/Quarantaene" target="_blank" class="btn btn-primary" role="button">Zum HMSI</a></p>
         </div>
         </div>
         </div>
