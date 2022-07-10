@@ -213,38 +213,29 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         <h4>Wir bieten für Sie:</h4>
 
         <div class="row">
-        <div class="col-sm-3 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'?s=ag#calendar\'">
+        <div class="col-sm-4 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'?s=ag#calendar\'">
             <div class="header_icon">
             <img src="img/icon/rapid_test.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             <div class="FAIRsep"></div>
             <div class="caption center_text">
             <h4>Antigen-Schnelltest / Bürgertest</h4>';
-            echo '<h5>aktuell kostenfrei</h5>';
-            //echo '<h5>*1) kostenfrei für Bürgertest-Berechtigte, sonst kostenpflichtig für 20 €</h5>';
+            //echo '<h5>aktuell kostenfrei</h5>';
+            echo '<h5>kostenfrei oder mit Eigenanteil für Bürgertest-Berechtigte, sonst kostenpflichtig für 10&nbsp;€</h5>';
             echo '</div>
             </div>
         </div>
-        <div class="col-sm-3 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'?s=pcr#calendar\'">
+        <div class="col-sm-4 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'?s=pcr#calendar\'">
             <div class="header_icon">
             <img src="img/icon/certified_result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             <div class="FAIRsep"></div>
             <div class="caption center_text">
                 <h4>PCR-Test</h4>
-                <h5>kostenfrei für angeordnete Tests, sonst kostenpflichtig für 70 €</h5>
+                <h5>kostenfrei für angeordnete Tests, sonst kostenpflichtig für 70&nbsp;€</h5>
             </div>
             </div>
         </div>
-        <div class="col-sm-3 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'https://www.impfzentrum-odw.de/antikoerper\'">
-            <div class="header_icon">
-            <img src="img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
-            <div class="FAIRsep"></div>
-            <div class="caption center_text">
-            <h4>Kostenpflichtige Antikörper-Testung</h4>
-            <h5>ein Service des DRK Impfzentrum Erbach</h5>
-            </div>
-            </div>
-        </div>
-        <div class="col-sm-3 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'registration/business.php\'">
+
+        <div class="col-sm-4 col-xs-12 main-link-page main-link-page_2" onclick="window.location=\'registration/business.php\'">
             <div class="header_icon">
             <img src="img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
             <div class="FAIRsep"></div>
@@ -260,26 +251,42 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         <div class="FAIRsepdown"></div>
         <div class="header_icon">
             <div class="caption">
-            <h3>Informationen zum Antigen-Schnelltest</h3>
+            <h3><b>Informationen zum Antigen-Schnelltest</b></h3>
             <p>&nbsp;</p>
-            <h4><b>Dieser Test ist für Sie kostenfrei, wenn Sie zu einer der folgenden Personengruppen gehören:</b></h4>';
-            echo '<h4>Im Rahmen der kostenfreien Bürger-Testung hat jede*r Bürger*in mindestens einmal pro Woche Anspruch auf einen Antigen-Schnelltest (seit 13.11.2021)</h4>';
-            /* echo '<h4>A) Im Rahmen der kostenfreien Bürger-Testung hat jede*r Bürger*in mindestens einmal pro Woche Anspruch (ab 13.11.2021)</h4>
-            <h4>B) Personen vor Vollendung des zwölften Lebensjahres bzw. solche die das zwölfte Lebensjahr erst in den letzten drei Monaten vollendet haben</h4>
-            <h4>C) Schülerinnen und Schüler mit gültigem Schülerausweis</h4>
-            <h4>D) Personen, die aufgrund einer medizinischen Kontraindikation (insbesondere Schwangerschaft im ersten Schwangerschaftsdrittel) nicht bzw. in den letzten drei Monaten vor der Testung nicht geimpft werden konnten</h4>
-            <h4>E) Personen, die zum Zeitpunkt der Testung an klinischen Studien zur Wirksamkeit von Impfstoffen teilnehmen bzw. in den letzten drei Monaten vor der Testung teilgenommen haben</h4>
-            <h4>F) Personen, die sich zum Zeitpunkt der Testung aufgrund einer nachgewiesenen Infektion mit dem Coronavirus SARS-CoV-2 in Absonderung befinden, wenn die Testung zur Beendigung der Absonderung erforderlich ist</h4>
-            <p>&nbsp;</p>
-            <h4><b>Dieser Test ist für Sie auch kostenfrei, wenn folgende Bedingungen erfüllt sind (Übergangsregelung bis zum 31. Dezember 2021):</b></h4>
-            <h4>Bisher nicht vollständig geimpft mit einem vom PEI zugelassenen Impfstoff</h4>
-            <h4><b>und</b> zu einer der folgenden Personengruppen zugehörig</h4>
-            <h4>G) Schwangere oder Stillende</h4>
-            <h4>H) Studierende mit gültigem Studienausweis</h4>
-            <h4>I) Kinder und Jugendliche im Alter von 12 bis 17 Jahren</h4>
-            <p>&nbsp;</p>
-            <p>Personen der Gruppen D bis G benötigen für einen kostenfreien Test ein ärztliches Attest. Nach §1 Abs. 1 der aktuell gültigen Testverordnung des Bundes sind die Ärzte verpflichtet ein solches Attest auszustellen. Die Kosten hierfür trägt der Bund.</p>
-            <p>Weitere Einzelfälle müssen aktuell im jeweiligen Fall bewertet werden. Rückfragen hierzu frühzeitig an <a href="mailto:'.$email_facility.'">'.$email_facility.'</a>.</p>'; */
+            <h4>Ab sofort gilt die neue Corona-Testverordnung.</h4>
+                <h4>Alle Informationen zu den Gruppen, die eine kostenlose Bürgertestung oder eine Bürgertestung mit Eigenbeteiligung (3&nbsp;€) in Anspruch nehmen können, sind auf der Website des Bundesgesundheitsministerium einzusehen:</h4>
+                <h4><a href="https://www.bundesgesundheitsministerium.de/coronavirus/nationale-teststrategie/faq-covid-19-tests.html">https://www.bundesgesundheitsministerium.de/coronavirus/nationale-teststrategie/faq-covid-19-tests.html</a></h4>
+                <h4>Anlasslose Schnellstests ohne einen der genannten Gründe bieten wir in unseren Testzentren für 10&nbsp;€ pro Test an.</h4>';
+
+            //echo '<h4>Im Rahmen der kostenfreien Bürger-Testung hat jede*r Bürger*in mindestens einmal pro Woche Anspruch auf einen Antigen-Schnelltest (seit 13.11.2021)</h4>';
+            // echo '
+
+            // <h4>A) Personen, die zum Zeitpunkt der Testung das fünfte Lebensjahr noch nicht vollendet haben.</h4>
+            // <h4>B) Personen, die aufgrund einer medizinischen Kontraindikation, insbesondere einer Schwangerschaft im ersten
+            //         Schwangerschaftsdrittel, zum Zeitpunkt der Testung nicht gegen das Coronavirus SARS-CoV-2 geimpft wer-
+            //         den können oder in den letzten drei Monaten vor der Testung aufgrund einer medizinischen Kontraindikation
+            //         nicht gegen das Coronavirus SARS-CoV-2 geimpft werden konnten</h4>
+            // <h4>C) Personen, die zum Zeitpunkt der Testung an klinischen Studien zur Wirksamkeit von Impfstoffen gegen das
+            // Coronavirus SARS-CoV-2 teilnehmen oder in den letzten drei Monaten vor der Testung an solchen Studien
+            // teilgenommen haben</h4>
+            // <h4>D) Personen nach § 4 Absatz 1 Satz 1 Nummer 3 und 4</h4>
+            // <h4>E) Personen, die an dem Tag, an dem die Testung erfolgt:
+            // <p> &nbsp;a) eine Veranstaltung in einem Innenraum besuchen werden oder</p>
+            // <p>  &nbsp;   b) zu einer Person Kontakt haben werden, die </p>
+            // <p>    &nbsp;&nbsp;         aa) das 60. Lebensjahr vollendet hat oder </p>
+            // <p>    &nbsp;&nbsp;         bb) aufgrund einer Vorerkrankung oder Behinderung ein hohes Risiko aufweist, schwer an COVID-19 zu
+            // erkranken </p></h4>
+            // <h4>F) Personen, die durch die Corona-Warn-App des Robert Koch-Instituts eine Warnung mit der Statusanzeige
+            // erhöhtes Risiko erhalten haben </h4>
+            // <h4>G) Leistungsberechtigte, die im Rahmen eines Persönlichen Budgets nach § 29 des Neunten Buches Sozialge-
+            // setzbuch Personen beschäftigen, sowie Personen, die bei Leistungsberechtigten im Rahmen eines Persön-
+            // lichen Budgets nach § 29 des Neunten Buches Sozialgesetzbuch beschäftigt sind</h4>
+            // <h4>H) Pflegepersonen im Sinne des § 19 Satz 1 des Elften Buches Sozialgesetzbuch</h4>
+            // <h4>I) Personen, die mit einer mit dem Coronavirus SARS-CoV-2 infizierten Person in demselben Haushalt leben</h4>
+
+
+            // <p>&nbsp;</p>
+            // <p>Weitere Einzelfälle müssen aktuell im jeweiligen Fall bewertet werden. Rückfragen hierzu frühzeitig an <a href="mailto:'.$email_facility.'">'.$email_facility.'</a>.</p>'; 
 
             echo '</div>
         </div>
@@ -320,7 +327,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <img src="img/icon/qr_1.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
                 
             <div class="caption center_text">
-            <h5>Ticket vorzeigen</h5><h5><span class="text-sm">(nur bei Voranmeldung)</span></h5>
+            <h5>Ausweis & Ticket vorzeigen und bezahlen</h5>
             </div>
             </div>
         </div>
@@ -348,22 +355,15 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
             <img src="img/icon/result.svg" style="display: block; margin-left: auto; margin-right: auto; width: 30%;"></img>
                 
             <div class="caption center_text">
-            <h5>Ergebnis digital abrufen</h5><h5><span class="text-sm">Neu: Auch mit Ihrer Corona-Warn-App</span></h5>
+            <h5>Ergebnis digital abrufen</h5><h5><span class="text-sm">Auch mit Ihrer Corona-Warn-App</span></h5>
             </div>
             </div>
         </div>
-    </div>
+    </div>';
     
-    <div class="FAIRsepdown"></div>
-    <div class="row">
-        <div class="col-sm-6 col-xs-12">
-            <div class="alert alert-danger" role="alert">
-            <div style="text-align: center;">
-                <h3><b>Wir ziehen um</b></h3>
-                <p>Ab dem Montag, 02.05.2022 finden Sie das <b>Testzentrum Erbach</b> in der Neue Lustgartenstr. 1-3 (wie auch bereits unser Impfzentrum).</a></p>
-            </div>
-            </div>
-        </div>
+     echo '<div class="FAIRsepdown"></div>';
+
+    echo '
         <div class="col-sm-6 col-xs-12">
             <div class="alert alert-info" role="alert">
             <div style="text-align: center;">
@@ -548,7 +548,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class=""><a href="?s=ag#calendar">Antigen-Schnelltest</a></li>
             <li role="presentation" class="active"><a href="?s=pcr#calendar">PCR-Test</a></li>
-            <li role="presentation" class=""><a href="https://www.impfzentrum-odw.de/antikoerper">Antikörper-Test</a></li>
+            
             <li role="presentation" class=""><a href="registration/business.php">Firmenanmeldung</a></li>
             </ul>
             ';
@@ -558,7 +558,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class="active"><a href="?s=ag#calendar">Antigen-Schnelltest</a></li>
             <li role="presentation" class=""><a href="?s=pcr#calendar">PCR-Test</a></li>
-            <li role="presentation" class=""><a href="https://www.impfzentrum-odw.de/antikoerper">Antikörper-Test</a></li>
+         
             <li role="presentation" class=""><a href="registration/business.php">Firmenanmeldung</a></li>
             </ul>
             ';
@@ -568,7 +568,6 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
             <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class=""><a href="?s=ag#calendar">Antigen-Schnelltest</a></li>
             <li role="presentation" class=""><a href="?s=pcr#calendar">PCR-Test</a></li>
-            <li role="presentation" class=""><a href="https://www.impfzentrum-odw.de/antikoerper">Antikörper-Test</a></li>
             <li role="presentation" class=""><a href="registration/business.php">Firmenanmeldung</a></li>
             </ul>
             ';
@@ -708,7 +707,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         </div>
         </div>
         </div>
-        <div class="col-sm-6">
+                <div class="col-sm-6">
         <div class="thumbnail">
         <img style="height:231px; object-fit: contain;" src="img/test-tube-5065426_1280.jpg" alt="">
         <div class="caption">
