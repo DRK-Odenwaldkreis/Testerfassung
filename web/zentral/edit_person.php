@@ -304,7 +304,26 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
           </select></div>';
         }
         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-          if($val_cwa_connection==1 && $array_vorgang[0][15]==null) {
+          $test_grund_type=S_get_entry($Db,'SELECT type FROM Kosten_PCR WHERE id='.$array_vorgang[0][15].';');
+
+          if($test_grund_type!=2) {
+
+            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1;');
+            echo '          
+              <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für Antigen</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+              <option value="" selected>Bitte wählen...</option>
+                  ';
+                  foreach($pcr_grund_array as $i) {
+                      $display=$i[2].' / '.number_format($i[3], 2, ',', '').' €';
+                      if($array_vorgang[0][15]==$i[0]) { $selected='selected'; } else { $selected=''; }
+                      echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
+                  }
+                  echo '
+              </select></div>
+              <div class="FAIRsepdown"></div>
+            ';
+          }
+          if($val_cwa_connection==1 && $test_grund_type!=2) {
             if($array_vorgang[0][11]>0) {
               $cwa_selected='checked';
             } else {
@@ -333,7 +352,8 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
             echo '<div class="input-group"><span class="text-sm">Derzeit keine Corona-Warn-App (CWA) Verbindung möglich</span></div>';
             $display_cwa_question='';
           }
-          if($array_vorgang[0][15]==null) {
+          if($test_grund_type!=2) {
+
             if($array_vorgang[0][12]==1) {
               $print_cert_selected='checked';
             } else {
@@ -371,9 +391,9 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
             </div>';
           } else {
               
-            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR;');
+            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2;');
             echo '          
-              <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für einen PCR-Test</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+              <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für PCR</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
               <option value="" selected>Bitte wählen...</option>
                   ';
                   foreach($pcr_grund_array as $i) {

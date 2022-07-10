@@ -166,10 +166,14 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" value="'.$array_voranmeldung[0][7].'" required></div>
         <div class="FAIRsepdown"></div>';
 
-        if(S_get_entry($Db,'SELECT Testtyp.IsPCR Name FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id WHERE Station.id='.$_SESSION['station_id'].';')==1) {
-          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR;');
-          echo '          
-            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für einen PCR-Test</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+
+        
+
+        if(S_get_entry($Db,'SELECT type FROM Kosten_PCR WHERE id='.$array_voranmeldung[0][10].';')==2) {
+          // PCR
+          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2;');
+          echo '
+            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für PCR</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
             <option value="" selected>Bitte wählen...</option>
                 ';
                 foreach($pcr_grund_array as $i) {
@@ -181,16 +185,32 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
             </select></div>
             <div class="FAIRsepdown"></div>
           ';
+        } else {
+          // Antigen
+          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1;');
+          echo '
+            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für Antigen</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+            <option value="" selected>Bitte wählen...</option>
+                ';
+                foreach($pcr_grund_array as $i) {
+                    $display=$i[2].' / '.number_format($i[3], 2, ',', '').' €';
+                    if($array_voranmeldung[0][10]==$i[0]) { $selected='selected'; } else { $selected=''; }
+                    echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
+                }
+                echo '
+            </select></div>
+            <div class="FAIRsepdown"></div>
+          ';
         }
 
-        if($array_voranmeldung[0][9]==0 && $array_voranmeldung[0][10]==null) {
+        if($array_voranmeldung[0][9]==0 && S_get_entry($Db,'SELECT type FROM Kosten_PCR WHERE id='.$array_voranmeldung[0][10].';')!=2) {
           echo '<div class="FAIRsepdown"></div>
           <div class="cb_drk">
           <input type="checkbox" id="cb_print_cert" name="cb_print_cert"/>
           <label for="cb_print_cert">Papierzertifikat mit Testergebnis erstellen</label>
           </div>';
         }
-        if($val_cwa_connection==1 && $array_voranmeldung[0][10]==null) {
+        if($val_cwa_connection==1 && S_get_entry($Db,'SELECT type FROM Kosten_PCR WHERE id='.$array_voranmeldung[0][10].';')!=2) {
           if($array_voranmeldung[0][8]==1) {
             echo '<div class="FAIRsepdown"></div>
           <div class="cb_drk">
@@ -232,6 +252,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         }
 
         echo '<div class="FAIRsepdown"></div>
+        <div><span class="anweisung"><span class="icon-notification"></span> ANWEISUNG:</span> Vorgang nur abschließen, wenn Kunde bezahlt hat.</div>
+        <div class="FAIRsepdown"></div>
         <span class="input-group-btn">
           <input type="submit" class="btn btn-lg btn-danger" value="Registrieren" name="submit_person" />
           </span>
@@ -263,10 +285,14 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" autocomplete="off"></div>
         ';
-        if(S_get_entry($Db,'SELECT Testtyp.IsPCR Name FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id WHERE Station.id='.$_SESSION['station_id'].';')==1) {
-          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR;');
+
+
+        
+        if(S_get_entry($Db,'SELECT Testtyp.IsPCR FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id WHERE Station.id='.$_SESSION['station_id'].';')==1) {
+          // PCR
+          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2;');
           echo '          
-                  <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für einen PCR-Test</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+                  <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für PCR</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
                   <option value="" selected>Bitte wählen...</option>
                       ';
                       foreach($pcr_grund_array as $i) {
@@ -275,6 +301,23 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
                       }
                       echo '
                   </select></div>
+          ';
+        } else {
+          // Antigen
+          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1;');
+          echo '          
+            <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für Antigen</span>
+            <select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+            <option value="" selected>Bitte wählen...</option>
+                ';
+                foreach($pcr_grund_array as $i) {
+                    $display=$i[2].' / '.number_format($i[3], 2, ',', '').' €';
+                    if($array_voranmeldung[0][10]==$i[0]) { $selected='selected'; } else { $selected=''; }
+                    echo '<option value="'.$i[0].'" '.$selected.'>'.$display.'</option>';
+                }
+                echo '
+            </select></div>
+            <div class="FAIRsepdown"></div>
           ';
         }
         if($val_cwa_connection==1 && $val_cwa_connection_poc==1) {
@@ -316,6 +359,8 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
           </div>';
         }
         echo '<div class="FAIRsepdown"></div>
+        <div><span class="anweisung"><span class="icon-notification"></span> ANWEISUNG:</span> Vorgang nur abschließen, wenn Kunde bezahlt hat.</div>
+        <div class="FAIRsepdown"></div>
         <span class="input-group-btn">
           <input type="submit" class="btn btn-lg btn-danger" value="Registrieren" name="submit_person" />
           </span>
@@ -362,11 +407,14 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         $today=date("Y-m-d",time());
 
         // Get person data
-        $array_voranmeldung=S_get_multientry($Db,'SELECT Nachname, Vorname, Geburtsdatum, Termin_id FROM Voranmeldung WHERE id=CAST('.$preregistration.' AS int);');
+        $array_voranmeldung=S_get_multientry($Db,'SELECT Nachname, Vorname, Geburtsdatum, Termin_id, PCR_Grund FROM Voranmeldung WHERE id=CAST('.$preregistration.' AS int);');
         $array_termin=S_get_multientry($Db,'SELECT id_station,Tag,Stunde,Slot FROM Termine WHERE id=CAST('.$array_voranmeldung[0][3].' AS int);');
         $val_station=S_get_entry($Db,'SELECT Ort FROM Station WHERE id=CAST('.$array_termin[0][0].' AS int);');
         // Slot data
         $display_station='S'.$array_termin[0][0].' / '.$val_station;
+        $pcr_grund_array=S_get_multientry($Db,'SELECT type, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE id='.$array_voranmeldung[0][4].';');
+        if($pcr_grund_array[0][0]==1) { $type_short='Antigen'; } elseif($pcr_grund_array[0][0]==2) { $type_short='>> PCR <<'; } else { $type_short='nicht ausgewählt'; }
+        $display_type=''.$type_short.' / '.$pcr_grund_array[0][2].' / EUR '.$pcr_grund_array[0][3];
         $display_slot=$array_termin[0][1].'';
         if($array_termin[0][0]!=$_SESSION['station_id']) {
           $color_station_red='FAIR-change-red';
@@ -383,10 +431,13 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         echo '<div class="row">';
         echo '<div class="col-sm-12">
         <h3>Termin gültig für</h3>';
-        echo '<div class="input-group">
+        echo '
+        <div class="input-group">
         <span class="input-group-addon '.$color_station_red.'" id="basic-addon1">Ort</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$display_station.'" disabled></div>
         <div class="input-group">
         <span class="input-group-addon '.$color_slot_red.'" id="basic-addon1">Termin</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$display_slot.'" disabled></div>
+        <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Test-Art</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$display_type.'" disabled></div>
         <div class="input-group">
         <span class="input-group-addon" id="basic-addon1">Name</span><input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$array_voranmeldung[0][0].'" disabled></div>
         <div class="input-group">

@@ -339,15 +339,16 @@ if( isset($_GET['id']) && isset($_GET['label']) && $_GET['label']=='download' ) 
               echo '
           </select></div>';
           // PCR-Grund
-          $result_array=S_get_multientry($Db,'SELECT id,Kurzbezeichnung FROM Kosten_PCR;');
+          $result_array=S_get_multientry($Db,'SELECT id,Kurzbezeichnung,type,price FROM Kosten_PCR;');
           if(is_null($array_vorgang[0][19])) {$val_selected="selected";} else {$val_selected="";}
           echo '
-          <div class="input-group"><span class="input-group-addon" id="basic-addon19">PCR-Grund</span>
-          <select id="select-state_typ19" placeholder="Wähle PCR-Grund aus" class="custom-select" style="margin-top:0px;" name="e_kostenpcr">
+          <div class="input-group"><span class="input-group-addon" id="basic-addon19">Test-Grund</span>
+          <select id="select-state_typ19" placeholder="Wähle Test-Grund aus" class="custom-select" style="margin-top:0px;" name="e_kostenpcr">
           <option value="0" '.$val_selected.'>(0) kein</option>
               ';
               foreach($result_array as $i) {
-                  $display='('.$i[0].') '.$i[1];
+                  if($i[2]==2) {$d_t="PCR";} else {$d_t="Ag";}
+                  $display='('.$i[0].') '.$d_t.' / '.$i[1].' / '.$i[3].' €';
                   if(!is_null($array_vorgang[0][19]) && $array_vorgang[0][19]==$i[0]) {$val_selected="selected";} else {$val_selected="";}
                   echo '<option value="'.$i[0].'" '.$val_selected.'>'.$display.'</option>';
               }

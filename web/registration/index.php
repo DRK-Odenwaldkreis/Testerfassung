@@ -385,12 +385,40 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_email.'" required></div>
                     ';
                     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+
+                        if($pcr_test==0) {
+                            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1;');
+                            echo '<div class="FAIRsepdown"></div>
+                            <div class="alert alert-warning" role="alert">
+                                    <div class="header_icon">
+                                        <img src="../img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
+                                        <div class="caption center_text">
+                                        <h3>Sie haben einen Antigen-Schnelltest ausgewählt.</h3>
+                                        <h4>Je nach Grund der Testung fallen Gebühren an, welche Sie im Testzentrum entrichten müssen. Ggf. müssen Sie den Testgrund mit Unterlagen im Testzentrum nachweisen können.</h4>
+                                        </div>
+                                    </div>
+                                    <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für einen Test</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+                                    <option value="" selected>Bitte wählen...</option>
+                                        ';
+                                        foreach($pcr_grund_array as $i) {
+                                            $display=$i[1].' ('.$i[2].') Gebühren '.number_format($i[3], 2, ',', '').' €';
+                                            echo '<option value="'.$i[0].'">'.$display.'</option>';
+                                        }
+                                        echo '
+                                    </select></div>
+                            </div>
+                            <div class="FAIRsepdown"></div>';
+
+                        }
+
                         if($val_cwa_connection==1 && $pcr_test==0) {
                             if($k_cwa_req==1) {
                                 $cwa_selected='checked';
                             } else {
                                 $cwa_selected='';
                             }
+
+
                             echo '<div class="FAIRsepdown"></div>
                             <div class="header_icon_main">
                             <div class="row ">
@@ -444,7 +472,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             ";
                         
                         } elseif($pcr_test==1) {
-                            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR;');
+                            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2;');
                             echo '<div class="FAIRsepdown"></div>
                             <div class="alert alert-warning" role="alert">
                                     <div class="header_icon">
@@ -492,38 +520,6 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                         <div class="FAIRsepdown"></div>';
                     }
 
-                    if($GLOBALS['FLAG_MODE_MAIN'] == 1 && $pcr_test!=1) {
-                        echo '<div class="FAIRsepdown"></div>
-                        <div class="alert alert-warning" role="alert">
-                                <div class="header_icon">
-                                    <img src="../img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
-                                    <div class="caption">
-                                    <h3>Sie haben einen Antigen-Schnelltest ausgewählt.</h3>
-                                    <p>&nbsp;</p>
-                                    <h4><b>Dieser Test ist für Sie kostenfrei, wenn Sie zu einer der folgenden Personengruppen gehören:</b></h4>
-                                    <h4>A) Personen vor Vollendung des zwölften Lebensjahres bzw. solche die das zwölfte Lebensjahr erst in den letzten drei Monaten vollendet haben</h4>
-                                    <h4>B) Schülerinnen und Schüler mit gültigem Schülerausweis</h4>
-                                    <h4>C) Personen, die aufgrund einer medizinischen Kontraindikation (insbesondere Schwangerschaft im ersten Schwangerschaftsdrittel) nicht bzw. in den letzten drei Monaten vor der Testung nicht geimpft werden konnten</h4>
-                                    <h4>D) Personen, die zum Zeitpunkt der Testung an klinischen Studien zur Wirksamkeit von Impfstoffen teilnehmen bzw. in den letzten drei Monaten vor der Testung teilgenommen haben</h4>
-                                    <h4>E) Personen, die sich zum Zeitpunkt der Testung aufgrund einer nachgewiesenen Infektion mit dem Coronavirus SARS-CoV-2 in Absonderung befinden, wenn die Testung zur Beendigung der Absonderung erforderlich ist</h4>
-                                    <p>&nbsp;</p>
-                                    <h4><b>Dieser Test ist für Sie auch kostenfrei, wenn folgende Bedingungen erfüllt sind (Übergangsregelung bis zum 31. Dezember 2021):</b></h4>
-                                    <h4>Bisher nicht vollständig geimpft mit einem vom PEI zugelassenen Impfstoff</h4>
-                                    <h4><b>und</b> zu einer der folgenden Personengruppen zugehörig</h4>
-                                    <h4>F) Schwangere oder Stillende</h4>
-                                    <h4>G) Studierende mit gültigem Studienausweis</h4>
-                                    <h4>H) Kinder und Jugendliche im Alter von 12 bis 17 Jahren</h4>
-                                    <p>&nbsp;</p>
-                                    <p>Personen der Gruppen C bis F benötigen für einen kostenfreien Test ein ärztliches Attest. Nach §1 Abs. 1 der aktuell gültigen Testverordnung des Bundes sind die Ärzte verpflichtet ein solches Attest auszustellen. Die Kosten hierfür trägt der Bund.</p>
-                                    <p>&nbsp;</p>
-                                    <h4>Andernfalls fallen für den Schnelltest Gebühren in Höhe von <b>20 €</b> an, die Sie im Testzentrum entrichten müssen.</h4>
-                                    <p>&nbsp;</p>
-                                    <p>Weitere Einzelfälle müssen aktuell im jeweiligen Fall bewertet werden. Rückfragen hierzu frühzeitig an <a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a>.</p>
-                                    </div>
-                                </div>
-                        </div>
-                        <div class="FAIRsepdown"></div>';
-                    }
 
                     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                         echo '<div class="FAIRsepdown"></div><div class="cb_drk">
@@ -1002,7 +998,32 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             ';
                         }
                         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
+                            if($pcr_test==0) {
+                                $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1;');
+                                echo '<div class="FAIRsepdown"></div>
+                                <div class="alert alert-warning" role="alert">
+                                        <div class="header_icon">
+                                            <img src="../img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
+                                            <div class="caption center_text">
+                                            <h3>Sie haben einen Antigen-Schnelltest ausgewählt.</h3>
+                                            <h4>Je nach Grund der Testung fallen Gebühren an, welche Sie im Testzentrum entrichten müssen. Ggf. müssen Sie den Testgrund mit Unterlagen im Testzentrum nachweisen können.</h4>
+                                            </div>
+                                        </div>
+                                        <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für einen Test</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
+                                        <option value="" selected>Bitte wählen...</option>
+                                            ';
+                                            foreach($pcr_grund_array as $i) {
+                                                $display=$i[1].' ('.$i[2].') Gebühren '.number_format($i[3], 2, ',', '').' €';
+                                                echo '<option value="'.$i[0].'">'.$display.'</option>';
+                                            }
+                                            echo '
+                                        </select></div>
+                                </div>
+                                <div class="FAIRsepdown"></div>';
+
+                            }
                             if($val_cwa_connection==1 && $pcr_test==0) {
+
                                 echo '<div class="FAIRsepdown"></div>
                                 <div class="header_icon_main">
                                 <div class="row ">
@@ -1057,7 +1078,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                 ";
                             
                             } elseif($pcr_test==1) {
-                                $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR;');
+                                $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2;');
                                 echo '<div class="FAIRsepdown"></div>
                                 <div class="alert alert-warning" role="alert">
                                         <div class="header_icon">
@@ -1105,39 +1126,6 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             <div class="FAIRsepdown"></div>';
                         }
 
-                        if($GLOBALS['FLAG_MODE_MAIN'] == 1 && $pcr_test!=1) {
-                            /* echo '<div class="FAIRsepdown"></div>
-                            <div class="alert alert-warning" role="alert">
-                                    <div class="header_icon">
-                                        <img src="../img/icon/pay.svg" style="display: block; margin-left: auto; margin-right: auto; width: 100px;"></img>
-                                        <div class="caption">
-                                        <h3>Sie haben einen Antigen-Schnelltest ausgewählt.</h3>
-                                        <p>&nbsp;</p>
-                                        <h4><b>Dieser Test ist für Sie kostenfrei, wenn Sie zu einer der folgenden Personengruppen gehören:</b></h4>
-                                        <h4>A) Im Rahmen der kostenfreien Bürger-Testung hat jede*r Bürger*in mindestens einmal pro Woche Anspruch (ab 13.11.2021)</h4>
-                                        <h4>B) Personen vor Vollendung des zwölften Lebensjahres bzw. solche die das zwölfte Lebensjahr erst in den letzten drei Monaten vollendet haben</h4>
-                                        <h4>C) Schülerinnen und Schüler mit gültigem Schülerausweis</h4>
-                                        <h4>D) Personen, die aufgrund einer medizinischen Kontraindikation (insbesondere Schwangerschaft im ersten Schwangerschaftsdrittel) nicht bzw. in den letzten drei Monaten vor der Testung nicht geimpft werden konnten</h4>
-                                        <h4>E) Personen, die zum Zeitpunkt der Testung an klinischen Studien zur Wirksamkeit von Impfstoffen teilnehmen bzw. in den letzten drei Monaten vor der Testung teilgenommen haben</h4>
-                                        <h4>F) Personen, die sich zum Zeitpunkt der Testung aufgrund einer nachgewiesenen Infektion mit dem Coronavirus SARS-CoV-2 in Absonderung befinden, wenn die Testung zur Beendigung der Absonderung erforderlich ist</h4>
-                                        <p>&nbsp;</p>
-                                        <h4><b>Dieser Test ist für Sie auch kostenfrei, wenn folgende Bedingungen erfüllt sind (Übergangsregelung bis zum 31. Dezember 2021):</b></h4>
-                                        <h4>Bisher nicht vollständig geimpft mit einem vom PEI zugelassenen Impfstoff</h4>
-                                        <h4><b>und</b> zu einer der folgenden Personengruppen zugehörig</h4>
-                                        <h4>G) Schwangere oder Stillende</h4>
-                                        <h4>H) Studierende mit gültigem Studienausweis</h4>
-                                        <h4>I) Kinder und Jugendliche im Alter von 12 bis 17 Jahren</h4>
-                                        <p>&nbsp;</p>
-                                        <p>Personen der Gruppen D bis G benötigen für einen kostenfreien Test ein ärztliches Attest. Nach §1 Abs. 1 der aktuell gültigen Testverordnung des Bundes sind die Ärzte verpflichtet ein solches Attest auszustellen. Die Kosten hierfür trägt der Bund.</p>
-                                        <p>&nbsp;</p>
-                                        <h4>Andernfalls fallen für den Schnelltest Gebühren in Höhe von <b>20 €</b> an, die Sie im Testzentrum entrichten müssen.</h4>
-                                        <p>&nbsp;</p>
-                                        <p>Weitere Einzelfälle müssen aktuell im jeweiligen Fall bewertet werden. Rückfragen hierzu frühzeitig an <a href="mailto:testzentrum@drk-odenwaldkreis.de">testzentrum@drk-odenwaldkreis.de</a>.</p>
-                                        </div>
-                                    </div>
-                            </div>
-                            <div class="FAIRsepdown"></div>'; */
-                        }
 
                         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                             echo '<div class="FAIRsepdown"></div><div class="cb_drk">

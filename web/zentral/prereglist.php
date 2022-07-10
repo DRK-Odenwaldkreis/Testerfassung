@@ -165,7 +165,7 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
   // Get all pre registrations for today or another day
   // for all stations
   if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
-    $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, Voranmeldung.Adresse, Voranmeldung.Wohnort, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token, Voranmeldung.Mailadresse, Voranmeldung.Telefon, Kosten_PCR.Kurzbezeichnung, Voranmeldung.CWA_request FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Voranmeldung.PCR_Grund WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Voranmeldung.Used=0 AND Token IS NOT NULL ORDER BY Voranmeldung.Anmeldezeitpunkt DESC;');
+    $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, Voranmeldung.Adresse, Voranmeldung.Wohnort, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token, Voranmeldung.Mailadresse, Voranmeldung.Telefon, Kosten_PCR.Kurzbezeichnung, Voranmeldung.CWA_request, Kosten_PCR.type, Kosten_PCR.price FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station LEFT OUTER JOIN Kosten_PCR ON Kosten_PCR.id=Voranmeldung.PCR_Grund WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Voranmeldung.Used=0 AND Token IS NOT NULL ORDER BY Voranmeldung.Anmeldezeitpunkt DESC;');
   } elseif($GLOBALS['FLAG_MODE_MAIN'] == 2) {
     $array_tests=S_get_multientry($Db,'SELECT Voranmeldung.id, Voranmeldung.Nachname, Voranmeldung.Vorname, Voranmeldung.Geburtsdatum, Voranmeldung.Booster, Voranmeldung.Tag, Termine.id_station, Termine.Stunde, Termine.Slot, Station.Ort, Voranmeldung.Token, Voranmeldung.Mailadresse, Voranmeldung.Telefon, Voranmeldung.Used, Impfstoff.Kurzbezeichnung, Voranmeldung.Anmeldezeitpunkt, ROW_NUMBER() OVER() FROM Voranmeldung JOIN Termine ON Voranmeldung.Termin_id=Termine.id JOIN Station ON Station.id=Termine.id_station JOIN Impfstoff ON Impfstoff.id=Station.Impfstoff_id WHERE Date(Voranmeldung.Tag)="'.$today.'" AND Token IS NOT NULL ORDER BY Termine.Stunde,Termine.Slot ASC;');
   } elseif($GLOBALS['FLAG_MODE_MAIN'] == 3) {
@@ -355,7 +355,13 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     }
     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
       if($i[14]==1) {$display_CWA='CWA-n';} elseif($i[14]==1) {$display_CWA='CWA-a';} else {$display_CWA='';}
-      if($i[13]!=null) {$display_PCR='PCR: '.$i[13];} else {$display_PCR='';}
+      if($i[13]!=null) {
+        if($i[15]==2) {
+          $display_PCR='PCR: '.$i[13].' ('.number_format($i[16], 2, ',', '').' €)';
+        } elseif($i[15]==1) {
+          $display_PCR='Ag: '.$i[13].' ('.number_format($i[16], 2, ',', '').' €)<br>';
+        }
+      } else {$display_PCR='';}
       echo '
       <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">'.$display_PCR.''.$display_CWA.'</td>';
     }
@@ -374,7 +380,6 @@ if( A_checkpermission(array(1,2,0,4,5)) ) {
     } else {
       echo '<td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top">
       <a target="_blank" class="list-group-item list-group-item-action list-group-item-redtext" href="../registration/index.php?cancel=cancel&t='.$i[10].'&i='.$i[0].'" title="Registrierung löschen"><span class="icon-remove2"></span>&nbsp;Löschen</a></td>
-      <td class="FAIR-data-height2 FAIR-data-right FAIR-data-left FAIR-data-bottom FAIR-data-top"></td>
       ';
     }
     echo '</tr>';
