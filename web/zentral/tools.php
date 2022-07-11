@@ -332,7 +332,7 @@ function A_sanitize_input_light($input) {
 	/* if(preg_match("/^[a-zA-Z0-9\-\.@\,\+äöüÄÖÜßéèêóòôíìîáàâúùû&\/]+$/", $input)) {
 		$validated = $input;
 	} */
-	$whitelist=array('/^[a-zA-Z0-9äöüÄÖÜßéèêóòôíìîáàâúùû&\ \_\-\.@\,\:\+\/]+$/');
+	$whitelist=array('/^[a-zA-Z0-9äöüÄÖÜßéèêóòô§íìîáàâúùû&\(\)\ \_\-\.@\,\:\+\/]+$/');
 	// Check if each character of input is in white list
 	foreach($whitelist as $k => $v) {
 		if(preg_match($v, $input)) {

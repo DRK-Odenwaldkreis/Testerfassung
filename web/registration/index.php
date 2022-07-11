@@ -387,7 +387,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
 
                         if($pcr_test==0) {
-                            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1;');
+                            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1 AND Aktiv=1 AND Internal=0;');
                             echo '<div class="FAIRsepdown"></div>
                             <div class="alert alert-warning" role="alert">
                                     <div class="header_icon">
@@ -401,7 +401,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                     <option value="" selected>Bitte wählen...</option>
                                         ';
                                         foreach($pcr_grund_array as $i) {
-                                            $display=$i[1].' ('.$i[2].') Gebühren '.number_format($i[3], 2, ',', '').' €';
+                                            $display=$i[1].' ('.$i[2].'), Gebühren '.number_format($i[3], 2, ',', '').' €';
                                             echo '<option value="'.$i[0].'">'.$display.'</option>';
                                         }
                                         echo '
@@ -472,7 +472,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             ";
                         
                         } elseif($pcr_test==1) {
-                            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2;');
+                            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=2 AND Aktiv=1 AND Internal=0;');
                             echo '<div class="FAIRsepdown"></div>
                             <div class="alert alert-warning" role="alert">
                                     <div class="header_icon">
@@ -488,7 +488,8 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                     <option value="" selected>Bitte wählen...</option>
                                         ';
                                         foreach($pcr_grund_array as $i) {
-                                            $display=$i[1];
+                                            
+                                            $display=$i[1].', Gebühren '.number_format($i[3], 2, ',', '').' €';
                                             echo '<option value="'.$i[0].'">'.$display.'</option>';
                                         }
                                         echo '
@@ -999,7 +1000,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                         }
                         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                             if($pcr_test==0) {
-                                $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1;');
+                                $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1 AND Aktiv=1 AND Internal=0;');
                                 echo '<div class="FAIRsepdown"></div>
                                 <div class="alert alert-warning" role="alert">
                                         <div class="header_icon">
@@ -1013,7 +1014,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                         <option value="" selected>Bitte wählen...</option>
                                             ';
                                             foreach($pcr_grund_array as $i) {
-                                                $display=$i[1].' ('.$i[2].') Gebühren '.number_format($i[3], 2, ',', '').' €';
+                                                $display=$i[1].' ('.$i[2].'), Gebühren '.number_format($i[3], 2, ',', '').' €';
                                                 echo '<option value="'.$i[0].'">'.$display.'</option>';
                                             }
                                             echo '
@@ -1078,7 +1079,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                 ";
                             
                             } elseif($pcr_test==1) {
-                                $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2;');
+                                $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=2 AND Aktiv=1 AND Internal=0;');
                                 echo '<div class="FAIRsepdown"></div>
                                 <div class="alert alert-warning" role="alert">
                                         <div class="header_icon">
@@ -1095,7 +1096,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                         <option value="" selected>Bitte wählen...</option>
                                             ';
                                             foreach($pcr_grund_array as $i) {
-                                                $display=$i[1];
+                                                $display=$i[1].', Gebühren '.number_format($i[3], 2, ',', '').' €';
                                                 echo '<option value="'.$i[0].'">'.$display.'</option>';
                                             }
                                             echo '
