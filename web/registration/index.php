@@ -387,7 +387,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                     if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
 
                         if($pcr_test==0) {
-                            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1;');
+                            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1 AND Internal=0 AND Aktiv=1;');
                             echo '<div class="FAIRsepdown"></div>
                             <div class="alert alert-warning" role="alert">
                                     <div class="header_icon">
@@ -472,7 +472,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                             ";
                         
                         } elseif($pcr_test==1) {
-                            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2;');
+                            $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2 AND Internal=0 AND Aktiv=1;');
                             echo '<div class="FAIRsepdown"></div>
                             <div class="alert alert-warning" role="alert">
                                     <div class="header_icon">
@@ -999,7 +999,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                         }
                         if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
                             if($pcr_test==0) {
-                                $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1;');
+                                $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1 AND Internal=0 AND Aktiv=1;');
                                 echo '<div class="FAIRsepdown"></div>
                                 <div class="alert alert-warning" role="alert">
                                         <div class="header_icon">
@@ -1078,7 +1078,7 @@ if(!$GLOBALS['FLAG_SHUTDOWN_MAIN']) {
                                 ";
                             
                             } elseif($pcr_test==1) {
-                                $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2;');
+                                $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2 AND Internal=0 AND Aktiv=1;');
                                 echo '<div class="FAIRsepdown"></div>
                                 <div class="alert alert-warning" role="alert">
                                         <div class="header_icon">

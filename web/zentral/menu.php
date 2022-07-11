@@ -80,9 +80,10 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     28=>array("text"=>'<h4 class="list-group-item-heading">Sammel-Testung</h4><p class="list-group-item-text">Für Sammel-Testung Daten importieren und Ergebnis-Abruf</p>',"text_s"=>'<span class="icon-stack"></span>&nbsp;Sammel-Testung',"link"=>"sammeltestung.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
     29=>array("text"=>'<h4 class="list-group-item-heading">Suchen</h4><p class="list-group-item-text">Einträge nach Nachnamen Suchen</p>',"text_s"=>'<span class="icon-stack"></span>&nbsp;Suchen',"link"=>"search.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
     30=>array("text"=>'<h4 class="list-group-item-heading">Testkits Anpassen</h4><p class="list-group-item-text">Testkits anpassen/ändern</p>',"text_s"=>'<span class="icon-stack"></span>&nbsp;Testkits',"link"=>"material.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
-    31=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"text_s"=>'<span class="icon-users"></span>&nbsp;User-Management',"link"=>"user_admin.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,2,0,0,0)),
-    33=>array("text"=>'<h4 class="list-group-item-heading">Admin: Files</h4><p class="list-group-item-text">Dateien</p>',"text_s"=>'',"link"=>"downloadlist.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
-    34=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Übersicht der Logs</p>',"text_s"=>'',"link"=>"log.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    31=>array("text"=>'<h4 class="list-group-item-heading">Testgründe Anpassen</h4><p class="list-group-item-text">Testgründe anpassen/ändern</p>',"text_s"=>'<span class="icon-stack"></span>&nbsp;Testgründe',"link"=>"gruende.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    41=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"text_s"=>'<span class="icon-users"></span>&nbsp;User-Management',"link"=>"user_admin.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,2,0,0,0)),
+    43=>array("text"=>'<h4 class="list-group-item-heading">Admin: Files</h4><p class="list-group-item-text">Dateien</p>',"text_s"=>'',"link"=>"downloadlist.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    44=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Übersicht der Logs</p>',"text_s"=>'',"link"=>"log.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
   );
 } else {
   $_module_array1=array(
@@ -94,9 +95,9 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
     25=>array("text"=>'<h4 class="list-group-item-heading">Termin-Überblick</h4><p class="list-group-item-text">Übersicht der angelegten Termine</p>',"text_s"=>'<span class="icon-calendar2"></span>&nbsp;Termin-Überblick',"link"=>"terminlist.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(1,0,0,0,0)),
     26=>array("text"=>'<h4 class="list-group-item-heading">Termine erstellen</h4><p class="list-group-item-text">Neue Termine für einen Impfstoff erstellen</p>',"text_s"=>'<span class="icon-cogs"></span>&nbsp;Termin-Verwaltung',"link"=>"terminerstellung.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(1,0,0,0,0)),
     30=>array("text"=>'<h4 class="list-group-item-heading">Impstoffe Anpassen</h4><p class="list-group-item-text">Impfstoff anpassen/ändern</p>',"text_s"=>'<span class="icon-stack"></span>&nbsp;Testkits',"link"=>"material.php","role"=>array(0,2,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
-    31=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"text_s"=>'<span class="icon-users"></span>&nbsp;User-Management',"link"=>"user_admin.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,2,0,0,0)),
-    33=>array("text"=>'<h4 class="list-group-item-heading">Admin: Files</h4><p class="list-group-item-text">Dateien</p>',"text_s"=>'',"link"=>"downloadlist.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
-    34=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Übersicht der Logs</p>',"text_s"=>'',"link"=>"log.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    41=>array("text"=>'<h4 class="list-group-item-heading">Admin: Web user</h4><p class="list-group-item-text">User-Management</p>',"text_s"=>'<span class="icon-users"></span>&nbsp;User-Management',"link"=>"user_admin.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,2,0,0,0)),
+    43=>array("text"=>'<h4 class="list-group-item-heading">Admin: Files</h4><p class="list-group-item-text">Dateien</p>',"text_s"=>'',"link"=>"downloadlist.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
+    44=>array("text"=>'<h4 class="list-group-item-heading">Admin: Logs</h4><p class="list-group-item-text">Übersicht der Logs</p>',"text_s"=>'',"link"=>"log.php","role"=>array(0,0,0,4,0),"role-disabled"=>array(0,0,0,0,0)),
   );
 }
 

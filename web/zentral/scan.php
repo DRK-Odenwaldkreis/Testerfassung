@@ -171,7 +171,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
 
         if(S_get_entry($Db,'SELECT type FROM Kosten_PCR WHERE id='.$array_voranmeldung[0][10].';')==2) {
           // PCR
-          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2;');
+          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2 AND Aktiv=1;');
           echo '
             <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für PCR</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
             <option value="" selected>Bitte wählen...</option>
@@ -187,7 +187,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
           ';
         } else {
           // Antigen
-          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1;');
+          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1 AND Aktiv=1;');
           echo '
             <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für Antigen</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
             <option value="" selected>Bitte wählen...</option>
@@ -290,7 +290,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         
         if(S_get_entry($Db,'SELECT Testtyp.IsPCR FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id WHERE Station.id='.$_SESSION['station_id'].';')==1) {
           // PCR
-          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2;');
+          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE type=2 AND Aktiv=1;');
           echo '          
                   <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für PCR</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
                   <option value="" selected>Bitte wählen...</option>
@@ -304,7 +304,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
           ';
         } else {
           // Antigen
-          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1;');
+          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name, Kurzbezeichnung, price FROM Kosten_PCR WHERE type=1 AND Aktiv=1;');
           echo '          
             <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für Antigen</span>
             <select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
@@ -803,7 +803,7 @@ if( A_checkpermission(array(1,0,0,4,0)) ) {
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">Telefon</span><input type="text" name="telefon" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_tel.'" autocomplete="off" required></div>
         <div class="input-group"><span class="input-group-addon" id="basic-addon1">E-Mail *</span><input type="text" name="email" class="form-control" placeholder="" aria-describedby="basic-addon1" value="'.$k_email.'" autocomplete="off"></div>';
         if(S_get_entry($Db,'SELECT Testtyp.IsPCR Name FROM Station JOIN Testtyp ON Testtyp.id=Station.Testtyp_id WHERE Station.id='.$_SESSION['station_id'].';')==1) {
-          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR;');
+          $pcr_grund_array=S_get_multientry($Db,'SELECT id, Name FROM Kosten_PCR WHERE Aktiv=1;');
           echo '          
                   <div class="input-group"><span class="input-group-addon" id="basic-addon1">Grund für einen PCR-Test</span><select id="select-pcr" class="custom-select" style="margin-top:0px;" placeholder="Bitte wählen..." name="pcr_grund" required>
                   <option value="" selected>Bitte wählen...</option>

@@ -24,13 +24,13 @@ if __name__ == "__main__":
                 'Input parameters are not correct, date needed')
             raise Exception
         DatabaseConnect = Database()
-        sql = "Select Vorgang.id, Teststation, Token, Registrierungszeitpunkt,Vorgang.CWA_request, Vorgang.reg_type, Testtyp.id, Testtyp.IsPCR from Vorgang LEFT JOIN Testtyp ON Vorgang.Testtyp_id=Testtyp.id where (Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s' and Testtyp.IsPCR=0) or (Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s' and Testtyp.IsPCR=1) or (Ergebnis = 1 and DATE(Registrierungszeitpunkt) <= '%s');" % (requestedDate-datetime.timedelta(days=2),requestedDate-datetime.timedelta(days=7),requestedDate-datetime.timedelta(days=30))
+        sql = "Select Vorgang.id, Teststation, Token, Registrierungszeitpunkt,Vorgang.CWA_request, Vorgang.reg_type, Testtyp.id, Testtyp.IsPCR, Vorgang.PCR_Grund from Vorgang LEFT JOIN Testtyp ON Vorgang.Testtyp_id=Testtyp.id where (Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s' and Testtyp.IsPCR=0) or (Ergebnis != 1 and DATE(Registrierungszeitpunkt) <= '%s' and Testtyp.IsPCR=1) or (Ergebnis = 1 and DATE(Registrierungszeitpunkt) <= '%s');" % (requestedDate-datetime.timedelta(days=2),requestedDate-datetime.timedelta(days=7),requestedDate-datetime.timedelta(days=30))
         logger.debug('Getting all Events for a date with the following query: %s' % (sql))
         deleteCanidate = DatabaseConnect.read_all(sql)
         for i in deleteCanidate:
             try:
-                sql = "INSERT INTO Archive (TestNr, Station, Token, Registrierungszeitpunkt, CWA_request, reg_type) VALUES (%s,%s,%s,%s,%s,%s);"
-                tupel = (i[0],i[1],i[2],i[3],i[4],i[5])
+                sql = "INSERT INTO Archive (TestNr, Station, Token, Registrierungszeitpunkt, CWA_request, reg_type, Grund) VALUES (%s,%s,%s,%s,%s,%s,%s);"
+                tupel = (i[0],i[1],i[2],i[3],i[4],i[5],i[6])
                 if DatabaseConnect.insert(sql,tupel):
                     sql = "Delete from Vorgang where id=%s;"%(i[0])
                     DatabaseConnect.delete(sql)
