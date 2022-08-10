@@ -30,7 +30,7 @@ if __name__ == "__main__":
         for i in deleteCanidate:
             try:
                 sql = "INSERT INTO Archive (TestNr, Station, Token, Registrierungszeitpunkt, CWA_request, reg_type, Grund) VALUES (%s,%s,%s,%s,%s,%s,%s);"
-                tupel = (i[0],i[1],i[2],i[3],i[4],i[5],i[6])
+                tupel = (i[0],i[1],i[2],i[3],i[4],i[5],i[8])
                 if DatabaseConnect.insert(sql,tupel):
                     sql = "Delete from Vorgang where id=%s;"%(i[0])
                     DatabaseConnect.delete(sql)
