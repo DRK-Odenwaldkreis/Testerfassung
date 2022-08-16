@@ -252,6 +252,7 @@ if($GLOBALS['FLAG_MODE_MAIN'] == 1) {
         <div class="header_icon">
             <div class="caption">
             <h3><b>Informationen zum Antigen-Schnelltest</b></h3>
+            <img src="img/test_grafik_kosten.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 100%; max-width: 956px;"></img>
             <p>&nbsp;</p>
             <h4>Ab sofort gilt die neue Corona-Testverordnung.</h4>
                 <h4>Alle Informationen zu den Gruppen, die eine kostenlose Bürgertestung oder eine Bürgertestung mit Eigenbeteiligung (3&nbsp;€) in Anspruch nehmen können, sind auf der Website des Bundesgesundheitsministerium einzusehen:</h4>
